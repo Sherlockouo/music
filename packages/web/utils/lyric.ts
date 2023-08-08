@@ -4,8 +4,8 @@ export function lyricParser(lrc: FetchLyricResponse) {
   return {
     lyric: parseLyric(lrc?.lrc?.lyric || ''),
     tlyric: parseLyric(lrc?.tlyric?.lyric || ''),
-    lyricuser: lrc.lyricUser,
-    transuser: lrc.transUser,
+    lyricuser: lrc?.lyricUser || '',
+    transuser: lrc?.transUser || '',
   }
 }
 

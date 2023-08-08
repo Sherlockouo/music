@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .app-region-drag {
+    -webkit-app-region: drag;
+  }
+
+  .app-region-no-drag {
+    -webkit-app-region: no-drag;
+  }
+
+  .no-drag {
+    -webkit-user-drag: none;
+  }
+
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-all;
+    -webkit-line-clamp: 1;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+  }
+
+  .line-clamp-4 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 4;
+  }
+
+  .line-clamp-5 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 4;
+  }
+}
+
+@font-face {
+  font-family: Barlow;
+  font-weight: normal;
+  src: url('@/web/assets/fonts/Barlow-Regular.woff2') format('woff2'),
+    url('@/web/assets/fonts/Barlow-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: Barlow;
+  font-weight: medium;
+  src: url('@/web/assets/fonts/Barlow-Medium.woff2') format('woff2'),
+    url('@/web/assets/fonts/Barlow-Medium.ttf') format('truetype');
+}
+@font-face {
+  font-family: Barlow;
+  font-weight: 600;
+  src: url('@/web/assets/fonts/Barlow-SemiBold.woff2') format('woff2'),
+    url('@/web/assets/fonts/Barlow-SemiBold.ttf') format('truetype');
+}
+@font-face {
+  font-family: Barlow;
+  font-weight: bold;
+  src: url('@/web/assets/fonts/Barlow-Bold.woff2') format('woff2'),
+    url('@/web/assets/fonts/Barlow-Bold.ttf') format('truetype');
+}
+@font-face {
+  font-family: Barlow;
+  font-weight: 800;
+  src: url('@/web/assets/fonts/Barlow-ExtraBold.woff2') format('woff2'),
+    url('@/web/assets/fonts/Barlow-ExtraBold.ttf') format('truetype');
+}
+@font-face {
+  font-family: Barlow;
+  font-weight: 900;
+  src: url('@/web/assets/fonts/Barlow-Black.woff2') format('woff2'),
+    url('@/web/assets/fonts/Barlow-Black.ttf') format('truetype');
+}
+
+body,
+input {
+  font-family: Roboto, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Helvetica Neue,
+    PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei,
+    microsoft uighur, sans-serif;
+}
+
+body {
+  @apply overscroll-contain;
+}
+
+html {
+  @apply bg-black lg:bg-transparent;
+  min-height: calc(100% + env(safe-area-inset-top));
+}
+
+button,
+input {
+  @apply outline-none;
+}
+
+*::selection {
+  @apply bg-brand-500 text-neutral-800;
+}
+
+a,
+button,
+p,
+div {
+  @apply cursor-default;
+}
+
+img,
+a {
+  -webkit-user-drag: none;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  @apply hidden;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  @apply m-0;
+}

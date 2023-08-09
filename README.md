@@ -3,7 +3,7 @@
   <!-- <a href="https://music.qier222.com" target="blank">
     <img src="images/logo.png" alt="Logo" width="156" height="156">
   </a> -->
-  <h2 align="center" style="font-weight: 600">R3PLAY</h2>
+  <h2 align="center" style="font-weight: 600">基于Y esPlayMusic Alpha版本二次开发</h2>
 
   <p align="center">
     高颜值的第三方网易云播放器（原YesPlayMusic）

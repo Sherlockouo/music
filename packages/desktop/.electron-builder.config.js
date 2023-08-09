@@ -24,8 +24,8 @@ module.exports = {
   publish: [
     {
       provider: 'github',
-      owner: 'qier222',
-      repo: 'YesPlayMusic',
+      owner: 'feng',
+      repo: 'music',
       vPrefixedTagName: true,
       releaseType: 'draft',
     },
@@ -42,7 +42,7 @@ module.exports = {
       // },
     ],
     publisherName: 'qier222',
-    icon: 'build/icons/icon.ico',
+    icon: 'build/icons/icon.icon',
   },
   nsis: {
     oneClick: false,

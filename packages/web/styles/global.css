@@ -53,11 +53,41 @@
     -webkit-line-clamp: 4;
   }
 
-  .highlight-lyric {
+  .highlight-lyric,.highlighted {
+    margin-top: 12px;
+    margin-bottom: 12px;
+    font-size: large;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 6;
+    -webkit-animation: pulsate-fwd 0.3s ease-in  both;
+	        animation: pulsate-fwd 0.3s ease-in  both;
+  }
+  
+  .lyrics-row.highlight-lyric.highlighted {
+    margin-top: 11px;
+    margin-bottom: 11px;
+    font-size: large;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 6;
+    -webkit-animation: pulsate-fwd-big 0.2s ease-in-out  both;
+	        animation: pulsate-fwd-big 0.2s ease-in-out  both;
+  }
+  
+}
+
+@keyframes pulsate-fwdj-big {
+  0% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+
+  100% {
+    -webkit-transform: scale(1.3);
+            transform: scale(1.3);
   }
 }
 

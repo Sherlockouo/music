@@ -10,7 +10,7 @@ module.exports = {
   appId: 'app.r3play',
   productName: pkg.productName,
   executableName: pkg.productName,
-  copyright: 'Copyright © 2023 qier222',
+  copyright: 'Copyright © 2023 feng',
   asar: true,
   directories: {
     output: 'release',
@@ -41,7 +41,7 @@ module.exports = {
       //   arch: ['x64'],
       // },
     ],
-    publisherName: 'qier222',
+    publisherName: 'feng',
     icon: 'build/icons/icon.icon',
   },
   nsis: {
@@ -67,7 +67,7 @@ module.exports = {
     identity: null,
   },
   dmg: {
-    icon: 'build/icons/icon.icns',
+    icon: 'build/icons/icon.png',
   },
   linux: {
     target: [

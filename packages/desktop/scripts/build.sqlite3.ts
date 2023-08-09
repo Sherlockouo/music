@@ -38,7 +38,10 @@ if (!fs.existsSync(binDir)) {
 // Get Electron Module Version
 let electronModuleVersion = ''
 async function getElectronModuleVersion() {
-  const releases = await axios.get('https://releases.electronjs.org/releases.json')
+  const releases = await axios({
+    method:'get',
+    url:'https://releases.electronjs.org/releases.json',
+  })
   if (!releases.data) {
     console.error(pc.red('Can not get electron releases'))
     process.exit(1)

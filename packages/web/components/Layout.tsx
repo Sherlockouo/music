@@ -27,7 +27,10 @@ const Layout = () => {
     >
       <BlurBackground />
       <MenuBar />
+      <div className="bg-white">
       <Topbar />
+
+      </div>
       <Main />
       <Login />
       {showPlayer && <Player />}

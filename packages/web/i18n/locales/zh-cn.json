@@ -15,7 +15,8 @@
     "video_one": "视频",
     "video_other": "视频",
     "video-with-count_one": "{{count}} 个视频",
-    "video-with-count_other": "{{count}} 个视频"
+    "video-with-count_other": "{{count}} 个视频",
+    "lyric-welcome":"今天听点什么呢？"
   },
   "navigation": {
     "goBack": "返回",

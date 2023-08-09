@@ -7,6 +7,7 @@ import log from './log'
 log.info('[electron] menu.ts')
 
 export const createMenu = (win: BrowserWindow) => {
+  
   const template: Array<MenuItemConstructorOptions | MenuItem> = [
     { role: 'appMenu' },
     { role: 'editMenu' },
@@ -74,5 +75,6 @@ export const createMenu = (win: BrowserWindow) => {
   ]
 
   const menu = Menu.buildFromTemplate(template)
+  
   Menu.setApplicationMenu(menu)
 }

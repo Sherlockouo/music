@@ -40,7 +40,7 @@ function FindTrackOnYouTube() {
       </Option>
 
       {/* Proxy */}
-      {/* <Option>
+      <Option>
         <OptionText>
           HTTP Proxy config for connecting to YouTube {httpProxyForYouTube?.host && '(Configured)'}
         </OptionText>
@@ -51,7 +51,7 @@ function FindTrackOnYouTube() {
         >
           Edit
         </Button>
-      </Option> */}
+      </Option>
     </div>
   )
 }

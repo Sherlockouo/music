@@ -61,8 +61,7 @@ const Theme = () => {
 const Appearance = () => {
   return (
     <div>
-      <span className='text-white'>开发中</span>
-      {/* <Theme /> */}
+      <Theme />
     </div>
   )
 }

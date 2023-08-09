@@ -4,10 +4,8 @@ import { useSnapshot } from 'valtio'
 import { cx, css } from '@emotion/css'
 import useLyric from '@/web/api/hooks/useLyric'
 import player from '@/web/states/player'
-import { FetchLyricParams, TrackApiNames } from '@/shared/api/Track'
-import { fetchLyric } from '../api/track'
 import { lyricParser } from '@/web/utils/lyric'
-import BlurBackground from '../components/BlurBackground'
+import { useTranslation } from 'react-i18next'
 
 const Lyrics = () => {
   const containerRef = useRef(null)
@@ -16,7 +14,7 @@ const Lyrics = () => {
   const lyricsResponse = lyricsRes.data
   const { lyric: lyrics, tlyric: tlyric } = lyricParser(lyricsResponse)
   const { track, progress } = useSnapshot(player)
-
+  const {t} = useTranslation()
   useEffect(() => {
     const updateCurrentLineIndex = () => {
       for (let i = 0; i < lyrics.length; i++) {
@@ -80,13 +78,21 @@ const Lyrics = () => {
   if (lyricsResponse == undefined || lyricsResponse.code != 200 || lyrics.length == 0) {
     return (
       <PageTransition>
+        {player?.state == "playing" && <div className='artist-info padding-bottom-20 text-20 mb-8 mt-8 text-center font-medium text-neutral-400'>
         <div className='no-lyrics mb-4 mt-8 text-center text-14 font-medium uppercase text-neutral-400'>
-        <div className='artist-info padding-bottom-20 text-20 mb-8 mt-8 text-center font-medium text-neutral-400'>
             <p className='line-clamp-2 text-30'>{player.track?.name}</p>
             <p className='line-clamp-2 text-26'>By - {player.track?.ar[0].name}</p>
           </div>
           请欣赏·纯音乐
         </div>
+        }
+        <div className='artist-info padding-bottom-20 text-20 mb-8 mt-8 text-center font-medium text-neutral-400'>
+          {player.state == "ready" && t`common.lyric-welcome`}    
+        </div>
+        
+
+        
+        
       </PageTransition>
     )
   }

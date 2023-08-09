@@ -94,7 +94,10 @@ const Tabs = () => {
   }
 
   return (
-    <div className='grid grid-cols-4 justify-items-center text-black/10	dark:text-white/20 lg:grid-cols-1 lg:gap-12'>
+    <div className='grid grid-cols-4 justify-items-center text-black/10	dark:text-white/20 lg:grid-cols-1 lg:gap-12' onClick={()=>{
+      console.log("shit");
+      
+    }}>
       {tabs
         .filter(tab => {
           if (!displayPlaylistsFromNeteaseMusic && tab.name === 'BROWSE') {

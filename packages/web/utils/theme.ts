@@ -13,4 +13,4 @@ const settingsInStorage = localStorage.getItem('settings')
 const settings = settingsInStorage ? JSON.parse(settingsInStorage) : {}
 
 changeTheme(settings.theme || 'dark')
-changeAccentColor(settings?.accentColor || 'green')
+changeAccentColor(settings?.accentColor || 'yellow')

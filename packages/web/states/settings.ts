@@ -22,7 +22,7 @@ interface Settings {
 }
 
 const initSettings: Settings = {
-  accentColor: 'green',
+  accentColor: 'yellow',
   language: getInitLanguage(),
   enableFindTrackOnYouTube: false,
   playAnimatedArtworkFromApple: true,

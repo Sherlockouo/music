@@ -72,6 +72,10 @@ module.exports = {
           800: '#14161A',
           900: '#0D0E10',
         },
+        amber: colors.amber,
+        lime: colors.lime,
+        rose: colors.rose,
+        orange: colors.orange,
       },
       fontSize: {
         12: ['0.75rem', fontSizeDefault],

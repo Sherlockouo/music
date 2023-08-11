@@ -1,5 +1,5 @@
 import {FastifyPluginAsync} from 'fastify'
-import type {Song, SongSearchInformation} from "@unblockneteasemusic/rust-napi";
+import type {RetrievedSongInfo, Song} from "@unblockneteasemusic/rust-napi";
 import * as UNM from "@unblockneteasemusic/rust-napi";
 
 
@@ -27,30 +27,81 @@ const album: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
             artists: Song["artists"],
             album: Song["album"],
         }
-    }>('/album', opts, async function (request, reply): Promise<SongSearchInformation | undefined> {
-        const {engine, id, name, duration, artists, album} = request.query;
-        const neteaseId = Number(id)
-        if (isNaN(neteaseId)) {
-            reply.code(400).send('params "id" is required')
-            return
-        }
+    }>('/album', opts, async function (request, reply): Promise<RetrievedSongInfo | undefined> {
+        const {engine, id, name} = request.query;
         if (!name) {
             reply.code(400).send('params "name" is required')
             return;
         }
-        if (!artists) {
-            reply.code(400).send('params "artists" is required')
-            return;
-        }
-        return executor.search(
-            engine ? [engine] : executor.list(),
-            {
-                id, name, duration, artists, album
-            },
-            ctx
-        )
+        // if (!artists) {
+        //     reply.code(400).send('params "artists" is required')
+        //     return;
+        // }
+        return executor.retrieve({
+            source: engine as string,
+            identifier: id,
+
+        }, ctx);
+        // return executor.search(
+        //     engine ? [engine] : executor.list(),
+        //     {
+        //         id, name, duration, artists: [
+        //             {
+        //                 id: "11127",
+        //                 name: "Beyond",
+        //                 // picUrl: null,
+        //                 // alias: [],
+        //                 // albumSize: 0,
+        //                 // picId: 0,
+        //                 // fansGroup: null,
+        //                 // img1v1Url: "https://p1.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg",
+        //                 // img1v1: 0,
+        //                 // trans: null
+        //             }
+        //         ], album
+        //     },
+        //     ctx
+        // )
     });
 }
 
 export default album;
+//
+// "id": 1357375695,
+//     "name": " 海阔天空 ",
+//     "artists": [
 
+// ],
+//     "album": {
+//     "id": 78372827,
+//         "name": " 华纳廿三周年纪念精选系列 - B﻿eyond",
+//         "artist": {
+//         "id": 0,
+//             "name": "",
+//             "picUrl": null,
+//             "alias": [],
+//             "albumSize": 0,
+//             "picId": 0,
+//             "fansGroup": null,
+//             "img1v1Url": "https://p1.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg",
+//             "img1v1": 0,
+//             "trans": null
+//     },
+//     "publishTime": 999273600000,
+//         "size": 15,
+//         "copyrightId": 7002,
+//         "status": 1,
+//         "picId": 109951163984013010,
+//         "mark": 0
+// },
+// "duration": 239506,
+//     "copyrightId": 7002,
+//     "status": 0,
+//     "alias": [],
+//     "rtype": 0,
+//     "ftype": 0,
+//     "mvid": 5501497,
+//     "fee": 1,
+//     "rUrl": null,
+//     "mark": 8192
+// },

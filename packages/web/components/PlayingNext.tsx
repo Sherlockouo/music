@@ -75,7 +75,7 @@ const Header = () => {
       )}
     >
       <div className='flex text-neutral-300'>
-        <div className='mr-2 h-4 w-1 rounded-full bg-brand-700'></div>
+        <div className='mr-2 h-4 w-1 rounded-full bg-accent-color-700'></div>
         {t`player.queue`}
       </div>
       <div className='flex gap-2'>
@@ -126,9 +126,9 @@ const Track = ({
       <div className='mr-3 flex-grow'>
         <div
           className={cx(
-            'line-clamp-1 text-16 font-medium ',
+            'line-clamp-1 text-16 font-medium transition-colors duration-500',
             playingTrackIndex === index
-              ? 'text-brand-700'
+              ? 'text-accent-color-500'
               : 'text-neutral-700 dark:text-neutral-200'
           )}
         >
@@ -143,7 +143,7 @@ const Track = ({
       {playingTrackIndex === index ? (
         <Wave playing={state === 'playing'} />
       ) : (
-        <div className='text-16 font-medium text-neutral-700 dark:text-neutral-200'>
+        <div className='text-16 font-medium text-accent-color dark:text-neutral-200'>
           {String(index + 1).padStart(2, '0')}
         </div>
       )}

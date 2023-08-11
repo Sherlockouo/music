@@ -25,6 +25,7 @@ const AccentColor = () => {
   }
 
   const changeColor = (color: string) => {
+    console.log(color)
     settings.accentColor = color
     changeAccentColor(color)
   }

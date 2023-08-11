@@ -60,7 +60,7 @@ const Browse = () => {
         {/* Topbar background */}
         <div
           className={cx(
-            'pointer-events-none fixed top-0 left-10 z-10 hidden lg:block',
+            'pointer-events-none fixed top-0 left-0 z-10 hidden lg:block',
             css`
               height: 230px;
             `

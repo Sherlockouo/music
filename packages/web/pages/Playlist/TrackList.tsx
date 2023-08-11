@@ -46,7 +46,7 @@ const Track = ({
         <div className='mr-3'>
           <div
             className={cx(
-              'line-clamp-1 flex items-center text-16 font-medium',
+              'line-clamp-1 flex items-center text-16 font-medium transition-colors duration-500',
               playingTrackID === track?.id
                 ? 'text-brand-700'
                 : 'text-neutral-700 dark:text-neutral-200'

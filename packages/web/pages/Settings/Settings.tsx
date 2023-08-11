@@ -43,7 +43,7 @@ const Sidebar = ({
         initial={{ y: 11.5 }}
         animate={indicatorAnimation}
         transition={{ type: 'spring', duration: 0.6, bounce: 0.36 }}
-        className='absolute top-0 left-3 mr-2 h-4 w-1 rounded-full bg-brand-700'
+        className='absolute top-0 left-3 mr-2 h-4 w-1 rounded-full transition-colors duration-500 bg-accent-color-700'
       ></motion.div>
 
       {categories.map(category => (
@@ -54,7 +54,7 @@ const Sidebar = ({
           animate={{ x: activeCategory === category.id ? 12 : 0 }}
           className={cx(
             'flex items-center rounded-lg px-3 py-2 font-medium transition-colors duration-500',
-            activeCategory === category.id ? 'text-brand-700' : 'text-white/50 hover:text-white/90'
+            activeCategory === category.id ? 'text-accent-color-500' : 'text-white/50 hover:text-white/90'
           )}
         >
           {category.name}

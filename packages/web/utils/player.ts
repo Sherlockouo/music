@@ -350,7 +350,6 @@ export class Player {
       this.state = State.Playing
       return
     }
-
     _howler.play()
     if (fade) {
       this.state = State.Playing

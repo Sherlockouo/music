@@ -51,6 +51,7 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     -webkit-line-clamp: 4;
+    
   }
 
   .highlight-lyric {
@@ -58,8 +59,22 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     -webkit-line-clamp: 4;
+    font-size: 1.6rem;
+    color: hsl(var(--brand-color-500));
+    text-shadow: hsl(var(--brand-color-500)) 1px 1px 18px;
+  }
+
+  .lyrics-row{
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .normal-lyric-font-size {
+    font-size: 1.3rem;
   }
 }
+
+
 
 @font-face {
   font-family: Barlow;
@@ -114,6 +129,13 @@ html {
   min-height: calc(100% + env(safe-area-inset-top));
 }
 
+.bg-img {
+  background-image: url(@/web/assets/images/bg-img2.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
 button,
 input {
   @apply outline-none;
@@ -148,4 +170,60 @@ input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   @apply m-0;
+}
+
+.text-accent-color-100 {
+  color: hsl(var(--brand-color-100));
+}
+
+.text-accent-color-200 {
+  color: hsl(var(--brand-color-200));
+}
+
+.text-accent-color-300 {
+  color: hsl(var(--brand-color-300));
+}
+
+.text-accent-color-400 {
+  color: hsl(var(--brand-color-400));
+}
+
+.text-accent-color-500 {
+  color: hsl(var(--brand-color-500));
+}
+
+.text-accent-color-600 {
+  color: hsl(var(--brand-color-600));
+}
+
+.text-accent-color-700 {
+  color: hsl(var(--brand-color-700));
+}
+
+.bg-accent-color-100 {
+  background-color: hsl(var(--brand-color-100));
+}
+
+.bg-accent-color-200 {
+  background-color: hsl(var(--brand-color-200));
+}
+
+.bg-accent-color-300 {
+  background-color: hsl(var(--brand-color-300));
+}
+
+.bg-accent-color-400 {
+  background-color: hsl(var(--brand-color-400));
+}
+
+.bg-accent-color-500 {
+  background-color: hsl(var(--brand-color-500));
+}
+
+.bg-accent-color-600 {
+  background-color: hsl(var(--brand-color-600));
+}
+
+.bg-accent-color-700 {
+  background-color: hsl(var(--brand-color-700));
 }

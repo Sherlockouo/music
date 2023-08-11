@@ -10,7 +10,7 @@ const About = () => {
         </div>
         
         <div className='contact-me margin-top-10'>
-            联系方式: wdf.coder@gmail.com
+            联系方式: wdf.coder@gmail.com | nwyfnck@gmail.com
         </div>
       </div>
     </PageTransition>

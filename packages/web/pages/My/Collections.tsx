@@ -156,6 +156,7 @@ const Collections = () => {
   const { onScreen: isScrollReachBottom } = useIntersectionObserver(observePoint)
 
   const onScroll = throttle(() => {
+    console.log("xbc", isScrollReachBottom)
     if (isScrollReachBottom) return
     scrollToBottom(true)
   }, 500)

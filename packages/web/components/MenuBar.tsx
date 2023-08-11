@@ -53,7 +53,7 @@ const TabName = () => {
   return (
     <div
       className={cx(
-        'absolute bottom-8 right-0 left-0 z-10 flex rotate-180 select-none items-center font-bold text-brand-600 dark:text-brand-700',
+        'absolute bottom-8 right-0 left-0 z-10 flex rotate-180 select-none items-center font-bold text-accent-color-600 dark:text-accent-color-700',
         css`
           writing-mode: vertical-rl;
           text-orientation: mixed;
@@ -127,7 +127,7 @@ const Tabs = () => {
             }}
             className={cx(
               active === tab.path
-                ? 'text-brand-600  dark:text-brand-700'
+                ? 'text-accent-color-600 dark:text-accent-color-700'
                 : 'lg:hover:text-black lg:dark:hover:text-white'
             )}
           >
@@ -147,9 +147,10 @@ const MenuBar = () => {
     <div
       className={cx(
         'app-region-drag relative flex h-full w-full flex-col justify-center',
-        'lg:fixed lg:left-0 lg:top-0 lg:bottom-0',
+        'lg:fixed lg:left-0 lg:top-0 lg:bottom-0 rounded-24',
         css`
           ${bp.lg} {
+            background: linear-gradient(to right, rgb(0,0,0,0.7), 70%, rgb(0,0,0,0));
             width: 104px;
           }
         `

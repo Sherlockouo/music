@@ -63,8 +63,10 @@ const Lyrics = () => {
     }
 
     const lineClassName = cx('lyrics-row', {
-      'highlighted  highlight-lyric line-clamp-4 text-20 font-bold  text-neutral-700 dark:text-neutral-200':
+      'highlighted highlight-lyric line-clamp-4 text-30 font-bold':
         index === currentLineIndex,
+      ' normal-lyric-font-size ':
+        index !== currentLineIndex,
     })
 
     return (
@@ -79,7 +81,7 @@ const Lyrics = () => {
     return (
       <PageTransition>
         {player?.state == "playing" && <div className='artist-info padding-bottom-20 text-20 mb-8 mt-8 text-center font-medium text-neutral-400'>
-        <div className='no-lyrics mb-4 mt-8 text-center text-14 font-medium uppercase text-neutral-400'>
+        <div className='no-lyrics mb-4 mt-8 text-center text-14 font-medium uppercase text-neutral-400 normal-lyric-font-size'>
             <p className='line-clamp-2 text-30'>{player.track?.name}</p>
             <p className='line-clamp-2 text-26'>By - {player.track?.ar[0].name}</p>
           </div>
@@ -100,12 +102,16 @@ const Lyrics = () => {
     <PageTransition>
       <div className='lyrics-player'>
         <div
+        >
+
+        </div>
+        <div
           className='lyrics-container text-20 mb-8 mt-8 text-center font-medium uppercase text-neutral-400'
           ref={containerRef}
         >
           <div className='artist-info padding-bottom-20 text-20 mb-8 mt-8 text-center font-medium text-neutral-400'>
-            <p className='line-clamp-2 text-30'>{player.track?.name}</p>
-            <p className='line-clamp-2 text-26'>By - {player.track?.ar[0].name}</p>
+            <p className='line-clamp-2 text-30 normal-lyric-font-size'>{player.track?.name}</p>
+            <p className='line-clamp-2 text-26 normal-lyric-font-size'>By - {player.track?.ar[0].name}</p>
           </div>
           {renderedLyrics}
         </div>

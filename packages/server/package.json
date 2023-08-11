@@ -18,12 +18,15 @@
     "@fastify/autoload": "^5.0.0",
     "@fastify/sensible": "^4.1.0",
     "@fastify/static": "^6.6.1",
+    "@fastify/swagger": "^8.8.0",
     "@prisma/client": "^4.8.1",
     "NeteaseCloudMusicApi": "^4.8.7",
     "axios": "^0.27.2",
     "fastify": "^4.5.3",
     "fastify-cli": "^4.4.0",
-    "fastify-plugin": "^3.0.0"
+    "fastify-plugin": "^3.0.0",
+    "@unblockneteasemusic/rust-napi": "^0.4.0"
+
   },
   "devDependencies": {
     "@types/node": "^18.0.0",

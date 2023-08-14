@@ -18,6 +18,7 @@ import { scrobble } from '@/web/api/user'
 import { fetchArtistWithReactQuery } from '../api/hooks/useArtist'
 import { appName } from './const'
 import { FetchAudioSourceResponse } from '@/shared/api/Track'
+import { LogLevel } from 'react-virtuoso'
 
 type TrackID = number
 export enum TrackListSourceType {
@@ -45,6 +46,7 @@ export enum State {
 const PLAY_PAUSE_FADE_DURATION = 200
 
 let _howler = new Howl({ src: [''], format: ['mp3', 'flac'] })
+let _analyser = Howler.ctx.createAnalyser()
 export class Player {
   private _track: Track | null = null
   private _trackIndex: number = 0
@@ -52,6 +54,7 @@ export class Player {
   private _progressInterval: ReturnType<typeof setInterval> | undefined
   private _volume: number = 1 // 0 to 1
   private _repeatMode: RepeatMode = RepeatMode.Off
+  private _nowVolume: number = 128
 
   state: State = State.Initializing
   mode: Mode = Mode.TrackList
@@ -116,6 +119,44 @@ export class Player {
         if (this._trackIndex + 1 >= this.trackList.length) return 0
         return this._trackIndex + 1
     }
+  }
+
+  private getSongFFT() {
+    // Connect master gain to analyzer
+    _analyser = Howler.ctx.createAnalyser()
+    Howler.masterGain.connect(_analyser);
+    // Howler.volume(0.4)
+
+    // Connect analyzer to destination
+    // _analyser.connect(Howler.ctx.destination);
+
+    // Creating output array (according to documentation https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API)
+    _analyser.fftSize = 2048;
+
+    var bufferLength = _analyser.frequencyBinCount;
+    var dataArray = new Uint8Array(bufferLength);
+
+    var smooth = 0.02
+
+    var start = 16, end = 128;
+
+    // Display array on time each 3 sec (just to debug)
+    setInterval(() => { 
+      _analyser.getByteFrequencyData(dataArray);
+      var sum = 0;
+      dataArray.forEach(function(val, idx, arr) {
+        if ( start <= idx && idx < end) {
+          sum += val;
+        }
+      }, 0);
+      // console.log(sum / (end - start));
+      
+      this._nowVolume = this._nowVolume * smooth + (sum / (end - start)) * (1 - smooth)
+    }, 16);
+  }
+
+  get nowVolume(): number {
+    return this._nowVolume
   }
 
   /**
@@ -274,11 +315,12 @@ export class Player {
 
   private async _playAudioViaHowler(audio: string, id: number, autoplay: boolean = true) {
     Howler.unload()
+    console.log(Howler.usingWebAudio);
     const url = audio.includes('?') ? `${audio}&dash-id=${id}` : `${audio}?dash-id=${id}`
     const howler = new Howl({
       src: [url],
       format: ['mp3', 'flac', 'webm'],
-      html5: true,
+      //html5: true,
       autoplay,
       volume: 1,
       onend: () => this._howlerOnEndCallback(),
@@ -296,6 +338,8 @@ export class Player {
     if (!this._progressInterval) {
       this._setupProgressInterval()
     }
+
+    this.getSongFFT()
   }
 
   private _howlerOnEndCallback() {

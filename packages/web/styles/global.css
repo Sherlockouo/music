@@ -59,14 +59,26 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     -webkit-line-clamp: 4;
-    font-size: 1.6rem;
-    color: hsl(var(--brand-color-500));
-    text-shadow: hsl(var(--brand-color-500)) 1px 1px 18px;
+    font-size: 1.3rem;
+    color: rgb(200, 200, 200);
+    /* text-shadow: white 1px 1px 18px; */
+    padding-top: 15px;
+    padding-bottom: 15px;
+
+    /* color: hsl(var(--brand-color-500));
+    text-shadow: hsl(var(--brand-color-500)) 1px 1px 18px; */
   }
 
-  .lyrics-row{
+  /* .lyrics-row{} */
+
+  .lyrics-padding {
     padding-top: 10px;
     padding-bottom: 10px;
+  }
+
+  .highlight-lyrics-padding {
+    padding-top: 15px;
+    padding-bottom: 15px;
   }
 
   .normal-lyric-font-size {
@@ -130,7 +142,7 @@ html {
 }
 
 .bg-img {
-  background-image: url(@/web/assets/images/bg-img2.jpg);
+  background-image: url(@/web/assets/images/bg-img3.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

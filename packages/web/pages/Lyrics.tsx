@@ -10,22 +10,36 @@ import { useTranslation } from 'react-i18next'
 const Lyrics = () => {
   const containerRef = useRef(null)
   const [currentLineIndex, setCurrentLineIndex] = useState(0)
+  const [currentVolumnValue, setCurrentVolumnValue] = useState(128)
   const lyricsRes = useLyric({ id: player.trackID })
   const lyricsResponse = lyricsRes.data
   const { lyric: lyrics, tlyric: tlyric } = lyricParser(lyricsResponse)
-  const { track, progress } = useSnapshot(player)
+  const { track, progress, nowVolume } = useSnapshot(player)
   const {t} = useTranslation()
   useEffect(() => {
     const updateCurrentLineIndex = () => {
+      var find = false
       for (let i = 0; i < lyrics.length; i++) {
         if (progress >= lyrics[i]?.time && progress < lyrics[i + 1]?.time) {
+          find = true
           setCurrentLineIndex(i)
           break
+        } else if (i + 1 == lyrics.length && progress >= lyrics[i]?.time) {
+          find = true
+          setCurrentLineIndex(i)
         }
+      }
+      if (!find) {
+        setCurrentLineIndex(0)
       }
     }
     updateCurrentLineIndex()
   }, [progress])
+
+  useEffect(() => {
+    var light = 1 / (1 + Math.exp(-(nowVolume - 128) / 64)) * 20
+    setCurrentVolumnValue(light)
+  }, [nowVolume])
 
   useEffect(() => {
     // 添加一个钩子函数，在 currentLineIndex 发生变化时，调用一个函数来滚动歌词容器
@@ -62,15 +76,21 @@ const Lyrics = () => {
       player.progress = time
     }
 
-    const lineClassName = cx('lyrics-row', {
-      'highlighted highlight-lyric line-clamp-4 text-30 font-bold':
+    const lineClassName = cx('lyrics-row transition duration-700 ease-out', {
+      'highlighted highlight-lyric highlight-lyrics-padding line-clamp-4 text-30 font-bold scale-125':
         index === currentLineIndex,
-      ' normal-lyric-font-size ':
+      'lyrics-padding normal-lyric-font-size':
         index !== currentLineIndex,
     })
 
+    const hightlightStyle = index === currentLineIndex ? {
+      textShadow:"rgb(233,233,233," + (currentVolumnValue / 25) +") 0px 0px " + currentVolumnValue + "px"
+    } : {}
+
     return (
-      <div className={lineClassName} key={index} onDoubleClick={setSongToLyric}>
+      <div className={lineClassName} key={index} onDoubleClick={setSongToLyric} style={
+        hightlightStyle
+      }>
         <p>{lyric}</p>
         <p>{tLyric}</p>
       </div>
@@ -78,14 +98,24 @@ const Lyrics = () => {
   })
 
   if (lyricsResponse == undefined || lyricsResponse.code != 200 || lyrics.length == 0) {
+    const hightlightStyle = {
+      textShadow:"rgb(255,255,255," + (currentVolumnValue / 25) +") 0px 0px " + currentVolumnValue + "px",
+      padding: '12px'
+    }
     return (
       <PageTransition>
-        {player?.state == "playing" && <div className='artist-info padding-bottom-20 text-20 mb-8 mt-8 text-center font-medium text-neutral-400'>
-        <div className='no-lyrics mb-4 mt-8 text-center text-14 font-medium uppercase text-neutral-400 normal-lyric-font-size'>
+        {player?.state == "playing" && <div className='artist-info padding-bottom-20 text-20 mb-8 mt-8 text-center font-medium text-neutral-400'
+          style={{
+            paddingTop: '100px'
+          }}
+        >
+        <div className='no-lyrics mb-4 mt-8 text-center font-medium uppercase text-neutral-400'>
             <p className='line-clamp-2 text-30'>{player.track?.name}</p>
             <p className='line-clamp-2 text-26'>By - {player.track?.ar[0].name}</p>
-          </div>
+        </div>
+          <p className='normal-lyric-font-size highlight-lyric' style={hightlightStyle}>
           请欣赏·纯音乐
+          </p>
         </div>
         }
         <div className='artist-info padding-bottom-20 text-20 mb-8 mt-8 text-center font-medium text-neutral-400'>

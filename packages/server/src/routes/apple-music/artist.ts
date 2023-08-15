@@ -97,7 +97,7 @@ const artist: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       editorialVideo: artist?.attributes.editorialVideo?.motionArtistSquare1x1?.video,
       artwork: artist?.attributes?.artwork?.url,
     }
-
+    
     // save to database
     if (!noCache) {
       await fastify.prisma.artist.create({

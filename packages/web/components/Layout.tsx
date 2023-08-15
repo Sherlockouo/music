@@ -11,20 +11,47 @@ import BlurBackground from './BlurBackground'
 import TitleBar from './TitleBar'
 import uiStates from '@/web/states/uiStates'
 import ContextMenus from './ContextMenus/ContextMenus'
+import settings from '@/web/states/settings'
+import { useState } from 'react'
 
 const Layout = () => {
   const playerSnapshot = useSnapshot(player)
   const { fullscreen } = useSnapshot(uiStates)
   const showPlayer = !!playerSnapshot.track
-
+  const {showLyricBackground} = useSnapshot(settings)
   return (
     <div
-      id='layout'
-      className={cx(
-        'bg-img',
-        window.env?.isElectron && !fullscreen && 'rounded-24'
+  id="layout"
+  className={cx(
+    'bg-img',
+    window.env?.isElectron && !fullscreen && 'rounded-24',
+    css`
+      position: relative;
+      background: black;
+      /* 其他样式属性 */
+      `
       )}
-    >
+>
+  {/* layout 元素的内容 */}
+  <div
+    className={cx(css`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+      /* 其他样式属性 */
+    `,
+    showLyricBackground && css`
+    background-image: url(${player.track?.al.picUrl});
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      filter: blur(10px); /* 模糊效果 */
+      `
+    )
+  }
+  />
       <div 
       id='layout-foreground'
       className={cx(

@@ -76,6 +76,21 @@
     -webkit-animation: pulsate-fwd-big 0.2s ease-in-out  both;
 	        animation: pulsate-fwd-big 0.2s ease-in-out  both;
   }
+
+
+  .lyrics-padding {
+    padding-top: 6px;
+    padding-bottom:6px;
+  }
+
+  .highlight-lyrics-padding {
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+
+  .normal-lyric-font-size {
+    font-size: 1.3rem;
+  }
   
 }
 

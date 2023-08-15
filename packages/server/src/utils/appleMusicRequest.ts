@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
-export const baseURL = 'https://amp-api.music.apple.com/v1/catalog/us'
+export const baseURL = 'https://amp-api.music.apple.com/v1/catalog/cn'
 
 export const headers = {
   Authority: 'amp-api.music.apple.com',

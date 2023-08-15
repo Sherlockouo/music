@@ -6,6 +6,7 @@ import useLyric from '@/web/api/hooks/useLyric'
 import player from '@/web/states/player'
 import {lyricParser} from '@/web/utils/lyric'
 import {useTranslation} from 'react-i18next'
+import { Player, State as PlayerState } from '@/web/utils/player'
 
 const Lyrics = () => {
   const containerRef = useRef(null)
@@ -14,7 +15,7 @@ const Lyrics = () => {
   const lyricsRes = useLyric({ id: player.trackID })
   const lyricsResponse = lyricsRes.data
   const { lyric: lyrics, tlyric: tlyric } = lyricParser(lyricsResponse)
-  const { track, progress, nowVolume } = useSnapshot(player)
+  const { state: playerState , progress, nowVolume } = useSnapshot(player)
   const {t} = useTranslation()
   useEffect(() => {
     const updateCurrentLineIndex = () => {
@@ -74,6 +75,7 @@ const Lyrics = () => {
 
     const setSongToLyric = () => {
       player.progress = time
+      player.playOrPause()
     }
 
     const lineClassName = cx('lyrics-row transition duration-700 ease-out', {
@@ -99,7 +101,7 @@ const Lyrics = () => {
 
   if (lyricsResponse == undefined || lyricsResponse.code != 200 || lyrics.length == 0) {
     const hightlightStyle = {
-      textShadow:"rgb(255,255,255," + (currentVolumnValue / 25) +") 0px 0px " + currentVolumnValue + "px",
+      textShadow:"rgb(255,255,255," + (currentVolumnValue / 5) +") 0px 0px " + currentVolumnValue + "px",
       padding: '12px'
     }
     return (
@@ -130,11 +132,7 @@ const Lyrics = () => {
   }
   return (
     <PageTransition>
-      <div className='lyrics-player'>
-        <div
-        >
-
-        </div>
+      <div className={cx('lyrics-player')}>
         <div
           className='lyrics-container text-20 mb-8 mt-8 text-center font-medium uppercase text-neutral-400'
           ref={containerRef}

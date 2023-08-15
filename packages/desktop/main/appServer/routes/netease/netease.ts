@@ -4,6 +4,7 @@ import { CacheAPIs } from '@/shared/CacheAPIs'
 import { pathCase, snakeCase } from 'change-case'
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
 import NeteaseCloudMusicApi from 'NeteaseCloudMusicApi'
+import request from '../../request'
 
 log.info('[electron] appServer/routes/netease.ts')
 
@@ -13,10 +14,10 @@ async function netease(fastify: FastifyInstance) {
       req: FastifyRequest<{ Querystring: { [key: string]: string } }>,
       reply: FastifyReply
     ) => {
-      console.log(req.routerPath)
       // Get track details from cache
       if (name === CacheAPIs.Track) {
         const cacheData = await cache.get(name, req.query as any)
+        
         if (cacheData) {
           return cacheData
         }
@@ -28,11 +29,33 @@ async function netease(fastify: FastifyInstance) {
           ...req.query,
           cookie: req.cookies,
         })
-
+        console.log("result",result)
         cache.set(name as CacheAPIs, result.body, req.query)
 
         return reply.send(result.body)
       } catch (error: any) {
+        // try {
+        const w = (()=>{
+          fastify.get("http://127.0.0.1:35530/net",(res)=>{
+            console.log('req res',res);
+            
+          })
+        })
+        w()
+        //   const res = await (()=>{
+            
+        //     request({
+        //       url:'/',
+        //     }).then(r=>(()=>{
+        //       console.log('local',r)
+        //     }))
+
+        //   })
+        //   res()
+        // }catch(e){
+        //   console.log(e)
+        // }
+        
         if ([400, 301].includes(error.status)) {
           return reply.status(error.status).send(error.body)
         }

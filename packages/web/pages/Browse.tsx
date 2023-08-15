@@ -67,7 +67,8 @@ const Browse = () => {
           )}
           style={{
             right: `${playerWidth + 32}px`,
-            backgroundImage: `url(${topbarBackground})`,
+            // cancel background
+            // backgroundImage: `url(${topbarBackground})`,
           }}
         ></div>
 

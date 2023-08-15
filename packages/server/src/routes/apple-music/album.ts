@@ -1,6 +1,8 @@
 import { FastifyPluginAsync } from 'fastify'
 import appleMusicRequest from '../../utils/appleMusicRequest'
 import { album as getAlbum } from 'NeteaseCloudMusicApi'
+const match  = require('@unblockneteasemusic/server')
+
 
 type ResponseSchema = {
   id: number
@@ -34,7 +36,6 @@ const album: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       reply.code(400).send('params "neteaseId" is required')
       return
     }
-
     // get from database
     if (!noCache) {
       const fromDB = await fastify.prisma.album.findFirst({
@@ -54,6 +55,10 @@ const album: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       return
     }
 
+    match(neteaseId,['qq', 'kuwo', 'migu']).then((res:any)=>{
+      console.log('match ',res)
+
+    })
     // get from apple
     const fromApple = await appleMusicRequest({
       method: 'GET',
@@ -110,19 +115,26 @@ const album: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       neteaseArtistName: artist,
     }
 
+
+    
     // save to database
     if (!noCache) {
-      await fastify.prisma.album.create({
-        data: {
-          ...data,
-          editorialNote: {
-            connectOrCreate: {
-              where: { id: data.id },
-              create: editorialNote,
+      try {
+        await fastify.prisma.album.create({
+          data: {
+            ...data,
+            editorialNote: {
+              connectOrCreate: {
+                where: { id: data.id },
+                create: editorialNote,
+              },
             },
           },
-        },
-      })
+        })
+      }catch(e){
+        console.log(e);
+        
+      }
     }
 
     return data

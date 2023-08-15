@@ -1,7 +1,7 @@
 import settings from '@/web/states/settings'
 import { changeAccentColor } from '@/web/utils/theme'
 import { useSnapshot } from 'valtio'
-import { cx } from '@emotion/css'
+import { cx,css } from '@emotion/css'
 import { BlockDescription, BlockTitle, Button, Option, OptionText, Switch } from './Controls'
 import { useTranslation } from 'react-i18next'
 
@@ -56,9 +56,9 @@ const Theme = () => {
   return (
     <>
       <div className='text-xl font-medium text-gray-800 dark:text-white/70'>{t`settings.theme`}</div>
-      <div className='mt-3 h-px w-full bg-black/5 dark:bg-white/10'></div>
+      <div className='h-px w-full bg-black/5 dark:bg-white/10'></div>
       <AccentColor />
-      <div className='mt-3 h-px w-full bg-black/5 dark:bg-white/10'></div>
+      {/* <div className='h-px w-full bg-black/5 dark:bg-white/10'></div> */}
     </>
   )
 }
@@ -79,11 +79,10 @@ const ChangeLyricBackground = () =>{
   )
 }
 
-const Lyric = () =>{
+const LayoutBackground = () =>{
   const { t, i18n } = useTranslation()
   return (
     <>
-    <div className='text-xl font-medium text-gray-800 dark:text-white/70 pt-5'>{t`settings.lyric-style`}</div>
     <div className='mt-3 h-px w-full bg-black/5 dark:bg-white/10'></div>
       <div className='mb-2 dark:text-white'>
         <ChangeLyricBackground />
@@ -92,12 +91,17 @@ const Lyric = () =>{
     </>
   )
 }
-
+1
 const Appearance = () => {
   return (
-    <div>
+    <div className={cx(css`
+      display: flex;
+      flex-direction: column;
+
+      `
+    )}>
       <Theme />
-      <Lyric />
+      <LayoutBackground />
     </div>
   )
 }

@@ -8,9 +8,11 @@ import { useSnapshot } from 'valtio'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ease } from '@/web/utils/const'
 import { useLocation } from 'react-router-dom'
+import player from '@/web/states/player'
 
 const Background = () => {
   const { hideTopbarBackground } = useSnapshot(uiStates)
+  const { track, progress, nowVolume } = useSnapshot(player)
   const location = useLocation()
   const isPageHaveBlurBG =
     location.pathname.startsWith('/album/') ||
@@ -34,7 +36,7 @@ const Background = () => {
             style={{ 
               
               backdropFilter: `blur(25px)`,
-              background: `linear-gradient(to bottom, black, 40%, rgb(0,0,0,0))`
+              backgroundImage: `url(${player.track?.al.picUrl})`
             }}
           ></motion.div> 
         )}

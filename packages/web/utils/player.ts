@@ -155,6 +155,9 @@ export class Player {
     }, 16);
   }
 
+  /**
+   * Get current volume
+   */
   get nowVolume(): number {
     return this._nowVolume
   }

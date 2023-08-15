@@ -44,7 +44,7 @@ class Main {
             createMenu(this.win!)
             this.createThumbar()
             initIpcMain(this.win, this.tray, this.thumbar, store)
-            this.initDevTools()
+            // this.initDevTools()
         })
     }
 

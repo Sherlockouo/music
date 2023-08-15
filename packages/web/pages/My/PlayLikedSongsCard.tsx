@@ -127,7 +127,7 @@ const PlayLikedSongsCard = () => {
       <div className='flex justify-between'>
         <button
           onClick={handlePlay}
-          className='rounded-full bg-brand-700 py-5 px-6 text-16 font-medium text-white'
+          className='rounded-full bg-accent-color-500 py-5 px-6 text-16 font-medium text-white'
         >
           {t`my.playNow`}
         </button>

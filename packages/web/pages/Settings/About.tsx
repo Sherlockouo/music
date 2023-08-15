@@ -9,7 +9,7 @@ const About = () => {
         <span> 基于 https://github.com/qier222/YesPlayMusic 二次开发 </span>
         </div>
         <div className='contact-me margin-top-10'>
-            联系方式: wdf.coder@gmail.com
+            联系方式: wdf.coder@gmail.com | nwyfnck@gmail.com
         </div>
       </div>
     </PageTransition>

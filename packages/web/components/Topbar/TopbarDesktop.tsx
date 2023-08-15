@@ -3,7 +3,6 @@ import Avatar from './Avatar'
 import SearchBox from './SearchBox'
 import SettingsButton from './SettingsButton'
 import NavigationButtons from './NavigationButtons'
-import topbarBackground from '@/web/assets/images/topbar-background.png'
 import uiStates from '@/web/states/uiStates'
 import { useSnapshot } from 'valtio'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -29,11 +28,15 @@ const Background = () => {
             exit={{ opacity: 0 }}
             transition={{ ease }}
             className={cx(
-              'absolute inset-0 z-0 bg-contain bg-repeat-x',
+              'absolute inset-0 z-0',
               window.env?.isElectron && 'rounded-t-24'
             )}
-            style={{ backgroundImage: `url(${topbarBackground})` }}
-          ></motion.div>
+            style={{ 
+              
+              backdropFilter: `blur(25px)`,
+              background: `linear-gradient(to bottom, black, 40%, rgb(0,0,0,0))`
+            }}
+          ></motion.div> 
         )}
       </AnimatePresence>
     </>

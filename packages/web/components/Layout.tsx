@@ -21,41 +21,49 @@ const Layout = () => {
     <div
       id='layout'
       className={cx(
-        'relative grid h-screen select-none overflow-hidden bg-black',
+        'bg-img',
         window.env?.isElectron && !fullscreen && 'rounded-24'
       )}
     >
-      <BlurBackground />
-      <MenuBar />
-      <div className="bg-white">
-      <Topbar />
+      <div 
+      id='layout-foreground'
+      className={cx(
+        'relative grid h-screen select-none overflow-hidden bg-white/25 dark:bg-black/80',
+        window.env?.isElectron && !fullscreen && 'rounded-24')}
+      >
+        <BlurBackground />
+        <MenuBar />
+        <div className="bg-white">
+        <Topbar />
 
-      </div>
-      <Main />
-      <Login />
-      {showPlayer && <Player />}
-
-      {window.env?.isMac && (
-        <div className='fixed top-6 left-6 z-30 translate-y-0.5'>
-          <TrafficLight />
         </div>
-      )}
+        <Main />
+        <Login />
+        {showPlayer && <Player />}
 
-      {(window.env?.isWindows ||
-        window.env?.isLinux ||
-        window.localStorage.getItem('showWindowsTitleBar') === 'true') && <TitleBar />}
-
-      <ContextMenus />
-
-      {/* Border */}
-      <div
-        className={cx(
-          'pointer-events-none fixed inset-0 z-50 rounded-24',
-          css`
-            box-shadow: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.06);
-          `
+        {window.env?.isMac && (
+          <div className='fixed top-6 left-6 z-30 translate-y-0.5'>
+            <TrafficLight />
+          </div>
         )}
-      ></div>
+
+        {(window.env?.isWindows ||
+          window.env?.isLinux ||
+          window.localStorage.getItem('showWindowsTitleBar') === 'true') && <TitleBar />}
+
+        <ContextMenus />
+
+        {/* Border */}
+        <div
+          className={cx(
+            'pointer-events-none fixed inset-0 z-50 rounded-24',
+            css`
+              box-shadow: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.06);
+            `
+          )}
+        ></div>
+      </div>
+      
     </div>
   )
 }

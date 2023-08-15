@@ -17,7 +17,7 @@ const Wave = ({ playing }: { playing: boolean }) => {
       {[...new Array(5).keys()].map(i => (
         <div
           key={i}
-          className={cx('h-full w-0.5 bg-brand-600', animation)}
+          className={cx('h-full transition-colors duration-500 w-0.5 bg-accent-color-500', animation)}
           style={{
             animationDelay: delay[i],
             animationPlayState: playing ? 'running' : 'paused',

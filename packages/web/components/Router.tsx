@@ -1,6 +1,6 @@
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
-import React, { lazy, Suspense } from 'react'
+import React, { lazy, Suspense,startTransition } from 'react'
 import VideoPlayer from './VideoPlayer'
 
 const My = lazy(() => import('@/web/pages/My'))
@@ -17,7 +17,9 @@ const Router = () => {
   const location = useLocation()
 
   return (
-    <AnimatePresence mode='wait'>
+    // this keeps the UI updates responsive even on slow device and networ
+    // startTransition(()=>{
+      <AnimatePresence mode='wait'>
       <VideoPlayer />
       <Routes location={location} key={location.pathname}>
         <Route path='/' element={<My />} />
@@ -33,6 +35,7 @@ const Router = () => {
         </Route>
       </Routes>
     </AnimatePresence>
+    // })
   )
 }
 

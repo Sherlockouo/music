@@ -2,8 +2,11 @@ import settings from '@/web/states/settings'
 import { changeAccentColor } from '@/web/utils/theme'
 import { useSnapshot } from 'valtio'
 import { cx } from '@emotion/css'
+import { BlockDescription, BlockTitle, Button, Option, OptionText, Switch } from './Controls'
+import { useTranslation } from 'react-i18next'
 
 const AccentColor = () => {
+  const { t, i18n } = useTranslation()
   const colors = {
     red: 'bg-red-500',
     orange: 'bg-orange-500',
@@ -32,7 +35,7 @@ const AccentColor = () => {
   const accentColor = useSnapshot(settings).accentColor
   return (
     <div className='mt-4'>
-      <div className='mb-2 dark:text-white'>强调色</div>
+      <div className='mb-2 dark:text-white'>{t`settings.accent-color`}</div>
       <div className=' flex items-center'>
         {Object.entries(colors).map(([color, bg]) => (
           <div
@@ -49,11 +52,43 @@ const AccentColor = () => {
 }
 
 const Theme = () => {
+  const { t, i18n } = useTranslation()
   return (
     <>
-      <div className='text-xl font-medium text-gray-800 dark:text-white/70'>主题</div>
+      <div className='text-xl font-medium text-gray-800 dark:text-white/70'>{t`settings.theme`}</div>
       <div className='mt-3 h-px w-full bg-black/5 dark:bg-white/10'></div>
       <AccentColor />
+      <div className='mt-3 h-px w-full bg-black/5 dark:bg-white/10'></div>
+    </>
+  )
+}
+
+const ChangeLyricBackground = () =>{
+  const {showLyricBackground} = useSnapshot(settings)
+  const { t, i18n } = useTranslation()
+  return (
+    <>
+     <Option>
+        <OptionText>{t`settings.show-lyric-background-img`}</OptionText>
+        <Switch
+          enabled={showLyricBackground}
+          onChange={value => (settings.showLyricBackground = value)}
+        />
+      </Option>
+    </>
+  )
+}
+
+const Lyric = () =>{
+  const { t, i18n } = useTranslation()
+  return (
+    <>
+    <div className='text-xl font-medium text-gray-800 dark:text-white/70 pt-5'>{t`settings.lyric-style`}</div>
+    <div className='mt-3 h-px w-full bg-black/5 dark:bg-white/10'></div>
+      <div className='mb-2 dark:text-white'>
+        <ChangeLyricBackground />
+      </div>
+      <div className='mt-3 h-px w-full bg-black/5 dark:bg-white/10'></div>
     </>
   )
 }
@@ -62,6 +97,7 @@ const Appearance = () => {
   return (
     <div>
       <Theme />
+      <Lyric />
     </div>
   )
 }

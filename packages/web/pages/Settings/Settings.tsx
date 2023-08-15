@@ -8,6 +8,7 @@ import { motion, useAnimationControls } from 'framer-motion'
 import General from './General'
 import About from './About'
 import Player from './Player'
+import Lab from './Lab'
 import PageTransition from '@/web/components/PageTransition'
 import { ease } from '@/web/utils/const'
 
@@ -72,7 +73,7 @@ const Settings = () => {
     { id: 'general', component: <General /> },
     { id: 'appearance', component: <Appearance /> },
     { id: 'player', component: <Player /> },
-    { id: 'lab', component: <span className='text-white'>开发中</span> },
+    { id: 'lab', component: <Lab />},
     { id: 'about', component: <About /> },
   ]
 

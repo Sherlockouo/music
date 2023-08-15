@@ -6,9 +6,8 @@ const About = () => {
     <PageTransition>
       <div className='about text-white text-center'> 
         <div className='basic-info padding-top-10'> 
-            基于 <span >https://github.com/qier222/YesPlayMusic</span> 二次开发
+        <span> 基于 https://github.com/qier222/YesPlayMusic 二次开发 </span>
         </div>
-        
         <div className='contact-me margin-top-10'>
             联系方式: wdf.coder@gmail.com
         </div>

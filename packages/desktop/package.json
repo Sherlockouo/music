@@ -1,11 +1,11 @@
 {
   "name": "desktop",
-  "productName": "R3PLAY",
+  "productName": "R3PLAYX",
   "private": true,
-  "version": "2.0.0",
+  "version": "2.0.1",
   "main": "./main/index.js",
-  "author": "qier222 <qier222@outlook.com>",
-  "homepage": "https://github.com/qier222/YesPlayMusic",
+  "author": "qier222 <qier222@outlook.com> feng <wdf.coder@gmail.com>",
+  "homepage": "https://github.com/sherlockouo/music",
   "scripts": {
     "postinstall": "tsx scripts/build.sqlite3.ts",
     "dev": "tsx scripts/build.main.ts --watch",

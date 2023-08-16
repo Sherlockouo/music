@@ -7,7 +7,7 @@ const pkg = require('./package.json')
 const electronVersion = pkg.devDependencies.electron.replaceAll('^', '')
 
 module.exports = {
-  appId: 'app.r3play',
+  appId: 'app.r3playx',
   productName: pkg.productName,
   executableName: pkg.productName,
   copyright: 'Copyright © 2023 feng',
@@ -42,7 +42,7 @@ module.exports = {
       // },
     ],
     publisherName: 'feng',
-    icon: 'build/icons/icon.icon',
+    icon: 'build/icons/icon.png',
   },
   nsis: {
     oneClick: false,
@@ -102,7 +102,7 @@ module.exports = {
     ],
     artifactName: '${productName}-${version}-${os}.${ext}',
     category: 'Music',
-    icon: './build/icon.icns',
+    icon: './build/icon.png',
   },
   files: [
     '!**/*.ts',

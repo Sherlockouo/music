@@ -16,17 +16,23 @@ import { useTranslation } from 'react-i18next'
 import useHoverLightSpot from '../hooks/useHoverLightSpot'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
+import { RepeatMode } from '@/shared/playerDataTypes'
 
 const RepeatButton = () => {
   const { buttonRef, buttonStyle } = useHoverLightSpot()
   const [repeat, setRepeat] = useState(false)
-
+  const playerSnapshot = useSnapshot(player)
   return (
     <motion.button
       ref={buttonRef}
       onClick={() => {
         setRepeat(!repeat)
-        toast('开发中')
+        // 开关
+        if (playerSnapshot._repeatMode == RepeatMode.On) {
+          playerSnapshot._repeatMode = RepeatMode.Off
+        } else {
+          playerSnapshot._repeatMode = RepeatMode.On
+        }
       }}
       className={cx(
         'group relative transition duration-300 ease-linear',
@@ -50,7 +56,7 @@ const ShuffleButton = () => {
       ref={buttonRef}
       onClick={() => {
         setShuffle(!shuffle)
-        toast('开发中')
+        player.shuffle = true
       }}
       className={cx(
         'group relative transition duration-300 ease-linear',
@@ -75,7 +81,7 @@ const Header = () => {
       )}
     >
       <div className='flex text-neutral-300'>
-        <div className='mr-2 h-4 w-1 rounded-full bg-accent-color-700'></div>
+        <div className='bg-accent-color-700 mr-2 h-4 w-1 rounded-full'></div>
         {t`player.queue`}
       </div>
       <div className='flex gap-2'>
@@ -143,7 +149,7 @@ const Track = ({
       {playingTrackIndex === index ? (
         <Wave playing={state === 'playing'} />
       ) : (
-        <div className='text-16 font-medium text-accent-color dark:text-neutral-200'>
+        <div className='text-accent-color text-16 font-medium dark:text-neutral-200'>
           {String(index + 1).padStart(2, '0')}
         </div>
       )}

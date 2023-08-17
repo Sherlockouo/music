@@ -53,7 +53,6 @@ export class Player {
   private _progress: number = 0
   private _progressInterval: ReturnType<typeof setInterval> | undefined
   private _volume: number = 1 // 0 to 1
-  private _repeatMode: RepeatMode = RepeatMode.Off
   private _nowVolume: number = 128
 
   state: State = State.Initializing
@@ -63,6 +62,7 @@ export class Player {
   fmTrackList: TrackID[] = []
   shuffle: boolean = false
   fmTrack: Track | null = null
+  _repeatMode: RepeatMode = RepeatMode.Off
 
   init(params: { [key: string]: any }) {
     if (params._track) this._track = params._track

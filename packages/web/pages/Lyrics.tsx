@@ -75,7 +75,7 @@ const Lyrics = () => {
 
     const setSongToLyric = () => {
       player.progress = time
-      player.playOrPause()
+      player.play(true)
     }
 
     const lineClassName = cx('lyrics-row transition duration-700 ease-out', {

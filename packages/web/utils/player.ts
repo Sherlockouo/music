@@ -19,7 +19,7 @@ import { fetchArtistWithReactQuery } from '../api/hooks/useArtist'
 import { appName } from './const'
 import { FetchAudioSourceResponse } from '@/shared/api/Track'
 import { LogLevel } from 'react-virtuoso'
-import  { match } from '@unblockneteasemusic/server'
+
 // const match = require("@unblockneteasemusic/server");
 
 type TrackID = number
@@ -77,7 +77,10 @@ export class Player {
     if (params.trackList) this.trackList = params.trackList
     if (params.trackListSource) this.trackListSource = params.trackListSource
     if (params.fmTrackList) this.fmTrackList = params.fmTrackList
-    if (params.shuffle) this.shuffle = params.shuffle
+    if (params.shuffle) {
+      this.shuffle = params.shuffle
+      this.shufflePlayList()
+    }
     if (params.fmTrack) this.fmTrack = params.fmTrack
 
     this.state = State.Ready
@@ -267,15 +270,15 @@ export class Player {
    */
   private async _fetchAudioSource(trackID: TrackID) {
     try {
-      const unlockResponse =  await match(trackID,['qq','kuwo','bilibili'])
-      console.log(`[player] fetchUnlockAudioSourceWithReactQuery `, unlockResponse)
-      let audioUrl = unlockResponse.url
-      if(unlockResponse && audioUrl) {
-        return {
-          audio: audioUrl,
-          id: trackID
-        }
-      }
+      // const unlockResponse =  await match(trackID,['qq','kuwo','bilibili'])
+      // console.log(`[player] fetchUnlockAudioSourceWithReactQuery `, unlockResponse)
+      // let audioUrl = unlockResponse.url
+      // if(unlockResponse && audioUrl) {
+      //   return {
+      //     audio: audioUrl,
+      //     id: trackID
+      //   }
+      // }
       console.log(`[player] fetchAudioSourceWithReactQuery `, trackID)
       const response = await fetchAudioSourceWithReactQuery({ id: trackID })
       console.log(`[player] fetchAudioSourceWithReactQuery `, response)
@@ -527,11 +530,11 @@ export class Player {
   async shufflePlayList(){
       let len = this.trackList.length, tmp, idx
       while(len){
-        idx = Math.floor(random()*len--)
+        idx = Math.floor(Math.min(random(), 0.99999) * len--)
         tmp = this.trackList[len] 
         this.trackList[len] = this.trackList[idx]
         this.trackList[idx] = tmp
-      }
+      } 
   }
 
   /**

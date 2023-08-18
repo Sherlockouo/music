@@ -21,17 +21,16 @@ import { RepeatMode } from '@/shared/playerDataTypes'
 const RepeatButton = () => {
   const { buttonRef, buttonStyle } = useHoverLightSpot()
   const [repeat, setRepeat] = useState(false)
-  const playerSnapshot = useSnapshot(player)
   return (
     <motion.button
       ref={buttonRef}
       onClick={() => {
         setRepeat(!repeat)
         // 开关
-        if (playerSnapshot.repeatMode === RepeatMode.On) {
-          playerSnapshot.repeatMode = RepeatMode.Off
+        if (player.repeatMode === RepeatMode.On) {
+          player.repeatMode = RepeatMode.Off
         } else {
-          playerSnapshot.repeatMode = RepeatMode.On
+          player.repeatMode = RepeatMode.On
         }
       }}
       className={cx(

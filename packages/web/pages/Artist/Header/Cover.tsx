@@ -2,17 +2,26 @@ import { resizeImage } from '@/web/utils/common'
 import Image from '@/web/components/Image'
 import { cx, css } from '@emotion/css'
 import useAppleMusicArtist from '@/web/api/hooks/useAppleMusicArtist'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import uiStates from '@/web/states/uiStates'
 import VideoCover from '@/web/components/VideoCover'
+import {FetchAppleMusicArtistResponse, } from '@/shared/api/AppleMusic'
 
 const Cover = ({ artist }: { artist?: Artist }) => {
-  const { data: artistFromApple, isLoading: isLoadingArtistFromApple } = useAppleMusicArtist(
-    artist?.id || 0
-  )
+  const [video, setVideo] = useState("")
+  const [cover, setCover] = useState( artist?.img1v1Url || '')
+  const [isLoadingArtistFromAppleBool, setIsLoadingArtistFromApple] = useState(false)
 
-  const video = artistFromApple?.editorialVideo
-  const cover = isLoadingArtistFromApple ? '' : artistFromApple?.artwork || artist?.img1v1Url || ''
+  async () => {
+    const { data: artistFromApple, isLoading: isLoadingArtistFromApple } = useAppleMusicArtist(
+      artist?.id || 0
+    )
+    if (artistFromApple != null  && isLoadingArtistFromApple != null) {
+      setVideo(artistFromApple?.editorialVideo)
+      setCover(isLoadingArtistFromApple ? '' : artistFromApple?.artwork || artist?.img1v1Url || '')
+      setIsLoadingArtistFromApple(isLoadingArtistFromApple)
+    }
+  }
 
   useEffect(() => {
     if (cover) uiStates.blurBackgroundImage = cover
@@ -33,7 +42,7 @@ const Cover = ({ artist }: { artist?: Artist }) => {
             'aspect-square h-full w-full  lg:z-10',
             video ? 'opacity-0' : 'opacity-100'
           )}
-          src={resizeImage(isLoadingArtistFromApple ? '' : cover, 'lg')}
+          src={resizeImage(isLoadingArtistFromAppleBool ? '' : cover, 'lg')}
         />
 
         {video && <VideoCover source={video} />}

@@ -99,18 +99,6 @@ const Controls = () => {
           >
             <Icon name='next' className='h-6 w-6 ' />
           </motion.button>
-
-          <motion.progress 
-         layout='position'
-         animate={{ rotate: mini ? 90 : 0 }}
-         className='volume text-black/90 transition-colors duration-400 dark:text-white/40 hover:dark:text-white/90'
-         onClick={() => {
-           console.log('adjust ');
-           
-         }}
-         >
-          <Icon name='volume-half' className='h-7 w-7 ' />
-        </motion.progress>
         </div>
 
         {/* Like */}

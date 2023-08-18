@@ -19,8 +19,15 @@ import { fetchArtistWithReactQuery } from '../api/hooks/useArtist'
 import { appName } from './const'
 import { FetchAudioSourceResponse } from '@/shared/api/Track'
 import { LogLevel } from 'react-virtuoso'
+import { createRequire } from 'module';
 
-// const match = require("@unblockneteasemusic/server");
+
+// () => {
+//   const require = createRequire(import.meta.url);
+//   const match =  require('@unblockneteasemusic/server')
+//   console.log(match);
+// }
+
 
 type TrackID = number
 export enum TrackListSourceType {
@@ -483,8 +490,16 @@ export class Player {
       this.pause()
       return
     }
-    this._trackIndex = this._nextTrackIndex
-    this._playTrack()
+    switch (this.repeatMode) {
+      case RepeatMode.One:
+        return this._trackIndex && this._playTrack()
+      case RepeatMode.Off:
+        if (this._trackIndex === 0) return 0
+        return this._trackIndex - 1 && this._playTrack()
+      case RepeatMode.On:
+        if (this._trackIndex - 1 < 0) return this.trackList.length - 1 && this._playTrack()
+        return this._trackIndex - 1 && this._playTrack()
+    }
   }
 
   /**

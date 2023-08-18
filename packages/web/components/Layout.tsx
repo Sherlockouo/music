@@ -18,7 +18,7 @@ const Layout = () => {
   const playerSnapshot = useSnapshot(player)
   const { fullscreen } = useSnapshot(uiStates)
   const showPlayer = !!playerSnapshot.track
-  const {showLyricBackground} = useSnapshot(settings)
+  const {showBackgroundImage} = useSnapshot(settings)
   return (
     <div
   id="layout"
@@ -28,6 +28,7 @@ const Layout = () => {
     css`
       position: relative;
       background: black;
+      border-radius: 24px;
       /* 其他样式属性 */
       `
       )}
@@ -42,12 +43,13 @@ const Layout = () => {
     height: 100%;
       /* 其他样式属性 */
     `,
-    showLyricBackground && css`
-    background-image: url(${player.track?.al.picUrl});
+    showBackgroundImage && css`
+      background-image: url(${player.track?.al.picUrl});
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center;
       filter: blur(10px); /* 模糊效果 */
+      border-radius: 24px;
       `
     )
   }

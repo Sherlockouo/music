@@ -6,7 +6,7 @@ import {
 import { fetchPersonalFMWithReactQuery } from '@/web/api/hooks/usePersonalFM'
 import { fmTrash } from '@/web/api/personalFM'
 import { cacheAudio } from '@/web/api/r3play'
-import { clamp } from 'lodash-es'
+import { clamp, random } from 'lodash-es'
 import axios from 'axios'
 import { resizeImage } from './common'
 import { fetchPlaylistWithReactQuery } from '@/web/api/hooks/usePlaylist'
@@ -19,6 +19,8 @@ import { fetchArtistWithReactQuery } from '../api/hooks/useArtist'
 import { appName } from './const'
 import { FetchAudioSourceResponse } from '@/shared/api/Track'
 import { LogLevel } from 'react-virtuoso'
+import  { match } from '@unblockneteasemusic/server'
+// const match = require("@unblockneteasemusic/server");
 
 type TrackID = number
 export enum TrackListSourceType {
@@ -54,6 +56,7 @@ export class Player {
   private _progressInterval: ReturnType<typeof setInterval> | undefined
   private _volume: number = 1 // 0 to 1
   private _nowVolume: number = 128
+  private _repeatMode: RepeatMode = RepeatMode.Off
 
   state: State = State.Initializing
   mode: Mode = Mode.TrackList
@@ -62,7 +65,7 @@ export class Player {
   fmTrackList: TrackID[] = []
   shuffle: boolean = false
   fmTrack: Track | null = null
-  _repeatMode: RepeatMode = RepeatMode.Off
+  
 
   init(params: { [key: string]: any }) {
     if (params._track) this._track = params._track
@@ -264,6 +267,15 @@ export class Player {
    */
   private async _fetchAudioSource(trackID: TrackID) {
     try {
+      const unlockResponse =  await match(trackID,['qq','kuwo','bilibili'])
+      console.log(`[player] fetchUnlockAudioSourceWithReactQuery `, unlockResponse)
+      let audioUrl = unlockResponse.url
+      if(unlockResponse && audioUrl) {
+        return {
+          audio: audioUrl,
+          id: trackID
+        }
+      }
       console.log(`[player] fetchAudioSourceWithReactQuery `, trackID)
       const response = await fetchAudioSourceWithReactQuery({ id: trackID })
       console.log(`[player] fetchAudioSourceWithReactQuery `, response)
@@ -307,6 +319,7 @@ export class Player {
   private async _playAudio(autoplay: boolean = true) {
     this._progress = 0
     const { audio, id } = await this._fetchAudioSource(this.trackID)
+    
     if (!audio) {
       toast('无法播放此歌曲')
       this.nextTrack()
@@ -505,6 +518,20 @@ export class Player {
       playlist.playlist.trackIds.map(t => t.id),
       autoPlayTrackID
     )
+  }
+
+  /**
+   * shuffle the playList
+   * algorithm: https://bost.ocks.org/mike/shuffle/
+   */
+  async shufflePlayList(){
+      let len = this.trackList.length, tmp, idx
+      while(len){
+        idx = Math.floor(random()*len--)
+        tmp = this.trackList[len] 
+        this.trackList[len] = this.trackList[idx]
+        this.trackList[idx] = tmp
+      }
   }
 
   /**

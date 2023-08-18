@@ -7,6 +7,7 @@ import { useSnapshot } from 'valtio'
 import Icon from '../Icon'
 import { State as PlayerState } from '@/web/utils/player'
 import useUserLikedTracksIDs, { useMutationLikeATrack } from '@/web/api/hooks/useUserLikedTracksIDs'
+import { toast } from 'react-hot-toast'
 
 const LikeButton = () => {
   const { track } = useSnapshot(player)
@@ -51,6 +52,8 @@ const Controls = () => {
               `
         )}
       >
+         
+
         {/* Minimize */}
         <motion.button
           layout='position'
@@ -63,8 +66,10 @@ const Controls = () => {
           <Icon name='hide-list' className='h-7 w-7 ' />
         </motion.button>
 
+
         {/* Media controls */}
         <div className='flex flex-wrap gap-2 text-black/95 dark:text-white/80'>
+        
           <motion.button
             layout='position'
             animate={{ rotate: mini ? 90 : 0 }}
@@ -94,6 +99,18 @@ const Controls = () => {
           >
             <Icon name='next' className='h-6 w-6 ' />
           </motion.button>
+
+          <motion.progress 
+         layout='position'
+         animate={{ rotate: mini ? 90 : 0 }}
+         className='volume text-black/90 transition-colors duration-400 dark:text-white/40 hover:dark:text-white/90'
+         onClick={() => {
+           console.log('adjust ');
+           
+         }}
+         >
+          <Icon name='volume-half' className='h-7 w-7 ' />
+        </motion.progress>
         </div>
 
         {/* Like */}

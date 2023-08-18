@@ -28,10 +28,10 @@ const RepeatButton = () => {
       onClick={() => {
         setRepeat(!repeat)
         // 开关
-        if (playerSnapshot._repeatMode == RepeatMode.On) {
-          playerSnapshot._repeatMode = RepeatMode.Off
+        if (playerSnapshot.repeatMode === RepeatMode.On) {
+          playerSnapshot.repeatMode = RepeatMode.Off
         } else {
-          playerSnapshot._repeatMode = RepeatMode.On
+          playerSnapshot.repeatMode = RepeatMode.On
         }
       }}
       className={cx(
@@ -56,7 +56,7 @@ const ShuffleButton = () => {
       ref={buttonRef}
       onClick={() => {
         setShuffle(!shuffle)
-        player.shuffle = true
+        player.shufflePlayList()
       }}
       className={cx(
         'group relative transition duration-300 ease-linear',

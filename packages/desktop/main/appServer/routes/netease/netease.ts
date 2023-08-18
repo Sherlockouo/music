@@ -5,6 +5,8 @@ import { pathCase, snakeCase } from 'change-case'
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
 import NeteaseCloudMusicApi from 'NeteaseCloudMusicApi'
 import request from '../../request'
+// const match = require('@unblockneteasemusic/server');
+
 
 log.info('[electron] appServer/routes/netease.ts')
 
@@ -25,37 +27,19 @@ async function netease(fastify: FastifyInstance) {
 
       // Request netease api
       try {
+        
         const result = await neteaseApi({
           ...req.query,
           cookie: req.cookies,
         })
-        console.log("result",result)
+        
         cache.set(name as CacheAPIs, result.body, req.query)
 
         return reply.send(result.body)
       } catch (error: any) {
-        // try {
-        const w = (()=>{
-          fastify.get("http://127.0.0.1:35530/net",(res)=>{
-            console.log('req res',res);
-            
-          })
-        })
-        w()
-        //   const res = await (()=>{
-            
-        //     request({
-        //       url:'/',
-        //     }).then(r=>(()=>{
-        //       console.log('local',r)
-        //     }))
 
-        //   })
-        //   res()
-        // }catch(e){
-        //   console.log(e)
-        // }
-        
+        // TODO: 能够请求 明天改改
+        // match(1317494434, ['kuwo', 'migu']).then(console.log)
         if ([400, 301].includes(error.status)) {
           return reply.status(error.status).send(error.body)
         }

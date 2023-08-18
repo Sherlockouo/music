@@ -1,7 +1,7 @@
 import { FastifyPluginAsync } from 'fastify'
 import appleMusicRequest from '../../utils/appleMusicRequest'
 import { album as getAlbum } from 'NeteaseCloudMusicApi'
-const match  = require('@unblockneteasemusic/server')
+// const match  = require('@unblockneteasemusic/server')
 
 
 type ResponseSchema = {
@@ -55,10 +55,9 @@ const album: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       return
     }
 
-    match(neteaseId,['qq', 'kuwo', 'migu']).then((res:any)=>{
-      console.log('match ',res)
-
-    })
+    // match(neteaseId,['qq', 'kuwo', 'migu']).then((res:any)=>{
+    //   console.log('match ',res)
+    // })
     // get from apple
     const fromApple = await appleMusicRequest({
       method: 'GET',

@@ -19,7 +19,7 @@ interface Settings {
   playAnimatedArtworkFromApple: boolean
   priorityDisplayOfAlbumArtistDescriptionFromAppleMusic: boolean
   displayPlaylistsFromNeteaseMusic: boolean
-  showLyricBackground: boolean
+  showBackgroundImage: boolean
   unlock: boolean
   engines: string[]
 }
@@ -31,7 +31,7 @@ const initSettings: Settings = {
   playAnimatedArtworkFromApple: true,
   priorityDisplayOfAlbumArtistDescriptionFromAppleMusic: true,
   displayPlaylistsFromNeteaseMusic: true,
-  showLyricBackground: false,
+  showBackgroundImage: true,
   unlock: true,
   engines: ['qq','bilibili'],
 }

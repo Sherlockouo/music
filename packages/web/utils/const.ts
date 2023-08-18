@@ -1,4 +1,4 @@
-export const appName = 'R3PLAY'
+export const appName = 'R3PLAYX'
 
 // 动画曲线
 export const ease: [number, number, number, number] = [0.4, 0, 0.2, 1]

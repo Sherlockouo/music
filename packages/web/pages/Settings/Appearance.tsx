@@ -64,15 +64,15 @@ const Theme = () => {
 }
 
 const ChangeLyricBackground = () =>{
-  const {showLyricBackground} = useSnapshot(settings)
+  const {showBackgroundImage} = useSnapshot(settings)
   const { t, i18n } = useTranslation()
   return (
     <>
      <Option>
         <OptionText>{t`settings.show-lyric-background-img`}</OptionText>
         <Switch
-          enabled={showLyricBackground}
-          onChange={value => (settings.showLyricBackground = value)}
+          enabled={showBackgroundImage}
+          onChange={value => (settings.showBackgroundImage = value)}
         />
       </Option>
     </>

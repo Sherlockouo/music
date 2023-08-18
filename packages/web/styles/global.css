@@ -194,3 +194,59 @@ input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   @apply m-0;
 }
+
+.text-accent-color-100 {
+  color: hsl(var(--brand-color-100));
+}
+
+.text-accent-color-200 {
+  color: hsl(var(--brand-color-200));
+}
+
+.text-accent-color-300 {
+  color: hsl(var(--brand-color-300));
+}
+
+.text-accent-color-400 {
+  color: hsl(var(--brand-color-400));
+}
+
+.text-accent-color-500 {
+  color: hsl(var(--brand-color-500));
+}
+
+.text-accent-color-600 {
+  color: hsl(var(--brand-color-600));
+}
+
+.text-accent-color-700 {
+  color: hsl(var(--brand-color-700));
+}
+
+.bg-accent-color-100 {
+  background-color: hsl(var(--brand-color-100));
+}
+
+.bg-accent-color-200 {
+  background-color: hsl(var(--brand-color-200));
+}
+
+.bg-accent-color-300 {
+  background-color: hsl(var(--brand-color-300));
+}
+
+.bg-accent-color-400 {
+  background-color: hsl(var(--brand-color-400));
+}
+
+.bg-accent-color-500 {
+  background-color: hsl(var(--brand-color-500));
+}
+
+.bg-accent-color-600 {
+  background-color: hsl(var(--brand-color-600));
+}
+
+.bg-accent-color-700 {
+  background-color: hsl(var(--brand-color-700));
+}

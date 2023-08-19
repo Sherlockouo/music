@@ -12,11 +12,13 @@ import {
 
 // 获取歌曲详情
 export function fetchTracks(params: FetchTracksParams): Promise<FetchTracksResponse> {
+  console.log(params.ids.join(","));
+  
   return request({
     url: '/song/detail',
     method: 'get',
     params: {
-      ids: params.ids.join(','),
+      ids: params.ids.join(","),
     },
   })
 }

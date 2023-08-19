@@ -3,12 +3,13 @@ import player from '@/web/states/player'
 import { resizeImage } from '@/web/utils/common'
 import { SearchTypes, SearchApiNames } from '@/shared/api/Search'
 import dayjs from 'dayjs'
-import { useMemo, useCallback } from 'react'
+import { useMemo, useCallback, useEffect } from 'react'
 import toast from 'react-hot-toast'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import Image from '@/web/components/Image'
 import { cx } from '@emotion/css'
+import { fetchTracks } from '@/web/api/track'
 
 const Artists = ({ artists }: { artists: Artist[] }) => {
   const navigate = useNavigate()
@@ -122,9 +123,28 @@ const Search = () => {
     () => search({ keywords, type: searchType })
   )
 
+  const { data: onlySongSearchResult, isLoading: onlySongIsLoadingSearchRaw } = useQuery(
+    [SearchApiNames.Search, keywords],
+    async () => {
+      var onlySongSearchResultRaw
+      onlySongSearchResultRaw = await search({ keywords, type: "Single", limit: 15, offset: 5 })
+      return fetchTracks({ ids: (onlySongSearchResultRaw?.result?.songs && onlySongSearchResultRaw.result.songs.map(track => parseInt(track.id))) || [] })
+    }
+  )
+
+  // 搜索更多歌曲
+  // const { data: onlySongSearchResult, isLoading: onlySongIsLoadingSearchResult } = useQuery(
+  //   [onlySongIsLoadingSearchRawResult],
+  //   () => fetchTracks({ ids: (onlySongSearchResultRaw?.result?.songs && onlySongSearchResultRaw.result.songs.map(track => parseInt(track.id))) || [] })
+  // )
+
   const handlePlayTracks = useCallback(
     (trackID: number | null = null) => {
-      const tracks = searchResult?.result?.song?.songs
+      let tracks = searchResult?.result?.song?.songs
+      tracks.push(...onlySongSearchResult?.songs)
+      console.log(tracks);
+      
+      
       if (!tracks?.length) {
         toast('无法播放歌单')
         return
@@ -207,14 +227,21 @@ const Search = () => {
           </div>
         )}
 
-        {searchResult?.result?.song?.songs && (
+        {/* || onlySongSearchResult?.songs */}
+        {(searchResult?.result?.song?.songs) && (
           <div className='col-span-2'>
             <div className='mb-2 text-14 font-bold uppercase text-neutral-300'>歌曲</div>
-            <div className='mt-4 grid grid-cols-3 grid-rows-3 gap-5 gap-y-6 overflow-hidden pb-12'>
-              {searchResult.result.song.songs.map(track => (
-                <Track key={track.id} track={track} onPlay={handlePlayTracks} />
-              ))}
-            </div>
+            {searchResult?.result?.song?.songs && (
+              <div className='mt-4 grid grid-cols-3 grid-rows-8 gap-5 gap-y-6 overflow-hidden pb-12'>
+                {searchResult.result.song.songs.map(track => (
+                  <Track key={track.id} track={track} onPlay={handlePlayTracks} />
+                ))}
+                {onlySongSearchResult?.songs && onlySongSearchResult.songs.map(
+                  track => (<Track key={track.id} track={track} onPlay={handlePlayTracks} />)
+                )}
+              </div>
+              )
+            }
           </div>
         )}
       </div>

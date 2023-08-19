@@ -25,28 +25,6 @@ const Unlock = () => {
                     onChange={value => (settings.unlock = value)}
                 />
             </Option>
-            <Option>
-                <OptionText>{t`settings.engine`}</OptionText>
-                <input
-                onChange={e => {
-                  setEngine(e.target.value)
-                  console.log('engine:',e.target.value)
-                }}
-                className={cx(
-                  'my-3.5  bg-transparent placeholder:text-white/30',
-                  css`
-                    width: 60%;
-                  `
-                )}
-                placeholder='qq,kuwo'
-                value={presetEngine}
-              />
-                <Button
-                    onClick={()=>{
-                        settings.engines = presetEngine.split(',')
-                    }}
-                > 确定 </Button>
-            </Option>
         </>
     )
 }

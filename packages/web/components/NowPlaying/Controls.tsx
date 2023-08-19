@@ -93,7 +93,9 @@ const Controls = () => {
           <motion.button
             layout='position'
             animate={{ rotate: mini ? 90 : 0 }}
-            onClick={() => track && player.nextTrack()}
+            onClick={() => {
+              track && player.nextTrack()
+            }}
             disabled={!track}
             className='rounded-full bg-black/10 p-2.5 transition-colors duration-400 dark:bg-white/10 hover:dark:bg-white/20'
           >

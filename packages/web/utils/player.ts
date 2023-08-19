@@ -501,16 +501,9 @@ export class Player {
       this.pause()
       return
     }
-    switch (this.repeatMode) {
-      case RepeatMode.One:
-        return this._trackIndex && this._playTrack()
-      case RepeatMode.Off:
-        if (this._trackIndex === 0) return 0
-        return this._trackIndex - 1 && this._playTrack()
-      case RepeatMode.On:
-        if (this._trackIndex - 1 < 0) return this.trackList.length - 1 && this._playTrack()
-        return this._trackIndex - 1 && this._playTrack()
-    }
+   this._trackIndex = this._nextTrackIndex
+    
+    this._playTrack()
   }
 
   /**

@@ -19,15 +19,10 @@ import { fetchArtistWithReactQuery } from '../api/hooks/useArtist'
 import { appName } from './const'
 import { FetchAudioSourceResponse } from '@/shared/api/Track'
 import { LogLevel } from 'react-virtuoso'
-import { createRequire } from 'module';
 
-
-// () => {
-//   const require = createRequire(import.meta.url);
+// const match =  require('@unblockneteasemusic/server')
+// import * as  match from '@unblockneteasemusic/server'
 //   const match =  require('@unblockneteasemusic/server')
-//   console.log(match);
-// }
-
 
 type TrackID = number
 export enum TrackListSourceType {
@@ -277,6 +272,9 @@ export class Player {
    */
   private async _fetchAudioSource(trackID: TrackID) {
     try {
+      // console.log("fuck");
+      // let unlockResponse = match("1325722716",['kuwo','qq'])
+      // console.log("nihao", unlockResponse);
       // const unlockResponse =  await match(trackID,['qq','kuwo','bilibili'])
       // console.log(`[player] fetchUnlockAudioSourceWithReactQuery `, unlockResponse)
       // let audioUrl = unlockResponse.url

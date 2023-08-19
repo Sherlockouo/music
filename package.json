@@ -36,9 +36,9 @@
   },
   "dependencies": {
     "@prisma/client": "^5.1.1",
-    "@unblockneteasemusic/server": "^0.27.3",
     "log4js": "^6.9.1",
     "node-abi": "3.24.0",
-    "sax": "^1.2.4"
+    "sax": "^1.2.4",
+    "@unblockneteasemusic/server":"^0.27.3"
   }
 }

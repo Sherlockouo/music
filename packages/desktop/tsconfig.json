@@ -15,5 +15,5 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["./**/*.ts", "../shared/**/*.ts"]
+  "include": ["./**/*.ts", "../shared/**/*.ts", "./**/unlock.js"]
 }

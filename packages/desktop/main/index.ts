@@ -12,6 +12,7 @@ import {createMenu} from './menu'
 import {appName, isDev, isLinux, isMac, isWindows} from './env'
 import store from './store'
 import initAppServer from './appServer/appServer'
+import { startUnlockServer } from './unlock'
 
 log.info('[electron] index.ts')
 
@@ -37,6 +38,7 @@ class Main {
         app.whenReady().then(async () => {
             log.info('[index] App ready')
             await initAppServer()
+            this.initUnlockSubProcess()
             this.createWindow()
             this.handleAppEvents()
             this.handleWindowEvents()
@@ -46,6 +48,11 @@ class Main {
             initIpcMain(this.win, this.tray, this.thumbar, store)
             this.initDevTools()
         })
+    }
+
+    initUnlockSubProcess() {
+        log.info('[initUnlockSubProcess] Initializing initUnlockSubProcess...')
+        startUnlockServer()
     }
 
     initDevTools() {

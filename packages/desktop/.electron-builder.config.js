@@ -112,6 +112,7 @@ module.exports = {
     '!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}',
     '!**/{pnpm-lock.yaml}',
     '!**/*.{map,debug.min.js}',
+    '!**/unlock.js',
     '!**/node_modules/*',
 
     {

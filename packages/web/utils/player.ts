@@ -271,19 +271,32 @@ export class Player {
    * @param {TrackID} trackID
    */
   private async _fetchAudioSource(trackID: TrackID) {
+
     try {
-      // console.log("fuck");
-      // let unlockResponse = match("1325722716",['kuwo','qq'])
-      // console.log("nihao", unlockResponse);
-      // const unlockResponse =  await match(trackID,['qq','kuwo','bilibili'])
-      // console.log(`[player] fetchUnlockAudioSourceWithReactQuery `, unlockResponse)
-      // let audioUrl = unlockResponse.url
-      // if(unlockResponse && audioUrl) {
-      //   return {
-      //     audio: audioUrl,
-      //     id: trackID
-      //   }
-      // }
+      const unlockResp = await fetch(
+        `http://localhost:13000/unblockneteasemusic?track_id=${trackID}`, {
+          method:"GET"
+        }
+      )
+
+      if (unlockResp.body !== null) {
+        const respJSON = await unlockResp.json()
+        console.log(respJSON)
+        let audio = respJSON["url"]
+        if (audio != "") {
+          console.log("[unblockneteasemusic] use unlock url:", audio);
+          
+          return {
+            audio,
+            id: trackID,
+          }
+        }
+      }
+    } catch (err) {
+      console.log('[unblockneteasemusic]', err);
+    }
+
+    try {
       console.log(`[player] fetchAudioSourceWithReactQuery `, trackID)
       const response = await fetchAudioSourceWithReactQuery({ id: trackID })
       console.log(`[player] fetchAudioSourceWithReactQuery `, response)

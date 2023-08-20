@@ -265,30 +265,11 @@ export class Player {
   }
 
   /**
-   * Fetch track audio source url from Netease
-   * @param {TrackID} trackID
+   * Fetch unlocked audio source
+   * @param trackID 
+   * @returns 
    */
-  private async _fetchAudioSource(trackID: TrackID) {
-    try {
-      console.log(`[player] fetchAudioSourceWithReactQuery `, trackID)
-      const response = await fetchAudioSourceWithReactQuery({ id: trackID })
-      console.log(`[player] fetchAudioSourceWithReactQuery `, response)
-      let audio = response.data?.[0]?.url
-      if (audio && audio.includes('126.net')) {
-        audio = audio.replace('http://', 'https://')
-      }
-      return {
-        audio,
-        id: trackID,
-      }
-    } catch (err) {
-      console.log('fetch api err:', err)
-      // return {
-      //   audio: null,
-      //   id: trackID,
-      // }
-    }
-
+  private async _fetchUnlockAudioSource(trackID: TrackID){
     if (settings.unlock) {
 
       try {
@@ -320,6 +301,33 @@ export class Player {
           id: trackID,
         }
       }
+    }
+  }
+
+  /**
+   * Fetch track audio source url from Netease
+   * @param {TrackID} trackID
+   */
+  private async _fetchAudioSource(trackID: TrackID) {
+    try {
+      console.log(`[player] fetchAudioSourceWithReactQuery `, trackID)
+      const response = await fetchAudioSourceWithReactQuery({ id: trackID })
+      console.log(`[player] fetchAudioSourceWithReactQuery `, response)
+      let audio = response.data?.[0]?.url
+      if (audio && audio.includes('126.net')) {
+        audio = audio.replace('http://', 'https://')
+      }
+      if(audio == null) {
+        return this._fetchUnlockAudioSource(trackID)
+      }
+      return {
+        audio,
+        id: trackID,
+      }
+    } catch  {
+      console.log(console.error);
+      
+      
     }
   }
 

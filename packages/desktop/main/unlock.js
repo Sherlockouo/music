@@ -4,8 +4,9 @@ const http = require('http');
 const url = require('url');
 const { read } = require('fs');
 const exp = require('constants');
+import { isDev } from '@/desktop/main/env'
 
-const port = 13000;
+const port = isDev ? 10660 : process.env.UNBLOCK_SERVER_PORT
 const hostname = "localhost"
 
 // QQ_COOKIE="uin=2597922741; qm_keyst=Q_H_L_5-NSakY6xqOnZ_I7Wflus2Dg9KeQ2svFAqFsVHZYcXxYCzmHgg352EQ"
@@ -35,7 +36,7 @@ function startUnlockServer() {
                 
                 let resp = null 
         
-                const unlockResponse = match(parseInt(tarckID), ['qq', 'kuwo', 'migu'])
+                const unlockResponse = match(tarckID, ['qq', 'kuwo', 'migu','kugou','joox'])
                 await unlockResponse.then((value) => {
                     resp = value
                 }).catch((reason) => {
@@ -49,7 +50,7 @@ function startUnlockServer() {
     })
 
     server.listen(port, () => {
-        console.log(`服务器运行在 http://${hostname}:${port}/`);
+        console.log(`[UNLOCK] 服务器运行在 http://${hostname}:${port}/`);
     });
 }
 

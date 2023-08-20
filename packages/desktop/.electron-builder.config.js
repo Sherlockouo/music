@@ -67,7 +67,7 @@ module.exports = {
     identity: null,
   },
   dmg: {
-    icon: 'build/icons/icon.png',
+    icon: 'build/icons/icon.icns',
   },
   linux: {
     target: [

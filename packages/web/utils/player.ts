@@ -45,7 +45,7 @@ export enum State {
 }
 
 const PLAY_PAUSE_FADE_DURATION = 200
-const port = import.meta.env.DEV ? 10660 : import.meta.env.UNBLOCK_SERVER_PORT
+const port = import.meta.env.DEV ? 10660 : 30003
 
 let _howler = new Howl({ src: [''], format: ['mp3', 'flac'] })
 let _analyser = Howler.ctx.createAnalyser()
@@ -317,8 +317,10 @@ export class Player {
       if (audio && audio.includes('126.net')) {
         audio = audio.replace('http://', 'https://')
       }
-      if(audio == null) {
-        return this._fetchUnlockAudioSource(trackID)
+      if(audio == "" || audio == null || audio == undefined) {
+        const unlockResp = this._fetchUnlockAudioSource(trackID)
+        console.log('unlock resp: ',unlockResp)
+        return unlockResp
       }
       return {
         audio,
@@ -326,8 +328,6 @@ export class Player {
       }
     } catch  {
       console.log(console.error);
-      
-      
     }
   }
 

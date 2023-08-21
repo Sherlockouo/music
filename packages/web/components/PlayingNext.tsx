@@ -20,29 +20,31 @@ import { RepeatMode } from '@/shared/playerDataTypes'
 
 const RepeatButton = () => {
   const { buttonRef, buttonStyle } = useHoverLightSpot()
-  const [repeat, setRepeat] = useState(false)
+  const [repeat, setRepeat] = useState(0)
   return (
     <motion.button
       ref={buttonRef}
       onClick={() => {
-        setRepeat(!repeat)
-        // 开关
-        if (player.repeatMode === RepeatMode.On) {
-          player.repeatMode = RepeatMode.Off
-        } else {
-          player.repeatMode = RepeatMode.On
-        }
+        // 循环模式[关，开，单曲]
+        const repeatloop = [RepeatMode.Off,RepeatMode.On,RepeatMode.One]
+        setRepeat((repeat+1)%3)
+        player.repeatMode = repeatloop[repeat]
       }}
       className={cx(
         'group relative transition duration-300 ease-linear',
-        repeat
-          ? 'text-brand-700 hover:text-brand-400'
-          : 'text-neutral-300 opacity-40 hover:opacity-100'
+        repeat == 0 && 'text-brand-700 hover:text-brand-400',
+        (repeat > 0)&& 'text-neutral-300 opacity-40 hover:opacity-100'
       )}
       style={buttonStyle}
     >
       <div className='absolute top-1/2  left-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white opacity-0 blur group-hover:opacity-100'></div>
-      <Icon name='repeat-1' className='h-7 w-7' />
+      repeat
+      {
+        repeat == 1 && <Icon name='repeat-1' className='h-7 w-7' />
+      }
+      {
+        repeat == 2 && <Icon name='repeat' className='h-7 w-7' />
+      }
     </motion.button>
   )
 }

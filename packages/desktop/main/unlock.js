@@ -6,7 +6,7 @@ const { read } = require('fs');
 const exp = require('constants');
 import { isDev } from '@/desktop/main/env'
 
-const port = isDev ? 10660 : process.env.UNBLOCK_SERVER_PORT
+const port = isDev ? 10660 : 30003
 const hostname = "localhost"
 
 // QQ_COOKIE="uin=2597922741; qm_keyst=Q_H_L_5-NSakY6xqOnZ_I7Wflus2Dg9KeQ2svFAqFsVHZYcXxYCzmHgg352EQ"

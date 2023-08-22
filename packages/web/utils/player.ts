@@ -535,6 +535,32 @@ export class Player {
   }
 
   /**
+   * 
+   * @param trackID 
+   */
+  addToNextPlay(trackID: number){
+    // 判重
+    if(this.trackList.includes(trackID)) {
+      this.trackList = this.trackList.filter(item=>item != trackID)
+      this.trackList.splice(Number(this._nextTrackIndex),0,trackID)  
+      return
+    }
+    this.trackList.splice(Number(this._nextTrackIndex),0,trackID)
+  }
+
+  /**
+   * 
+   * @param trackID 
+   */
+  addToPlayList(trackID: number){
+    // 判重
+    if(this.trackList.includes(trackID)) {
+          return
+    }
+    this.trackList.push(trackID)
+  }
+
+  /**
    * Play a playlist
    * @param  {number} id
    * @param  {null|number=} autoPlayTrackID

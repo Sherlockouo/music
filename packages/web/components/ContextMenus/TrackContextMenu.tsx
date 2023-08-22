@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { useCopyToClipboard } from 'react-use'
 import { useSnapshot } from 'valtio'
 import BasicContextMenu from './BasicContextMenu'
+import player from '@/web/states/player'
 
 const TrackContextMenu = () => {
   const navigate = useNavigate()
@@ -30,7 +31,7 @@ const TrackContextMenu = () => {
               type: 'item',
               label: t`context-menu.add-to-queue`,
               onClick: () => {
-                toast('开发中')
+                player.addToNextPlay(Number(dataSourceID))
               },
             },
             {

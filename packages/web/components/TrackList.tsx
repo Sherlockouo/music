@@ -49,7 +49,7 @@ const Actions = ({ track }: { track: Track }) => {
         </button>
       </div>
 
-      {/* TODO: Add to playlist */}
+      {/* Done-TODO: Add to playlist */}
       <button
         className={cx(
           'transition-opacity group-hover:opacity-100',
@@ -58,7 +58,9 @@ const Actions = ({ track }: { track: Track }) => {
       >
         <div
           onClick={() =>{
-
+            player.addToPlayList(track.id)
+            // translate
+            toast('已添加到播放列表')
           }}
           className='mr-3 flex h-10 w-10 items-center justify-center rounded-full  bg-white/10 text-white/40 transition-colors duration-400 hover:bg-white/30 hover:text-white/70'
         >

@@ -3,6 +3,13 @@
   <!-- <a href="https://music.qier222.com" target="blank">
     <img src="images/logo.png" alt="Logo" width="156" height="156">
   </a> -->
+  <h2> 免責聲明 Disclaimer </h2>
+  <divider/>
+
+  - 本函式庫僅供 個人學習及研究 網路服務之使用，並未用於營利用途。
+  - 除授權條款列載之事項，您亦已知將此函式庫用於商業或其他競爭行為上，有可能會引來法律風險。
+  - 若您認為本函式庫侵犯您的智慧財產權，請發出 PR、Issue 或 DMCA 請求，表達您想移除相關引擎或程式碼之意願。
+
   <h2 align="center" style="font-weight: 600">基于 YesPlayMusic-Alpha版本二次开发</h2>
 
   <p align="center">

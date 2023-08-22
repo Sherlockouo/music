@@ -37,6 +37,27 @@ const Recommend = () => {
   // return <CoverRow playlists={playlists} />
 }
 
+const Featured = () => {
+  const { data: dailyRecommendPlaylists, isLoading: isLoadingDaily } = useQuery(
+    [PlaylistApiNames.FetchDailyRecommendPlaylists],
+    () => fetchDailyRecommendPlaylists(),
+    reactQueryOptions
+  )
+  const { data: recommendedPlaylists, isLoading: isLoading } = useQuery(
+    [PlaylistApiNames.FetchRecommendedPlaylists, { limit: 200 }],
+    () => fetchRecommendedPlaylists({ limit: 200 }),
+    reactQueryOptions
+  )
+  const playlists =
+    isLoadingDaily || isLoading
+      ? []
+      : [...(dailyRecommendPlaylists?.recommend || []), ...(recommendedPlaylists?.result || [])]
+
+  return <CoverRowVirtual playlists={playlists} />
+
+  // return <CoverRow playlists={playlists} />
+}
+
 const All = () => {
   return <div></div>
 }

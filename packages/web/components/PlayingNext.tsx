@@ -28,22 +28,24 @@ const RepeatButton = () => {
         // 循环模式[关，开，单曲]
         const repeatloop = [RepeatMode.Off,RepeatMode.On,RepeatMode.One]
         setRepeat((repeat+1)%3)
-        player.repeatMode = repeatloop[repeat]
+        player.repeatMode = repeatloop[(repeat+1)%3]
       }}
       className={cx(
         'group relative transition duration-300 ease-linear',
-        repeat == 0 && 'text-brand-700 hover:text-brand-400',
-        (repeat > 0)&& 'text-neutral-300 opacity-40 hover:opacity-100'
+        repeat == 0 && 'text-neutral-300 opacity-40 hover:opacity-100',
+        (repeat > 0)&& 'text-brand-700 hover:text-brand-400'
       )}
       style={buttonStyle}
     >
       <div className='absolute top-1/2  left-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white opacity-0 blur group-hover:opacity-100'></div>
-      repeat
       {
-        repeat == 1 && <Icon name='repeat-1' className='h-7 w-7' />
+        repeat == 0 && <Icon name='repeat' className='h-7 w-7' />
       }
       {
-        repeat == 2 && <Icon name='repeat' className='h-7 w-7' />
+        repeat == 1 && <Icon name='repeat' className='h-7 w-7' />
+      }
+      {
+        repeat == 2 && <Icon name='repeat-1' className='h-7 w-7' />
       }
     </motion.button>
   )

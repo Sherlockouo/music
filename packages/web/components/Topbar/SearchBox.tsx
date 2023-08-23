@@ -54,9 +54,9 @@ const SearchSuggestions = ({
       id: number
     }[] = []
     const rawItems = [
-      ...(suggestions.result.artists || []),
-      ...(suggestions.result.albums || []),
-      ...(suggestions.result.songs || []),
+      ...(suggestions.result?.artists || []),
+      ...(suggestions.result?.albums || []),
+      ...(suggestions.result?.songs || []),
     ]
     rawItems.forEach(item => {
       const type = (item as Artist).albumSize

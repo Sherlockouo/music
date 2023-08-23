@@ -15,7 +15,7 @@ const Artists = ({ artists }: { artists: Artist[] }) => {
   const navigate = useNavigate()
   return (
     <>
-      {artists.map(artist => (
+      {artists.length > 0 && artists.map(artist => (
         <div
           onClick={() => navigate(`/artist/${artist.id}`)}
           key={artist.id}
@@ -218,8 +218,8 @@ const Search = () => {
             <div className='mb-2 text-14 font-bold uppercase text-neutral-300'>艺人</div>
             <Artists artists={searchResult.result.artist.artists} />
           </div>
-        )}
-
+        )
+        }
         {searchResult?.result?.album?.albums && (
           <div>
             <div className='mb-2 text-14 font-bold uppercase text-neutral-300'>专辑</div>

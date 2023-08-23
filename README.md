@@ -59,6 +59,12 @@ API 源代码来自 [Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryif
 ## 截图
 - 新增歌词展示功能
 ![lyrics-screenshot](https://github.com/Sherlockouo/music/assets/34598208/82123958-db58-4026-ab4d-19f7c8e26495)
+- 新增音源，全局背景
+![background](https://github.com/Sherlockouo/music/assets/34598208/87bbca8f-705a-4925-9ac7-7444ab11f0c0)
+- 新增歌词特效
+![lyric-effect](https://github.com/Sherlockouo/music/assets/34598208/cba01737-5522-4387-81c8-587c5c261ffe)
+- 完善右键功能ing
+![menu](https://github.com/Sherlockouo/music/assets/34598208/56543dbd-fa37-4642-8645-7bae856ee6d4)
 
 ## Credit
 

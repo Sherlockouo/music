@@ -41,7 +41,7 @@ const Controls = () => {
       <motion.div
         className={cx(
           'fixed bottom-0 right-0 flex',
-          mini ? 'flex-col items-center justify-between' : 'items-center',
+          mini ? 'flex-col items-center justify-between' : 'items-center justify-between',
           mini
             ? css`
                 right: 24px;
@@ -55,6 +55,7 @@ const Controls = () => {
                 bottom: 56px;
                 right: 56px;
                 width: 254px;
+                // width: 100%;
               `
         )}
       >
@@ -67,7 +68,7 @@ const Controls = () => {
         }>
 
           <div className={
-            cx(mini ? 'flex-col text-center' : 'flex gap-2')
+            cx(mini ? 'flex-col text-center' : 'flex gap-5 justify-between')
           }>
 
             {/* Minimize */}

@@ -102,6 +102,8 @@
   "artist": {
     "listen": "Listen",
     "latest-releases": "Latest Releases",
-    "popular": "Popular"
+    "popular": "Popular",
+    "all-songs":"All Songs",
+    "synthesis":"Synthesis"
   }
 }

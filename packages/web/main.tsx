@@ -24,10 +24,12 @@ import React from 'react'
 import './i18n/i18n'
 import { appName } from './utils/const'
 
-ReactGA.initialize('G-KMJJCFZDKF')
+// google analytic 
+ReactGA.initialize('G-QFPDJGN751')
 
+// 前端报错监控
 Sentry.init({
-  dsn: 'https://7cc7879b42ba4bed9f66fb6752558475@o436528.ingest.sentry.io/6274630',
+  dsn: 'https://7d8a408fb378f9b378be20cff43de801@o4505816875532288.ingest.sentry.io/4505816882151424',
   integrations: [
     new BrowserTracing({
       routingInstrumentation: Sentry.reactRouterV6Instrumentation(

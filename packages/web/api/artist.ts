@@ -10,6 +10,8 @@ import {
   FetchArtistMVResponse,
   LikeAArtistParams,
   LikeAArtistResponse,
+  FetchArtistSongsParams,
+  FetchArtistSongsResponse,
 } from '@/shared/api/Artist'
 
 // 歌手详情
@@ -18,6 +20,15 @@ export function fetchArtist(params: FetchArtistParams): Promise<FetchArtistRespo
     url: '/artists',
     method: 'get',
     params: { ...params, timestamp: new Date().getTime() },
+  })
+}
+
+// 获取歌手所有歌曲
+export function fetchArtistSongs(params: FetchArtistSongsParams): Promise<FetchArtistSongsResponse> {
+  return request({
+    url: '/artist/songs',
+    method: 'get',
+    params: { ...params},
   })
 }
 

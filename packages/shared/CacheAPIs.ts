@@ -2,6 +2,7 @@ import {
   FetchArtistAlbumsResponse,
   FetchArtistResponse,
   FetchSimilarArtistsResponse,
+  FetchArtistSongsResponse
 } from './api/Artist'
 import { FetchAlbumResponse } from './api/Album'
 import {
@@ -32,6 +33,7 @@ export enum CacheAPIs {
   UserArtists = 'artist/sublist',
   UserPlaylist = 'user/playlist',
   SimilarArtist = 'simi/artist',
+  ArtistSongs = 'artist/songs',
   ListenedRecords = 'user/record',
 
   // not netease api
@@ -56,6 +58,7 @@ export interface CacheAPIsParams {
   [CacheAPIs.UserArtists]: void
   [CacheAPIs.UserPlaylist]: void
   [CacheAPIs.SimilarArtist]: { id: number }
+  [CacheAPIs.ArtistSongs]: { id: number; order: string, offset:number, limit: number }
   [CacheAPIs.ListenedRecords]: { id: number; type: number }
 
   [CacheAPIs.CoverColor]: { id: number }
@@ -79,6 +82,7 @@ export interface CacheAPIsResponse {
   [CacheAPIs.UserArtists]: FetchUserArtistsResponse
   [CacheAPIs.UserPlaylist]: FetchUserPlaylistsResponse
   [CacheAPIs.SimilarArtist]: FetchSimilarArtistsResponse
+  [CacheAPIs.ArtistSongs]: FetchArtistSongsResponse
   [CacheAPIs.ListenedRecords]: FetchListenedRecordsResponse
 
   [CacheAPIs.CoverColor]: string | undefined

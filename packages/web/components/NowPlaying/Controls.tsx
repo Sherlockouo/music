@@ -148,7 +148,7 @@ function VolumeSlider() {
     text-align: center;
     padding-top: 3px;
     `)}>
-      <Icon name='volume-mute' className='h-4 w-4 text-white/80' />
+      <Icon name= {player.volume == 0 ? 'volume-mute':'volume-half'} className={cx('text-white/80',player.volume == 0 ? 'h-4 w-4':'h-5 w-5')} />
       <div className={cx('pr-1 pl-1', css(`
         width: 180px;
       `))}>

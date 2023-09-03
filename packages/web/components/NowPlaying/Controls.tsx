@@ -8,6 +8,10 @@ import Icon from '../Icon'
 import { State as PlayerState } from '@/web/utils/player'
 import useUserLikedTracksIDs, { useMutationLikeATrack } from '@/web/api/hooks/useUserLikedTracksIDs'
 import { toast } from 'react-hot-toast'
+import { BlockDescription, BlockTitle, Option, OptionText, Switch, Input } from '@/web/pages/Settings/Controls'
+import Slider from '@/web/components/Slider'
+import { ceil } from 'lodash'
+import {useTranslation} from 'react-i18next'
 
 const LikeButton = () => {
   const { track } = useSnapshot(player)
@@ -106,7 +110,38 @@ const Controls = () => {
         {/* Like */}
         <LikeButton />
       </motion.div>
+      <motion.div className={cx(`space-y-7`)}>
+        {'asdgasgasgsg'}
+      <VolumeSlider />
+      </motion.div>
     </MotionConfig>
+  )
+}
+
+function VolumeSlider() {
+  const { t } = useTranslation()
+  const { volume } = useSnapshot(player)
+  const onChange = (volume: number) => {
+    player.volume = volume
+  }
+  return (
+    <div>
+      {' holy shit '}
+      <div className='pt-2 pr-1'>
+        <Slider
+          value={volume}
+          min={0}
+          max={1}
+          onChange={onChange}
+          alwaysShowTrack
+          alwaysShowThumb
+        />
+      </div>
+      <div className='mt-1 flex justify-between text-14 font-bold text-neutral-100'>
+        <span>0</span>
+        <span>{ceil(volume * 100)}</span>
+      </div>
+    </div>
   )
 }
 

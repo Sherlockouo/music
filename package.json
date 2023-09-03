@@ -6,8 +6,8 @@
   "description": "A nifty third-party NetEase Music player",
   "homepage": "https://github.com/qier222/YesPlayMusic",
   "license": "MIT",
-  "author": "qier222 <qier222@outlook.com>",
-  "repository": "github:qier222/YesPlayMusic",
+  "author": "wdf.coder@gmail.com ",
+  "repository": "github:sherlockouo/music",
   "engines": {
     "node": ">=16.0.0"
   },

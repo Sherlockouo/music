@@ -161,7 +161,7 @@ function VolumeSlider() {
           alwaysShowThumb
         />
       </div>
-        <Icon name='volume' className='h-5 w-5 text-white/80 text-center' />
+        <Icon name='volume' className='h-5 w-5 text-white/80'  />
       {/* <div className='mt-1 flex justify-between text-14 font-bold text-neutral-100'>
         <span>0</span>
         <span>{ceil(volume * 100)}</span>

@@ -83,7 +83,7 @@ const Lyrics = () => {
 
     const lineClassName = cx('lyrics-row transition duration-700 ease-out leading-120 tracking-lyricSpacing mt-5 mb-5',
       index === currentLineIndex && 'line-clamp-4 font-bold text-accent-color-500 tracking-hilightLyric leading-lyric text-32',
-      index !== currentLineIndex && 'lyrics-padding normal-lyric-font-size font-black tracking-lyric leading-lyric text-white/30 text-24 blur-lyric',
+      index !== currentLineIndex && 'lyrics-padding normal-lyric-font-size font-black tracking-lyric leading-lyric text-white/30 text-24 blur-lyric hover:blur-none',
       (index !== currentLineIndex  && isScrolling ) && 'blur-none',
     )
 
@@ -151,7 +151,10 @@ const Lyrics = () => {
     <PageTransition>
       <div className={cx('lyrics-player h-921', 'font-Roboto font-bold backdrop-blur-md')}>
         <div
-          className='lyrics-container  mb-8 mt-8 text-left overflow-scroll h-lyric'
+          className={cx('lyrics-container  mb-8 mt-8 text-left overflow-scroll h-lyric',
+          css`
+            scrollbar-width: thin; /* 在某些浏览器中显示细的滚动条 */
+            scrollbar-color: transparent transparent; /* 滚动条透明 *`)}
           ref={containerRef}
           onScroll={handleScroll}
         >

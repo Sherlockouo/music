@@ -2,9 +2,9 @@
   "name": "desktop",
   "productName": "R3PLAYX",
   "private": true,
-  "version": "2.0.1",
+  "version": "2.1.0",
   "main": "./main/index.js",
-  "author": "qier222 <qier222@outlook.com> feng <wdf.coder@gmail.com>",
+  "author": "qier222 <qier222@outlook.com> && feng <wdf.coder@gmail.com>",
   "homepage": "https://github.com/sherlockouo/music",
   "scripts": {
     "postinstall": "tsx scripts/build.sqlite3.ts",

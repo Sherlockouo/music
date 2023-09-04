@@ -153,8 +153,10 @@ const Lyrics = () => {
         <div
           className={cx('lyrics-container  mb-8 mt-8 text-left overflow-scroll h-lyric',
           css`
-            scrollbar-width: thin; /* 在某些浏览器中显示细的滚动条 */
-            scrollbar-color: transparent transparent; /* 滚动条透明 *`)}
+          &::-webkit-scrollbar {
+            width: 0;
+            background: transparent;
+          }`)}
           ref={containerRef}
           onScroll={handleScroll}
         >

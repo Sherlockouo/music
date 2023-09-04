@@ -20,14 +20,10 @@ const reactQueryOptions = {
 }
 
 const All = () => {
-  return <div className='text-white/80 text-center mt-20'>
-    {
-      "still working on 'All' page  "
-    }
-    {/* <Recommend />
-    <All />
+  return <div className='text-white/80'>
+    {/* <Recommend /> */}
     <Top />
-    <Hot /> */}
+    {/* <Hot /> */}
   </div>
 }
 

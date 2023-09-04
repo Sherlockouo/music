@@ -12,8 +12,8 @@ import {
 
 // 获取歌曲详情
 export function fetchTracks(params: FetchTracksParams): Promise<FetchTracksResponse> {
-  console.log(params.ids.join(","));
-  
+  console.log('song ids length',params.ids.length);
+  // Todo: 如果ids长度太长会导致请求问题，所以需要处理下，这里暂时截断下
   return request({
     url: '/song/detail',
     method: 'get',

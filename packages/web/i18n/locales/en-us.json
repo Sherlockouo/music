@@ -25,8 +25,8 @@
   "auth": {
     "login": "Login",
     "logout": "Logout",
-    "use-phone-or-email": "Use Phone or Email",
-    "scan-qr-code": "Scan QR Code",
+    "use-phone-or-email": "Use NetEase Music Phone or Email To Login",
+    "scan-qr-code": "Use NetEase Music Scan QR Code",
     "or": "or",
     "login-with-netease-qr": "Login with NetEase QR",
     "password": "Password",

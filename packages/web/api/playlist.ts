@@ -7,7 +7,35 @@ import {
   FetchDailyRecommendPlaylistsResponse,
   LikeAPlaylistParams,
   LikeAPlaylistResponse,
+  FetchTopPlaylistParams,
+  FetchTopPlaylistResponse,
+  FetchHQPlaylistParams,
+  FetchHQPlaylistResponse,
 } from '@/shared/api/Playlists'
+
+// hq 歌单
+export function fetchHQPlaylist(params: FetchHQPlaylistParams): Promise<FetchHQPlaylistResponse> {
+  if (!params.cat) params.cat = '' // 网易云默认返回8个收藏者，这里设置为0，减少返回的JSON体积
+  return request({
+    url: '/top/playlist/highquality',
+    method: 'get',
+    params: {
+      ...params,
+    },
+  })
+}
+
+// top歌单
+export function fetchTopPlaylist(params: FetchTopPlaylistParams): Promise<FetchTopPlaylistResponse> {
+  if (!params.cat) params.cat = '' // 网易云默认返回8个收藏者，这里设置为0，减少返回的JSON体积
+  return request({
+    url: '/top/playlist',
+    method: 'get',
+    params: {
+      ...params,
+    },
+  })
+}
 
 // 歌单详情
 export function fetchPlaylist(params: FetchPlaylistParams): Promise<FetchPlaylistResponse> {

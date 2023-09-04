@@ -6,7 +6,7 @@ import log from './log'
 log.info(`[sentry] sentry initializing`)
 
 Sentry.init({
-  dsn: 'https://2aaaa67f1c3d4d6baefafa5d58fcf340@o436528.ingest.sentry.io/6274637',
+  dsn: 'https://7d8a408fb378f9b378be20cff43de801@o4505816875532288.ingest.sentry.io/4505816882151424',
   release: `${appName}@${pkg.version}`,
   environment: process.env.NODE_ENV,
 

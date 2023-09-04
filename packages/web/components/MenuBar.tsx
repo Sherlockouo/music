@@ -9,6 +9,7 @@ import { breakpoint as bp } from '@/web/utils/const'
 import { useSnapshot } from 'valtio'
 import settings from '../states/settings'
 
+
 const tabs = [
   {
     name: 'MY MUSIC',
@@ -41,13 +42,13 @@ const TabName = () => {
   const controls = useAnimation()
 
   useEffect(() => {
-    const newName = getNameByPath(location.pathname)
-    const animate = async () => {
-      await controls.start('out')
-      setName(newName)
-      await controls.start('in')
-    }
-    if (newName !== name) animate()
+      const newName = getNameByPath(location.pathname)
+      const animate = async () => {
+        await controls.start('out')
+        setName(newName)
+        await controls.start('in')
+      }
+      if (newName !== name) animate()
   }, [controls, location.pathname, name])
 
   return (

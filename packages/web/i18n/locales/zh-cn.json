@@ -25,13 +25,13 @@
   "auth": {
     "login": "登录",
     "logout": "退出登录",
-    "scan-qr-code": "扫码登录",
-    "use-phone-or-email": "使用手机或邮箱登录",
+    "scan-qr-code": "请使用网易云音乐扫码登录",
+    "use-phone-or-email": "请使用网易云音乐手机或邮箱登录",
     "or": "或者",
     "password": "密码",
     "email": "邮箱",
     "phone": "手机",
-    "login-with-netease-qr": "扫描二维码登录"
+    "login-with-netease-qr": "请使用网易云音乐扫描二维码登录"
   },
   "player": {
     "play": "播放",

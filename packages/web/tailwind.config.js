@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const colors = require('tailwindcss/colors')
-// const pickedColors = require('./scripts/pickedColors.js')
+const pickedColors = require('./scripts/pickedColors.js')
 
 const fontSizeDefault = {
   lineHeight: '1.2',
@@ -13,7 +13,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // ...pickedColors,
+        ...pickedColors,
         // brand: colors.blue,
         brand: {
           50: '#FCFFF5',
@@ -100,6 +100,12 @@ module.exports = {
         24: '24px',
         48: '48px',
       },
+      height:{
+        lyric: '921px',
+      },
+      blur:{
+        lyric: '1px',
+      },
       fontFamily: {
         mono: ['Roboto Mono', 'ui-monospace'],
       },
@@ -113,6 +119,13 @@ module.exports = {
         5: '0.05',
         15: '.15',
         25: '.25',
+      },
+      letterSpacing:{
+        lyricSpacing: '0.96px',
+        hilightLyric: '1.1px',
+      },
+      lineHeight:{
+        lyric: '120%',
       },
       backdropBlur: {
         sm: '2px',

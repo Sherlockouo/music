@@ -7,7 +7,7 @@ const Progress = () => {
   const { track, progress } = useSnapshot(player)
 
   return (
-    <div className='mt-9 mb-4 flex w-full flex-col'>
+    <div className='mt-9 mb-10 flex w-full flex-col'>
       <Slider
         min={0}
         max={(track?.dt ?? 100000) / 1000}

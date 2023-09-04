@@ -20,7 +20,7 @@ const Artist = () => {
           onClick={() => {
             changeShowAllSongs(!showAllSongs)
           }}
-          className='flex items-center justify-center rounded-full bg-white/20 text-white w-36'
+          className='flex gap-2 items-center justify-center rounded-full bg-white/20 text-white w-36'
         >
           {
             t`artist.all-songs`

@@ -14,6 +14,7 @@ export interface FetchAlbumResponse {
   description: string
 }
 
+// 喜欢专辑
 export interface LikeAAlbumParams {
   t: 1 | 2
   id: number

@@ -9,6 +9,9 @@ import { playerWidth, topbarHeight } from '@/web/utils/const'
 import { cx, css } from '@emotion/css'
 import CoverRow from '@/web/components/CoverRow'
 import topbarBackground from '@/web/assets/images/topbar-background.png'
+import Recommend from './Recommend'
+import Top from './Top'
+import Hot from './Hot'
 
 const reactQueryOptions = {
   refetchOnWindowFocus: false,
@@ -16,38 +19,25 @@ const reactQueryOptions = {
   refetchOnMount: false,
 }
 
-const Recommend = () => {
-  const { data: dailyRecommendPlaylists, isLoading: isLoadingDaily } = useQuery(
-    [PlaylistApiNames.FetchDailyRecommendPlaylists],
-    () => fetchDailyRecommendPlaylists(),
-    reactQueryOptions
-  )
-  const { data: recommendedPlaylists, isLoading: isLoading } = useQuery(
-    [PlaylistApiNames.FetchRecommendedPlaylists, { limit: 200 }],
-    () => fetchRecommendedPlaylists({ limit: 200 }),
-    reactQueryOptions
-  )
-  const playlists =
-    isLoadingDaily || isLoading
-      ? []
-      : [...(dailyRecommendPlaylists?.recommend || []), ...(recommendedPlaylists?.result || [])]
-
-  return <CoverRowVirtual playlists={playlists} />
-
-  // return <CoverRow playlists={playlists} />
-}
-
 const All = () => {
-  return <div></div>
+  return <div className='text-white/80 text-center mt-20'>
+    {
+      "still working on 'All' page  "
+    }
+    {/* <Recommend />
+    <All />
+    <Top />
+    <Hot /> */}
+  </div>
 }
 
 const categories = [
   { id: 'recommend', name: 'Recommend', component: <Recommend /> },
   { id: 'all', name: 'All', component: <All /> },
-  { id: 'featured', name: 'Featured', component: <Recommend /> },
-  { id: 'official', name: 'Official', component: <Recommend /> },
-  { id: 'charts', name: 'Charts', component: <Recommend /> },
+  { id: 'top', name: 'Top', component: <Top /> },
+  { id: 'hot', name: 'Hot', component: <Hot /> },
 ]
+
 const categoriesKeys = categories.map(c => c.id)
 type Key = typeof categoriesKeys[number]
 

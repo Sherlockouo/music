@@ -55,7 +55,6 @@ const Controls = () => {
                 bottom: 56px;
                 right: 56px;
                 width: 254px;
-                // width: 100%;
               `
         )}
       >
@@ -68,7 +67,7 @@ const Controls = () => {
         }>
 
           <div className={
-            cx(mini ? 'flex-col text-center' : 'flex gap-5 justify-between')
+            cx(mini ? 'flex-col text-center' : 'flex gap-6  justify-between mb-5')
           }>
 
             {/* Minimize */}
@@ -144,10 +143,9 @@ function VolumeSlider() {
     <div className={cx(css`
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     text-align: center;
-    padding-top: 3px;
     `)}>
       <Icon name= {player.volume == 0 ? 'volume-mute':'volume-half'} className={cx('text-white/80',player.volume == 0 ? 'h-4 w-4':'h-5 w-5')} />
       <div className={cx('pr-1 pl-1', css(`

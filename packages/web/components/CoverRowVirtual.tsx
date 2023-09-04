@@ -58,7 +58,7 @@ const CoverRow = ({
         itemSize={el => el.getBoundingClientRect().height + 24}
         totalCount={rows.length}
         components={{
-          Header: () => <div className='h-16'></div>,
+          Header: () => <div className='h-16 flex'></div>,
           Footer: () => <div className='h-16'></div>,
         }}
         itemContent={(index, row) => (

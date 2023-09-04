@@ -3,6 +3,40 @@ export enum PlaylistApiNames {
   FetchRecommendedPlaylists = 'fetchRecommendedPlaylists',
   FetchDailyRecommendPlaylists = 'fetchDailyRecommendPlaylists',
   LikeAPlaylist = 'likeAPlaylist',
+  FetchTopPlaylistParams = 'fetchTopPlaylist',
+  FetchHQPlaylistParams = 'fetchHQPlaylist',
+}
+
+// top playlist
+export interface FetchTopPlaylistParams {
+  cat?: string,
+  order: string,
+  limit: number,
+  offset: number
+}
+
+export interface FetchTopPlaylistResponse {
+  playlists: Playlist[]
+  code: number,
+  more: boolean,
+  // 分类
+  cat: string,
+  total: number
+}
+
+// hot playlist
+export interface FetchHQPlaylistParams {
+  cat?: string,
+  limit: number,
+  before: number
+}
+
+export interface FetchHQPlaylistResponse {
+  playlists: Playlist[]
+  code: number,
+  more: boolean,
+  lasttime: number,
+  total: number
 }
 
 // 歌单详情

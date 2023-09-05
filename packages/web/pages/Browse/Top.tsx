@@ -9,10 +9,10 @@ const reactQueryOptions = {
     refetchOnMount: false,
 }
 
-const Top = () => {
+const Top = ({cat}:{cat:string}) => {
     const { data: topPlayList, isLoading: isLoadingTop } = useQuery(
-        [PlaylistApiNames.FetchTopPlaylistParams],
-        () => fetchTopPlaylist({ cat: '', order: 'hot', limit: 500, offset: 0 }),
+        [PlaylistApiNames.FetchTopPlaylistParams,cat],
+        () => fetchTopPlaylist({ cat: cat, order: 'hot', limit: 500, offset: 0 }),
         reactQueryOptions
     )
         

@@ -16,7 +16,7 @@ const Avatar = ({className}: { className?: string }) => {
     const navigate = useNavigate()
 
     useRefreshCookie()
-    useDailyCheckIn()
+    // useDailyCheckIn()
 
     const avatarUrl = user?.profile?.avatarUrl
         ? resizeImage(user?.profile?.avatarUrl ?? '', 'sm')

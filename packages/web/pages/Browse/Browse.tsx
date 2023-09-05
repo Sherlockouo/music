@@ -19,14 +19,6 @@ const reactQueryOptions = {
   refetchOnMount: false,
 }
 
-const All = () => {
-  return <div className='text-white/80'>
-    {/* <Recommend /> */}
-    <Top />
-    {/* <Hot /> */}
-  </div>
-}
-
 const categories = [
   { id: 'recommend', name: 'Recommend', component: <Recommend /> },
   { id: 'top', name: 'Top', component: <Top cat='' /> },
@@ -38,6 +30,7 @@ const categories = [
   { id: 'pop', name: '流行', component: <Hot cat='流行'/> },
   { id: 'rap', name: '说唱', component: <Hot cat='说唱'/> },
   { id: 'cantonese', name: '粤语', component: <Hot cat='粤语' /> },
+  // { id: 'pop', name: '流行', component: <Hot cat='' /> },
   { id: 'mandarin', name: '华语', component: <Hot cat='华语' /> },
   { id: 'western', name: '欧美', component: <Hot cat='欧美' /> },
 ]

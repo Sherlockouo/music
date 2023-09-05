@@ -26,7 +26,7 @@ export interface FetchTopPlaylistResponse {
 
 // hot playlist
 export interface FetchHQPlaylistParams {
-  cat?: string,
+  cat: string,
   limit: number,
   before: number
 }

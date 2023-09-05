@@ -15,7 +15,7 @@ import {
 
 // hq 歌单
 export function fetchHQPlaylist(params: FetchHQPlaylistParams): Promise<FetchHQPlaylistResponse> {
-  if (!params.cat) params.cat = '' // 网易云默认返回8个收藏者，这里设置为0，减少返回的JSON体积
+  console.log('hq params: ',params);
   return request({
     url: '/top/playlist/highquality',
     method: 'get',
@@ -27,7 +27,7 @@ export function fetchHQPlaylist(params: FetchHQPlaylistParams): Promise<FetchHQP
 
 // top歌单
 export function fetchTopPlaylist(params: FetchTopPlaylistParams): Promise<FetchTopPlaylistResponse> {
-  if (!params.cat) params.cat = '' // 网易云默认返回8个收藏者，这里设置为0，减少返回的JSON体积
+  if (!params.cat) params.cat = ''
   return request({
     url: '/top/playlist',
     method: 'get',

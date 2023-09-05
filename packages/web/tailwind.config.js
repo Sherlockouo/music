@@ -112,6 +112,10 @@ module.exports = {
       margin: {
         7.5: '1.875rem',
       },
+      padding: {
+        lyricTop: '20%',
+        lyricBottom: '50%'
+      },
       transitionDuration: {
         400: '400ms',
       },

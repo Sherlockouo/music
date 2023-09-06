@@ -58,7 +58,7 @@ const CoverRow = ({
         itemSize={el => el.getBoundingClientRect().height + 24}
         totalCount={rows.length}
         components={{
-          Header: () => <div className={cx('h-4',
+          Header: () => <div className={cx('h-4 ease-in-out',
           css`
           @media (max-width: 490px){
             height: 10rem;
@@ -66,7 +66,7 @@ const CoverRow = ({
           @media (max-width: 1190px){
             height: 8rem;
           }
-          @media (max-width:1823px){
+          @media (max-width:1781px){
             height: 3.8rem; 
           }
           `

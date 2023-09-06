@@ -14,6 +14,9 @@ importers:
       '@unblockneteasemusic/server':
         specifier: ^0.27.3
         version: 0.27.3
+      electron-media-service:
+        specifier: ^0.2.2
+        version: registry.npmmirror.com/electron-media-service@0.2.2
       log4js:
         specifier: ^6.9.1
         version: 6.9.1
@@ -472,7 +475,7 @@ packages:
       '@babel/helper-validator-option': 7.22.5
       browserslist: 4.21.10
       lru-cache: 5.1.1
-      semver: 6.3.1
+      semver: registry.npmmirror.com/semver@6.3.1
 
   /@babel/helper-environment-visitor@7.22.5:
     resolution: {integrity: sha512-XGmhECfVA/5sAt+H+xpSg0mfrHq6FzNr9Oxh7PSEBBRUb/mL7Kz3NICXb194rCqAEdxkhPT1a88teizAFyvk8Q==}
@@ -2323,7 +2326,7 @@ packages:
   /bindings@1.5.0:
     resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==}
     dependencies:
-      file-uri-to-path: 1.0.0
+      file-uri-to-path: registry.npmmirror.com/file-uri-to-path@1.0.0
     dev: false
 
   /bl@4.1.0:
@@ -3006,7 +3009,7 @@ packages:
       json-schema-typed: 7.0.3
       onetime: 5.1.2
       pkg-up: 3.1.0
-      semver: 7.3.7
+      semver: registry.npmmirror.com/semver@7.5.4
     dev: false
 
   /console-control-strings@1.1.0:
@@ -4384,15 +4387,6 @@ packages:
       token-types: 5.0.1
     dev: true
 
-  /file-uri-to-path@1.0.0:
-    resolution: {integrity: sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==}
-    dev: false
-
-  /file-uri-to-path@2.0.0:
-    resolution: {integrity: sha512-hjPFI8oE/2iQPVe4gbrJ73Pp+Xfub2+WI2LlXDbsaJBwT5wuMh35WNWVYYTpnz895shtwfyutMFLFywpQAFdLg==}
-    engines: {node: '>= 6'}
-    dev: false
-
   /filelist@1.0.4:
     resolution: {integrity: sha512-w1cEuf3S+DrLCQL7ET6kz+gmlJdbq9J7yXCSjK/OZCPA+qEN1WyF4ZAf0YYJa4/shHJra2t/d/r8SV4Ji+x+8Q==}
     dependencies:
@@ -4681,7 +4675,7 @@ packages:
       '@tootallnate/once': 1.1.2
       data-uri-to-buffer: 3.0.1
       debug: 4.3.4
-      file-uri-to-path: 2.0.0
+      file-uri-to-path: registry.npmmirror.com/file-uri-to-path@2.0.0
       fs-extra: 8.1.0
       ftp: 0.3.10
     transitivePeerDependencies:
@@ -11909,6 +11903,14 @@ packages:
     name: base64-js
     version: 1.5.1
 
+  registry.npmmirror.com/bindings@1.5.0:
+    resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/bindings/-/bindings-1.5.0.tgz}
+    name: bindings
+    version: 1.5.0
+    dependencies:
+      file-uri-to-path: registry.npmmirror.com/file-uri-to-path@1.0.0
+    dev: false
+
   registry.npmmirror.com/brace-expansion@1.1.11:
     resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/brace-expansion/-/brace-expansion-1.1.11.tgz}
     name: brace-expansion
@@ -12138,6 +12140,17 @@ packages:
     dependencies:
       jake: registry.npmmirror.com/jake@10.8.7
     dev: true
+
+  registry.npmmirror.com/electron-media-service@0.2.2:
+    resolution: {integrity: sha512-LP4p8jQ5RXoY8htrzOg9tZa39bqkbhPLHNaoTpOQzP3lr/y4U32iCULKFj2SbqMsKEnzn+B7o92c8AvieqRPSw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/electron-media-service/-/electron-media-service-0.2.2.tgz}
+    name: electron-media-service
+    version: 0.2.2
+    requiresBuild: true
+    dependencies:
+      bindings: registry.npmmirror.com/bindings@1.5.0
+      nan: registry.npmmirror.com/nan@2.17.0
+      semver: registry.npmmirror.com/semver@5.7.2
+    dev: false
 
   registry.npmmirror.com/electron-to-chromium@1.4.490:
     resolution: {integrity: sha512-6s7NVJz+sATdYnIwhdshx/N/9O6rvMxmhVoDSDFdj6iA45gHR8EQje70+RYsF4GeB+k0IeNSBnP7yG9ZXJFr7A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/electron-to-chromium/-/electron-to-chromium-1.4.490.tgz}
@@ -12702,6 +12715,19 @@ packages:
     name: fast-json-stable-stringify
     version: 2.1.0
     dev: true
+
+  registry.npmmirror.com/file-uri-to-path@1.0.0:
+    resolution: {integrity: sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/file-uri-to-path/-/file-uri-to-path-1.0.0.tgz}
+    name: file-uri-to-path
+    version: 1.0.0
+    dev: false
+
+  registry.npmmirror.com/file-uri-to-path@2.0.0:
+    resolution: {integrity: sha512-hjPFI8oE/2iQPVe4gbrJ73Pp+Xfub2+WI2LlXDbsaJBwT5wuMh35WNWVYYTpnz895shtwfyutMFLFywpQAFdLg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/file-uri-to-path/-/file-uri-to-path-2.0.0.tgz}
+    name: file-uri-to-path
+    version: 2.0.0
+    engines: {node: '>= 6'}
+    dev: false
 
   registry.npmmirror.com/filelist@1.0.4:
     resolution: {integrity: sha512-w1cEuf3S+DrLCQL7ET6kz+gmlJdbq9J7yXCSjK/OZCPA+qEN1WyF4ZAf0YYJa4/shHJra2t/d/r8SV4Ji+x+8Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/filelist/-/filelist-1.0.4.tgz}
@@ -13305,6 +13331,12 @@ packages:
     version: 2.1.2
     dev: true
 
+  registry.npmmirror.com/nan@2.17.0:
+    resolution: {integrity: sha512-2ZTgtl0nJsO0KQCjEpxcIr5D+Yv90plTitZt9JBfQvVJDS5seMl3FOvsh3+9CoYWXf/1l5OaZzzF6nDm4cagaQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/nan/-/nan-2.17.0.tgz}
+    name: nan
+    version: 2.17.0
+    dev: false
+
   registry.npmmirror.com/node-releases@2.0.13:
     resolution: {integrity: sha512-uYr7J37ae/ORWdZeQ1xxMJe3NtdmqMC/JZK+geofDrkLUApKRHPd18/TxtBOJ4A0/+uUIliorNrfYV6s1b02eQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/node-releases/-/node-releases-2.0.13.tgz}
     name: node-releases
@@ -13598,12 +13630,18 @@ packages:
       is-regex: registry.npmmirror.com/is-regex@1.1.4
     dev: true
 
+  registry.npmmirror.com/semver@5.7.2:
+    resolution: {integrity: sha512-cBznnQ9KjJqU67B52RMC65CMarK2600WFnbkcaiwWq3xy/5haFJlshgnpjovMVJ+Hff49d8GEn0b87C5pDQ10g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/semver/-/semver-5.7.2.tgz}
+    name: semver
+    version: 5.7.2
+    hasBin: true
+    dev: false
+
   registry.npmmirror.com/semver@6.3.1:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/semver/-/semver-6.3.1.tgz}
     name: semver
     version: 6.3.1
     hasBin: true
-    dev: true
 
   registry.npmmirror.com/semver@7.5.4:
     resolution: {integrity: sha512-1bCSESV6Pv+i21Hvpxp3Dx+pSD8lIPt8uVjRrxAUt/nbswYc+tK6Y2btiULjd4+fnq15PX+nqQDC7Oft7WkwcA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/semver/-/semver-7.5.4.tgz}
@@ -13613,7 +13651,6 @@ packages:
     hasBin: true
     dependencies:
       lru-cache: 6.0.0
-    dev: true
 
   registry.npmmirror.com/serialize-javascript@4.0.0:
     resolution: {integrity: sha512-GaNA54380uFefWghODBWEGisLZFj00nS5ACs6yHa9nLqlLpVLO8ChDGeKRjZnV4Nh4n0Qi7nhYZD/9fCPzEqkw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/serialize-javascript/-/serialize-javascript-4.0.0.tgz}

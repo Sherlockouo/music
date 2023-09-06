@@ -100,10 +100,10 @@ module.exports = {
         24: '24px',
         48: '48px',
       },
-      height:{
+      height: {
         lyric: '921px',
       },
-      blur:{
+      blur: {
         lyric: '1px',
       },
       fontFamily: {
@@ -116,6 +116,7 @@ module.exports = {
         lyricTop: '20%',
         lyricBottom: '50%'
       },
+
       transitionDuration: {
         400: '400ms',
       },
@@ -124,11 +125,11 @@ module.exports = {
         15: '.15',
         25: '.25',
       },
-      letterSpacing:{
+      letterSpacing: {
         lyricSpacing: '0.96px',
         hilightLyric: '1.1px',
       },
-      lineHeight:{
+      lineHeight: {
         lyric: '120%',
       },
       backdropBlur: {
@@ -141,6 +142,15 @@ module.exports = {
         '3xl': '45px',
       },
     },
+    // screens: {
+      // sm: '640px',
+      // md: '768px',
+      // lg: '@media (min-width: 1024px)',
+      // xl: '@media (min-width: 1280px)',
+      // xl2: '@media (min-width: 1536px)',
+      // mds: '1480px',
+      // mins: '663px'
+    // }
   },
   plugins: [require('@tailwindcss/container-queries')],
 }

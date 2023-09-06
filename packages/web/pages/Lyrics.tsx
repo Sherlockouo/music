@@ -91,7 +91,7 @@ const Lyrics = () => {
       player.play(true)
     }
 
-    const lineClassName = cx('lyrics-row transition duration-700 ease-out leading-120 tracking-lyricSpacing mt-5 mb-5 pb-2',
+    const lineClassName = cx('lyrics-row transition duration-700 leading-120 tracking-lyricSpacing mt-5 mb-5 pb-2 ease-in-out',
       index === currentLineIndex && 'line-clamp-4 font-bold text-accent-color-500 tracking-hilightLyric leading-lyric text-32',
       index !== currentLineIndex && 'lyrics-padding normal-lyric-font-size font-black tracking-lyric leading-lyric text-white/30 text-24 blur-lyric',
       (index !== currentLineIndex && isHovered) && 'blur-none',

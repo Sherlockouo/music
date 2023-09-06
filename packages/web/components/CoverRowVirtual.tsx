@@ -1,5 +1,5 @@
 import { resizeImage } from '@/web/utils/common'
-import { cx } from '@emotion/css'
+import { cx,css } from '@emotion/css'
 import { useNavigate } from 'react-router-dom'
 import { prefetchAlbum } from '@/web/api/hooks/useAlbum'
 import { prefetchPlaylist } from '@/web/api/hooks/usePlaylist'
@@ -58,7 +58,19 @@ const CoverRow = ({
         itemSize={el => el.getBoundingClientRect().height + 24}
         totalCount={rows.length}
         components={{
-          Header: () => <div className='h-16 flex'></div>,
+          Header: () => <div className={cx('h-4',
+          css`
+          @media (max-width: 490px){
+            height: 10rem;
+          }
+          @media (max-width: 1190px){
+            height: 8rem;
+          }
+          @media (max-width:1500px){
+            height: 3.8rem; 
+          }
+          `
+          )}></div>,
           Footer: () => <div className='h-16'></div>,
         }}
         itemContent={(index, row) => (

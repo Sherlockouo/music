@@ -22,6 +22,7 @@
     "lint": "eslint .",
     "format": "prettier --write \"**/*.{ts,tsx,mjs,js,jsx,md,css}\""
   },
+  
   "devDependencies": {
     "cross-env": "^7.0.3",
     "electron": "^23.1.4",

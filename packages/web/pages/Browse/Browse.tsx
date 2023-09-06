@@ -29,9 +29,17 @@ const All = () => {
 
 const categories = [
   { id: 'recommend', name: 'Recommend', component: <Recommend /> },
-  { id: 'all', name: 'All', component: <All /> },
-  { id: 'top', name: 'Top', component: <Top /> },
-  { id: 'hot', name: 'Hot', component: <Hot /> },
+  { id: 'top', name: 'Top', component: <Top cat='' /> },
+  { id: 'ACG', name: 'ACG', component: <Top cat='ACG' /> },
+  { id: 'shake', name: '后摇', component: <Top cat='后摇' /> },
+  { id: 'acient', name: '古风', component: <Top cat='古风' /> },
+  { id: 'board', name: '榜单', component: <Top cat='榜单' /> },
+  { id: 'hot', name: 'Hot', component: <Hot cat=''/> },
+  { id: 'pop', name: '流行', component: <Hot cat='流行'/> },
+  { id: 'rap', name: '说唱', component: <Hot cat='说唱'/> },
+  { id: 'cantonese', name: '粤语', component: <Hot cat='粤语' /> },
+  { id: 'mandarin', name: '华语', component: <Hot cat='华语' /> },
+  { id: 'western', name: '欧美', component: <Hot cat='欧美' /> },
 ]
 
 const categoriesKeys = categories.map(c => c.id)
@@ -42,30 +50,28 @@ const Browse = () => {
 
   return (
     <PageTransition>
-      <div className='relative'>
+      <div className={cx('relative',
+      'sm: mb-25  md:mb-20  xl:mb-20',
+      )}>
         {/* Topbar background */}
-        <div
-          className={cx(
-            'pointer-events-none fixed top-0 left-0 z-10 hidden lg:block',
-            css`
-              height: 230px;
-            `
-          )}
-          style={{
-            right: `${playerWidth + 32}px`,
-            // cancel background
-            // backgroundImage: `url(${topbarBackground})`,
-          }}
-        ></div>
-
         <Tabs
           tabs={categories}
           value={active}
           onChange={category => setActive(category)}
-          className='absolute top-0 z-10 mt-2.5 px-2.5 lg:mt-0 lg:px-0'
+          className='flex top-0 z-10 mt-2.5 px-2.5 flex-wrap'
         />
 
-        <div className='absolute inset-0 mx-2.5 mt-5 lg:mx-0 lg:mt-0'>
+        <div className={cx(
+          'absolute inset-0 mx-2.5 mt-0 ',
+          css`
+          @media (min-width: 496px){
+            margin-top: 4rem;
+          }
+          @media (min-width:1825px){
+            margin-top: 3rem;
+          }
+          `
+        )}>
           {categories.find(c => c.id === active)?.component}
         </div>
       </div>

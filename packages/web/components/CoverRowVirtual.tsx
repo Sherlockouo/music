@@ -66,7 +66,7 @@ const CoverRow = ({
           @media (max-width: 1190px){
             height: 8rem;
           }
-          @media (max-width:1500px){
+          @media (max-width:1823px){
             height: 3.8rem; 
           }
           `

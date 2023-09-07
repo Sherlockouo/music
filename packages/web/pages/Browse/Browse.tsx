@@ -51,19 +51,11 @@ const Browse = () => {
           tabs={categories}
           value={active}
           onChange={category => setActive(category)}
-          className='flex top-0 z-10 mt-2.5 px-2.5 flex-wrap'
+          className='flex top-0 z-10 mt-2.5 px-2.5 flex-wrap mb-2.5'
         />
 
         <div className={cx(
-          'absolute inset-0 mx-2.5 mt-0 ',
-          css`
-          @media (min-width: 496px){
-            margin-top: 4rem;
-          }
-          @media (min-width:1825px){
-            margin-top: 3rem;
-          }
-          `
+          'inset-0 mx-2.5 mt-0 ',
         )}>
           {categories.find(c => c.id === active)?.component}
         </div>

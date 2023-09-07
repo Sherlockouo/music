@@ -5,7 +5,7 @@ export interface ContextMenuPosition {
 }
 
 export interface ContextMenuItem {
-  type: 'item' | 'submenu' | 'divider'
+  type: 'item' | 'submenu' | 'divider' | 'list'
   label?: string | null
   onClick?: (e: MouseEvent) => void
   items?: ContextMenuItem[]

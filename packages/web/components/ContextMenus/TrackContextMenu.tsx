@@ -9,6 +9,9 @@ import { useCopyToClipboard } from 'react-use'
 import { useSnapshot } from 'valtio'
 import BasicContextMenu from './BasicContextMenu'
 import player from '@/web/states/player'
+import useUserLikedTracksIDs, { useMutationLikeATrack } from '@/web/api/hooks/useUserLikedTracksIDs'
+import { useIsLoggedIn } from '@/web/api/hooks/useUser'
+import uiStates from '@/web/states/uiStates'
 
 const TrackContextMenu = () => {
   const navigate = useNavigate()
@@ -17,6 +20,8 @@ const TrackContextMenu = () => {
   const [, copyToClipboard] = useCopyToClipboard()
 
   const { type, dataSourceID, target, cursorPosition, options } = useSnapshot(contextMenus)
+  const likeATrack = useMutationLikeATrack()
+  const loggedIn = useIsLoggedIn()
 
   return (
     <AnimatePresence>
@@ -66,15 +71,24 @@ const TrackContextMenu = () => {
               type: 'item',
               label: t`context-menu.add-to-liked-tracks`,
               onClick: () => {
-                toast('开发中')
+                if(!loggedIn){
+                  toast.error('Plz login first')
+                  uiStates.showLoginPanel = true
+                  return
+                }
+                likeATrack.mutateAsync(Number(dataSourceID))
+                toast.success('Like Success')
               },
             },
             {
               type: 'item',
               label: t`context-menu.add-to-playlist`,
               onClick: () => {
-                toast('开发中')
+                // 收藏到歌单
+                // player.addToPlayList(Number(dataSourceID))
+                toast.success('开发中')
               },
+              
             },
             {
               type: 'submenu',
@@ -87,6 +101,7 @@ const TrackContextMenu = () => {
                     copyToClipboard(`https://music.163.com/#/album?id=${dataSourceID}`)
                     toast.success(t`toasts.copied`)
                   },
+                  
                 },
                 {
                   type: 'item',

@@ -8,6 +8,7 @@ import { lyricParser } from '@/web/utils/lyric'
 import { useTranslation } from 'react-i18next'
 import { Player, State as PlayerState } from '@/web/utils/player'
 import { startTransition } from 'react';
+import toast from 'react-hot-toast'
 
 const Lyrics = () => {
   const containerRef = useRef(null)
@@ -18,7 +19,16 @@ const Lyrics = () => {
   const { lyric: lyrics, tlyric: tlyric } = lyricParser(lyricsResponse)
   const { state: playerState, progress, nowVolume } = useSnapshot(player)
   const { t } = useTranslation()
-  const [isScrolling, setIsScrolling] = useState(false);
+  // const [isScrolling, setIsScrolling] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
 
   useEffect(() => {
     const updateCurrentLineIndex = () => {
@@ -83,8 +93,8 @@ const Lyrics = () => {
 
     const lineClassName = cx('lyrics-row transition duration-700 leading-120 tracking-lyricSpacing mt-5 mb-5 pb-2 ease-in-out',
       index === currentLineIndex && 'line-clamp-4 font-bold text-accent-color-500 tracking-hilightLyric leading-lyric text-32',
-      index !== currentLineIndex && 'lyrics-padding normal-lyric-font-size font-black tracking-lyric leading-lyric text-white/30 text-24 blur-lyric hover:blur-none',
-      (index !== currentLineIndex  && isScrolling ) && 'blur-none',
+      index !== currentLineIndex && 'lyrics-padding normal-lyric-font-size font-black tracking-lyric leading-lyric text-white/30 text-24 blur-lyric',
+      (index !== currentLineIndex && isHovered) && 'blur-none',
     )
 
     const hightlightStyle = index === currentLineIndex ? {
@@ -128,37 +138,36 @@ const Lyrics = () => {
         <div className='artist-info padding-bottom-20 text-20 mb-8 mt-8 text-center font-medium text-neutral-400'>
           {player.state == "ready" && t`common.lyric-welcome`}
         </div>
-
-
-
-
       </PageTransition>
     )
   }
-  const handleScroll = () => {
-    startTransition(() => {
-    // 设置滚动状态为 true
-    setIsScrolling(true);
+  // const handleScroll = () => {
+  //   startTransition(() => {
+  //     // 设置滚动状态为 true
+  //     setIsScrolling(true);
+
+  //     // 在一定时间后，将滚动状态设置为 false
+  //     clearTimeout(4000);
+  //     const scrollTimeout = setTimeout(() => {
+  //       setIsScrolling(false);
+  //     }, 4000);
+  //   })
+  // };
   
-    // 在一定时间后，将滚动状态设置为 false
-    clearTimeout(5000);
-    const scrollTimeout = setTimeout(() => {
-      setIsScrolling(false);
-    }, 5000);
-  })
-  };
   return (
     <PageTransition>
       <div className={cx('lyrics-player h-921', 'font-Roboto font-bold backdrop-blur-md')}>
         <div
-          className={cx('lyrics-container  mb-8 mt-8 text-left overflow-scroll h-lyric',
-          css`
+          className={cx('lyrics-container overscroll-y-contain  pb-lyricBottom pt-lyricTop text-left overflow-scroll h-lyric ',
+            css`
           &::-webkit-scrollbar {
             width: 0;
             background: transparent;
           }`)}
           ref={containerRef}
-          onScroll={handleScroll}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          // onScroll={handleScroll}
         >
           <div className='artist-info padding-bottom-20 mb-8 mt-8 text-left text-white/30 text-24'>
             <p className=''>{player.track?.name}</p>

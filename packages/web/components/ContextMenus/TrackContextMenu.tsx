@@ -76,8 +76,9 @@ const TrackContextMenu = () => {
                   uiStates.showLoginPanel = true
                   return
                 }
-                likeATrack.mutateAsync(Number(dataSourceID))
-                toast.success('Like Success')
+                likeATrack.mutateAsync(Number(dataSourceID)).then(()=>{
+                  toast.success('Like Success')
+                })
               },
             },
             {

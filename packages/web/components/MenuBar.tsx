@@ -54,7 +54,6 @@ const TabName = () => {
     <div
       className={cx(
         'absolute bottom-8 right-0 left-0 z-10 flex rotate-180 select-none items-center font-bold text-brand-600 dark:text-brand-700',
-        'sm:hidden lg:block',
         css`
           writing-mode: vertical-rl;
           text-orientation: mixed;
@@ -96,9 +95,7 @@ const Tabs = () => {
 
   return (
     <div
-      className={cx(
-        'grid grid-cols-4 justify-items-center text-black/10	dark:text-white/20 lg:block lg:grid-cols-1 lg:gap-12'
-      )}
+      className='grid grid-cols-4 justify-items-center text-black/10	dark:text-white/20 lg:grid-cols-1 lg:gap-12'
       onClick={() => {}}
     >
       {tabs
@@ -149,19 +146,12 @@ const MenuBar = () => {
   return (
     <div
       className={cx(
-        'app-region-drag left-0 flex w-full flex-col ',
-        'relative justify-center lg:top-0  lg:bottom-0 lg:h-full',
-        'backdrop-blur-8px z-30 rounded-12 bg-black text-black sm:fixed sm:bottom-0 ',
+        'app-region-drag relative flex h-full w-full flex-col justify-center',
+        'lg:fixed lg:left-0 lg:top-0 lg:bottom-0',
         css`
           ${bp.lg} {
             width: 104px;
           }
-          // ${bp.xs} {
-          //   display: fixed;
-          //   width: 100%;
-          //   bottom: 0;
-          //   z-index: 30;
-          // }
         `
       )}
     >

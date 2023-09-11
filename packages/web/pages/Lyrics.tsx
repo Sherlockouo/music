@@ -7,10 +7,12 @@ import player from '@/web/states/player'
 import { lyricParser } from '@/web/utils/lyric'
 import { useTranslation } from 'react-i18next'
 import { Player, State as PlayerState } from '@/web/utils/player'
-import { startTransition } from 'react';
+import { startTransition } from 'react'
 import toast from 'react-hot-toast'
+import useIsMobile from '@/web/hooks/useIsMobile'
 
 const Lyrics = () => {
+  const isMobile = useIsMobile()
   const containerRef = useRef(null)
   const [currentLineIndex, setCurrentLineIndex] = useState(0)
   const [currentVolumnValue, setCurrentVolumnValue] = useState(128)
@@ -20,15 +22,15 @@ const Lyrics = () => {
   const { state: playerState, progress, nowVolume } = useSnapshot(player)
   const { t } = useTranslation()
   // const [isScrolling, setIsScrolling] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered, setIsHovered] = useState(false)
 
   const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
+    setIsHovered(true)
+  }
 
   const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
+    setIsHovered(false)
+  }
 
   useEffect(() => {
     const updateCurrentLineIndex = () => {
@@ -51,7 +53,7 @@ const Lyrics = () => {
   }, [progress])
 
   useEffect(() => {
-    var light = 1 / (1 + Math.exp(-(nowVolume - 128) / 64)) * 20
+    var light = (1 / (1 + Math.exp(-(nowVolume - 128) / 64))) * 20
     setCurrentVolumnValue(light)
   }, [nowVolume])
 
@@ -91,20 +93,33 @@ const Lyrics = () => {
       player.play(true)
     }
 
-    const lineClassName = cx('lyrics-row transition duration-700 leading-120 tracking-lyricSpacing mt-5 mb-5 pb-2 ease-in-out',
-      index === currentLineIndex && 'line-clamp-4 font-bold text-accent-color-500 tracking-hilightLyric leading-lyric text-32',
-      index !== currentLineIndex && 'lyrics-padding normal-lyric-font-size font-black tracking-lyric leading-lyric text-white/30 text-24 blur-lyric',
-      (index !== currentLineIndex && isHovered) && 'blur-none',
+    const lineClassName = cx(
+      'lyrics-row transition duration-700 leading-120 tracking-lyricSpacing mt-5 mb-5 pb-2 ease-in-out',
+      index === currentLineIndex &&
+        'line-clamp-4 font-bold text-accent-color-500 tracking-hilightLyric leading-lyric text-32',
+      index !== currentLineIndex &&
+        'lyrics-padding normal-lyric-font-size font-black tracking-lyric leading-lyric text-white/30 text-24 blur-lyric',
+      index !== currentLineIndex && isHovered && 'blur-none'
     )
 
-    const hightlightStyle = index === currentLineIndex ? {
-      textShadow: "rgb(216,216,216," + (currentVolumnValue / 25) + ") 3px 3px " + currentVolumnValue + "px"
-    } : {}
+    const hightlightStyle =
+      index === currentLineIndex && isMobile
+        ? {
+            textShadow:
+              'rgb(216,216,216,' +
+              currentVolumnValue / 25 +
+              ') 3px 3px ' +
+              currentVolumnValue +
+              'px',
+          }
+        : {}
 
     return (
-      <div className={cx(lineClassName, 'font-Roboto')} key={index} onDoubleClick={setSongToLyric} style={
-        hightlightStyle
-      }
+      <div
+        className={cx(lineClassName, 'font-Roboto')}
+        key={index}
+        onDoubleClick={setSongToLyric}
+        style={hightlightStyle}
       >
         <p>{lyric}</p>
         <p>{tLyric}</p>
@@ -114,29 +129,32 @@ const Lyrics = () => {
 
   if (lyricsResponse == undefined || lyricsResponse.code != 200 || lyrics.length == 0) {
     const hightlightStyle = {
-      textShadow: "rgb(255,255,255," + (currentVolumnValue / 5) + ") 0px 0px " + currentVolumnValue + "px",
-      padding: '12px'
+      textShadow:
+        'rgb(255,255,255,' + currentVolumnValue / 5 + ') 0px 0px ' + currentVolumnValue + 'px',
+      padding: '12px',
     }
     return (
       <PageTransition>
-        {player?.state == "playing" && <div className='artist-info padding-bottom-20 text-21 mb-8 mt-8 text-center font-medium h-921 text-white/30'
-          style={{
-            paddingTop: '100px',
-            height: '921px',
-            overflow: 'scroll'
-          }}
-        >
-          <div className='no-lyrics mb-4 mt-8 text-center'>
-            <p>{player.track?.name}</p>
-            <p>By - {player.track?.ar[0].name}</p>
+        {player?.state == 'playing' && (
+          <div
+            className='artist-info padding-bottom-20 h-921 mb-8 mt-8 text-center text-21 font-medium text-white/30'
+            style={{
+              paddingTop: '100px',
+              height: '921px',
+              overflow: 'scroll',
+            }}
+          >
+            <div className='no-lyrics mb-4 mt-8 text-center'>
+              <p>{player.track?.name}</p>
+              <p>By - {player.track?.ar[0].name}</p>
+            </div>
+            <p className='normal-lyric-font-size highlight-lyric' style={hightlightStyle}>
+              请欣赏·纯音乐
+            </p>
           </div>
-          <p className='normal-lyric-font-size highlight-lyric' style={hightlightStyle}>
-            请欣赏·纯音乐
-          </p>
-        </div>
-        }
+        )}
         <div className='artist-info padding-bottom-20 text-20 mb-8 mt-8 text-center font-medium text-neutral-400'>
-          {player.state == "ready" && t`common.lyric-welcome`}
+          {player.state == 'ready' && t`common.lyric-welcome`}
         </div>
       </PageTransition>
     )
@@ -153,23 +171,26 @@ const Lyrics = () => {
   //     }, 4000);
   //   })
   // };
-  
+
   return (
     <PageTransition>
       <div className={cx('lyrics-player h-921', 'font-Roboto font-bold backdrop-blur-md')}>
         <div
-          className={cx('lyrics-container overscroll-y-contain  pb-lyricBottom pt-lyricTop text-left overflow-scroll h-lyric ',
+          className={cx(
+            'lyrics-container h-lyric  overflow-scroll overscroll-y-contain pb-lyricBottom pt-lyricTop text-left ',
             css`
-          &::-webkit-scrollbar {
-            width: 0;
-            background: transparent;
-          }`)}
+              &::-webkit-scrollbar {
+                width: 0;
+                background: transparent;
+              }
+            `
+          )}
           ref={containerRef}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           // onScroll={handleScroll}
         >
-          <div className='artist-info padding-bottom-20 mb-8 mt-8 text-left text-white/30 text-24'>
+          <div className='artist-info padding-bottom-20 mb-8 mt-8 text-left text-24 text-white/30'>
             <p className=''>{player.track?.name}</p>
             <p className=''>By - {player.track?.ar[0].name}</p>
           </div>

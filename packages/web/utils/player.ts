@@ -20,6 +20,7 @@ import { appName } from './const'
 import { FetchAudioSourceResponse } from '@/shared/api/Track'
 import { LogLevel } from 'react-virtuoso'
 import settings from '@/web/states/settings'
+import useIsMobile from '@/web/hooks/useIsMobile'
 
 type TrackID = number
 export enum TrackListSourceType {
@@ -49,6 +50,9 @@ const port = import.meta.env.DEV ? 10660 : 30003
 
 let _howler = new Howl({ src: [''], format: ['mp3', 'flac'] })
 let _analyser = Howler.ctx.createAnalyser()
+
+const isMobile = useIsMobile()
+
 export class Player {
   private _track: Track | null = null
   private _trackIndex: number = 0
@@ -65,7 +69,6 @@ export class Player {
   fmTrackList: TrackID[] = []
   shuffle: boolean = false
   fmTrack: Track | null = null
-
 
   init(params: { [key: string]: any }) {
     if (params._track) this._track = params._track
@@ -128,37 +131,39 @@ export class Player {
   }
 
   private getSongFFT() {
+    if (isMobile) return
     // Connect master gain to analyzer
     _analyser = Howler.ctx.createAnalyser()
-    Howler.masterGain.connect(_analyser);
+    Howler.masterGain.connect(_analyser)
     // Howler.volume(0.4)
 
     // Connect analyzer to destination
     // _analyser.connect(Howler.ctx.destination);
 
     // Creating output array (according to documentation https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API)
-    _analyser.fftSize = 2048;
+    _analyser.fftSize = 2048
 
-    var bufferLength = _analyser.frequencyBinCount;
-    var dataArray = new Uint8Array(bufferLength);
+    var bufferLength = _analyser.frequencyBinCount
+    var dataArray = new Uint8Array(bufferLength)
 
     var smooth = 0.02
 
-    var start = 16, end = 128;
+    var start = 16,
+      end = 128
 
     // Display array on time each 3 sec (just to debug)
     setInterval(() => {
-      _analyser.getByteFrequencyData(dataArray);
-      var sum = 0;
+      _analyser.getByteFrequencyData(dataArray)
+      var sum = 0
       dataArray.forEach(function (val, idx, arr) {
         if (start <= idx && idx < end) {
-          sum += val;
+          sum += val
         }
-      }, 0);
+      }, 0)
       // console.log(sum / (end - start));
 
       this._nowVolume = this._nowVolume * smooth + (sum / (end - start)) * (1 - smooth)
-    }, 16);
+    }, 16)
   }
 
   /**
@@ -266,27 +271,27 @@ export class Player {
 
   /**
    * Fetch unlocked audio source
-   * @param trackID 
-   * @returns 
+   * @param trackID
+   * @returns
    */
-  private async _fetchUnlockAudioSource(trackID: TrackID){
+  private async _fetchUnlockAudioSource(trackID: TrackID) {
     if (settings.unlock) {
-
       try {
-        console.log('get port', port);
+        console.log('get port', port)
 
         const unlockResp = await fetch(
-          `http://localhost:${port}/unblockneteasemusic?track_id=${trackID}`, {
-          method: "GET"
-        }
+          `http://localhost:${port}/unblockneteasemusic?track_id=${trackID}`,
+          {
+            method: 'GET',
+          }
         )
 
         if (unlockResp.body !== null) {
           const respJSON = await unlockResp.json()
           console.log(respJSON)
-          let audio = respJSON["url"]
-          if (audio != "") {
-            console.log("[unblockneteasemusic] use unlock url:", audio);
+          let audio = respJSON['url']
+          if (audio != '') {
+            console.log('[unblockneteasemusic] use unlock url:', audio)
 
             return {
               audio,
@@ -295,7 +300,7 @@ export class Player {
           }
         }
       } catch (err) {
-        console.log('[unblockneteasemusic] err', err);
+        console.log('[unblockneteasemusic] err', err)
         return {
           audio: null,
           id: trackID,
@@ -317,17 +322,17 @@ export class Player {
       if (audio && audio.includes('126.net')) {
         audio = audio.replace('http://', 'https://')
       }
-      if(audio == "" || audio == null || audio == undefined) {
+      if (audio == '' || audio == null || audio == undefined) {
         const unlockResp = this._fetchUnlockAudioSource(trackID)
-        console.log('unlock resp: ',unlockResp)
+        console.log('unlock resp: ', unlockResp)
         return unlockResp
       }
       return {
         audio,
         id: trackID,
       }
-    } catch  {
-      console.log(console.error);
+    } catch {
+      console.log(console.error)
     }
   }
 
@@ -367,18 +372,18 @@ export class Player {
 
   private async _playAudioViaHowler(audio: string, id: number, autoplay: boolean = true) {
     Howler.unload()
-    console.log(Howler.usingWebAudio);
+    console.log(Howler.usingWebAudio)
     const url = audio.includes('?') ? `${audio}&dash-id=${id}` : `${audio}?dash-id=${id}`
     const howler = new Howl({
       src: [url],
       format: ['mp3', 'flac', 'webm'],
-      //html5: true,
+      html5: isMobile,
       autoplay,
       volume: 1,
       onend: () => this._howlerOnEndCallback(),
     })
     _howler = howler
-      ; (window as any).howler = howler
+    ;(window as any).howler = howler
     if (autoplay) {
       this.play()
       this.state = State.Playing
@@ -535,27 +540,27 @@ export class Player {
   }
 
   /**
-   * 
-   * @param trackID 
+   *
+   * @param trackID
    */
-  addToNextPlay(trackID: number){
+  addToNextPlay(trackID: number) {
     // 判重
-    if(this.trackList.includes(trackID)) {
-      this.trackList = this.trackList.filter(item=>item != trackID)
-      this.trackList.splice(Number(this._nextTrackIndex),0,trackID)  
+    if (this.trackList.includes(trackID)) {
+      this.trackList = this.trackList.filter(item => item != trackID)
+      this.trackList.splice(Number(this._nextTrackIndex), 0, trackID)
       return
     }
-    this.trackList.splice(Number(this._nextTrackIndex),0,trackID)
+    this.trackList.splice(Number(this._nextTrackIndex), 0, trackID)
   }
 
   /**
-   * 
-   * @param trackID 
+   *
+   * @param trackID
    */
-  addToPlayList(trackID: number){
+  addToPlayList(trackID: number) {
     // 判重
-    if(this.trackList.includes(trackID)) {
-          return
+    if (this.trackList.includes(trackID)) {
+      return
     }
     this.trackList.push(trackID)
   }
@@ -588,7 +593,9 @@ export class Player {
    * algorithm: https://bost.ocks.org/mike/shuffle/
    */
   async shufflePlayList() {
-    let len = this.trackList.length, tmp, idx
+    let len = this.trackList.length,
+      tmp,
+      idx
     while (len) {
       idx = Math.floor(Math.min(random(), 0.99999) * len--)
       tmp = this.trackList[len]
@@ -712,5 +719,5 @@ export class Player {
 }
 
 if (import.meta.env.DEV) {
-  ; (window as any).howler = _howler
+  ;(window as any).howler = _howler
 }

@@ -135,7 +135,7 @@ const Lyrics = () => {
     }
     return (
       <PageTransition>
-        {player?.state == 'playing' && (
+        {
           <div
             className='artist-info padding-bottom-20 h-921 mb-8 mt-8 text-center text-21 font-medium text-white/30'
             style={{
@@ -152,7 +152,7 @@ const Lyrics = () => {
               请欣赏·纯音乐
             </p>
           </div>
-        )}
+        }
         <div className='artist-info padding-bottom-20 text-20 mb-8 mt-8 text-center font-medium text-neutral-400'>
           {player.state == 'ready' && t`common.lyric-welcome`}
         </div>

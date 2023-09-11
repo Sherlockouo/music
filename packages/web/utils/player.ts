@@ -1,4 +1,5 @@
 import { Howl, Howler } from 'howler'
+import request from '@/web/utils/request'
 import {
   fetchAudioSourceWithReactQuery,
   fetchTracksWithReactQuery,
@@ -277,27 +278,23 @@ export class Player {
   private async _fetchUnlockAudioSource(trackID: TrackID) {
     if (settings.unlock) {
       try {
-        console.log('get port', port)
+        const data = await request({
+          url: '/unblock',
+          method: 'GET',
+          params: {
+            track_id: trackID,
+          },
+        })
 
-        const unlockResp = await fetch(
-          `http://localhost:${port}/unblockneteasemusic?track_id=${trackID}`,
-          {
-            method: 'GET',
+        console.log('fetch data url', data.url)
+        if (data.url === '')
+          return {
+            audio: null,
+            id: trackID,
           }
-        )
-
-        if (unlockResp.body !== null) {
-          const respJSON = await unlockResp.json()
-          console.log(respJSON)
-          let audio = respJSON['url']
-          if (audio != '') {
-            console.log('[unblockneteasemusic] use unlock url:', audio)
-
-            return {
-              audio,
-              id: trackID,
-            }
-          }
+        return {
+          audio: data.url,
+          id: trackID,
         }
       } catch (err) {
         console.log('[unblockneteasemusic] err', err)

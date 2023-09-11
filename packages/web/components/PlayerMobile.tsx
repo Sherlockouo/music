@@ -58,7 +58,7 @@ const PlayerMobile = () => {
       )}
     >
       {/* Handler */}
-      {!mobileShowPlayingNext && (
+      {mobileShowPlayingNext && (
         <motion.div
           onClick={() => {
             uiStates.mobileShowPlayingNext = true

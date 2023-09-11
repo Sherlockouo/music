@@ -13,6 +13,7 @@ dotenv.config({ path: join(__dirname, '../../.env') })
 const IS_ELECTRON = process.env.IS_ELECTRON
 const ELECTRON_DEV_NETEASE_API_PORT = Number(process.env.ELECTRON_DEV_NETEASE_API_PORT || 30001)
 const ELECTRON_WEB_SERVER_PORT = Number(process.env.ELECTRON_WEB_SERVER_PORT || 42710)
+const ELECTRON_UNBLOCK_SERVER_PORT = Number(process.env.ELECTRON_UNBLOCK_SERVER_PORT || 30003)
 
 /**
  * @see https://vitejs.dev/config/

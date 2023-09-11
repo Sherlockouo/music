@@ -30,7 +30,7 @@ const LayoutMobile = () => {
             )`,
         }}
       >
-        {true && (
+        {showPlayer && (
           <div
             className={cx('absolute left-7 right-7 z-20')}
             style={{

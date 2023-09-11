@@ -3,6 +3,7 @@ import { isProd } from '../env'
 import log from '../log'
 import appleMusic from './routes/r3play/appleMusic'
 import netease from './routes/netease/netease'
+import unblock from './routes/netease/unblock'
 import audio from './routes/r3play/audio'
 import fastifyCookie from '@fastify/cookie'
 import fastifyMultipart from '@fastify/multipart'
@@ -27,6 +28,7 @@ const initAppServer = async () => {
   server.register(netease)
   server.register(audio)
   server.register(appleMusic)
+  server.register(unblock)
 
   const port = Number(
     isProd

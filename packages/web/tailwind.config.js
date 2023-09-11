@@ -114,7 +114,7 @@ module.exports = {
       },
       padding: {
         lyricTop: '20%',
-        lyricBottom: '50%'
+        lyricBottom: '50%',
       },
 
       transitionDuration: {
@@ -143,14 +143,15 @@ module.exports = {
       },
     },
     // screens: {
-      // sm: '640px',
-      // md: '768px',
-      // lg: '@media (min-width: 1024px)',
-      // xl: '@media (min-width: 1280px)',
-      // xl2: '@media (min-width: 1536px)',
-      // mds: '1480px',
-      // mins: '663px'
-    // }
+    // xs: '240px',
+    // sm: '640px',
+    // md: '768px',
+    // lg: '@media (min-width: 1024px)',
+    // xl: '@media (min-width: 1280px)',
+    // xl2: '@media (min-width: 1536px)',
+    // mds: '1480px',
+    // mins: '663px'
+    // },
   },
   plugins: [require('@tailwindcss/container-queries')],
 }

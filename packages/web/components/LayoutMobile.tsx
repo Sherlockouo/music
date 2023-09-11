@@ -30,7 +30,7 @@ const LayoutMobile = () => {
             )`,
         }}
       >
-        {showPlayer && (
+        {true && (
           <div
             className={cx('absolute left-7 right-7 z-20')}
             style={{
@@ -44,9 +44,7 @@ const LayoutMobile = () => {
         <MenuBar />
         <PlayingNext />
       </div>
-
       <Login />
-
       {/* Notch background */}
       {isIosPwa && (
         <div

@@ -16,7 +16,7 @@ const initUIStates: UIStates = {
   showLyricPanel: false,
   showLoginPanel: false,
   hideTopbarBackground: false,
-  mobileShowPlayingNext: false,
+  mobileShowPlayingNext: true,
   blurBackgroundImage: null,
   fullscreen: false,
   playingVideoID: null,

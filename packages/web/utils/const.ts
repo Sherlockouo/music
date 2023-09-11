@@ -5,6 +5,7 @@ export const ease: [number, number, number, number] = [0.4, 0, 0.2, 1]
 
 // 屏幕断点
 export const breakpoint = {
+  xs: '@media (min-width: 240px)',
   sm: '@media (min-width: 640px)',
   md: '@media (min-width: 768px)',
   lg: '@media (min-width: 1024px)',

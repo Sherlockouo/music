@@ -14,6 +14,7 @@ const Player = () => {
       <div
         className={cx(
           'fixed right-6 bottom-6 flex w-full flex-col justify-between overflow-hidden',
+          'sm: hidden md:hidden lg:block',
           css`
             width: 318px;
           `

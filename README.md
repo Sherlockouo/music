@@ -11,7 +11,9 @@
   - 若您認為本函式庫侵犯您的智慧財產權，請發出 PR、Issue 或 DMCA 請求，表達您想移除相關引擎或程式碼之意願。
 
   <h2 align="center" style="font-weight: 600">基于 YesPlayMusic-Alpha版本二次开发</h2>
-  <a href="https://t.me/+MrhsgG741wQxNjg9">加入TG群组，参与开发</a>
+  <p align="center"> 
+    <a  href="https://t.me/+MrhsgG741wQxNjg9">💻 加入TG群组，参与开发 👊</a>
+  </p>
 
   <p align="center">
     高颜值的第三方音乐播放器

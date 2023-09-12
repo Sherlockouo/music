@@ -11,6 +11,8 @@ import { useState } from 'react'
 import useUserLikedTracksIDs, { useMutationLikeATrack } from '@/web/api/hooks/useUserLikedTracksIDs'
 import uiStates from '@/web/states/uiStates'
 import { ease } from '@/web/utils/const'
+import ArtistInline from './ArtistsInLine'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const LikeButton = () => {
   const { track } = useSnapshot(player)
@@ -36,7 +38,7 @@ const PlayerMobile = () => {
   const [locked, setLocked] = useState(false)
   useLockBodyScroll(locked)
   const { mobileShowPlayingNext } = useSnapshot(uiStates)
-
+  const navigate = useNavigate()
   const onDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     console.log(JSON.stringify(info))
     const { x, y } = info.offset
@@ -48,6 +50,7 @@ const PlayerMobile = () => {
     setLocked(false)
   }
 
+  const [isOpenArtworkViewer, setIsOpenArtworkViewer] = useState(false)
   return (
     <div
       className={cx(
@@ -81,7 +84,12 @@ const PlayerMobile = () => {
       )}
 
       {/* Cover */}
-      <div className='h-full py-2.5'>
+      <div
+        className='h-full py-2.5'
+        onClick={() => {
+          navigate(`/album/${track?.al?.id}`)
+        }}
+      >
         <Image
           src={resizeImage(track?.al.picUrl || '', 'sm')}
           className='z-10 aspect-square h-full rounded-lg'
@@ -100,8 +108,13 @@ const PlayerMobile = () => {
         >
           <div className='flex-shrink-0'>
             <div className='line-clamp-1 text-14 font-bold text-white'>{track?.name}</div>
+            <div className='mt-2 h-px w-2/5 bg-black/10 dark:bg-white/10'></div>
             <div className='line-clamp-1 mt-1 text-12 font-bold text-white/60'>
-              {track?.ar?.map(a => a.name).join(', ')}
+              <ArtistInline
+                artists={track?.ar || []}
+                className='text-black/30 dark:text-white/30'
+                hoverClassName='hover:text-black/50 dark:hover:text-white/70 transition-colors duration-400'
+              />
             </div>
           </div>
           <div className='h-full flex-grow'></div>

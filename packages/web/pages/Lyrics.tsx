@@ -99,7 +99,8 @@ const Lyrics = () => {
         'line-clamp-4 font-bold text-accent-color-500 tracking-hilightLyric leading-lyric text-32',
       index !== currentLineIndex &&
         'lyrics-padding normal-lyric-font-size font-black tracking-lyric leading-lyric text-white/30 text-24 blur-lyric',
-      index !== currentLineIndex && isHovered && 'blur-none'
+      index !== currentLineIndex && isHovered && 'blur-none',
+      isMobile && 'blur-none'
     )
 
     const hightlightStyle =
@@ -128,16 +129,21 @@ const Lyrics = () => {
   })
 
   if (lyricsResponse == undefined || lyricsResponse.code != 200 || lyrics.length == 0) {
-    const hightlightStyle = {
-      textShadow:
-        'rgb(255,255,255,' + currentVolumnValue / 5 + ') 0px 0px ' + currentVolumnValue + 'px',
-      padding: '12px',
-    }
+    const hightlightStyle = isMobile
+      ? {}
+      : {
+          textShadow:
+            'rgb(255,255,255,' + currentVolumnValue / 5 + ') 0px 0px ' + currentVolumnValue + 'px',
+          padding: '12px',
+        }
     return (
       <PageTransition>
         {
           <div
-            className='artist-info padding-bottom-20 h-921 mb-8 mt-8 text-center text-21 font-medium text-white/30'
+            className={cx(
+              'artist-info padding-bottom-20 h-921 mb-8 mt-8 text-center text-21 font-medium text-white/30',
+              isMobile && 'text-center'
+            )}
             style={{
               paddingTop: '100px',
               height: '921px',
@@ -174,10 +180,18 @@ const Lyrics = () => {
 
   return (
     <PageTransition>
-      <div className={cx('lyrics-player h-921', 'font-Roboto font-bold backdrop-blur-md')}>
+      <div
+        className={cx(
+          'lyrics-player h-921 ',
+          isMobile && 'text-center',
+
+          'font-Roboto font-bold backdrop-blur-md'
+        )}
+      >
         <div
           className={cx(
-            'lyrics-container h-lyric  overflow-scroll overscroll-y-contain pb-lyricBottom pt-lyricTop text-left ',
+            'lyrics-container no-scrollbar h-lyric  overflow-scroll  pb-lyricBottom pt-lyricTop text-left ',
+            isMobile && 'text-center',
             css`
               &::-webkit-scrollbar {
                 width: 0;
@@ -190,7 +204,12 @@ const Lyrics = () => {
           onMouseLeave={handleMouseLeave}
           // onScroll={handleScroll}
         >
-          <div className='artist-info padding-bottom-20 mb-8 mt-8 text-left text-24 text-white/30'>
+          <div
+            className={cx(
+              'artist-info padding-bottom-20 mb-8 mt-8 text-left text-24 text-white/30',
+              isMobile && 'text-center'
+            )}
+          >
             <p className=''>{player.track?.name}</p>
             <p className=''>By - {player.track?.ar[0].name}</p>
           </div>

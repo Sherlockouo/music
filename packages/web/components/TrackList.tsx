@@ -26,7 +26,7 @@ const Actions = ({ track }: { track: Track }) => {
   }, [menu.dataSourceID, menu.type])
 
   return (
-    <div className='mr-5 lg:flex' onClick={e => e.stopPropagation()}>
+    <div className='mr-5 flex' onClick={e => e.stopPropagation()}>
       {/* Context menu */}
       <div
         className={cx(
@@ -45,7 +45,7 @@ const Actions = ({ track }: { track: Track }) => {
           }}
           className='mr-3 flex h-10 w-10 items-center justify-center rounded-full  bg-white/10 text-white/40 transition-colors duration-400 hover:bg-white/30 hover:text-white/70'
         >
-          <Icon name='more' className='pointer-events-none h-5 w-5' />
+          <Icon name='more' className='h-4 w-5' />
         </button>
       </div>
 
@@ -57,7 +57,7 @@ const Actions = ({ track }: { track: Track }) => {
         )}
       >
         <div
-          onClick={() =>{
+          onClick={() => {
             player.addToPlayList(track.id)
             // translate
             toast('已添加到播放列表')
@@ -148,17 +148,17 @@ function Track({
       </div>
 
       {/* Desktop menu  */}
-      <Actions track={track} />
+      <div>
+        <Actions track={track} />
+      </div>
 
       {/* Mobile menu */}
-      <div className='lg:hidden'>
-        <div className='h-10 w-10 rounded-full bg-night-900'></div>
-      </div>
+      {/* <div className='lg:hidden'> */}
+      {/*   <div className='h-10 w-10 rounded-full bg-night-900'></div> */}
+      {/* </div> */}
 
       {/* Track duration */}
-      <div className='hidden text-right lg:block'>
-        {formatDuration(track.dt, 'en-US', 'hh:mm:ss')}
-      </div>
+      <div className='text-right lg:block'>{formatDuration(track.dt, 'en-US', 'hh:mm:ss')}</div>
     </div>
   )
 }

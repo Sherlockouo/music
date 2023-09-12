@@ -1,7 +1,7 @@
 import settings from '@/web/states/settings'
 import { changeAccentColor } from '@/web/utils/theme'
 import { useSnapshot } from 'valtio'
-import { cx,css } from '@emotion/css'
+import { cx, css } from '@emotion/css'
 import { BlockDescription, BlockTitle, Button, Option, OptionText, Switch } from './Controls'
 import { useTranslation } from 'react-i18next'
 
@@ -34,7 +34,7 @@ const AccentColor = () => {
 
   const accentColor = useSnapshot(settings).accentColor
   return (
-    <div className='mt-4'>
+    <div className='mt-4 flex flex-wrap'>
       <div className='mb-2 dark:text-white'>{t`settings.accent-color`}</div>
       <div className=' flex items-center'>
         {Object.entries(colors).map(([color, bg]) => (
@@ -63,12 +63,12 @@ const Theme = () => {
   )
 }
 
-const ChangeLyricBackground = () =>{
-  const {showBackgroundImage} = useSnapshot(settings)
+const ChangeLyricBackground = () => {
+  const { showBackgroundImage } = useSnapshot(settings)
   const { t, i18n } = useTranslation()
   return (
     <>
-     <Option>
+      <Option>
         <OptionText>{t`settings.show-lyric-background-img`}</OptionText>
         <Switch
           enabled={showBackgroundImage}
@@ -79,11 +79,11 @@ const ChangeLyricBackground = () =>{
   )
 }
 
-const LayoutBackground = () =>{
+const LayoutBackground = () => {
   const { t, i18n } = useTranslation()
   return (
     <>
-    <div className='mt-3 h-px w-full bg-black/5 dark:bg-white/10'></div>
+      <div className='mt-3 h-px w-full bg-black/5 dark:bg-white/10'></div>
       <div className='mb-2 dark:text-white'>
         <ChangeLyricBackground />
       </div>
@@ -94,12 +94,12 @@ const LayoutBackground = () =>{
 1
 const Appearance = () => {
   return (
-    <div className={cx(css`
-      display: flex;
-      flex-direction: column;
-
-      `
-    )}>
+    <div
+      className={cx(css`
+        display: flex;
+        flex-direction: column;
+      `)}
+    >
       <Theme />
       <LayoutBackground />
     </div>

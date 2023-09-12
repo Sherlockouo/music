@@ -11,6 +11,7 @@ import Player from './Player'
 import Lab from './Lab'
 import PageTransition from '@/web/components/PageTransition'
 import { ease } from '@/web/utils/const'
+import useIsMobile from '@/web/hooks/useIsMobile'
 
 export const categoryIds = ['general', 'appearance', 'player', 'lab', 'about'] as const
 export type Category = typeof categoryIds[number]
@@ -22,6 +23,7 @@ const Sidebar = ({
   activeCategory: string
   setActiveCategory: (category: Category) => void
 }) => {
+  const isMobile = useIsMobile()
   const { t } = useTranslation()
   const categories: { name: string; id: Category }[] = [
     { name: t`settings.general`, id: 'general' },
@@ -39,12 +41,12 @@ const Sidebar = ({
   }, [activeCategory])
 
   return (
-    <div className='relative'>
+    <div className={cx('relative flex flex-col', isMobile && 'w-2/5')}>
       <motion.div
         initial={{ y: 11.5 }}
         animate={indicatorAnimation}
         transition={{ type: 'spring', duration: 0.6, bounce: 0.36 }}
-        className='absolute top-0 left-3 mr-2 h-4 w-1 rounded-full transition-colors duration-500 bg-accent-color-700'
+        className='bg-accent-color-700 absolute top-0 left-3 mr-2 h-4 w-1 rounded-full transition-colors duration-500'
       ></motion.div>
 
       {categories.map(category => (
@@ -55,7 +57,9 @@ const Sidebar = ({
           animate={{ x: activeCategory === category.id ? 12 : 0 }}
           className={cx(
             'flex items-center rounded-lg px-3 py-2 font-medium transition-colors duration-500',
-            activeCategory === category.id ? 'text-accent-color-500' : 'text-white/50 hover:text-white/90'
+            activeCategory === category.id
+              ? 'text-accent-color-500'
+              : 'text-white/50 hover:text-white/90'
           )}
         >
           {category.name}
@@ -66,6 +70,7 @@ const Sidebar = ({
 }
 
 const Settings = () => {
+  const isMobile = useIsMobile()
   const [activeCategory, setActiveCategory] = useState<Category>('general')
   const { data: user } = useUser()
 
@@ -73,18 +78,19 @@ const Settings = () => {
     { id: 'general', component: <General /> },
     { id: 'appearance', component: <Appearance /> },
     { id: 'player', component: <Player /> },
-    { id: 'lab', component: <Lab />},
+    { id: 'lab', component: <Lab /> },
     { id: 'about', component: <About /> },
   ]
 
   return (
     <PageTransition>
-      <div className='mt-6' >
+      <div className={cx('mt-6', isMobile && 'flex flex-col')}>
         {user?.profile && <UserCard />}
 
         <div
           className={cx(
-            'mt-8 grid gap-10',
+            !isMobile && 'mt-8 grid gap-10',
+            isMobile && 'z-10',
             css`
               grid-template-columns: 11rem auto;
             `

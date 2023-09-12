@@ -2,6 +2,7 @@ import { Route, Routes, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import React, { lazy, Suspense, startTransition } from 'react'
 import VideoPlayer from './VideoPlayer'
+import UserCard from '../pages/Settings/UserCard'
 
 const My = lazy(() => import('@/web/pages/My'))
 const Discover = lazy(() => import('@/web/pages/Discover'))

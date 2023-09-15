@@ -131,62 +131,43 @@ export class Player {
     }
   }
 
-  // private getSongFFT() {
-  //   // if (isMobile) return
-  //   const audioCtx = new AudioContext();
-  //   let audioStream: MediaStream;
+   private getSongFFT() {
+     if (isMobile) return
+    _analyser = Howler.ctx.createAnalyser()
+    Howler.masterGain.connect(_analyser);
 
-  //   navigator.mediaDevices.getUserMedia({ audio: true })
-  //     .then(function(stream) {
-  //       audioStream = stream;
-  //       // 连接到 AnalyserNode
-  //       connectToAnalyser();
-  //     })
-  //     .catch(function(error) {
-  //       console.error('获取音频流失败:', error);
-  //     });
 
-  //   console.log('audioctx ', audioCtx);
-  //   const _analyser = audioCtx.createAnalyser();
 
-  //   function connectToAnalyser() {
-  //     const source = audioCtx.createMediaStreamSource(audioStream);
-  //     source.connect(_analyser);
-  //   }
+     // Howler.volume(0.4)
 
-  //   // Connect master gain to analyzer
-  //   // _analyser = Howler.ctx.createAnalyser()
-  //   // Howler.masterGain.connect(_analyser)
-  //   // Howler.volume(0.4)
+     // Connect analyzer to destination
+     // _analyser.connect(Howler.ctx.destination);
 
-  //   // Connect analyzer to destination
-  //   // _analyser.connect(Howler.ctx.destination);
+     // Creating output array (according to documentation https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API)
+     _analyser.fftSize = 2048;
 
-  //   // Creating output array (according to documentation https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API)
-  //   _analyser.fftSize = 2048;
+     var bufferLength = _analyser.frequencyBinCount;
+     var dataArray = new Uint8Array(bufferLength);
 
-  //   var bufferLength = _analyser.frequencyBinCount;
-  //   var dataArray = new Uint8Array(bufferLength);
+     var smooth = 0.02;
 
-  //   var smooth = 0.02;
+     var start = 16,
+       end = 128;
 
-  //   var start = 16,
-  //     end = 128;
+     // Display array on time each 3 sec (just to debug)
+     setInterval(() => {
+       _analyser.getByteFrequencyData(dataArray);
+       var sum = 0;
+       dataArray.forEach(function (val, idx, arr) {
+         if (start <= idx && idx < end) {
+           sum += val;
+         }
+       }, 0);
+       // console.log(sum / (end - start));
 
-  //   // Display array on time each 3 sec (just to debug)
-  //   setInterval(() => {
-  //     _analyser.getByteFrequencyData(dataArray);
-  //     var sum = 0;
-  //     dataArray.forEach(function (val, idx, arr) {
-  //       if (start <= idx && idx < end) {
-  //         sum += val;
-  //       }
-  //     }, 0);
-  //     // console.log(sum / (end - start));
-
-  //     this._nowVolume = this._nowVolume * smooth + (sum / (end - start)) * (1 - smooth);
-  //   }, 16);
-  // }
+       this._nowVolume = this._nowVolume * smooth + (sum / (end - start)) * (1 - smooth);
+     }, 16);
+   }
 
   // private fetchMP3(url: string): Promise<Blob> {
   //   const options = {
@@ -239,109 +220,109 @@ export class Player {
   //     this._nowVolume = this._nowVolume * smooth + (sum / (end - start)) * (1 - smooth);
   //   }, 16);
   // }
-  private async fetchMP3(url: string) {
-    console.log('[player][fetchMP3]', url)
-
-    const resp = await request({
-      url: '/buffer',
-      method: 'get',
-      params: {
-        url: url,
-      },
-    })
-
-    console.log('[player][fetchMP3]', resp)
-    return resp
-  }
-
-  private async createAudioElement(url: string): Promise<HTMLAudioElement> {
-    return new Promise<HTMLAudioElement>((resolve, reject) => {
-      const audioElement = new Audio()
-      audioElement.addEventListener('loadedmetadata', () => {
-        resolve(audioElement)
-      })
-      audioElement.addEventListener('error', error => {
-        reject(error)
-      })
-      audioElement.src = url
-    })
-  }
-
-  private async startAudioAnalysis(url: string) {
-    const data = await this.fetchMP3(url)
-
-    try {
-      const audioElement = await this.createAudioElement('data:audio/mpeg;base64,' + data)
-      // console.log('audio element', audioElement.src)
-
-      const audioCtx = new AudioContext()
-      const source = audioCtx.createMediaElementSource(audioElement)
-      console.log('source', source)
-
-      const analyser = audioCtx.createAnalyser()
-      analyser.fftSize = 2048
-      console.log('analyser', analyser)
-
-      source.connect(analyser)
-      analyser.connect(audioCtx.destination)
-
-      const bufferLength = analyser.frequencyBinCount
-      const dataArray = new Uint8Array(bufferLength)
-      audioElement.addEventListener('canplay', () => {
-        console.log('canplay')
-        // audioElement.volume = 0
-        audioElement.play()
-        //
-        // setInterval(() => {
-        //   this.updateVolume(analyser, dataArray)
-        // }, 16)
-      })
-      audioElement.addEventListener('play', () => {
-        setInterval(() => {
-          this.updateVolume(analyser, dataArray)
-        }, 16)
-      })
-      return new Promise((resolve, reject) => {
-        // Perform your audio analysis operations
-
-        // Once the analysis is complete, resolve the promise with the object
-        resolve({ analyser, dataArray })
-
-        // If there's an error during the analysis, reject the promise
-        // reject(new Error('Audio analysis failed'));
-      })
-    } catch (error) {
-      console.log('analysis error', error)
-    }
-  }
-
-  private updateVolume(analyser: AnalyserNode, dataArray: Uint8Array) {
-    const smooth = 0.02
-    const start = 16
-    const end = 128
-
-    analyser.getByteFrequencyData(dataArray)
-
-    console.log('dataArray', dataArray)
-    let sum = 0
-    dataArray.forEach((val, idx) => {
-      if (start <= idx && idx < end) {
-        sum += val
-      }
-    })
-    // console.log('update volume called,sum',sum);
-
-    this._nowVolume = this._nowVolume * smooth + (sum / (end - start)) * (1 - smooth)
-  }
-
-  private async getSongFFT() {
-    const audioElement = this.howler._sounds[0]._node as HTMLMediaElement
-    const { analyser, dataArray } = await this.startAudioAnalysis(audioElement.src)
-
-    // setInterval(() => {
-    //   this.updateVolume(analyser, dataArray)
-    // }, 16)
-  }
+  // private async fetchMP3(url: string) {
+  //   console.log('[player][fetchMP3]', url)
+  //
+  //   const resp = await request({
+  //     url: '/buffer',
+  //     method: 'get',
+  //     params: {
+  //       url: url,
+  //     },
+  //   })
+  //
+  //   console.log('[player][fetchMP3]', resp)
+  //   return resp
+  // }
+  //
+  // private async createAudioElement(url: string): Promise<HTMLAudioElement> {
+  //   return new Promise<HTMLAudioElement>((resolve, reject) => {
+  //     const audioElement = new Audio()
+  //     audioElement.addEventListener('loadedmetadata', () => {
+  //       resolve(audioElement)
+  //     })
+  //     audioElement.addEventListener('error', error => {
+  //       reject(error)
+  //     })
+  //     audioElement.src = url
+  //   })
+  // }
+  //
+  // private async startAudioAnalysis(url: string) {
+  //   const data = await this.fetchMP3(url)
+  //
+  //   try {
+  //     const audioElement = await this.createAudioElement('data:audio/mpeg;base64,' + data)
+  //     // console.log('audio element', audioElement.src)
+  //
+  //     const audioCtx = new AudioContext()
+  //     const source = audioCtx.createMediaElementSource(audioElement)
+  //     console.log('source', source)
+  //
+  //     const analyser = audioCtx.createAnalyser()
+  //     analyser.fftSize = 2048
+  //     console.log('analyser', analyser)
+  //
+  //     source.connect(analyser)
+  //     analyser.connect(audioCtx.destination)
+  //
+  //     const bufferLength = analyser.frequencyBinCount
+  //     const dataArray = new Uint8Array(bufferLength)
+  //     audioElement.addEventListener('canplay', () => {
+  //       console.log('canplay')
+  //       // audioElement.volume = 0
+  //       audioElement.play()
+  //       //
+  //       // setInterval(() => {
+  //       //   this.updateVolume(analyser, dataArray)
+  //       // }, 16)
+  //     })
+  //     audioElement.addEventListener('play', () => {
+  //       setInterval(() => {
+  //         this.updateVolume(analyser, dataArray)
+  //       }, 16)
+  //     })
+  //     return new Promise((resolve, reject) => {
+  //       // Perform your audio analysis operations
+  //
+  //       // Once the analysis is complete, resolve the promise with the object
+  //       resolve({ analyser, dataArray })
+  //
+  //       // If there's an error during the analysis, reject the promise
+  //       // reject(new Error('Audio analysis failed'));
+  //     })
+  //   } catch (error) {
+  //     console.log('analysis error', error)
+  //   }
+  // }
+  //
+  // private updateVolume(analyser: AnalyserNode, dataArray: Uint8Array) {
+  //   const smooth = 0.02
+  //   const start = 16
+  //   const end = 128
+  //
+  //   analyser.getByteFrequencyData(dataArray)
+  //
+  //   console.log('dataArray', dataArray)
+  //   let sum = 0
+  //   dataArray.forEach((val, idx) => {
+  //     if (start <= idx && idx < end) {
+  //       sum += val
+  //     }
+  //   })
+  //   // console.log('update volume called,sum',sum);
+  //
+  //   this._nowVolume = this._nowVolume * smooth + (sum / (end - start)) * (1 - smooth)
+  // }
+  //
+  // private async getSongFFT() {
+  //   const audioElement = this.howler._sounds[0]._node as HTMLMediaElement
+  //   const { analyser, dataArray } = await this.startAudioAnalysis(audioElement.src)
+  //
+  //   // setInterval(() => {
+  //   //   this.updateVolume(analyser, dataArray)
+  //   // }, 16)
+  // }
 
   /**
    * Get current volume

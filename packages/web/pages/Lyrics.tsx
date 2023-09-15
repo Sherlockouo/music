@@ -104,8 +104,9 @@ const Lyrics = () => {
     )
 
     const hightlightStyle =
-      index === currentLineIndex && isMobile
-        ? {
+      index === currentLineIndex
+        ? // && isMobile
+          {
             textShadow:
               'rgb(216,216,216,' +
               currentVolumnValue / 25 +

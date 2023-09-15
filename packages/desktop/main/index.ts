@@ -38,7 +38,7 @@ class Main {
     app.whenReady().then(async () => {
       log.info('[index] App ready')
       await initAppServer()
-      this.initUnlockSubProcess()
+      // this.initUnlockSubProcess()
       this.createWindow()
       this.handleAppEvents()
       this.handleWindowEvents()

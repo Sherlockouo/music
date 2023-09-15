@@ -26,7 +26,6 @@ const Playlist = () => {
   return (
     <PageTransition>
       <Header />
-      dasgfsadg
       <div className='pb-10'>
         <TrackList
           tracks={playlistTracks?.songs ?? playlist?.playlist?.tracks ?? []}

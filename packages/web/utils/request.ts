@@ -6,7 +6,7 @@ const baseURL = String(import.meta.env.DEV ? '/netease' : import.meta.env.VITE_A
 const service: AxiosInstance = axios.create({
   baseURL,
   withCredentials: true,
-  timeout: 15000,
+  timeout: 50000,
 })
 
 service.interceptors.request.use((config: AxiosRequestConfig) => {

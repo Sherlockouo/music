@@ -131,43 +131,41 @@ export class Player {
     }
   }
 
-   private getSongFFT() {
-     if (isMobile) return
+  private getSongFFT() {
+    if (isMobile) return
     _analyser = Howler.ctx.createAnalyser()
-    Howler.masterGain.connect(_analyser);
+    Howler.masterGain.connect(_analyser)
 
+    // Howler.volume(0.4)
 
+    // Connect analyzer to destination
+    // _analyser.connect(Howler.ctx.destination);
 
-     // Howler.volume(0.4)
+    // Creating output array (according to documentation https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API)
+    _analyser.fftSize = 2048
 
-     // Connect analyzer to destination
-     // _analyser.connect(Howler.ctx.destination);
+    var bufferLength = _analyser.frequencyBinCount
+    var dataArray = new Uint8Array(bufferLength)
 
-     // Creating output array (according to documentation https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API)
-     _analyser.fftSize = 2048;
+    var smooth = 0.02
 
-     var bufferLength = _analyser.frequencyBinCount;
-     var dataArray = new Uint8Array(bufferLength);
+    var start = 16,
+      end = 128
 
-     var smooth = 0.02;
+    // Display array on time each 3 sec (just to debug)
+    setInterval(() => {
+      _analyser.getByteFrequencyData(dataArray)
+      var sum = 0
+      dataArray.forEach(function (val, idx, arr) {
+        if (start <= idx && idx < end) {
+          sum += val
+        }
+      }, 0)
+      // console.log(sum / (end - start));
 
-     var start = 16,
-       end = 128;
-
-     // Display array on time each 3 sec (just to debug)
-     setInterval(() => {
-       _analyser.getByteFrequencyData(dataArray);
-       var sum = 0;
-       dataArray.forEach(function (val, idx, arr) {
-         if (start <= idx && idx < end) {
-           sum += val;
-         }
-       }, 0);
-       // console.log(sum / (end - start));
-
-       this._nowVolume = this._nowVolume * smooth + (sum / (end - start)) * (1 - smooth);
-     }, 16);
-   }
+      this._nowVolume = this._nowVolume * smooth + (sum / (end - start)) * (1 - smooth)
+    }, 16)
+  }
 
   // private fetchMP3(url: string): Promise<Blob> {
   //   const options = {

@@ -142,8 +142,7 @@ const Lyrics = () => {
         {
           <div
             className={cx(
-              'artist-info padding-bottom-20 h-921 mb-8 mt-8 text-center text-21 font-medium text-white/30',
-              isMobile && 'text-center'
+              'artist-info padding-bottom-20 h-921 mb-8 mt-8 text-center text-21 font-medium text-white/30'
             )}
             style={{
               paddingTop: '100px',
@@ -184,15 +183,15 @@ const Lyrics = () => {
       <div
         className={cx(
           'lyrics-player h-921 ',
-          isMobile && 'text-center',
+          'text-center',
 
           'font-Roboto font-bold backdrop-blur-md'
         )}
       >
         <div
           className={cx(
-            'lyrics-container no-scrollbar h-lyric  overflow-scroll  pb-lyricBottom pt-lyricTop text-left ',
-            isMobile && 'text-center',
+            'lyrics-container no-scrollbar h-lyric  overflow-scroll  pb-lyricBottom pt-lyricTop ',
+            'text-center',
             css`
               &::-webkit-scrollbar {
                 width: 0;
@@ -207,8 +206,8 @@ const Lyrics = () => {
         >
           <div
             className={cx(
-              'artist-info padding-bottom-20 mb-8 mt-8 text-left text-24 text-white/30',
-              isMobile && 'text-center'
+              'artist-info padding-bottom-20 mb-8 mt-8 text-24 text-white/30',
+              'text-center'
             )}
           >
             <p className=''>{player.track?.name}</p>

@@ -11,7 +11,7 @@ export function fetchAppleMusicAlbum(
   params: FetchAppleMusicAlbumParams
 ): Promise<FetchAppleMusicAlbumResponse> {
   return request({
-    url: '/r3play/apple-music/album',
+    url: '/r3playx/apple-music/album',
     method: 'get',
     params,
     baseURL: '/',
@@ -23,7 +23,7 @@ export function fetchAppleMusicArtist(
   params: FetchAppleMusicArtistParams
 ): Promise<FetchAppleMusicArtistResponse> {
   return request({
-    url: '/r3play/apple-music/artist',
+    url: '/r3playx/apple-music/artist',
     method: 'get',
     params,
     baseURL: '/',

@@ -1,44 +1,62 @@
+import { useEffect, useState } from 'react'
+import { Track } from '@/shared/api/Track'
 import useArtistSongs from '@/web/api/hooks/useArtistSongs'
 import useTracks from '@/web/api/hooks/useTracks'
 import { FetchArtistSongsParams } from '@/shared/api/Artist'
-import { useMemo } from 'react'
 import TrackList from '../Playlist/TrackList'
 import player from '@/web/states/player'
-import {useParams} from 'react-router-dom'
-type ArtistProps = {
-    order: string;
-    limit: number;
-    offset: number;
-  };
+import { useParams } from 'react-router-dom'
+import ScrollPagination from '@/web/components/ScrollPage'
+import { fetchArtistSongs } from '@/web/api/artist'
+import { fetchTracks } from '@/web/api/track'
+import { set } from 'lodash-es'
+import toast from 'react-hot-toast'
 
-const ArtistSongs = ({
-    order,
-    limit,
-    offset
-}:ArtistProps)=>{
-    const params = useParams()
-    const songsParams = {
-        id: Number(params.id) || 0,
-        order: order || 'time',
-        limit: limit || 50,
-        offset: offset || 0
-    }
-    const { data: data, isLoading: isLoadingArtistSongs } =
-    useArtistSongs(songsParams)
-    
-    const songIDList = data?.songs ? data?.songs.map(song => song.id):[]
-    
+const ArtistSongs = () => {
+  const [dataSource, setDatasource] = useState<Track[]>([])
+  const [songIDs, setSongIDs] = useState<number[]>([])
+  const params = useParams()
+  const [hasMore, setHasMore] = useState(true)
 
-    const onPlay = async (trackID: number | null = null) => {
-        await player.playAList(songIDList, trackID)
+  const getData = async (pageNo: number, pageSize: number) => {
+    if (hasMore === false) return
+    const songsParams: FetchArtistSongsParams = {
+      id: Number(params.id) || 0,
+      order: 'time',
+      limit: pageSize || 50,
+      offset: (pageNo - 1) * pageSize || 0,
     }
-    
-    const { data: playlistTracks }  = useTracks({ids:songIDList})
-    return <>
-        <TrackList tracks={playlistTracks?.songs ?? []}
-          onPlay={onPlay}
-          className='z-10 mt-10'></TrackList>
-    </>
+    const resp = await fetchArtistSongs(songsParams)
+    console.log('params ', songsParams, resp)
+
+    setHasMore(resp.more)
+
+    const songIDList = resp.songs ? resp.songs.map((song: Track) => song.id) : []
+    let arr = [...songIDs, ...songIDList]
+    setSongIDs([...new Set(arr)])
+
+    const fetchTrackResp = await fetchTracks({ ids: songIDList })
+
+    let arrSource = [...dataSource, ...(fetchTrackResp?.songs as Track[])]
+    setDatasource([...new Set(arrSource)])
+
+    return { hasMore: resp.more }
+  }
+  const onPlay = (trackID: number | null = null) => {
+    player.playAList(songIDs, trackID)
+  }
+
+  const renderItems = () => {
+    console.log('render datasource', dataSource)
+
+    return <TrackList tracks={dataSource} onPlay={onPlay}></TrackList>
+  }
+
+  return (
+    <div className='h-800 z-10 mt-10'>
+      <ScrollPagination getData={getData} renderItems={renderItems} />
+    </div>
+  )
 }
 
 export default ArtistSongs

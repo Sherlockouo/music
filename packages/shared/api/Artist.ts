@@ -3,19 +3,21 @@ export enum ArtistApiNames {
   FetchArtistAlbums = 'fetchArtistAlbums',
   FetchSimilarArtists = 'fetchSimilarArtists',
   FetchArtistMV = 'fetchArtistMV',
-  FetchArtistSongs = ' fetchArtistSongs'
+  FetchArtistSongs = ' fetchArtistSongs',
 }
 
 // 获取歌手所有歌曲
 export interface FetchArtistSongsParams {
-  id: number,
-  order: string,
-  limit: number,
+  id: number
+  order: string
+  limit: number
   offset: number
 }
 
 export interface FetchArtistSongsResponse {
   songs: Track[]
+  more: boolean
+  total: number
 }
 
 // 歌手详情

@@ -15,34 +15,30 @@ const Artist = () => {
     <div>
       <Header />
       {/* Dividing line */}
-      <div className='w-full flex justify-center mt-5 text-center items-center'>
+      <div className='mt-5 flex w-full items-center justify-center text-center'>
         <button
           onClick={() => {
             changeShowAllSongs(!showAllSongs)
           }}
-          className='flex gap-2 items-center justify-center rounded-full bg-white/20 text-white w-36'
+          className='flex w-36 items-center justify-center gap-2 rounded-full bg-white/20 text-white'
         >
-          {
-            t`artist.all-songs`
-          }
+          {t`artist.all-songs`}
           <Icon name={showAllSongs ? 'eye' : 'eye-off'} className='h-6 w-6 text-white/80' />
         </button>
       </div>
-      {
-        !showAllSongs && <div>
+      {!showAllSongs && (
+        <div>
           <Popular />
           <ArtistAlbum />
           <ArtistVideos />
           <FansAlsoLike />
         </div>
-      }
-      {
-        showAllSongs && <div className='text-white'>
-          <ScrollPagination >
-            <ArtistSongs/>
-          </ScrollPagination>
-          </div>
-      }
+      )}
+      {showAllSongs && (
+        <div className='text-white'>
+          <ArtistSongs />
+        </div>
+      )}
       {/* Page padding */}
       <div className='h-16'></div>
     </div>

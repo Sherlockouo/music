@@ -1,107 +1,80 @@
-import React, { useState, useEffect, useRef, ReactNode, cloneElement } from 'react';
-import Icon from './Icon';
-import { cx, css } from '@emotion/css'
+import React, { ReactNode, useState, useEffect, useRef } from 'react'
+import { throttle } from 'lodash'
 import toast from 'react-hot-toast'
-import PageTransition from './PageTransition';
 
-type PaginationProps = {
-    children: ReactNode;
-};
+const ScrollPagination = ({
+  getData,
+  renderItems,
+}: {
+  getData: (pageNo: number, pageSize: number) => Promise<{ hasMore: boolean }>
+  renderItems: () => ReactNode
+}) => {
+  const [current, setCurrent] = useState(0) // 当前页码
+  const [isFetching, setIsFetching] = useState(false) // 是否正在获取数据
+  const [hasMore, setHasMore] = useState(true)
+  const containerRef = useRef(null)
+  const observerRef = useRef(null)
 
-type ChildProps = {
-    order: string;
-    limit: number;
-    offset: number;
-};
+  useEffect(() => {
+    const options = {
+      root: null,
+      threshold: 0.5, // 根据需要调整阈值
+    }
+    const handleObserver = throttle(entries => {
+      const isIntersecting = entries.some(entry => entry.isIntersecting)
 
-const Pagination: React.FC<PaginationProps> = ({ children }) => {
-    const [currentPage, setCurrentPage] = useState(0);
-    const [offset, setOffset] = useState(0);
-    const [reachLimit, setReachLimit] = useState(false)
-    const containerRef = useRef<HTMLDivElement>(null);
+      if (isIntersecting && !isFetching && hasMore) {
+        // 最后一个元素进入视窗且未在获取数据
+        setIsFetching(true) // 设置为正在获取数据的状态
+        setCurrent(prev => prev + 1) // 更新当前页码
+        toast('current' + current)
+      }
+    }, 1000)
 
-    const handlePrevScroll = () => {
-        if (currentPage > 0) {
-            // 到达滚动容器底部时触发加载下一页的数据
-            setOffset((currentPage - 1) * 50)
-            setCurrentPage(prevPage => prevPage - 1);
-        }
-    };
-    const handleNextScroll = () => {
-        if (reachLimit) {
-            toast('no more')
-            return
-        }
-        // 到达滚动容器底部时触发加载下一页的数据
-        setOffset(currentPage * 50)
-        setCurrentPage(prevPage => prevPage + 1);
-    };
+    // 创建 IntersectionObserver 实例
+    observerRef.current = new IntersectionObserver(handleObserver, options)
 
-    useEffect(() => {
-        const resizeObserver = new ResizeObserver(entries => {
-            for (let entry of entries) {
-                const { height } = entry.contentRect;
-                if (height <= 98) {
-                    setReachLimit(true)
-                } else {
-                    setReachLimit(false)
-                }
-                console.log('height', height);
+    // 获取透明容器作为观察目标
+    const transparentContainer = containerRef.current.querySelector('.transparent-container')
+    if (transparentContainer) {
+      observerRef.current.observe(transparentContainer)
+    }
 
-            }
-        });
+    // 组件卸载时停止观察
+    return () => {
+      if (transparentContainer) {
+        observerRef.current.unobserve(transparentContainer)
+      }
+    }
+  }, [isFetching])
 
-        if (containerRef.current) {
-            resizeObserver.observe(containerRef.current);
-        }
-    }, []);
+  useEffect(() => {
+    if (isFetching) {
+      // 获取数据
+      getData(current, 100)
+        .then(({ items, hasMore }) => {
+          if (hasMore) {
+            setIsFetching(false) // 设置为获取数据完成的状态
+          } else {
+            setIsFetching(false) // 设置为获取数据完成的状态
+            setHasMore(false)
+            observerRef.current.disconnect() // 停止观察
+            toast('已到达最后一页')
+          }
+        })
+        .catch(error => {
+          setIsFetching(false) // 设置为获取数据完成的状态
+          console.error('数据获取失败:', error)
+        })
+    }
+  }, [current, getData, isFetching])
 
-    return (
-        <PageTransition>
-            <div ref={containerRef} style={{ height: '100%', overflow: 'auto' }}>
-                {React.Children.map(children, child => {
-                    return cloneElement(child as React.ReactElement<ChildProps>, { order: "time", limit: 50, offset: currentPage * 50 }); // 设置 limit 和 offset 参数
-                })}
+  return (
+    <div ref={containerRef} className='infinite-scroll-component h-100'>
+      {renderItems()}
+      <div className='transparent-container' style={{ height: '1px', marginBottom: '-1px' }}></div>
+    </div>
+  )
+}
 
-                <div className={cx(css`
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            text-align: center;
-    `)}>
-                    {
-                        reachLimit && <div className={cx('text-center')}> no more QAQ </div>
-                    }
-                    <div className={cx(css`
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-            text-align: center;
-            margin-top: 10px;
-    `)}>
-                        <div className={cx(css`
-                    display: flex;
-                    justify-content: space-around;
-            text-align: center;
-            width: 200px;
-    `)}>
-                            <button
-                                onClick={handlePrevScroll}
-                            >
-                                <Icon name='previous' className='h-6 w-6 text-white/80' />
-                            </button>
-                            {currentPage}
-                            <button
-                                onClick={handleNextScroll}
-                            >
-                                <Icon name='next' className='h-6 w-6 text-white/80' />
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </PageTransition>
-    );
-};
-
-export default Pagination;
+export default ScrollPagination

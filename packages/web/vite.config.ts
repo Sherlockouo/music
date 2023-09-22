@@ -104,7 +104,7 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: path => (IS_ELECTRON ? path : path.replace(/^\/netease/, '')),
       },
-      '/r3play/': {
+      '/r3playx/': {
         target: `http://127.0.0.1:${ELECTRON_DEV_NETEASE_API_PORT}`,
         changeOrigin: true,
       },

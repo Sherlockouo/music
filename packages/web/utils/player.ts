@@ -3,6 +3,7 @@ import request from '@/web/utils/request'
 import {
   fetchAudioSourceWithReactQuery,
   fetchTracksWithReactQuery,
+  unblock,
 } from '@/web/api/hooks/useTracks'
 import { fetchPersonalFMWithReactQuery } from '@/web/api/hooks/usePersonalFM'
 import { fmTrash } from '@/web/api/personalFM'
@@ -131,43 +132,41 @@ export class Player {
     }
   }
 
-   private getSongFFT() {
-     if (isMobile) return
+  private getSongFFT() {
+    if (isMobile) return
     _analyser = Howler.ctx.createAnalyser()
-    Howler.masterGain.connect(_analyser);
+    Howler.masterGain.connect(_analyser)
 
+    // Howler.volume(0.4)
 
+    // Connect analyzer to destination
+    // _analyser.connect(Howler.ctx.destination);
 
-     // Howler.volume(0.4)
+    // Creating output array (according to documentation https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API)
+    _analyser.fftSize = 2048
 
-     // Connect analyzer to destination
-     // _analyser.connect(Howler.ctx.destination);
+    var bufferLength = _analyser.frequencyBinCount
+    var dataArray = new Uint8Array(bufferLength)
 
-     // Creating output array (according to documentation https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API)
-     _analyser.fftSize = 2048;
+    var smooth = 0.02
 
-     var bufferLength = _analyser.frequencyBinCount;
-     var dataArray = new Uint8Array(bufferLength);
+    var start = 16,
+      end = 128
 
-     var smooth = 0.02;
+    // Display array on time each 3 sec (just to debug)
+    setInterval(() => {
+      _analyser.getByteFrequencyData(dataArray)
+      var sum = 0
+      dataArray.forEach(function (val, idx, arr) {
+        if (start <= idx && idx < end) {
+          sum += val
+        }
+      }, 0)
+      // console.log(sum / (end - start));
 
-     var start = 16,
-       end = 128;
-
-     // Display array on time each 3 sec (just to debug)
-     setInterval(() => {
-       _analyser.getByteFrequencyData(dataArray);
-       var sum = 0;
-       dataArray.forEach(function (val, idx, arr) {
-         if (start <= idx && idx < end) {
-           sum += val;
-         }
-       }, 0);
-       // console.log(sum / (end - start));
-
-       this._nowVolume = this._nowVolume * smooth + (sum / (end - start)) * (1 - smooth);
-     }, 16);
-   }
+      this._nowVolume = this._nowVolume * smooth + (sum / (end - start)) * (1 - smooth)
+    }, 16)
+  }
 
   // private fetchMP3(url: string): Promise<Blob> {
   //   const options = {
@@ -435,13 +434,7 @@ export class Player {
   private async _fetchUnlockAudioSource(trackID: TrackID) {
     if (settings.unlock) {
       try {
-        const data = await request({
-          url: '/unblock',
-          method: 'GET',
-          params: {
-            track_id: trackID,
-          },
-        })
+        const data = await unblock({ track_id: trackID })
         if (data.url === '')
           return {
             audio: null,
@@ -530,7 +523,7 @@ export class Player {
       src: [url],
       format: ['mp3', 'flac', 'webm'],
       html5: true,
-      // autoplay,
+      autoplay,
       volume: 1,
       onend: () => this._howlerOnEndCallback(),
     })
@@ -745,6 +738,7 @@ export class Player {
    * algorithm: https://bost.ocks.org/mike/shuffle/
    */
   async shufflePlayList() {
+    let playingSongID = this.trackList[this._trackIndex]
     let len = this.trackList.length,
       tmp,
       idx
@@ -754,6 +748,7 @@ export class Player {
       this.trackList[len] = this.trackList[idx]
       this.trackList[idx] = tmp
     }
+    this._trackIndex = this.trackList.indexOf(playingSongID)
   }
 
   /**
@@ -833,7 +828,7 @@ export class Player {
   }
 
   private async _initMediaSession() {
-    console.log('init')
+    console.log('init media session')
     if ('mediaSession' in navigator === false) return
     navigator.mediaSession.setActionHandler('play', () => this.play())
     navigator.mediaSession.setActionHandler('pause', () => this.pause())

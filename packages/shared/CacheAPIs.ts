@@ -2,7 +2,7 @@ import {
   FetchArtistAlbumsResponse,
   FetchArtistResponse,
   FetchSimilarArtistsResponse,
-  FetchArtistSongsResponse
+  FetchArtistSongsResponse,
 } from './api/Artist'
 import { FetchAlbumResponse } from './api/Album'
 import {
@@ -13,7 +13,12 @@ import {
   FetchUserLikedTracksIDsResponse,
   FetchUserPlaylistsResponse,
 } from './api/User'
-import { FetchAudioSourceResponse, FetchLyricResponse, FetchTracksResponse } from './api/Track'
+import {
+  FetchAudioSourceResponse,
+  FetchLyricResponse,
+  FetchTracksResponse,
+  UnblockResponse,
+} from './api/Track'
 import { FetchPlaylistResponse, FetchRecommendedPlaylistsResponse } from './api/Playlists'
 import { AppleMusicAlbum, AppleMusicArtist } from './AppleMusic'
 
@@ -35,6 +40,7 @@ export enum CacheAPIs {
   SimilarArtist = 'simi/artist',
   ArtistSongs = 'artist/songs',
   ListenedRecords = 'user/record',
+  Unblock = 'unblock',
 
   // not netease api
   CoverColor = 'cover_color',
@@ -58,8 +64,9 @@ export interface CacheAPIsParams {
   [CacheAPIs.UserArtists]: void
   [CacheAPIs.UserPlaylist]: void
   [CacheAPIs.SimilarArtist]: { id: number }
-  [CacheAPIs.ArtistSongs]: { id: number; order: string, offset:number, limit: number }
+  [CacheAPIs.ArtistSongs]: { id: number; order: string; offset: number; limit: number }
   [CacheAPIs.ListenedRecords]: { id: number; type: number }
+  [CacheAPIs.Unblock]: { track_id: number }
 
   [CacheAPIs.CoverColor]: { id: number }
   [CacheAPIs.AppleMusicAlbum]: { id: number }
@@ -84,6 +91,7 @@ export interface CacheAPIsResponse {
   [CacheAPIs.SimilarArtist]: FetchSimilarArtistsResponse
   [CacheAPIs.ArtistSongs]: FetchArtistSongsResponse
   [CacheAPIs.ListenedRecords]: FetchListenedRecordsResponse
+  [CacheAPIs.Unblock]: UnblockResponse
 
   [CacheAPIs.CoverColor]: string | undefined
   [CacheAPIs.AppleMusicAlbum]: AppleMusicAlbum | 'no'

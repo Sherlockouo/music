@@ -5,7 +5,7 @@ import player from '@/web/states/player'
 import { formatDuration, resizeImage } from '@/web/utils/common'
 import { State as PlayerState } from '@/web/utils/player'
 import { css, cx } from '@emotion/css'
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useSnapshot } from 'valtio'
 
@@ -113,8 +113,12 @@ function TrackList({
   placeholderRows?: number
 }) {
   const { trackID, state } = useSnapshot(player)
-  const playingTrack = tracks?.find(track => track.id === trackID)
+  let playingTrack = tracks?.find(track => track.id === trackID)
 
+  // useEffect(() => {
+  //   playingTrack = tracks?.find(track => track.id === trackID)
+  //   console.log('playing track', trackID)
+  // }, [trackID])
   const handleClick = (e: React.MouseEvent<HTMLElement>, trackID: number) => {
     if (isLoading) return
     if (e.type === 'contextmenu') {

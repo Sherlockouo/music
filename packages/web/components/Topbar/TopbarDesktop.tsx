@@ -27,16 +27,12 @@ const Background = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ ease }}
-            className={cx(
-              'absolute inset-0 z-0',
-              window.env?.isElectron && 'rounded-t-24'
-            )}
-            style={{ 
-              
-              backdropFilter: `blur(25px)`,
+            className={cx('absolute inset-0 z-0', window.env?.isElectron && 'rounded-t-24')}
+            style={{
+              backdropFilter: `blur(10px)`,
               // background: `linear-gradient(to bottom, black, 100%, rgb(0,0,0,0))`
             }}
-          ></motion.div> 
+          ></motion.div>
         )}
       </AnimatePresence>
     </>

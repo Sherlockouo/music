@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { Track } from '@/shared/api/Track'
 import useArtistSongs from '@/web/api/hooks/useArtistSongs'
 import useTracks from '@/web/api/hooks/useTracks'
 import { FetchArtistSongsParams } from '@/shared/api/Artist'
@@ -55,7 +54,7 @@ const ArtistSongs = () => {
 
   return (
     <div className='h-800 z-10 mt-10'>
-      <ScrollPagination getData={getData} renderItems={renderItems} />
+      <ScrollPagination getData={getData(1, 100)} renderItems={renderItems} />
     </div>
   )
 }

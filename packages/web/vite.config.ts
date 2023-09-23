@@ -19,7 +19,8 @@ const ELECTRON_UNBLOCK_SERVER_PORT = Number(process.env.ELECTRON_UNBLOCK_SERVER_
  * @see https://vitejs.dev/config/
  */
 export default defineConfig({
-  clearScreen: IS_ELECTRON ? false : true,
+  // clearScreen: IS_ELECTRON ? false : true,
+  clearScreen: false,
   mode: process.env.NODE_ENV,
   root: './',
   base: '/',

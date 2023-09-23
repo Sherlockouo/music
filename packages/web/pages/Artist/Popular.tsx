@@ -7,6 +7,9 @@ import Image from '@/web/components/Image'
 import useArtist from '@/web/api/hooks/useArtist'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { Button } from '../Settings/Controls'
+import Icon from '@/web/components/Icon'
+import toast from 'react-hot-toast'
 
 const Track = ({
   track,
@@ -50,7 +53,7 @@ const Track = ({
   )
 }
 
-const Popular = () => {
+const Popular = ({ showAllSongs }: { showAllSongs: Function }) => {
   const { t } = useTranslation()
 
   const params = useParams()
@@ -69,7 +72,22 @@ const Popular = () => {
 
   return (
     <div>
-      <div className='mb-4 text-12 font-medium uppercase text-neutral-300'>{t`artist.popular`}</div>
+      <div className={cx('flex justify-between')}>
+        <div className='mb-4 text-12 font-medium uppercase text-neutral-300'>
+          {t`artist.popular`}
+        </div>
+        <div
+          className={cx(
+            'align-center mb-4 flex text-center text-12 font-medium uppercase text-white text-neutral-300'
+          )}
+          onClick={() => {
+            showAllSongs()
+          }}
+        >
+          {t`artist.all-songs`}
+          <Icon name='right-arrow' className='h-4 w-4 text-white' />
+        </div>
+      </div>
 
       <div className='grid grid-cols-3 grid-rows-3 gap-4 overflow-hidden'>
         {tracks?.slice(0, 9)?.map(t => (

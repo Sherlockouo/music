@@ -190,8 +190,28 @@ const Lyrics = () => {
       >
         <div
           className={cx(
+<<<<<<< HEAD
             'lyrics-container no-scrollbar h-lyric  pb-lyricBottom pt-lyricTop text-left ',
             'text-center'
+||||||| parent of 45b4b11 (fix: doing some modifying)
+            'lyrics-container no-scrollbar h-lyric  overflow-scroll  pb-lyricBottom pt-lyricTop text-left ',
+            isMobile && 'text-center',
+            css`
+              &::-webkit-scrollbar {
+                width: 0;
+                background: transparent;
+              }
+            `
+=======
+            'lyrics-container no-scrollbar h-lyric  overflow-scroll  pb-lyricBottom pt-lyricTop ',
+            'text-center',
+            css`
+              &::-webkit-scrollbar {
+                width: 0;
+                background: transparent;
+              }
+            `
+>>>>>>> 45b4b11 (fix: doing some modifying)
           )}
           ref={containerRef}
           onMouseEnter={handleMouseEnter}
@@ -200,8 +220,16 @@ const Lyrics = () => {
         >
           <div
             className={cx(
+<<<<<<< HEAD
               'artist-info  no-scrollbar padding-bottom-20 mb-8 mt-8 text-left text-24 text-white/30',
               'text-center'
+||||||| parent of 45b4b11 (fix: doing some modifying)
+              'artist-info padding-bottom-20 mb-8 mt-8 text-left text-24 text-white/30',
+              isMobile && 'text-center'
+=======
+              'artist-info padding-bottom-20 mb-8 mt-8 text-24 text-white/30',
+              'text-center'
+>>>>>>> 45b4b11 (fix: doing some modifying)
             )}
           >
             <p className=''>{player.track?.name}</p>

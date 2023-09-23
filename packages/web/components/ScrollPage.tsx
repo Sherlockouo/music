@@ -29,7 +29,7 @@ const ScrollPagination = ({
         setCurrent(prev => prev + 1) // 更新当前页码
         toast('current' + current)
       }
-    }, 1000)
+    }, 1500)
 
     // 创建 IntersectionObserver 实例
     observerRef.current = new IntersectionObserver(handleObserver, options)
@@ -59,7 +59,8 @@ const ScrollPagination = ({
             setIsFetching(false) // 设置为获取数据完成的状态
             setHasMore(false)
             observerRef.current.disconnect() // 停止观察
-            toast('已到达最后一页')
+            // Todo: add i18n toast
+            // toast('no more')
           }
         })
         .catch(error => {
@@ -67,7 +68,7 @@ const ScrollPagination = ({
           console.error('数据获取失败:', error)
         })
     }
-  }, [current, getData, isFetching])
+  }, [current, isFetching])
 
   return (
     <div ref={containerRef} className='infinite-scroll-component h-100'>

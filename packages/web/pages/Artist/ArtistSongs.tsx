@@ -22,7 +22,8 @@ const ArtistSongs = () => {
     if (hasMore === false) return
     const songsParams: FetchArtistSongsParams = {
       id: Number(params.id) || 0,
-      order: 'time',
+      // order 加上time 会导致取不到更多的歌曲
+      order: '',
       limit: pageSize || 50,
       offset: (pageNo - 1) * pageSize || 0,
     }

@@ -18,53 +18,54 @@ const Layout = () => {
   const playerSnapshot = useSnapshot(player)
   const { fullscreen } = useSnapshot(uiStates)
   const showPlayer = !!playerSnapshot.track
-  const {showBackgroundImage} = useSnapshot(settings)
+  const { showBackgroundImage } = useSnapshot(settings)
   return (
     <div
-  id="layout"
-  className={cx(
-    'bg-img',
-    window.env?.isElectron && !fullscreen && 'rounded-24',
-    css`
-      position: relative;
-      background: black;
-      border-radius: 24px;
-      /* 其他样式属性 */
-      `
-      )}
->
-  {/* layout 元素的内容 */}
-  <div
-    className={cx(css`
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-      /* 其他样式属性 */
-    `,
-    showBackgroundImage && css`
-      background-image: url(${player.track?.al.picUrl});
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center;
-      filter: blur(10px); /* 模糊效果 */
-      border-radius: 24px;
-      `
-    )
-  }
-  />
-      <div 
-      id='layout-foreground'
+      id='layout'
       className={cx(
-        'relative grid h-screen select-none overflow-hidden bg-white/25 dark:bg-black/80',
-        window.env?.isElectron && !fullscreen && 'rounded-24')}
+        'bg-img ',
+        window.env?.isElectron && !fullscreen && 'rounded-24',
+        css`
+          position: relative;
+          background: black;
+          /* 其他样式属性 */
+        `
+      )}
+    >
+      {/* layout 元素的内容 */}
+      <div
+        className={cx(
+          css`
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* 其他样式属性 */
+          `,
+          showBackgroundImage &&
+            css`
+              background-image: url(${player.track?.al.picUrl});
+              background-repeat: no-repeat;
+              background-size: cover;
+              background-position: center;
+              border-radius: 24px;
+              transform: translate3d(0, 0, 0);
+            `
+        )}
+      />
+      <div
+        id='layout-foreground'
+        className={cx(
+          'backdrop-blur-xl',
+          'relative grid h-screen select-none overflow-hidden bg-white/25 dark:bg-black/80',
+          window.env?.isElectron && !fullscreen && 'rounded-24'
+        )}
       >
         <BlurBackground />
         <MenuBar />
-        <div className="bg-white">
-        <Topbar />
-
+        <div className='bg-white'>
+          <Topbar />
         </div>
         <Main />
         <Login />
@@ -92,7 +93,6 @@ const Layout = () => {
           )}
         ></div>
       </div>
-      
     </div>
   )
 }

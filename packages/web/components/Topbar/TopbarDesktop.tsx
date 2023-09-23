@@ -8,6 +8,7 @@ import { useSnapshot } from 'valtio'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ease } from '@/web/utils/const'
 import { useLocation } from 'react-router-dom'
+import player from '@/web/states/player'
 
 const Background = () => {
   const { hideTopbarBackground } = useSnapshot(uiStates)
@@ -22,17 +23,38 @@ const Background = () => {
     <>
       <AnimatePresence>
         {show && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ ease }}
-            className={cx('absolute inset-0 z-0', window.env?.isElectron && 'rounded-t-24')}
-            style={{
-              backdropFilter: `blur(10px)`,
-              // background: `linear-gradient(to bottom, black, 100%, rgb(0,0,0,0))`
-            }}
-          ></motion.div>
+          <>
+            <div className={cx('absolute inset-0 h-full w-full ')}>
+              <div
+                className={cx(
+                  'absolute inset-0 z-0 h-full w-full',
+                  // ' backdrop-blur-xl ',
+                  css`
+                    background-image: url(${player.track?.al.picUrl});
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    background-position: center;
+                    filter: brightness(0.3);
+                  `
+                )}
+              ></div>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ ease }}
+                className={cx(
+                  'relative inset-0 z-0 ',
+                  'h-full w-full',
+                  window.env?.isElectron && 'rounded-tr-24 rounded-tl-24'
+                )}
+                style={{
+                  backdropFilter: `blur(10px)`,
+                  // background: `linear-gradient(to bottom, black, 100%, rgb(0,0,0,0))`,
+                }}
+              ></motion.div>
+            </div>
+          </>
         )}
       </AnimatePresence>
     </>
@@ -44,8 +66,9 @@ const TopbarDesktop = () => {
     <div
       className={cx(
         // app-region-drag 删除后即可移动console
-        // 'app-region-drag',
-        ' fixed top-0 left-0 right-0 z-20 flex items-center justify-between bg-contain pt-11 pb-10 pr-6',
+        'app-region-drag',
+        ' fixed top-0 left-0 right-0 z-20 flex items-center justify-between bg-contain ',
+        'pt-11 pb-10 pr-6',
         css`
           padding-left: 144px;
         `
@@ -53,11 +76,9 @@ const TopbarDesktop = () => {
     >
       {/* Background */}
       <Background />
-
       {/* Left Part */}
       <div className='z-10 flex items-center'>
         <NavigationButtons />
-
         {/* Dividing line */}
         <div className='mx-6 h-4 w-px bg-black/20 dark:bg-white/20'></div>
 

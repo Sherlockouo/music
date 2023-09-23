@@ -1,6 +1,7 @@
 import React, { ReactNode, useState, useEffect, useRef } from 'react'
 import { throttle } from 'lodash'
 import toast from 'react-hot-toast'
+import Loading from './Loading'
 
 const ScrollPagination = ({
   getData,
@@ -27,7 +28,6 @@ const ScrollPagination = ({
         // 最后一个元素进入视窗且未在获取数据
         setIsFetching(true) // 设置为正在获取数据的状态
         setCurrent(prev => prev + 1) // 更新当前页码
-        toast('current' + current)
       }
     }, 1500)
 
@@ -71,8 +71,9 @@ const ScrollPagination = ({
   }, [current, isFetching])
 
   return (
-    <div ref={containerRef} className='infinite-scroll-component h-100'>
+    <div ref={containerRef} className='infinite-scroll-component h-100 w-full '>
       {renderItems()}
+      <div className='flex w-full items-center justify-center'>{isFetching && <Loading />}</div>
       <div className='transparent-container' style={{ height: '1px', marginBottom: '-1px' }}></div>
     </div>
   )

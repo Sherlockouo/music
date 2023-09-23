@@ -8,7 +8,14 @@ import Icon from '../Icon'
 import { State as PlayerState } from '@/web/utils/player'
 import useUserLikedTracksIDs, { useMutationLikeATrack } from '@/web/api/hooks/useUserLikedTracksIDs'
 import { toast } from 'react-hot-toast'
-import { BlockDescription, BlockTitle, Option, OptionText, Switch, Input } from '@/web/pages/Settings/Controls'
+import {
+  BlockDescription,
+  BlockTitle,
+  Option,
+  OptionText,
+  Switch,
+  Input,
+} from '@/web/pages/Settings/Controls'
 import Slider from '@/web/components/Slider'
 import { ceil } from 'lodash'
 import { useTranslation } from 'react-i18next'
@@ -27,7 +34,7 @@ const LikeButton = () => {
       onClick={() => track?.id && likeATrack.mutateAsync(track.id)}
       className='text-black/90 transition-colors duration-400 dark:text-white/40 hover:dark:text-white/90'
     >
-      <Icon name={isLiked ? 'heart' : 'heart-outline'} className={cx('h-7 w-7','text-center')} />
+      <Icon name={isLiked ? 'heart' : 'heart-outline'} className={cx('h-7 w-7', 'text-center')} />
     </motion.button>
   )
 }
@@ -37,7 +44,7 @@ const Controls = () => {
   const { minimizePlayer: mini } = useSnapshot(persistedUiStates)
 
   return (
-    <MotionConfig transition={{ ease, duration: 0.6 }}>
+    <MotionConfig transition={{ ease, duration: 0.5 }}>
       <motion.div
         className={cx(
           'fixed bottom-0 right-0 flex',
@@ -58,25 +65,16 @@ const Controls = () => {
               `
         )}
       >
-        <div className={
-          cx(
-            mini
-              ? 'flex flex-wrap gap-3'
-              : 'flex-col gap-2'
-          )
-        }>
-
-          <div className={
-            cx(mini ? 'flex-col text-center' : 'flex gap-6  justify-between mb-5')
-          }>
-
+        <div className={cx(mini ? 'flex flex-wrap gap-3' : 'flex-col gap-2')}>
+          <div className={cx(mini ? 'flex-col text-center' : 'mb-5 flex  justify-between gap-6')}>
             {/* Minimize */}
             <motion.button
               layout='position'
               animate={{ rotate: mini ? 90 : 0 }}
-              className={cx('text-black/90 transition-colors duration-400 dark:text-white/40 hover:dark:text-white/90',mini && css`
-                
-              `)}
+              className={cx(
+                'text-black/90 transition-colors duration-400 dark:text-white/40 hover:dark:text-white/90',
+                mini && css``
+              )}
               onClick={() => {
                 persistedUiStates.minimizePlayer = !mini
               }}
@@ -86,7 +84,6 @@ const Controls = () => {
 
             {/* Media controls */}
             <div className='flex flex-wrap gap-2 text-black/95 dark:text-white/80'>
-
               <motion.button
                 layout='position'
                 animate={{ rotate: mini ? 90 : 0 }}
@@ -103,7 +100,9 @@ const Controls = () => {
                 className='rounded-full bg-black/10 p-2.5 transition-colors duration-400 dark:bg-white/10 hover:dark:bg-white/20'
               >
                 <Icon
-                  name={[PlayerState.Playing, PlayerState.Loading].includes(state) ? 'pause' : 'play'}
+                  name={
+                    [PlayerState.Playing, PlayerState.Loading].includes(state) ? 'pause' : 'play'
+                  }
                   className='h-6 w-6 '
                 />
               </motion.button>
@@ -124,9 +123,7 @@ const Controls = () => {
             <LikeButton />
           </div>
 
-          {
-            !mini && <VolumeSlider />
-          }
+          {!mini && <VolumeSlider />}
         </div>
       </motion.div>
     </MotionConfig>
@@ -140,17 +137,27 @@ function VolumeSlider() {
     player.volume = volume
   }
   return (
-    <div className={cx(css`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    text-align: center;
-    `)}>
-      <Icon name= {player.volume == 0 ? 'volume-mute':'volume-half'} className={cx('text-white/80','h-5 w-5')} />
-      <div className={cx('pr-1 pl-1', css(`
+    <div
+      className={cx(css`
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        text-align: center;
+      `)}
+    >
+      <Icon
+        name={player.volume == 0 ? 'volume-mute' : 'volume-half'}
+        className={cx('text-white/80', 'h-5 w-5')}
+      />
+      <div
+        className={cx(
+          'pr-1 pl-1',
+          css(`
         width: 180px;
-      `))}>
+      `)
+        )}
+      >
         <Slider
           value={volume}
           min={0}
@@ -160,7 +167,7 @@ function VolumeSlider() {
           alwaysShowThumb
         />
       </div>
-        <Icon name='volume' className='h-5 w-5 text-white/80'  />
+      <Icon name='volume' className='h-5 w-5 text-white/80' />
       {/* <div className='mt-1 flex justify-between text-14 font-bold text-neutral-100'>
         <span>0</span>
         <span>{ceil(volume * 100)}</span>

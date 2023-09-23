@@ -11,18 +11,20 @@ import { useLocation } from 'react-router-dom'
 import player from '@/web/states/player'
 
 const Background = () => {
-  const { hideTopbarBackground } = useSnapshot(uiStates)
-  const location = useLocation()
-  const isPageHaveBlurBG =
-    location.pathname.startsWith('/album/') ||
-    location.pathname.startsWith('/artist/') ||
-    location.pathname.startsWith('/playlist/')
-  const show = !hideTopbarBackground || !isPageHaveBlurBG
+  // keep background
+  // const { hideTopbarBackground } = useSnapshot(uiStates)
+  // const location = useLocation()
+  // const isPageHaveBlurBG =
+  // location.pathname.startsWith('/album/') ||
+  // location.pathname.startsWith('/artist/') ||
+  // location.pathname.startsWith('/playlist/')
+  // const show = !hideTopbarBackground || !isPageHaveBlurBG
+  // const show = !hideTopbarBackground
 
   return (
     <>
       <AnimatePresence>
-        {show && (
+        {
           <>
             <div className={cx('absolute inset-0 h-full w-full ')}>
               <div
@@ -55,7 +57,7 @@ const Background = () => {
               ></motion.div>
             </div>
           </>
-        )}
+        }
       </AnimatePresence>
     </>
   )

@@ -18,7 +18,7 @@ const Artist = () => {
     <div>
       <Header />
       {/* Dividing line */}
-      {showAllSongs && (
+      {showAllSongs ? (
         <div className='mt-5 flex w-full items-center justify-center text-center'>
           <button
             onClick={() => {
@@ -26,10 +26,12 @@ const Artist = () => {
             }}
             className='flex w-36 items-center justify-center gap-2 rounded-full bg-white/20 text-white'
           >
-            {t`artist.all-songs`}
+            {t`artist.synthesis`}
             <Icon name={showAllSongs ? 'eye' : 'eye-off'} className='h-6 w-6 text-white/80' />
           </button>
         </div>
+      ) : (
+        <div className='mb-7.5 mt-10 h-px w-full bg-white/20'></div>
       )}
       {!showAllSongs && (
         <div>

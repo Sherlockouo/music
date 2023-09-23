@@ -2,7 +2,20 @@
   "extends": "fastify-tsconfig",
   "compilerOptions": {
     "outDir": "dist",
-    "sourceMap": true
+    "allowJs": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "strict": true,
+    "jsx": "react-jsx",
+    "sourceMap": true,
+    "baseUrl": "../",
+    "paths": {
+      "@/*": ["./*"]
+    }
+
   },
-  "include": ["src/**/*.ts"]
+  "include": ["./**/*.ts","../shared/**/*.ts"]
 }

@@ -5,11 +5,11 @@
   "main": "app.ts",
   "scripts": {
     "postinstall": "prisma generate",
-    "start": "fastify start --port 35530 --address 0.0.0.0 -l info dist/app.js",
+    "start": "fastify start --port 35530 --address 0.0.0.0 -l info dist/server/src/app.js",
     "build": "tsc",
     "watch": "tsc -w",
     "dev": "npm run build && concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" -c \"yellow.bold,cyan.bold\" \"npm:watch\" \"npm:dev:start\"",
-    "dev:start": "fastify start --ignore-watch=.ts$ -w --port 35530 --address 0.0.0.0 -l info -P dist/app.js"
+    "dev:start": "fastify start --ignore-watch=.ts$ -w --port 35530 --address 0.0.0.0 -l info -P dist/server/src/app.js"
   },
   "keywords": [],
   "author": "",
@@ -20,10 +20,11 @@
     "@fastify/static": "^6.6.1",
     "@fastify/swagger": "^8.8.0",
     "@unblockneteasemusic/server": "^0.27.3",
-    "NeteaseCloudMusicApi": "^4.8.7",
+    "NeteaseCloudMusicApi": "^4.8.9",
     "axios": "^0.27.2",
-    "fastify": "^4.5.3", 
+    "fastify": "^4.5.3",
     "fastify-cli": "^4.4.0",
+    "change-case": "^4.1.2",
     "fastify-plugin": "^3.0.0"
   },
   "devDependencies": {
@@ -33,6 +34,8 @@
     "fastify-tsconfig": "^1.0.1",
     "prisma": "^5.1.1",
     "ts-node": "^10.9.1",
+    "vite": "^4.2.0",
+    "esbuild": "^0.16.10",
     "typescript": "^4.9.4"
   }
 }

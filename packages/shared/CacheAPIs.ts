@@ -35,6 +35,7 @@ export enum CacheAPIs {
   SimilarArtist = 'simi/artist',
   ArtistSongs = 'artist/songs',
   ListenedRecords = 'user/record',
+  UNBLOCK = 'unblock',
 
   // not netease api
   CoverColor = 'cover_color',
@@ -60,6 +61,7 @@ export interface CacheAPIsParams {
   [CacheAPIs.SimilarArtist]: { id: number }
   [CacheAPIs.ArtistSongs]: { id: number; order: string, offset:number, limit: number }
   [CacheAPIs.ListenedRecords]: { id: number; type: number }
+  [CacheAPIs.UNBLOCK]: {id:number}
 
   [CacheAPIs.CoverColor]: { id: number }
   [CacheAPIs.AppleMusicAlbum]: { id: number }
@@ -84,8 +86,11 @@ export interface CacheAPIsResponse {
   [CacheAPIs.SimilarArtist]: FetchSimilarArtistsResponse
   [CacheAPIs.ArtistSongs]: FetchArtistSongsResponse
   [CacheAPIs.ListenedRecords]: FetchListenedRecordsResponse
+  [CacheAPIs.UNBLOCK]:{ audioID: number;songName: string, url: string }
+
 
   [CacheAPIs.CoverColor]: string | undefined
   [CacheAPIs.AppleMusicAlbum]: AppleMusicAlbum | 'no'
   [CacheAPIs.AppleMusicArtist]: AppleMusicArtist | 'no'
 }
+

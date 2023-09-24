@@ -539,6 +539,8 @@ export class Player {
       this.state = State.Playing
     }
     _howler.once('load', () => {
+      console.log('howler loaded ',(_howler as any)._src);
+      
       this._cacheAudio((_howler as any)._src)
     })
 
@@ -559,10 +561,13 @@ export class Player {
   }
 
   private async _cacheAudio(audio: string) {
+    
     if (audio.includes(appName.toLowerCase()) || !window.ipcRenderer) return
     const id = Number(new URL(audio).searchParams.get('dash-id'))
     if (isNaN(id) || !id) return
+    // audio info
     const response = await fetchAudioSourceWithReactQuery({ id })
+    // 缓存
     cacheAudio(id, audio, response?.data?.[0]?.br)
   }
 

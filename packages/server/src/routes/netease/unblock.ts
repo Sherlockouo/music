@@ -1,113 +1,12 @@
 /* eslint-disable @typescript-eslint */
 import { FastifyReply, FastifyPluginAsync, FastifyRequest } from 'fastify'
-import NeteaseCloudMusicApi, { SoundQualityType } from 'NeteaseCloudMusicApi'
-import cache from '../../utils/cache'
-import { CacheAPIs } from '@/shared/CacheAPIs'
 import log from '../../utils/log'
+import cache from '../../utils/cache'
+import { CacheAPIs } from '../../../../shared/CacheAPIs'
 const match = require('@unblockneteasemusic/server')
-// import https from 'https'
 
-function stringifyCookie(cookies: string[]) {
-  var result = ''
-
-  for (var i = 0; i < cookies.length; i++) {
-    var cookie = cookies[i]
-    var separatorIndex = cookie.indexOf('=')
-    var name = cookie.substring(0, separatorIndex)
-    var value = cookie.substring(separatorIndex + 1)
-    result += name + '=' + value + '; '
-  }
-
-  return result
-}
 
 const unblock: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
-  // 劫持网易云的song/url api，将url替换成缓存的音频文件url
-  fastify.get(
-    '/netease/song/url/v1',
-    async (
-      req: FastifyRequest<{ Querystring: { id: string | number; level: SoundQualityType } }>,
-      reply
-    ) => {
-      const id = Number(req.query.id) || 0
-      if (!id || isNaN(id)) {
-        return reply.status(400).send({
-          code: 400,
-          msg: 'id is required or id is invalid',
-        })
-      }
-
-      // const cache = await getAudioFromCache(id)
-      // if (cache) {
-      //   return cache
-      // }
-      console.log(req.headers.cookies as unknown as any);
-      
-      const { body: fromNetease }: { body: any } = await NeteaseCloudMusicApi.song_url_v1({
-        ...req.query,
-        cookie: stringifyCookie(req.headers.cookies as unknown as any),
-      })
-      if (
-        fromNetease?.code === 200 &&
-        !fromNetease?.data?.[0]?.freeTrialInfo &&
-        fromNetease?.data?.[0]?.url
-      ) {
-        reply.status(200).send(fromNetease)
-        return
-      }
-
-      // 是试听歌曲就把url删掉
-      if (fromNetease?.data?.[0].freeTrialInfo) {
-        fromNetease.data[0].url = ''
-      }
-
-      reply.status(fromNetease?.code ?? 500).send(fromNetease)
-    }
-  )
-
-  // 获取缓存的音频数据
-  fastify.get(
-    `/r3playx/audio/:filename`,
-    (req: FastifyRequest<{ Params: { filename: string } }>, reply) => {
-      const filename = req.params.filename
-      cache.getAudio(filename, reply)
-    }
-  )
-
-  // 缓存音频数据
-  fastify.post(
-    `/r3playx/audio/:id`,
-    async (
-      req: FastifyRequest<{
-        Params: { id: string }
-        Querystring: { url: string; bitrate: number }
-      }>,
-      reply
-    ) => {
-      const id = Number(req.params.id)
-      const { url, bitrate } = req.query
-      if (isNaN(id)) {
-        return reply.status(400).send({ error: 'Invalid param id' })
-      }
-      if (!url) {
-        return reply.status(400).send({ error: 'Invalid query url' })
-      }
-
-      const data = (await (req as any).file()) as any
-
-      if (!data?.file) {
-        return reply.status(400).send({ error: 'No file' })
-      }
-
-      try {
-        await cache.setAudio(await data.toBuffer(), { id, url, bitrate })
-        reply.status(200).send('Audio cached!')
-      } catch (error) {
-        reply.status(500).send({ error })
-      }
-    }
-  )
-
   fastify.get(
     '/netease/unblock',
     async (
@@ -115,32 +14,31 @@ const unblock: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       reply: FastifyReply
     ) => {
       const trackID = request.query.track_id as string
-      console.log('query', trackID)
+      log.info('query', trackID)
 
-      const cacheData = await cache.get(CacheAPIs.UNBLOCK,trackID)
+      const cacheData = await cache.get(CacheAPIs.UNBLOCK, trackID)
       if (cacheData) {
-        console.log('get from cache');
-        
+        log.info('hit cache trackID: ', trackID);
         return cacheData
       }
       if (!trackID) {
-        reply.code(400).send('param invalid: mission track_id')
+        reply.code(400).send('param invalid: missing track_id')
         return
       }
-      log.info("try to match trackid")
+
       try {
         await match(trackID, ['qq', 'kuwo', 'migu', 'kugou', 'joox']).then((data: unknown) => {
-          console.log('unblock data', data)
-          if(data === null || data === undefined || (data as any)?.url === ''){
-            reply.code(404).send('no such unblock info')
-            return 
+          if (data === null || data === undefined || (data as any)?.url === '') {
+            reply.code(500).send('no track info, something bad happens')
+            return
           }
-          
-          cache.set(CacheAPIs.UNBLOCK,{id:trackID,url: (data as any)?.url},trackID)
-          reply.send(data)
+
+          cache.set(CacheAPIs.UNBLOCK, { id: trackID, url: (data as any)?.url }, trackID)
+          log.info('[server] unblock track ', trackID, ' success')
+          reply.code(200).send(data)
         })
       } catch (err) {
-        reply.send(err)
+        reply.code(500).send(err)
       }
     }
   )

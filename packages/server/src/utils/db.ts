@@ -1,12 +1,13 @@
 import path from 'path'
 import fs from 'fs'
+import SQLite3 from 'better-sqlite3'
 import log from './log'
 import { createFileIfNotExist, dirname } from './utils'
-import { isProd } from './env'
+// import { isProd } from './env'
 import pkg from '../../../../package.json'
 import { compare, validate } from 'compare-versions'
-import os from 'os'
-import SQLite3 from 'better-sqlite3'
+// import os from 'os'
+
 log.info('[electron] db.ts')
 
 export const enum Tables {
@@ -22,7 +23,8 @@ export const enum Tables {
   AppData = 'AppData',
   AppleMusicAlbum = 'AppleMusicAlbum',
   AppleMusicArtist = 'AppleMusicArtist',
-  Unblock = 'unblock',
+  Unblock = 'Unblock'
+  
 }
 interface CommonTableStructure {
   id: number
@@ -33,10 +35,10 @@ export interface TablesStructures {
   [Tables.Track]: CommonTableStructure
   [Tables.Album]: CommonTableStructure
   [Tables.Artist]: CommonTableStructure
+  [Tables.Unblock]: CommonTableStructure
   [Tables.Playlist]: CommonTableStructure
   [Tables.ArtistAlbum]: CommonTableStructure
   [Tables.Lyrics]: CommonTableStructure
-  [Tables.Unblock]: CommonTableStructure
   [Tables.AccountData]: {
     id: string
     json: string
@@ -79,21 +81,23 @@ const readSqlFile = (filename: string) => {
 
 class DB {
   sqlite!: SQLite3.Database
-  dbFilePath: string = path.resolve(dirname, './r3playx-UserData/api_cache/db.sqlite')
+  dbFilePath: string = path.resolve(dirname, './api_cache/db.sqlite')
 
   constructor() {
     log.info('[db] Initializing database...')
 
     try {
       createFileIfNotExist(this.dbFilePath)
+      // log.info('bin path',this.getBinPath(), ' ', this.sqlite)
 
-      this.sqlite = new SQLite3(this.dbFilePath, {
-        nativeBinding: this.getBinPath(),
-      })
+      this.sqlite = new SQLite3(this.dbFilePath, 
+      //   {
+      //   nativeBinding: this.getBinPath(),
+      // }
+      )
       this.sqlite.pragma('auto_vacuum = FULL')
       this.initTables()
       this.migrate()
-
       log.info('[db] Database initialized.')
     } catch (e) {
       log.error('[db] Database initialization failed.')
@@ -101,21 +105,21 @@ class DB {
     }
   }
 
-  private getBinPath() {
-    console
-    const devBinPath = path.resolve(
-      dirname,
-      `../../bin/better_sqlite3_${os.platform}_${os.arch}.node`
-    )
-    const prodBinPaths = {
-      darwin: path.resolve(dirname, `../../Resources/bin/better_sqlite3.node`),
-      win32: path.resolve(dirname, `../resources/bin/better_sqlite3.node`),
-      linux: path.resolve(dirname, `../resources/bin/better_sqlite3.node`),
-    }
-    return isProd
-      ? prodBinPaths[os.platform as unknown as 'darwin' | 'win32' | 'linux']
-      : devBinPath
-  }
+  // private getBinPath() {
+  //   console
+  //   const devBinPath = path.resolve(
+  //       dirname,
+  //     `../../bin/better_sqlite3_${os.platform}_${os.arch}.node`
+  //   )
+  //   const prodBinPaths = {
+  //     darwin: path.resolve(dirname, `../../Resources/bin/better_sqlite3.node`),
+  //     win32: path.resolve(dirname, `../resources/bin/better_sqlite3.node`),
+  //     linux: path.resolve(dirname, `../resources/bin/better_sqlite3.node`),
+  //   }
+  //   return isProd
+  //     ? prodBinPaths[os.platform as unknown as 'darwin' | 'win32' | 'linux']
+  //     : devBinPath
+  // }
 
   initTables() {
     log.info('[db] Initializing database tables...')
@@ -241,5 +245,6 @@ class DB {
     return this.sqlite.prepare('VACUUM').run()
   }
 }
+
 
 export const db = new DB()

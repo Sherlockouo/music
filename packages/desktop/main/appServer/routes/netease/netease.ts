@@ -16,6 +16,7 @@ async function netease(fastify: FastifyInstance) {
       req: FastifyRequest<{ Querystring: { [key: string]: string } }>,
       reply: FastifyReply
     ) => {
+      log.info('netease api name ',name,' params ',neteaseApi)
       // Get track details from cache
       if (name === CacheAPIs.Track) {
         const cacheData = await cache.get(name, req.query as any)

@@ -21,7 +21,7 @@ const artist: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       lang?: 'zh-CN' | 'en-US'
       noCache?: boolean
     }
-  }>('/artist', async function (request, reply): Promise<ResponseSchema | undefined> {
+  }>('/r3playx/apple-music/artist', async function (request, reply): Promise<ResponseSchema | undefined> {
     const { neteaseId: neteaseIdString, lang = 'en-US', noCache = false } = request.query
 
     // validate neteaseId

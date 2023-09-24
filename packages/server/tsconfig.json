@@ -1,22 +1,12 @@
 {
   "extends": "fastify-tsconfig",
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
+    "target": "esnext",
+    "module": "commonjs",
     "outDir": "dist",
-    "allowJs": true,
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "esModuleInterop": true,
-    "moduleResolution": "Node",
     "resolveJsonModule": true,
-    "strict": true,
-    "jsx": "react-jsx",
-    "sourceMap": true,
-    "baseUrl": "../",
-    "paths": {
-      "@/*": ["./*"]
-    }
+    // "sourceMap": true,
+    "esModuleInterop": true,
 
   },
   "include": ["./**/*.ts","../shared/**/*.ts"]

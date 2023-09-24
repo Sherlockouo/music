@@ -194,8 +194,8 @@ importers:
         specifier: ^0.27.2
         version: 0.27.2
       better-sqlite3:
-        specifier: 8.1.0
-        version: registry.npmjs.org/better-sqlite3@8.1.0
+        specifier: 8.5.2
+        version: registry.npmjs.org/better-sqlite3@8.5.2
       change-case:
         specifier: ^4.1.2
         version: 4.1.2
@@ -12069,10 +12069,10 @@ packages:
     version: 1.5.1
     dev: false
 
-  registry.npmjs.org/better-sqlite3@8.1.0:
-    resolution: {integrity: sha512-p1m09H+Oi8R9TPj810pdNswMFuVgRNgCJEWypp6jlkOgSwMIrNyuj3hW78xEuBRGok5RzeaUW8aBtTWF3l/TQA==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/better-sqlite3/-/better-sqlite3-8.1.0.tgz}
+  registry.npmjs.org/better-sqlite3@8.5.2:
+    resolution: {integrity: sha512-w/EZ/jwuZF+/47mAVC2+rhR2X/gwkZ+fd1pbX7Y90D5NRaRzDQcxrHY10t6ijGiYIonCVsBSF5v1cay07bP5sg==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/better-sqlite3/-/better-sqlite3-8.5.2.tgz}
     name: better-sqlite3
-    version: 8.1.0
+    version: 8.5.2
     requiresBuild: true
     dependencies:
       bindings: registry.npmjs.org/bindings@1.5.0

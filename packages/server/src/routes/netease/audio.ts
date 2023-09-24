@@ -1,26 +1,21 @@
-import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
+import { FastifyInstance, FastifyRequest } from 'fastify'
 import NeteaseCloudMusicApi, { SoundQualityType } from 'NeteaseCloudMusicApi'
-import { app } from 'electron'
-import log from '@/desktop/main/log'
-import { appName } from '@/desktop/main/env'
-import cache from '@/desktop/main/cache'
+import log from '../../utils/log'
+import cache from '../../utils/cache'
 import fs from 'fs'
-import youtube from '@/desktop/main/youtube'
-import { CacheAPIs } from '@/shared/CacheAPIs'
-import { FetchTracksResponse } from '@/shared/api/Track'
-import store from '@/desktop/main/store'
-import { db, Tables } from '@/desktop/main/db'
+import { db, Tables } from '../../utils/db'
+import pkg from '../../../../../package.json'
 
-log.info('[electron] appServer/routes/r3playx/audio.ts')
+log.info('[server] appServer/routes/netease/audio.ts')
 
-const getAudioFromCache = async (id: number) => {
+export const getAudioFromCache = async (id: number) => {
   // get from cache
   const cache = await db.find(Tables.Audio, id)
   if (!cache) return
 
   const audioFileName = `${cache.id}-${cache.bitRate}.${cache.format}`
 
-  const isAudioFileExists = fs.existsSync(`${app.getPath('userData')}/audio_cache/${audioFileName}`)
+  const isAudioFileExists = fs.existsSync(`${pkg.name}/audio_cache/${audioFileName}`)
   if (!isAudioFileExists) return
 
   log.debug(`[server] Audio cache hit ${id}`)
@@ -32,7 +27,7 @@ const getAudioFromCache = async (id: number) => {
         id: cache.id,
         url: `http://127.0.0.1:${
           process.env.ELECTRON_WEB_SERVER_PORT
-        }/${appName.toLowerCase()}/audio/${audioFileName}`,
+        }/${pkg.name.toLowerCase()}/audio/${audioFileName}`,
         br: cache.bitRate,
         size: 0,
         md5: '',
@@ -66,65 +61,78 @@ const getAudioFromCache = async (id: number) => {
   }
 }
 
-const getAudioFromYouTube = async (id: number) => {
-  let fetchTrackResult: FetchTracksResponse | undefined = await cache.get(CacheAPIs.Track, {
-    ids: String(id),
-  })
-  if (!fetchTrackResult) {
-    log.info(`[audio] getAudioFromYouTube no fetchTrackResult, fetch from netease api`)
-    fetchTrackResult = (await NeteaseCloudMusicApi.song_detail({
-      ids: String(id),
-    })) as unknown as FetchTracksResponse
-  }
-  const track = fetchTrackResult?.songs?.[0]
-  if (!track) return
+// const getAudioFromYouTube = async (id: number) => {
+//   let fetchTrackResult: FetchTracksResponse | undefined = await cache.get(CacheAPIs.Track, {
+//     ids: String(id),
+//   })
+//   if (!fetchTrackResult) {
+//     log.info(`[audio] getAudioFromYouTube no fetchTrackResult, fetch from netease api`)
+//     fetchTrackResult = (await NeteaseCloudMusicApi.song_detail({
+//       ids: String(id),
+//     })) as unknown as FetchTracksResponse
+//   }
+//   const track = fetchTrackResult?.songs?.[0]
+//   if (!track) return
 
-  try {
-    const data = await youtube.matchTrack(track.ar[0].name, track.name)
-    if (!data) return
-    return {
-      data: [
-        {
-          source: 'youtube',
-          id,
-          url: data.url,
-          br: data.bitRate,
-          size: 0,
-          md5: '',
-          code: 200,
-          expi: 0,
-          type: 'opus',
-          gain: 0,
-          fee: 8,
-          uf: null,
-          payed: 0,
-          flag: 4,
-          canExtend: false,
-          freeTrialInfo: null,
-          level: 'standard',
-          encodeType: 'opus',
-          freeTrialPrivilege: {
-            resConsumable: false,
-            userConsumable: false,
-            listenType: null,
-          },
-          freeTimeTrialPrivilege: {
-            resConsumable: false,
-            userConsumable: false,
-            type: 0,
-            remainTime: 0,
-          },
-          urlSource: 0,
-          r3play: {
-            youtube: data,
-          },
-        },
-      ],
-      code: 200,
-    }
-  } catch (e) {
-    log.error('getAudioFromYouTube error', id, e)
+//   try {
+//     const data = await youtube.matchTrack(track.ar[0].name, track.name)
+//     if (!data) return
+//     return {
+//       data: [
+//         {
+//           source: 'youtube',
+//           id,
+//           url: data.url,
+//           br: data.bitRate,
+//           size: 0,
+//           md5: '',
+//           code: 200,
+//           expi: 0,
+//           type: 'opus',
+//           gain: 0,
+//           fee: 8,
+//           uf: null,
+//           payed: 0,
+//           flag: 4,
+//           canExtend: false,
+//           freeTrialInfo: null,
+//           level: 'standard',
+//           encodeType: 'opus',
+//           freeTrialPrivilege: {
+//             resConsumable: false,
+//             userConsumable: false,
+//             listenType: null,
+//           },
+//           freeTimeTrialPrivilege: {
+//             resConsumable: false,
+//             userConsumable: false,
+//             type: 0,
+//             remainTime: 0,
+//           },
+//           urlSource: 0,
+//           r3play: {
+//             youtube: data,
+//           },
+//         },
+//       ],
+//       code: 200,
+//     }
+//   } catch (e) {
+//     log.error('getAudioFromYouTube error', id, e)
+//   }
+// }
+function stringifyCookie(cookies: string | string[] | undefined) {
+  if(!cookies) return 
+  var result = ''
+  for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i]
+    var separatorIndex = cookie.indexOf('=')
+    var name = cookie.substring(0, separatorIndex)
+    var value = cookie.substring(separatorIndex + 1)
+    result += name + '=' + value + '; '
   }
+
+  return result
 }
 
 async function audio(fastify: FastifyInstance) {
@@ -147,10 +155,11 @@ async function audio(fastify: FastifyInstance) {
       if (cache) {
         return cache
       }
+      log.info("[server] cookie ",req.headers.cookies)
 
       const { body: fromNetease }: { body: any } = await NeteaseCloudMusicApi.song_url_v1({
         ...req.query,
-        cookie: req.cookies as unknown as any,
+        cookie: stringifyCookie(req.headers.cookies),
       })
       if (
         fromNetease?.code === 200 &&
@@ -161,12 +170,6 @@ async function audio(fastify: FastifyInstance) {
         return
       }
 
-      if (store.get('settings.enableFindTrackOnYouTube')) {
-        const fromYoutube = getAudioFromYouTube(id)
-        if (fromYoutube) {
-          return fromYoutube
-        }
-      }
 
       // 是试听歌曲就把url删掉
       if (fromNetease?.data?.[0].freeTrialInfo) {
@@ -179,7 +182,7 @@ async function audio(fastify: FastifyInstance) {
 
   // 获取缓存的音频数据
   fastify.get(
-    `/${appName.toLowerCase()}/audio/:filename`,
+    `/${pkg.name.toLowerCase()}/audio/:filename`,
     (req: FastifyRequest<{ Params: { filename: string } }>, reply) => {
       const filename = req.params.filename
       cache.getAudio(filename, reply)
@@ -188,7 +191,7 @@ async function audio(fastify: FastifyInstance) {
 
   // 缓存音频数据
   fastify.post(
-    `/${appName.toLowerCase()}/audio/:id`,
+    `/${pkg.name.toLowerCase()}/audio/:id`,
     async (
       req: FastifyRequest<{
         Params: { id: string }
@@ -205,7 +208,7 @@ async function audio(fastify: FastifyInstance) {
         return reply.status(400).send({ error: 'Invalid query url' })
       }
 
-      const data = await req.file()
+      const data = await (req as any).file()
 
       if (!data?.file) {
         return reply.status(400).send({ error: 'No file' })

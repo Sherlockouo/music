@@ -7,7 +7,6 @@ import pkg from '../../../../package.json'
 import { compare, validate } from 'compare-versions'
 import os from 'os'
 import SQLite3 from 'better-sqlite3'
-
 log.info('[electron] db.ts')
 
 export const enum Tables {
@@ -80,7 +79,7 @@ const readSqlFile = (filename: string) => {
 
 class DB {
   sqlite!: SQLite3.Database
-  dbFilePath: string = path.resolve(__dirname, './r3playx-UserData/api_cache/db.sqlite')
+  dbFilePath: string = path.resolve(dirname, './r3playx-UserData/api_cache/db.sqlite')
 
   constructor() {
     log.info('[db] Initializing database...')
@@ -105,13 +104,13 @@ class DB {
   private getBinPath() {
     console
     const devBinPath = path.resolve(
-      __dirname,
+      dirname,
       `../../bin/better_sqlite3_${os.platform}_${os.arch}.node`
     )
     const prodBinPaths = {
-      darwin: path.resolve(__dirname, `../../Resources/bin/better_sqlite3.node`),
-      win32: path.resolve(__dirname, `../resources/bin/better_sqlite3.node`),
-      linux: path.resolve(__dirname, `../resources/bin/better_sqlite3.node`),
+      darwin: path.resolve(dirname, `../../Resources/bin/better_sqlite3.node`),
+      win32: path.resolve(dirname, `../resources/bin/better_sqlite3.node`),
+      linux: path.resolve(dirname, `../resources/bin/better_sqlite3.node`),
     }
     return isProd
       ? prodBinPaths[os.platform as unknown as 'darwin' | 'win32' | 'linux']

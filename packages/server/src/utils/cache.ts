@@ -2,7 +2,7 @@ import { db, Tables } from './db'
 import type { FetchTracksResponse } from '@/shared/api/Track'
 import log from './log'
 import fs from 'fs'
-import * as musicMetadata from 'music-metadata'
+import {parseBuffer} from 'music-metadata'
 import { CacheAPIs, CacheAPIsParams } from '@/shared/CacheAPIs'
 import { TablesStructures } from './db'
 import { FastifyReply } from 'fastify'
@@ -311,7 +311,7 @@ class Cache {
       fs.mkdirSync(path)
     }
 
-    const meta = await musicMetadata.parseBuffer(buffer)
+    const meta = await parseBuffer(buffer)
     const bitRate = meta?.format?.codec === 'OPUS' ? 165000 : meta.format.bitrate ?? 0
     const type =
       {

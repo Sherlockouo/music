@@ -85,8 +85,9 @@ const AlbumContextMenu = () => {
                 },
                 {
                   type: 'item',
-                  label: t`context-menu.copy-r3play-link`,
+                  label: t`context-menu.copy-r3playx-link`,
                   onClick: () => {
+                    // fix: 这还有点问题
                     const baseUrl = window.env?.isElectron
                       ? 'https://r3play.app'
                       : window.location.origin

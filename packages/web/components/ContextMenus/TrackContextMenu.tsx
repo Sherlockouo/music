@@ -106,7 +106,7 @@ const TrackContextMenu = () => {
                 },
                 {
                   type: 'item',
-                  label: t`context-menu.copy-r3play-link`,
+                  label: t`context-menu.copy-r3playx-link`,
                   onClick: () => {
                     copyToClipboard(`${window.location.origin}/album/${dataSourceID}`)
                     toast.success(t`toasts.copied`)

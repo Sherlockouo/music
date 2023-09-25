@@ -1,12 +1,12 @@
 import { db, Tables } from './db'
-import type { FetchTracksResponse } from '@/shared/api/Track'
-import { app } from 'electron'
+import type { FetchTracksResponse } from '../../../shared/api/Track'
 import log from './log'
 import fs from 'fs'
-import * as musicMetadata from 'music-metadata'
-import { CacheAPIs, CacheAPIsParams } from '@/shared/CacheAPIs'
+import {IAudioMetadata} from 'music-metadata'
+import { CacheAPIs, CacheAPIsParams } from '../../../shared/CacheAPIs'
 import { TablesStructures } from './db'
 import { FastifyReply } from 'fastify'
+import { dirname } from './utils'
 
 log.info('[electron] cache.ts')
 
@@ -85,7 +85,8 @@ class Cache {
         if (!data.hotAlbums) return
         db.createMany(
           Tables.Album,
-          data.hotAlbums.map((a: Album) => ({
+          // data.hotAlbums.map((a: Album) => ({
+          data.hotAlbums.map((a: any) => ({
             id: a.id,
             json: JSON.stringify(a),
             updatedAt: Date.now(),
@@ -93,7 +94,8 @@ class Cache {
         )
         const modifiedData = {
           ...data,
-          hotAlbums: data.hotAlbums.map((a: Album) => a.id),
+          // hotAlbums: data.hotAlbums.map((a: Album) => a.id),
+          hotAlbums: data.hotAlbums.map((a: any) => a.id),
         }
         db.upsert(Tables.ArtistAlbum, {
           id: data.artist.id,
@@ -280,7 +282,7 @@ class Cache {
     const id = Number(fileName.split('-')[0])
 
     try {
-      const path = `${app.getPath('userData')}/audio_cache/${fileName}`
+      const path = `${dirname}/audio_cache/${fileName}`
       const audio = fs.readFileSync(path)
       if (audio.byteLength === 0) {
         db.delete(Tables.Audio, id)
@@ -299,16 +301,21 @@ class Cache {
     }
   }
 
-  async setAudio(buffer: Buffer, { id, url }: { id: number; url: string }) {
-    const path = `${app.getPath('userData')}/audio_cache`
+  async setAudio(buffer: Buffer, { id, url,bitrate }: { id: number; url: string;bitrate:number }) {
+    const path = `${dirname}/audio_cache`
 
     try {
       fs.statSync(path)
     } catch (e) {
       fs.mkdirSync(path)
     }
-
-    const meta = await musicMetadata.parseBuffer(buffer)
+    let meta! : IAudioMetadata
+    (async () => {
+      const { parseBuffer } = await import('music-metadata');
+      await parseBuffer(buffer).then(res=>{
+        meta = res
+      })
+    })();
     const bitRate = meta?.format?.codec === 'OPUS' ? 165000 : meta.format.bitrate ?? 0
     const type =
       {
@@ -341,5 +348,6 @@ class Cache {
     })
   }
 }
+const cache = new Cache()
 
-export default new Cache()
+export default cache

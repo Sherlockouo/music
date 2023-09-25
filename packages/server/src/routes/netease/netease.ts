@@ -1,14 +1,8 @@
-import cache from '../../../cache'
-import log from '@/desktop/main/log'
-import { CacheAPIs } from '@/shared/CacheAPIs'
 import { pathCase, snakeCase } from 'change-case'
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
 import NeteaseCloudMusicApi from 'NeteaseCloudMusicApi'
-import request from '../../request'
-// const match = require('@unblockneteasemusic/server');
-
-
-log.info('[electron] appServer/routes/netease.ts')
+import { CacheAPIs} from '../../../../shared/CacheAPIs'
+import cache from '../../utils/cache'
 
 async function netease(fastify: FastifyInstance) {
   const getHandler = (name: string, neteaseApi: (params: any) => any) => {
@@ -16,6 +10,7 @@ async function netease(fastify: FastifyInstance) {
       req: FastifyRequest<{ Querystring: { [key: string]: string } }>,
       reply: FastifyReply
     ) => {
+
       // Get track details from cache
       if (name === CacheAPIs.Track) {
         const cacheData = await cache.get(name, req.query as any)
@@ -30,7 +25,7 @@ async function netease(fastify: FastifyInstance) {
         
         const result = await neteaseApi({
           ...req.query,
-          cookie: req.cookies,
+          cookie: req.headers.cookie,
         })
         
         cache.set(name as CacheAPIs, result.body, req.query)
@@ -38,8 +33,6 @@ async function netease(fastify: FastifyInstance) {
         return reply.send(result.body)
       } catch (error: any) {
 
-        // TODO: 能够请求 明天改改
-        // match(1317494434, ['kuwo', 'migu']).then(console.log)
         if ([400, 301].includes(error.status)) {
           return reply.status(error.status).send(error.body)
         }
@@ -52,14 +45,14 @@ async function netease(fastify: FastifyInstance) {
   Object.entries(NeteaseCloudMusicApi).forEach(([nameInSnakeCase, neteaseApi]: [string, any]) => {
     // 例外
     if (
-      ['serveNcmApi', 'getModulesDefinitions', snakeCase(CacheAPIs.SongUrl)].includes(
+      ['serveNcmApi', 'getModulesDefinitions', snakeCase('song/url/v1')].includes(
         nameInSnakeCase
       )
     ) {
       return
     }
-
     const name = pathCase(nameInSnakeCase)
+
     const handler = getHandler(name, neteaseApi)
 
     fastify.get(`/netease/${name}`, handler)

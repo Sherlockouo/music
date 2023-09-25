@@ -1,8 +1,13 @@
 {
   "extends": "fastify-tsconfig",
   "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
     "outDir": "dist",
-    "sourceMap": true
+    "resolveJsonModule": true,
+    // "sourceMap": true,
+    "esModuleInterop": true,
+
   },
-  "include": ["src/**/*.ts"]
+  "include": ["./**/*.ts","../shared/**/*.ts"]
 }

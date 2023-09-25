@@ -5,7 +5,7 @@ type ResponseSchema = {
   status: 'OK' | 'Expired'
 }
 
-const album: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
+const checkToken: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   fastify.get('/check-token', opts, async function (request, reply): Promise<
     ResponseSchema | undefined
   > {
@@ -27,4 +27,4 @@ const album: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   })
 }
 
-export default album
+export default checkToken

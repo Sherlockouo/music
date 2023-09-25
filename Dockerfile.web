@@ -1,0 +1,8 @@
+# Dockerfile for running the web (React) project
+FROM nginx:1.20.2-alpine as app
+COPY packages/web/dist /usr/share/nginx/html
+COPY docker/nginx.conf.example /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+# Start the server and the web app
+CMD ["sh", "-c", "nginx -g 'daemon off;'"]

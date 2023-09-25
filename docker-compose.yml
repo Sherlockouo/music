@@ -1,0 +1,16 @@
+version: '3'
+services:
+  frontend:
+    image: sherlockouo/xtify-music-web:latest
+    ports:
+      - 2222:80
+    networks:
+      - mynetwork
+  backend:
+    image: sherlockouo/xtify-music-server:latest
+    ports:
+      - 35530:35530
+    networks:
+      - mynetwork
+networks:
+  mynetwork:

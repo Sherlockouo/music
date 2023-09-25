@@ -41,9 +41,7 @@ async function getElectronModuleVersion() {
   const releases = await axios({
     method:'get',
     url:'https://releases.electronjs.org/releases.json',
-    setTimeout: 1200000,
   })
-  console.log('releases ',releases)
   if (!releases.data) {
     console.error(pc.red('Can not get electron releases'))
     process.exit(1)
@@ -65,7 +63,7 @@ async function download(arch: Arch) {
   }
   const fileName = `better-sqlite3-v${betterSqlite3Version}-electron-v${electronModuleVersion}-${process.platform}-${arch}`
   const zipFileName = `${fileName}.tar.gz`
-  const url = `https://ghproxy.com/https://github.com/JoshuaWise/better-sqlite3/releases/download/v${betterSqlite3Version}/${zipFileName}`
+  const url = `https://github.com/JoshuaWise/better-sqlite3/releases/download/v${betterSqlite3Version}/${zipFileName}`
   if (!fs.existsSync(tmpDir)) {
     fs.mkdirSync(tmpDir, {
       recursive: true,

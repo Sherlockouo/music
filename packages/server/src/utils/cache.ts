@@ -4,7 +4,7 @@ import log from './log'
 import fs from 'fs'
 import {IAudioMetadata} from 'music-metadata'
 import { CacheAPIs, CacheAPIsParams } from '../../../shared/CacheAPIs'
-import { TablesStructures } from './db'
+import { TablesStructures } from '../../../desktop/main/db'
 import { FastifyReply } from 'fastify'
 import { dirname } from './utils'
 

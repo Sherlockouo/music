@@ -45,12 +45,11 @@ const Browse = () => {
       <div className={cx('relative',
       'sm: mb-25  md:mb-20  xl:mb-20',
       )}>
-        {/* Topbar background */}
         <Tabs
           tabs={categories}
           value={active}
           onChange={category => setActive(category)}
-          className='flex top-0 z-10 mt-2.5 px-2.5 flex-wrap mb-2.5'
+          className='flex top-0 z-10 mt-2.5 pt-2 px-2.5 flex-wrap mb-2.5'
         />
 
         <div className={cx(

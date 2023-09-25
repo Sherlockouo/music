@@ -24,7 +24,7 @@ export const enum Tables {
   AppData = 'AppData',
   AppleMusicAlbum = 'AppleMusicAlbum',
   AppleMusicArtist = 'AppleMusicArtist',
-  Unblock = 'Unblock'
+  Unblock = 'unblock'
 }
 interface CommonTableStructure {
   id: number
@@ -80,7 +80,7 @@ const readSqlFile = (filename: string) => {
 }
 
 class DB {
-  sqlite: SQLite3.Database
+  sqlite!: SQLite3.Database
   dbFilePath: string = path.resolve(app.getPath('userData'), './api_cache/db.sqlite')
 
   constructor() {

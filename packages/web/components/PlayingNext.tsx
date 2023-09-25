@@ -20,15 +20,15 @@ import { RepeatMode } from '@/shared/playerDataTypes'
 
 const FMButton = () => {
   const { buttonRef, buttonStyle } = useHoverLightSpot()
-  const [fm, setFM] = useState(false)
+  const [fm, setFM] = useState(player.mode == Mode.FM)
   return (
     <motion.button
       ref={buttonRef}
       onClick={() => {
         // FM开关
-        setFM(!fm)
         player.mode = player.mode == Mode.FM ? Mode.TrackList : Mode.FM
-        if (player.mode == Mode.FM) player.nextTrack()
+        setFM(!fm)
+        player.nextTrack()
       }}
       className={cx(
         'group relative transition duration-300 ease-linear text-neutral-300',
@@ -141,7 +141,7 @@ const Track = ({
   playingTrackIndex: number
   state: PlayerState
 }) => {
-  
+
   return (
     <div
       className='mb-5 flex items-center justify-between'
@@ -197,10 +197,10 @@ const Track = ({
 }
 
 const TrackList = ({ className }: { className?: string }) => {
-  const { trackList, trackIndex, state,fmTrackList,fmTrack } = useSnapshot(player)
+  const { trackList, trackIndex, state, fmTrackList, fmTrack } = useSnapshot(player)
   // track mode true/false
   const trackMode = player.mode == Mode.TrackList
-  const { data: tracksRaw } = useTracks({ ids: trackMode ? trackList: fmTrackList })
+  const { data: tracksRaw } = useTracks({ ids: trackMode ? trackList : fmTrackList })
   const tracks = tracksRaw?.songs || []
   const { height } = useWindowSize()
   const isMobile = useIsMobile()
@@ -208,11 +208,12 @@ const TrackList = ({ className }: { className?: string }) => {
   const listHeightMobile = height - 154 - 110 - (isIosPwa ? 34 : 0) // 154是列表距离底部的距离，110是顶部的距离
 
   return (
-    <>
+    <motion.div>
       <div
-        className={css`
+        className={cx(css`
           mask-image: linear-gradient(to bottom, transparent 22px, black 42px); // 顶部渐变遮罩
-        `}
+        `
+        )}
       >
         <Virtuoso
           style={{
@@ -220,6 +221,9 @@ const TrackList = ({ className }: { className?: string }) => {
           }}
           totalCount={tracks.length}
           className={cx(
+            !trackMode && css`
+              pointer-events: 'none',
+            `,
             'no-scrollbar relative z-10 w-full overflow-auto',
             className,
             css`
@@ -245,7 +249,7 @@ const TrackList = ({ className }: { className?: string }) => {
         ></Virtuoso>
 
       </div>
-    </>
+    </motion.div>
   )
 }
 

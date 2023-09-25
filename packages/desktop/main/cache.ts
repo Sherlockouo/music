@@ -44,7 +44,7 @@ class Cache {
         db.upsertMany(Tables.Track, tracks)
         break
       }
-      case CacheAPIs.UNBLOCK: {
+      case CacheAPIs.Unblock: {
         if (!data.id || !data.url) return
         db.upsert(Tables.Unblock, {
           id: data.id,
@@ -178,7 +178,7 @@ class Cache {
           privileges: {},
         }
       }
-      case CacheAPIs.UNBLOCK: {
+      case CacheAPIs.Unblock: {
         if (isNaN(Number(params?.id))) return
         const data = db.find(Tables.Unblock, params.id)
         if (data?.json)
@@ -299,7 +299,7 @@ class Cache {
     }
   }
 
-  async setAudio(buffer: Buffer, { id, url }: { id: number; url: string }) {
+  async setAudio(buffer: Buffer, { id, url,bitrate }: { id: number; url: string;bitrate:number }) {
     const path = `${app.getPath('userData')}/audio_cache`
 
     try {

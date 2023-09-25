@@ -1,7 +1,10 @@
 import path from 'path'
 import { isProd } from '../env'
 import log from '../log'
-import appleMusic from './routes/serverProxy'
+import appleMusic from './routes/apple_music/appleMusic'
+import netease from './routes/netease/netease'
+import unblock from './routes/netease/unblock'
+import audio from './routes/netease/audio'
 import fastifyCookie from '@fastify/cookie'
 import fastifyMultipart from '@fastify/multipart'
 import fastifyStatic from '@fastify/static'
@@ -22,7 +25,10 @@ const initAppServer = async () => {
     })
   }
 
+  server.register(netease)
+  server.register(audio)
   server.register(appleMusic)
+  server.register(unblock)
 
   const port = Number(
     isProd

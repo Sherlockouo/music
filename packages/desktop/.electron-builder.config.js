@@ -124,6 +124,10 @@ module.exports = {
       to: './web',
     },
     {
+      from: '../server/dist',
+      to: './server',
+    },
+    {
       from: './migrations',
       to: 'main/migrations',
     },

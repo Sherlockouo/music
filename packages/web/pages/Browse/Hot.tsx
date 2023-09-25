@@ -2,7 +2,7 @@ import { fetchHQPlaylist } from '@/web/api/playlist'
 import { PlaylistApiNames } from '@/shared/api/Playlists'
 import { useQuery } from '@tanstack/react-query'
 import CoverRowVirtual from '@/web/components/CoverRowVirtual'
-
+import { memo, useCallback } from 'react'
 const reactQueryOptions = {
     refetchOnWindowFocus: false,
     refetchInterval: 1000 * 60 * 60, // 1 hour
@@ -21,4 +21,6 @@ const Hot = ({cat}:{cat:string}) => {
     return <CoverRowVirtual playlists={playlists} />
 }
 
-export default Hot
+const memoHot = memo(Hot)
+memoHot.displayName = 'Hot'
+export default memoHot

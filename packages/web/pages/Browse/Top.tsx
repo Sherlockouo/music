@@ -2,6 +2,7 @@ import { fetchTopPlaylist } from '@/web/api/playlist'
 import { PlaylistApiNames } from '@/shared/api/Playlists'
 import { useQuery } from '@tanstack/react-query'
 import CoverRowVirtual from '@/web/components/CoverRowVirtual'
+import { memo, useCallback } from 'react'
 
 const reactQueryOptions = {
   refetchOnWindowFocus: false,
@@ -12,7 +13,7 @@ const reactQueryOptions = {
 const Top = ({ cat }: { cat: string }) => {
   const { data: topPlayList, isLoading: isLoadingTop } = useQuery(
     [PlaylistApiNames.FetchTopPlaylistParams, cat],
-    () => fetchTopPlaylist({ cat: cat, order: 'hot', limit: 500, offset: 0 }),
+    () => fetchTopPlaylist({ cat: cat, limit: 500, offset: 0 }),
     reactQueryOptions
   )
 
@@ -21,4 +22,6 @@ const Top = ({ cat }: { cat: string }) => {
   return <CoverRowVirtual playlists={playlists} />
 }
 
-export default Top
+const memoTop = memo(Top)
+memoTop.displayName = 'Top'
+export default memoTop

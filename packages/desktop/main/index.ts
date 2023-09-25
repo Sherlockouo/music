@@ -36,8 +36,8 @@ class Main {
     // create IPFS Server
     app.whenReady().then(async () => {
       log.info('[index] App ready')
+      
       await initAppServer()
-      // this.initUnlockSubProcess()
       this.createWindow()
       this.handleAppEvents()
       this.handleWindowEvents()
@@ -45,7 +45,7 @@ class Main {
       createMenu(this.win!)
       this.createThumbar()
       initIpcMain(this.win, this.tray, this.thumbar, store)
-      // this.initDevTools()
+      this.initDevTools()
     })
   }
 
@@ -81,7 +81,7 @@ class Main {
       webPreferences: {
         preload: join(__dirname, 'rendererPreload.js'),
         webSecurity: false,
-        allowRunningInsecureContent: true,
+        allowRunningInsecureContent: true, 
       },
       width: store.get('window.width'),
       height: store.get('window.height'),

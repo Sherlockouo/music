@@ -27,7 +27,6 @@ const Layout = () => {
         window.env?.isElectron && !fullscreen && 'rounded-24',
         css`
           position: relative;
-          background: black;
           /* 其他样式属性 */
         `
       )}
@@ -57,8 +56,8 @@ const Layout = () => {
       <div
         id='layout-foreground'
         className={cx(
-          'backdrop-blur-xl',
-          'relative grid h-screen select-none overflow-hidden bg-white/25 dark:bg-black/80',
+          'backdrop-blur-md',
+          'relative grid h-screen select-none overflow-hidden bg-white/50 dark:bg-black/80',
           window.env?.isElectron && !fullscreen && 'rounded-24'
         )}
       >

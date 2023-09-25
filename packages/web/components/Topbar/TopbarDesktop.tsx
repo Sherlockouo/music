@@ -9,6 +9,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { ease } from '@/web/utils/const'
 import { useLocation } from 'react-router-dom'
 import player from '@/web/states/player'
+import WaveAnimation from '../Animation/WaveAnimation'
 
 const Background = () => {
   // keep background
@@ -35,8 +36,8 @@ const Background = () => {
                     background-image: url(${player.track?.al.picUrl});
                     background-repeat: no-repeat;
                     background-size: cover;
-                    background-position: center;
-                    filter: brightness(0.3);
+                    background-position: center top;
+                    filter: brightness(0.2);
                   `
                 )}
               ></div>

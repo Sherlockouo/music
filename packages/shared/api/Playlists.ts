@@ -10,7 +10,7 @@ export enum PlaylistApiNames {
 // top playlist
 export interface FetchTopPlaylistParams {
   cat?: string,
-  order: string,
+  order?: string,
   limit: number,
   offset: number
 }

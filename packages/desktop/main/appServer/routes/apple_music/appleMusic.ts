@@ -6,10 +6,11 @@ import log from '@/desktop/main/log'
 log.info('[electron] appServer/routes/r3play/appleMusic.ts')
 
 async function appleMusic(fastify: FastifyInstance) {
+  // this means server is published on the cloud
   fastify.register(proxy, {
     upstream: isDev ? 'http://127.0.0.1:35530/' : 'http://168.138.174.244:35530/',
-    prefix: '/r3playx/apple-music',
-    rewritePrefix: '/apple-music',
+    // prefix: '/r3playx/apple-music',
+    // rewritePrefix: '/apple-music',
   })
 }
 

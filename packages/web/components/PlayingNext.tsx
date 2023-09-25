@@ -1,6 +1,6 @@
 import { isIosPwa, resizeImage } from '@/web/utils/common'
 import player from '@/web/states/player'
-import { State as PlayerState } from '@/web/utils/player'
+import { Mode, State as PlayerState } from '@/web/utils/player'
 import { useSnapshot } from 'valtio'
 import useTracks from '@/web/api/hooks/useTracks'
 import { css, cx } from '@emotion/css'
@@ -18,6 +18,38 @@ import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { RepeatMode } from '@/shared/playerDataTypes'
 
+const FMButton = () => {
+  const { buttonRef, buttonStyle } = useHoverLightSpot()
+  const [fm, setFM] = useState(false)
+  return (
+    <motion.button
+      ref={buttonRef}
+      onClick={() => {
+        // FM开关
+        setFM(!fm)
+        player.mode = player.mode == Mode.FM ? Mode.TrackList : Mode.FM
+        if (player.mode == Mode.FM) player.nextTrack()
+      }}
+      className={cx(
+        'group relative transition duration-300 ease-linear text-neutral-300',
+        fm ? 'text-brand-700 hover:text-brand-400'
+          : 'text-neutral-300 opacity-40 hover:opacity-100'
+
+      )}
+      style={buttonStyle}
+    >
+      <div className='absolute top-1/2  left-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white opacity-0 blur group-hover:opacity-100'></div>
+      {
+        !fm && <Icon name='fm' className='h-7 w-7' />
+      }
+      {
+        fm && <Icon name='fm' className='h-7 w-7' />
+      }
+
+    </motion.button>
+  )
+}
+
 const RepeatButton = () => {
   const { buttonRef, buttonStyle } = useHoverLightSpot()
   const [repeat, setRepeat] = useState(0)
@@ -26,14 +58,15 @@ const RepeatButton = () => {
       ref={buttonRef}
       onClick={() => {
         // 循环模式[关，开，单曲]
-        const repeatloop = [RepeatMode.Off,RepeatMode.On,RepeatMode.One]
-        setRepeat((repeat+1)%3)
-        player.repeatMode = repeatloop[(repeat+1)%3]
+        const repeatloop = [RepeatMode.Off, RepeatMode.On, RepeatMode.One]
+        setRepeat((repeat + 1) % 3)
+        player.repeatMode = repeatloop[(repeat + 1) % 3]
       }}
       className={cx(
+        player.mode == Mode.FM ? 'hidden' : 'block',
         'group relative transition duration-300 ease-linear',
         repeat == 0 && 'text-neutral-300 opacity-40 hover:opacity-100',
-        (repeat > 0)&& 'text-brand-700 hover:text-brand-400'
+        (repeat > 0) && 'text-brand-700 hover:text-brand-400'
       )}
       style={buttonStyle}
     >
@@ -62,10 +95,11 @@ const ShuffleButton = () => {
         player.shufflePlayList()
       }}
       className={cx(
+        player.mode == Mode.FM ? 'hidden' : 'block',
         'group relative transition duration-300 ease-linear',
         shuffle
           ? 'text-brand-700 hover:text-brand-400'
-          : 'text-neutral-300 opacity-40 hover:opacity-100'
+          : 'text-neutral-300 opacity-40 hover:opacity-100',
       )}
       style={buttonStyle}
     >
@@ -90,6 +124,7 @@ const Header = () => {
       <div className='flex gap-2'>
         <RepeatButton />
         <ShuffleButton />
+        <FMButton />
       </div>
     </div>
   )
@@ -106,6 +141,7 @@ const Track = ({
   playingTrackIndex: number
   state: PlayerState
 }) => {
+  
   return (
     <div
       className='mb-5 flex items-center justify-between'
@@ -161,12 +197,13 @@ const Track = ({
 }
 
 const TrackList = ({ className }: { className?: string }) => {
-  const { trackList, trackIndex, state } = useSnapshot(player)
-  const { data: tracksRaw } = useTracks({ ids: trackList })
+  const { trackList, trackIndex, state,fmTrackList,fmTrack } = useSnapshot(player)
+  // track mode true/false
+  const trackMode = player.mode == Mode.TrackList
+  const { data: tracksRaw } = useTracks({ ids: trackMode ? trackList: fmTrackList })
   const tracks = tracksRaw?.songs || []
   const { height } = useWindowSize()
   const isMobile = useIsMobile()
-
   const listHeight = height - topbarHeight - playerWidth - 24 // 24是封面与底部间距
   const listHeightMobile = height - 154 - 110 - (isIosPwa ? 34 : 0) // 154是列表距离底部的距离，110是顶部的距离
 
@@ -201,11 +238,12 @@ const TrackList = ({ className }: { className?: string }) => {
               key={index}
               track={track}
               index={index}
-              playingTrackIndex={trackIndex}
+              playingTrackIndex={trackMode ? trackIndex : 0}
               state={state}
             />
           )}
         ></Virtuoso>
+
       </div>
     </>
   )

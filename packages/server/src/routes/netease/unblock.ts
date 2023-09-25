@@ -16,7 +16,7 @@ const unblock: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       const trackID = request.query.track_id as string
       log.info('query', trackID)
 
-      const cacheData = await cache.get(CacheAPIs.UNBLOCK, trackID)
+      const cacheData = await cache.get(CacheAPIs.Unblock, trackID)
       if (cacheData) {
         log.info('hit cache trackID: ', trackID);
         return cacheData
@@ -33,7 +33,7 @@ const unblock: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
             return
           }
 
-          cache.set(CacheAPIs.UNBLOCK, { id: trackID, url: (data as any)?.url }, trackID)
+          cache.set(CacheAPIs.Unblock, { id: trackID, url: (data as any)?.url }, trackID)
           log.info('[server] unblock track ', trackID, ' success')
           reply.code(200).send(data)
         })

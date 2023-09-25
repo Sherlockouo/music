@@ -15,7 +15,8 @@
   <p align="center">
     高颜值的第三方音乐播放器
     <br />
-    <a href="https://r3play.app" target="blank"><strong>🌎 访问DEMO</strong></a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="https://music.xtify.top/" target="blank"><strong>🌎 访问最新DEMO</strong></a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="https://https://r3play.app/" target="blank"><strong>🌎 访问原版DEMO</strong></a>&nbsp;&nbsp;|&nbsp;&nbsp;
     <a href="https://github.com/Sherlockouo/music/releases" target="blank"><strong>📦️ 下载安装包</strong></a>&nbsp;&nbsp;|&nbsp;&nbsp;
     <br />
     <br />

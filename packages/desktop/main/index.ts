@@ -12,7 +12,6 @@ import { createMenu } from './menu'
 import { appName, isDev, isLinux, isMac, isWindows } from './env'
 import store from './store'
 import initAppServer from './appServer/appServer'
-import { startUnlockServer } from './unlock'
 
 log.info('[electron] index.ts')
 
@@ -50,11 +49,6 @@ class Main {
     })
   }
 
-  initUnlockSubProcess() {
-    log.info('[initUnlockSubProcess] Initializing initUnlockSubProcess...')
-    startUnlockServer()
-  }
-
   initDevTools() {
     if (!isDev || !this.win) return
 
@@ -88,7 +82,6 @@ class Main {
         preload: join(__dirname, 'rendererPreload.js'),
         webSecurity: false,
         allowRunningInsecureContent: true,
-        host: '0.0.0.0',
       },
       width: store.get('window.width'),
       height: store.get('window.height'),

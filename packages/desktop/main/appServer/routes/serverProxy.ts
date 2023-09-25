@@ -5,12 +5,11 @@ import log from '@/desktop/main/log'
 
 log.info('[electron] appServer/routes/r3playx/appleMusic.ts')
 
-async function appleMusic(fastify: FastifyInstance) {
+async function serverProxy(fastify: FastifyInstance) {
+  // all the request now is handleing by the server
   fastify.register(proxy, {
-    upstream: isDev ? 'http://127.0.0.1:35530/' : 'http://168.138.174.244:35530/',
-    // prefix: '/r3playx/apple-music',
-    // rewritePrefix: '/apple-music',
+    upstream: 'http://127.0.0.1:35530/',
   })
 }
 
-export default appleMusic
+export default serverProxy

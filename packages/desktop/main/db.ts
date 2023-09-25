@@ -24,6 +24,7 @@ export const enum Tables {
   AppData = 'AppData',
   AppleMusicAlbum = 'AppleMusicAlbum',
   AppleMusicArtist = 'AppleMusicArtist',
+  Unblock = 'Unblock'
 }
 interface CommonTableStructure {
   id: number
@@ -33,6 +34,7 @@ interface CommonTableStructure {
 export interface TablesStructures {
   [Tables.Track]: CommonTableStructure
   [Tables.Album]: CommonTableStructure
+  [Tables.Unblock]: CommonTableStructure
   [Tables.Artist]: CommonTableStructure
   [Tables.Playlist]: CommonTableStructure
   [Tables.ArtistAlbum]: CommonTableStructure

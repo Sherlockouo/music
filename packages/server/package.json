@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "prisma generate",
     "start": "fastify start --port 35530 --address 0.0.0.0 -l info dist/packages/server/src/app.js",
-    "build": "tsc && node scripts/copySQLite3.js",
+    "build": "tsc",
     "watch": "tsc -w",
     "dev": "npm run build && concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" -c \"yellow.bold,cyan.bold\" \"npm:watch\" \"npm:dev:start\"",
     "dev:start": "fastify start --port 35530 --address 0.0.0.0 -l info dist/packages/server/src/app.js"

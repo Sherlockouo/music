@@ -44,6 +44,15 @@ class Cache {
         db.upsertMany(Tables.Track, tracks)
         break
       }
+      case CacheAPIs.UNBLOCK: {
+        if (!data.id || !data.url) return
+        db.upsert(Tables.Unblock, {
+          id: data.id,
+          json: JSON.stringify(data),
+          updatedAt: Date.now(),
+        })
+        break
+      }
       case CacheAPIs.Album: {
         if (!data.album) return
         data.album.songs = data.songs
@@ -168,6 +177,18 @@ class Cache {
           songs: tracks,
           privileges: {},
         }
+      }
+      case CacheAPIs.UNBLOCK: {
+        if (isNaN(Number(params?.id))) return
+        const data = db.find(Tables.Unblock, params.id)
+        if (data?.json)
+          return {
+            resourceState: true,
+            songs: [],
+            code: 200,
+            album: JSON.parse(data.json),
+          }
+        break
       }
       case CacheAPIs.Album: {
         if (isNaN(Number(params?.id))) return

@@ -1,5 +1,5 @@
 # Dockerfile.builder for building the web (React) project
-FROM node:20.5.0 AS builder
+FROM node:20.0.0 AS builder
 
 ENV NODE_ENV=production \
   ELECTRON_WEB_SERVER_PORT=42710 \

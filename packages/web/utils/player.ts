@@ -528,7 +528,7 @@ export class Player {
       src: [url],
       format: ['mp3', 'flac', 'webm'],
       html5: true,
-      // autoplay,
+      autoplay,
       volume: 1,
       onend: () => this._howlerOnEndCallback(),
     })

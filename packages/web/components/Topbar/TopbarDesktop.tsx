@@ -9,7 +9,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { ease } from '@/web/utils/const'
 import { useLocation } from 'react-router-dom'
 import player from '@/web/states/player'
-import WaveAnimation from '../Animation/WaveAnimation'
+import BlurBackground from '../BlurBackground'
 
 const Background = () => {
   // keep background
@@ -28,7 +28,7 @@ const Background = () => {
         {
           <>
             <div className={cx('absolute inset-0 h-full w-full ')}>
-              {show && <motion.div
+              <motion.div
                 className={cx(
                   'absolute inset-0 z-0 h-full w-full ease',
                   css`
@@ -42,8 +42,16 @@ const Background = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-              ></motion.div>
-                }
+              >
+              </motion.div>
+              {/* <BlurBackground className={cx(
+          'absolute z-0 object-cover opacity-80',
+          'w-full h-full',
+          css`
+              top: 0px;
+              left: 0px;
+              filter: blur(128px) saturate(1.5);
+            `)} /> */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -52,14 +60,16 @@ const Background = () => {
                 className={cx(
                   'relative inset-0 z-0 ',
                   'h-full w-full',
-                  'bg-white/60 dark:bg-black/40',
+                  'bg-white/30 dark:bg-black/40',
                   'backdrop-blur-md',
-                  css`
-                  mask-image: linear-gradient(to bottom, transparent 22px, black 42px); // 顶部渐变遮罩
-                  `,
                   window.env?.isElectron && 'rounded-tr-24 rounded-tl-24'
                 )}
-              ></motion.div>
+                style={{
+
+                }}
+              >
+                
+              </motion.div>
             </div>
           </>
         }

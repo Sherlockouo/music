@@ -24,6 +24,7 @@ const Layout = () => {
     <div
       id='layout'
       className={cx(
+        'h-full',
         'bg-img ',
         window.env?.isElectron && !fullscreen && 'rounded-24',
         css`
@@ -35,6 +36,7 @@ const Layout = () => {
       {/* layout 元素的内容 */}
       <motion.div
         className={cx(
+          'h-full',
           css`
             position: absolute;
             top: 0;
@@ -44,7 +46,7 @@ const Layout = () => {
             /* 其他样式属性 */
           `,
           showBackgroundImage &&
-            css`
+          css`
               background-repeat: no-repeat;
               background-size: cover;
               background-position: center;
@@ -54,7 +56,9 @@ const Layout = () => {
         )}
         style={{ backgroundImage: `url(${player.track?.al.picUrl})` }}
         transition={{ duration: 0.3 }}
-      ></motion.div>
+      >
+        
+      </motion.div>
       <div
         id='layout-foreground'
         className={cx(
@@ -63,7 +67,16 @@ const Layout = () => {
           window.env?.isElectron && !fullscreen && 'rounded-24'
         )}
       >
-        <BlurBackground />
+        {/* 暂时不要这个blur 用起来不是很协调 */}
+        {/* <BlurBackground className={cx(
+          'absolute z-0 object-cover opacity-70',
+          css`
+              top: -400px;
+              left: -370px;
+              width: 1572px;
+              height: 528px;
+              filter: blur(256px) saturate(1.2);
+            `)} /> */}
         <MenuBar />
         <div className='bg-white'>
           <Topbar />

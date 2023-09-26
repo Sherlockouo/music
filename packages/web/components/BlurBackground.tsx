@@ -8,7 +8,7 @@ import { ease } from '@/web/utils/const'
 import { useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
-const BlurBackground = () => {
+const BlurBackground = ({className}:{className:string}) => {
   const isMobile = useIsMobile()
   const { hideTopbarBackground, blurBackgroundImage } = useSnapshot(uiStates)
   const location = useLocation()
@@ -41,16 +41,7 @@ const BlurBackground = () => {
       >
         <img
           onLoad={() => setIsLoaded(true)}
-          className={cx(
-            'absolute z-0 object-cover opacity-70',
-            css`
-              top: -400px;
-              left: -370px;
-              width: 1572px;
-              height: 528px;
-              filter: blur(256px) saturate(1.2);
-            `
-          )}
+          className={className}
           src={resizeImage(blurBackgroundImage || '', 'sm')}
         />
       </motion.div>

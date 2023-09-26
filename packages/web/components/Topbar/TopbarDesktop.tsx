@@ -13,13 +13,13 @@ import WaveAnimation from '../Animation/WaveAnimation'
 
 const Background = () => {
   // keep background
-  // const { hideTopbarBackground } = useSnapshot(uiStates)
-  // const location = useLocation()
-  // const isPageHaveBlurBG =
-  // location.pathname.startsWith('/album/') ||
-  // location.pathname.startsWith('/artist/') ||
-  // location.pathname.startsWith('/playlist/')
-  // const show = !hideTopbarBackground || !isPageHaveBlurBG
+  const { hideTopbarBackground } = useSnapshot(uiStates)
+  const location = useLocation()
+  const isPageHaveBlurBG =
+  location.pathname.startsWith('/album/') ||
+  location.pathname.startsWith('/artist/') ||
+  location.pathname.startsWith('/playlist/')
+  const show = !hideTopbarBackground || !isPageHaveBlurBG
   // const show = !hideTopbarBackground
 
   return (
@@ -28,7 +28,7 @@ const Background = () => {
         {
           <>
             <div className={cx('absolute inset-0 h-full w-full ')}>
-              <motion.div
+              {show && <motion.div
                 className={cx(
                   'absolute inset-0 z-0 h-full w-full ease',
                   css`
@@ -43,6 +43,7 @@ const Background = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
               ></motion.div>
+                }
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -53,11 +54,11 @@ const Background = () => {
                   'h-full w-full',
                   'bg-white/60 dark:bg-black/40',
                   'backdrop-blur-md',
+                  css`
+                  mask-image: linear-gradient(to bottom, transparent 22px, black 42px); // 顶部渐变遮罩
+                  `,
                   window.env?.isElectron && 'rounded-tr-24 rounded-tl-24'
                 )}
-                style={{
-                  // background: `linear-gradient(to bottom, black, 100%, rgb(0,0,0,0))`,
-                }}
               ></motion.div>
             </div>
           </>

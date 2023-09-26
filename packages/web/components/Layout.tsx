@@ -13,6 +13,7 @@ import uiStates from '@/web/states/uiStates'
 import ContextMenus from './ContextMenus/ContextMenus'
 import settings from '@/web/states/settings'
 import { useState } from 'react'
+import { MotionConfig, motion } from 'framer-motion'
 
 const Layout = () => {
   const playerSnapshot = useSnapshot(player)
@@ -32,7 +33,7 @@ const Layout = () => {
       )}
     >
       {/* layout 元素的内容 */}
-      <div
+      <motion.div
         className={cx(
           css`
             position: absolute;
@@ -44,7 +45,6 @@ const Layout = () => {
           `,
           showBackgroundImage &&
             css`
-              background-image: url(${player.track?.al.picUrl});
               background-repeat: no-repeat;
               background-size: cover;
               background-position: center;
@@ -52,12 +52,14 @@ const Layout = () => {
               transform: translate3d(0, 0, 0);
             `
         )}
-      />
+        style={{ backgroundImage: `url(${player.track?.al.picUrl})` }}
+        transition={{ duration: 0.3 }}
+      ></motion.div>
       <div
         id='layout-foreground'
         className={cx(
           'backdrop-blur-md',
-          'relative grid h-screen select-none overflow-hidden bg-white/50 dark:bg-black/80',
+          'relative grid h-screen select-none overflow-hidden bg-white/20 dark:bg-black/40',
           window.env?.isElectron && !fullscreen && 'rounded-24'
         )}
       >

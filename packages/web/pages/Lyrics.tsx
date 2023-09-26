@@ -35,8 +35,8 @@ const Lyrics = () => {
   useEffect(() => {
     const updateCurrentLineIndex = () => {
       var find = false
-      for (let i = 0; i < lyrics.length; i++) {
-        if (progress >= lyrics[i]?.time && progress < lyrics[i + 1]?.time) {
+      for (let i = currentLineIndex; i < lyrics.length; i++) {
+        if ((progress + 10) >= lyrics[i]?.time && progress < lyrics[i + 1]?.time) {
           find = true
           setCurrentLineIndex(i)
           break

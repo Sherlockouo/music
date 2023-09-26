@@ -144,7 +144,9 @@ const Track = ({
 
   return (
     <div
-      className='mb-5 flex items-center justify-between'
+      className={cx('mb-5 flex items-center justify-between',
+      // player.mode == Mode.FM && 'pointer-events-none'
+      )}
       onClick={e => {
         if (e.detail === 2 && track?.id) player.playTrack(track.id)
       }}
@@ -221,9 +223,7 @@ const TrackList = ({ className }: { className?: string }) => {
           }}
           totalCount={tracks.length}
           className={cx(
-            !trackMode && css`
-              pointer-events: 'none',
-            `,
+            !trackMode && 'pointer-events-none',
             'no-scrollbar relative z-10 w-full overflow-auto',
             className,
             css`

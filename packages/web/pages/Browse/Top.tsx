@@ -22,6 +22,8 @@ const Top = ({ cat }: { cat: string }) => {
   return <CoverRowVirtual playlists={playlists} />
 }
 
-const memoTop = memo(Top)
-memoTop.displayName = 'Top'
-export default memoTop
+// const memoTop = memo(Top)
+// memoTop.displayName = 'Top'
+// export default memoTop
+
+export default Top

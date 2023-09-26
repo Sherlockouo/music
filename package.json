@@ -22,7 +22,6 @@
     "lint": "eslint .",
     "format": "prettier --write \"**/*.{ts,tsx,mjs,js,jsx,md,css}\""
   },
-  
   "devDependencies": {
     "cross-env": "^7.0.3",
     "electron": "^23.1.4",
@@ -37,9 +36,10 @@
   },
   "dependencies": {
     "@prisma/client": "^5.1.1",
+    "@unblockneteasemusic/server": "^0.27.3",
+    "NeteaseCloudMusicApi": "^4.11.2",
     "log4js": "^6.9.1",
     "node-abi": "3.24.0",
-    "sax": "^1.2.4",
-    "@unblockneteasemusic/server":"^0.27.3"
+    "sax": "^1.2.4"
   }
 }

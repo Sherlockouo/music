@@ -54,10 +54,6 @@ const album: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     if (!artist || !albumName) {
       return
     }
-
-    // match(neteaseId,['qq', 'kuwo', 'migu']).then((res:any)=>{
-    //   console.log('match ',res)
-    // })
     // get from apple
     const fromApple = await appleMusicRequest({
       method: 'GET',

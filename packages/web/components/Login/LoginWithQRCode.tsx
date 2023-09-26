@@ -84,7 +84,8 @@ const LoginWithQRCode = () => {
               toast('checkLoginQrCodeStatus returned 803 without cookie')
               break
             }
-            console.log('response cookie',status.cookie);
+            // 这里是OK的
+            // console.log('response cookie',status.cookie);
             setCookies(status.cookie)
             reactQueryClient.refetchQueries([UserApiNames.FetchUserAccount])
             uiStates.showLoginPanel = false

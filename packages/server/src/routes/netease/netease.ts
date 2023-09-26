@@ -10,7 +10,7 @@ async function netease(fastify: FastifyInstance) {
       req: FastifyRequest<{ Querystring: { [key: string]: string } }>,
       reply: FastifyReply
     ) => {
-
+        console.log('[server] name ',name,'params',req)
       // Get track details from cache
       if (name === CacheAPIs.Track) {
         const cacheData = await cache.get(name, req.query as any)
@@ -45,7 +45,7 @@ async function netease(fastify: FastifyInstance) {
   Object.entries(NeteaseCloudMusicApi).forEach(([nameInSnakeCase, neteaseApi]: [string, any]) => {
     // 例外
     if (
-      ['serveNcmApi', 'getModulesDefinitions', snakeCase('song/url/v1')].includes(
+      ['serveNcmApi', 'getModulesDefinitions', snakeCase(CacheAPIs.SongUrl)].includes(
         nameInSnakeCase
       )
     ) {

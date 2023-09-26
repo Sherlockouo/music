@@ -23,7 +23,7 @@
     "better-sqlite3": "8.5.2",
     "music-metadata": "^8.1.3",
     "@unblockneteasemusic/server": "^0.27.3",
-    "NeteaseCloudMusicApi": "^4.8.9",
+    "NeteaseCloudMusicApi": "^4.8.7",
     "axios": "^0.27.2",
     "fastify": "^4.5.3",
     "fastify-cli": "^4.4.0",

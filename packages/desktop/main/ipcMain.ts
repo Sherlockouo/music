@@ -138,24 +138,24 @@ function initOtherIpcMain() {
    * 清除API缓存
    */
   on(IpcChannels.ClearAPICache, () => {
-    // db.truncate(Tables.Track)
-    // db.truncate(Tables.Album)
-    // db.truncate(Tables.Artist)
-    // db.truncate(Tables.Playlist)
-    // db.truncate(Tables.ArtistAlbum)
-    // db.truncate(Tables.AccountData)
-    // db.truncate(Tables.Audio)
-    // db.vacuum()
+    db.truncate(Tables.Track)
+    db.truncate(Tables.Album)
+    db.truncate(Tables.Artist)
+    db.truncate(Tables.Playlist)
+    db.truncate(Tables.ArtistAlbum)
+    db.truncate(Tables.AccountData)
+    db.truncate(Tables.Audio)
+    db.vacuum()
   })
 
   /**
    * Get API cache
    */
-  // on(IpcChannels.GetApiCache, (event, args) => {
-  //   const { api, query } = args
-  //   const data = cache.get(api, query)
-  //   event.returnValue = data
-  // })
+  on(IpcChannels.GetApiCache, (event, args) => {
+    const { api, query } = args
+    const data = cache.get(api, query)
+    event.returnValue = data
+  })
 
   handle(IpcChannels.GetApiCache, async (event, args) => {
     const { api, query } = args
@@ -164,6 +164,7 @@ function initOtherIpcMain() {
     }
     try {
       const data = await cache.get(api, query)
+      log.info('account data',data)
       return data
     } catch {
       return null

@@ -2,17 +2,16 @@ import { Route, Routes, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import React, { lazy, Suspense, startTransition } from 'react'
 import VideoPlayer from './VideoPlayer'
-import UserCard from '../pages/Settings/UserCard'
 
-const My = lazy(() => import('@/web/pages/My'))
-const Discover = lazy(() => import('@/web/pages/Discover'))
-const Browse = lazy(() => import('@/web/pages/Browse/Browse'))
-const Album = lazy(() => import('@/web/pages/Album'))
-const Playlist = lazy(() => import('@/web/pages/Playlist'))
-const Artist = lazy(() => import('@/web/pages/Artist'))
-const Lyrics = lazy(() => import('@/web/pages/Lyrics'))
-const Search = lazy(() => import('@/web/pages/Search'))
-const Settings = lazy(() => import('@/web/pages/Settings'))
+const My = lazy(() => import('../../web/pages/My'))
+const Discover = lazy(() => import('../../web/pages/Discover'))
+const Browse = lazy(() => import('../../web/pages/Browse/Browse'))
+const Album = lazy(() => import('../../web/pages/Album'))
+const Playlist = lazy(() => import('../../web/pages/Playlist'))
+const Artist = lazy(() => import('../../web/pages/Artist'))
+const Lyrics = lazy(() => import('../../web/pages/Lyrics'))
+const Search = lazy(() => import('../../web/pages/Search'))
+const Settings = lazy(() => import('../../web/pages/Settings'))
 
 const Router = () => {
   const location = useLocation()

@@ -16,9 +16,10 @@ const Background = () => {
   const { hideTopbarBackground } = useSnapshot(uiStates)
   const location = useLocation()
   const isPageHaveBlurBG =
-  location.pathname.startsWith('/album/') ||
-  location.pathname.startsWith('/artist/') ||
-  location.pathname.startsWith('/playlist/')
+    location.pathname.startsWith('/album/') ||
+    location.pathname.startsWith('/artist/') ||
+    location.pathname.startsWith('/playlist/') ||
+    location.pathname.startsWith('/lyrics/')
   const show = !hideTopbarBackground || !isPageHaveBlurBG
   // const show = !hideTopbarBackground
 
@@ -28,7 +29,7 @@ const Background = () => {
         {
           <>
             <div className={cx('absolute inset-0 h-full w-full ')}>
-              <motion.div
+              {show && <motion.div
                 className={cx(
                   'absolute inset-0 z-0 h-full w-full ease',
                   css`
@@ -37,21 +38,14 @@ const Background = () => {
                     background-position: center top 21%;
                   `
                 )}
-                style={{ backgroundImage: `url(${player.track?.al.picUrl})` }}
+                // style={{ backgroundImage: `url(${player.track?.al.picUrl})` }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
               >
               </motion.div>
-              {/* <BlurBackground className={cx(
-          'absolute z-0 object-cover opacity-80',
-          'w-full h-full',
-          css`
-              top: 0px;
-              left: 0px;
-              filter: blur(128px) saturate(1.5);
-            `)} /> */}
+              }
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -60,15 +54,15 @@ const Background = () => {
                 className={cx(
                   'relative inset-0 z-0 ',
                   'h-full w-full',
-                  'bg-white/30 dark:bg-black/40',
-                  'backdrop-blur-md',
+                  // 'bg-white/30 dark:bg-black/40',
+                  // 'backdrop-blur-md',
                   window.env?.isElectron && 'rounded-tr-24 rounded-tl-24'
                 )}
                 style={{
 
                 }}
               >
-                
+
               </motion.div>
             </div>
           </>

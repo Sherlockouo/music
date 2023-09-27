@@ -19,6 +19,7 @@ export default function useUser() {
             api: CacheAPIs.UserAccount,
           })
           .then(cache => {
+            console.log('account set cache',cache)
             if (cache) reactQueryClient.setQueryData(key, cache)
           })
       }
@@ -71,6 +72,8 @@ export function useDailyCheckIn() {
 // 判断是否登录,条件是否保存了用户id
 export const useIsLoggedIn = () => {
   const { data, isLoading } = useUser()
+  console.log('user info is loading',data,' ',isLoading);
+  
   if (isLoading) return true
   return !!data?.profile?.userId
 }

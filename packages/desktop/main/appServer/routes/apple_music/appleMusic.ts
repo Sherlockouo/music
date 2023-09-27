@@ -10,7 +10,7 @@ async function appleMusic(fastify: FastifyInstance) {
   fastify.register(proxy, {
     upstream: isDev ? 'http://127.0.0.1:35530/' : 'https://music-server.xtify.top/',
     prefix: '/r3playx/apple-music',
-    rewritePrefix: '/apple-music',
+    rewritePrefix: '/r3playx/apple-music',
   })
 }
 

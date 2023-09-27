@@ -15,8 +15,8 @@ importers:
         specifier: ^0.27.3
         version: 0.27.3
       NeteaseCloudMusicApi:
-        specifier: ^4.11.2
-        version: registry.npmjs.org/NeteaseCloudMusicApi@4.11.2
+        specifier: ^4.13.2
+        version: registry.npmjs.org/NeteaseCloudMusicApi@4.13.2
       log4js:
         specifier: ^6.9.1
         version: 6.9.1
@@ -76,8 +76,8 @@ importers:
         specifier: ^3.0.7
         version: 3.0.7
       NeteaseCloudMusicApi:
-        specifier: ^4.8.7
-        version: registry.npmjs.org/NeteaseCloudMusicApi@4.11.2
+        specifier: ^4.13.2
+        version: registry.npmjs.org/NeteaseCloudMusicApi@4.13.2
       better-sqlite3:
         specifier: 8.1.0
         version: 8.1.0
@@ -191,8 +191,8 @@ importers:
         specifier: ^0.27.3
         version: 0.27.3
       NeteaseCloudMusicApi:
-        specifier: ^4.8.7
-        version: registry.npmjs.org/NeteaseCloudMusicApi@4.11.2
+        specifier: ^4.13.2
+        version: registry.npmjs.org/NeteaseCloudMusicApi@4.13.2
       axios:
         specifier: ^0.27.2
         version: 0.27.2
@@ -11567,10 +11567,10 @@ packages:
     dev: true
     optional: true
 
-  registry.npmjs.org/NeteaseCloudMusicApi@4.11.2:
-    resolution: {integrity: sha512-Kvjb0sLw2aRIlhA7pBlBtDJ+WChUiSRTUyjeoUEwctDu5u12nhTPVlTlGmzYO0BRBeeV96t9e7CwbQ6SZ1/nwg==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/NeteaseCloudMusicApi/-/NeteaseCloudMusicApi-4.11.2.tgz}
+  registry.npmjs.org/NeteaseCloudMusicApi@4.13.2:
+    resolution: {integrity: sha512-UZRs96FDR9lA9w4SGPoqgOd0OHAPhvAr5NbQKzSrY+6UVdstOcm4eErIMyvYsJ/+IMbNLENzBRSXO7ND1C/YAw==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/NeteaseCloudMusicApi/-/NeteaseCloudMusicApi-4.13.2.tgz}
     name: NeteaseCloudMusicApi
-    version: 4.11.2
+    version: 4.13.2
     engines: {node: '>=12'}
     hasBin: true
     dependencies:

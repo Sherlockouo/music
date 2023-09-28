@@ -111,7 +111,7 @@ module.exports = {
       },
       padding: {
         lyricTop: '20%',
-        lyricBottom: '50%',
+        lyricBottom: '30%',
       },
 
       transitionDuration: {
@@ -137,6 +137,8 @@ module.exports = {
         xl: '12px',
         '2xl': '20px',
         '3xl': '45px',
+        '4xl': '60px',
+        'xxl':'128px',
       },
     },
     // screens: {

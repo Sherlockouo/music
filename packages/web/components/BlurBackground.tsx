@@ -42,7 +42,7 @@ const BlurBackground = ({className}:{className:string}) => {
         <img
           onLoad={() => setIsLoaded(true)}
           className={className}
-          src={resizeImage(blurBackgroundImage || '', 'sm')}
+          src={resizeImage(blurBackgroundImage?.endsWith('gif') ? '' : blurBackgroundImage || '', 'sm')}
         />
       </motion.div>
     </AnimatePresence>

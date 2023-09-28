@@ -29,20 +29,22 @@ const Background = () => {
         {
           <>
             <div className={cx('absolute inset-0 h-full w-full ')}>
-              {show && <motion.div
+              {
+              show &&
+               <motion.div
                 className={cx(
                   'absolute inset-0 z-0 h-full w-full ease',
                   css`
                     background-repeat: no-repeat;
                     background-size: cover;
-                    background-position: center top 21%;
+                    background-position: center top 20%;
                   `
                 )}
-                // style={{ backgroundImage: `url(${player.track?.al.picUrl})` }}
+                style={{ backgroundImage: `url(${player.track?.al.picUrl})` }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.5 }}
               >
               </motion.div>
               }
@@ -54,8 +56,8 @@ const Background = () => {
                 className={cx(
                   'relative inset-0 z-0 ',
                   'h-full w-full',
-                  // 'bg-white/30 dark:bg-black/40',
-                  // 'backdrop-blur-md',
+                  show && 'bg-white/40 dark:bg-black/40',
+                  show && 'backdrop-blur-4xl',
                   window.env?.isElectron && 'rounded-tr-24 rounded-tl-24'
                 )}
                 style={{

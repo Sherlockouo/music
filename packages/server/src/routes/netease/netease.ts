@@ -24,7 +24,7 @@ async function netease(fastify: FastifyInstance) {
         
         const result = await neteaseApi({
           ...req.query,
-          cookie: req.headers.cookie,
+          cookie: (req as any).cookies,
         })
         
         cache.set(name as CacheAPIs, result.body, req.query)

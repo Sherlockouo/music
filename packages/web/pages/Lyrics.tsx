@@ -184,13 +184,12 @@ const Lyrics = () => {
         className={cx(
           'lyrics-player h-921 ',
           'text-center',
-
           'font-Roboto font-bold backdrop-blur-md'
         )}
       >
         <div
           className={cx(
-            'lyrics-container no-scrollbar h-lyric  pb-lyricBottom pt-lyricTop text-left ',
+            'lyrics-container no-scrollbar h-full  pb-lyricBottom mb-8 mt-8 pt-lyricTop ',
             'text-center'
           )}
           ref={containerRef}

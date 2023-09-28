@@ -85,7 +85,7 @@ const LoginWithQRCode = () => {
               break
             }
             // 这里是OK的
-            // console.log('response cookie',status.cookie);
+            console.log('response cookie',status.cookie);
             setCookies(status.cookie)
             reactQueryClient.refetchQueries([UserApiNames.FetchUserAccount])
             uiStates.showLoginPanel = false

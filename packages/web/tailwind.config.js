@@ -100,9 +100,6 @@ module.exports = {
         24: '24px',
         48: '48px',
       },
-      height: {
-        lyric: '921px',
-      },
       blur: {
         lyric: '1px',
       },

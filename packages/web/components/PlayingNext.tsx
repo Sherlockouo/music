@@ -32,7 +32,7 @@ const FMButton = () => {
       }}
       className={cx(
         'group relative transition duration-300 ease-linear text-neutral-300',
-        fm ? 'text-brand-700 hover:text-brand-400'
+        player.mode == Mode.FM ? 'text-brand-700 hover:text-brand-400'
           : 'text-neutral-300 opacity-40 hover:opacity-100'
 
       )}

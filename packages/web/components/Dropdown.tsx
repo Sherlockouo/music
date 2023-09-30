@@ -20,7 +20,7 @@ function Dropdown({ items, onClose }: { items: DropdownItem[]; onClose: () => vo
       exit={{ opacity: 0, scale: 0.96 }}
       transition={{ duration: 0.2 }}
       className={cx(
-        'origin-top rounded-12 border border-white/[.06] bg-gray-900/95 p-px py-2.5 shadow-xl outline outline-1 outline-black backdrop-blur-3xl',
+        'origin-top rounded-12 border border-white/[.06] dark:border-white/[.06] p-px py-2.5 shadow-xl outline outline-1 outline-black backdrop-blur-3xl',
         css`
           min-width: 200px;
         `
@@ -28,7 +28,7 @@ function Dropdown({ items, onClose }: { items: DropdownItem[]; onClose: () => vo
     >
       {items.map((item, index) => (
         <div
-          className='active:bg-gray/50 relative flex w-full items-center justify-between whitespace-nowrap rounded-[5px] p-3 text-16 font-medium text-neutral-200 transition-colors duration-400 hover:bg-white/[.06]'
+          className='relative flex w-full items-center justify-between whitespace-nowrap rounded-[5px] p-3 text-16 font-medium transition-colors duration-400 hover:bg-black/[.06]'
           key={index}
           onClick={() => {
             item.onClick()

@@ -21,7 +21,7 @@ interface Settings {
   displayPlaylistsFromNeteaseMusic: boolean
   showBackgroundImage: boolean
   unlock: boolean
-  engines: string[]
+  theme: string
 }
 
 const initSettings: Settings = {
@@ -33,7 +33,7 @@ const initSettings: Settings = {
   displayPlaylistsFromNeteaseMusic: true,
   showBackgroundImage: true,
   unlock: true,
-  engines: ['qq','bilibili'],
+  theme: 'dark',
 }
 
 const STORAGE_KEY = 'settings'

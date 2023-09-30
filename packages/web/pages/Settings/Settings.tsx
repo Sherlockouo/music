@@ -41,7 +41,8 @@ const Sidebar = ({
   }, [activeCategory])
 
   return (
-    <div className={cx('relative flex flex-col', isMobile && 'w-2/5')}>
+    <div className={cx(
+    'relative flex flex-col', isMobile && 'w-2/5')}>
       <motion.div
         initial={{ y: 11.5 }}
         animate={indicatorAnimation}
@@ -59,7 +60,7 @@ const Sidebar = ({
             'flex items-center rounded-lg px-3 py-2 font-medium transition-colors duration-500',
             activeCategory === category.id
               ? 'text-accent-color-500'
-              : 'text-white/50 hover:text-white/90'
+              : 'text-black/50 dark:text-white/50 hover:dark:text-white/90 hover:text-black/90'
           )}
         >
           {category.name}

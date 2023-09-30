@@ -20,8 +20,9 @@ import useUserVideos from '@/web/api/hooks/useUserVideos'
 import persistedUiStates from '@/web/states/persistedUiStates'
 import settings from '@/web/states/settings'
 import useUser from '@/web/api/hooks/useUser'
+import Daily from './Daily'
 
-const collections = ['playlists', 'albums', 'artists', 'videos'] as const
+const collections = ['daily','playlists', 'albums', 'artists', 'videos'] as const
 type Collection = typeof collections[number]
 
 const Albums = () => {
@@ -81,6 +82,10 @@ const CollectionTabs = ({ showBg }: { showBg: boolean }) => {
 
   const tabs: { id: Collection; name: string }[] = [
     {
+      id: 'daily',
+      name: t`common.daily`,
+    },
+    {
       id: 'albums',
       name: t`common.album_other`,
     },
@@ -122,7 +127,7 @@ const CollectionTabs = ({ showBg }: { showBg: boolean }) => {
             )}
             style={{
               top: '-132px',
-              backgroundImage: `url(${topbarBackground})`,
+              // backgroundImage: `url(${topbarBackground})`,
             }}
           ></motion.div>
         )}
@@ -140,7 +145,11 @@ const CollectionTabs = ({ showBg }: { showBg: boolean }) => {
           setSelectedTab(id)
           scrollToBottom(true)
         }}
-        className={cx('sticky z-10 -mb-10 px-2.5 lg:px-0')}
+        className={cx(
+          'sticky',
+        'z-10',
+        '-mb-10',
+         'px-2.5 lg:px-0')}
         style={{
           top: `${topbarHeight}px`,
         }}
@@ -156,7 +165,6 @@ const Collections = () => {
   const { onScreen: isScrollReachBottom } = useIntersectionObserver(observePoint)
 
   const onScroll = throttle(() => {
-    console.log("xbc", isScrollReachBottom)
     if (isScrollReachBottom) return
     scrollToBottom(true)
   }, 500)
@@ -168,9 +176,10 @@ const Collections = () => {
         className={cx('no-scrollbar overflow-y-auto px-2.5 pt-16 pb-16 lg:px-0')}
         onScroll={onScroll}
         style={{
-          height: `calc(100vh - ${topbarHeight}px)`,
+          // height: `calc(100vh - ${topbarHeight}px)`,
         }}
       >
+        {selectedTab === 'daily' && <Daily />}
         {selectedTab === 'albums' && <Albums />}
         {selectedTab === 'playlists' && <Playlists />}
         {selectedTab === 'artists' && <Artists />}

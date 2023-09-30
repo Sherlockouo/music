@@ -27,7 +27,7 @@ function DescriptionViewer({
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className='fixed inset-0 z-30 bg-black/70 backdrop-blur-3xl lg:rounded-24'
+            className='fixed inset-0 z-30 bg-black/70 dark:bg-white/70 backdrop-blur-3xl lg:rounded-24'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { duration: 0.3 } }}
             exit={{ opacity: 0, transition: { duration: 0.3, delay: 0.3 } }}

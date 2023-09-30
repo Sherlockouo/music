@@ -48,11 +48,11 @@ const Lyrics = ({ tracksIDs }: { tracksIDs: number[] }) => {
         // `
       )}
     >
-      <div className='mb-3.5 text-18 font-medium text-white/70'>
+      <div className='mb-3.5 text-18 font-medium'>
         {t('my.xxxs-liked-tracks', { nickname: user?.profile?.nickname })}
       </div>
       {lyricLines.map((line, index) => (
-        <div key={`${index}-${line}`} className='text-18 font-medium text-white/20'>
+        <div key={`${index}-${line}`} className='text-18 font-medium'>
           {line}
         </div>
       ))}
@@ -108,7 +108,7 @@ const PlayLikedSongsCard = () => {
     <motion.div
       layout
       className={cx(
-        'mx-2.5 flex flex-col justify-between rounded-24 p-8 dark:bg-white/10 lg:mx-0',
+        'mx-2.5 flex flex-col justify-between rounded-24 p-8 bg-black/10 dark:bg-white/10 lg:mx-0',
         css`
           height: 372px;
           ${bp.lg} {

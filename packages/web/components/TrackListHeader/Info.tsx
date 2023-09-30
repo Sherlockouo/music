@@ -30,11 +30,11 @@ const Info = ({
     <div>
       {/* Title */}
       {isLoading ? (
-        <div className='mt-2.5  text-28 font-semibold text-transparent lg:mt-0 lg:text-36 lg:font-medium'>
-          <span className='rounded-full bg-white/10'>PLACEHOLDER</span>
+        <div className='mt-2.5  text-28 font-semibold lg:mt-0 lg:text-36 lg:font-medium'>
+          <span className='rounded-full'>PLACEHOLDER</span>
         </div>
       ) : (
-        <div className='mt-2.5 text-28 font-semibold transition-colors duration-300 dark:text-white/80 lg:mt-0 lg:text-36 lg:font-medium'>
+        <div className='mt-2.5 text-28 font-semibold transition-colors duration-300  lg:mt-0 lg:text-36 lg:font-medium'>
           {title}
         </div>
       )}
@@ -42,15 +42,15 @@ const Info = ({
       {/* Creator */}
       {isLoading ? (
         <div className='mt-2.5 lg:mt-6'>
-          <span className='text-24 font-medium text-transparent'>
-            <span className='rounded-full bg-white/10'>PLACEHOLDER</span>
+          <span className='text-24 font-medium'>
+            <span className='rounded-full'>PLACEHOLDER</span>
           </span>
         </div>
       ) : (
         <div className='mt-2.5 lg:mt-6'>
           <span
             onClick={() => creatorLink && navigate(creatorLink)}
-            className='text-24 font-medium transition-colors duration-300 dark:text-white/40 hover:dark:text-neutral-100'
+            className='text-24 font-medium transition-colors duration-300'
           >
             {creatorName}
           </span>
@@ -59,11 +59,11 @@ const Info = ({
 
       {/* Extra info */}
       {isLoading ? (
-        <div className='mt-1 flex items-center text-12 font-medium text-transparent lg:text-14 lg:font-bold'>
-          <span className='rounded-full bg-white/10'>PLACEHOLDER</span>
+        <div className='mt-1 flex items-center text-12 font-medium lg:text-14 lg:font-bold'>
+          <span className='rounded-full'>PLACEHOLDER</span>
         </div>
       ) : (
-        <div className='mt-1 flex items-center text-12 font-medium transition-colors duration-300 dark:text-white/40 lg:text-14 lg:font-bold'>
+        <div className='mt-1 flex items-center text-12 font-medium transition-colors duration-300 lg:text-14 lg:font-bold'>
           {extraInfo}
         </div>
       )}
@@ -74,7 +74,7 @@ const Info = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
-          className='line-clamp-3 mt-6 whitespace-pre-wrap text-14 font-bold transition-colors duration-300 dark:text-white/40 dark:hover:text-white/60'
+          className='line-clamp-3 mt-6 whitespace-pre-wrap text-14 font-bold transition-colors duration-300'
           dangerouslySetInnerHTML={{
             __html: description,
           }}

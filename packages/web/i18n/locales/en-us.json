@@ -1,6 +1,7 @@
 {
   "common": {
     "artist_one": "Artist",
+    "daily":"Daily",
     "artist_other": "Artists",
     "track_one": "Track",
     "track_other": "Tracks",

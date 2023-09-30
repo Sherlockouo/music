@@ -39,7 +39,7 @@ const Cover = ({ artist }: { artist?: Artist }) => {
       >
         <Image
           className={cx(
-            'aspect-square h-full w-full  lg:z-10',
+            'aspect-square h-full w-full  lg:z-10 bg-black/10 dark:bg-white/10',
             video ? 'opacity-0' : 'opacity-100'
           )}
           src={resizeImage(isLoadingArtistFromAppleBool ? '' : cover, 'lg')}

@@ -15,12 +15,14 @@ import settings from '@/web/states/settings'
 import { useState } from 'react'
 import { MotionConfig, motion } from 'framer-motion'
 import { ease } from '../utils/const'
+import { getTheme } from '../utils/theme'
 
 const Layout = () => {
   const playerSnapshot = useSnapshot(player)
   const { fullscreen } = useSnapshot(uiStates)
   const showPlayer = !!playerSnapshot.track
-  const { showBackgroundImage } = useSnapshot(settings)
+  const { showBackgroundImage,theme } = useSnapshot(settings)
+  
   return (
     <div
       id='layout'
@@ -30,7 +32,6 @@ const Layout = () => {
         window.env?.isElectron && !fullscreen && 'rounded-24',
         css`
           position: relative;
-          /* 其他样式属性 */
         `
       )}
     >
@@ -38,6 +39,7 @@ const Layout = () => {
       <motion.div
         className={cx(
           'h-full',
+          'rounded-24',
           css`
             position: absolute;
             top: 0;
@@ -48,15 +50,17 @@ const Layout = () => {
           `,
           showBackgroundImage &&
           css`
+              // background-image: '${player.track?.al.picUrl}'
               background-repeat: no-repeat;
               background-size: cover;
               background-position: center;
-              border-radius: 24px;
               transform: translate3d(0, 0, 0);
-              opacity: 0;
-            `
+            `,
+            //  这东西怪得很
+            !showBackgroundImage && 
+                  theme === 'dark' ? 'bg-black/90':'bg-white/90'
         )}
-        style={{ backgroundImage: `url(${player.track?.al.picUrl})` }}
+        style={{backgroundImage:showBackgroundImage?`url(${player.track?.al.picUrl})`:''}}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -68,8 +72,9 @@ const Layout = () => {
         id='layout-foreground'
         className={cx(
           'backdrop-blur-md',
-          'relative grid h-screen select-none overflow-hidden bg-white/20 dark:bg-black/40',
-          window.env?.isElectron && !fullscreen && 'rounded-24'
+          'relative grid h-screen select-none overflow-hidden',
+          'transition-colors duration-400 text-dark dark:text-white',
+          'rounded-24'
         )}
       >
         {/* 暂时不要这个blur 用起来不是很协调 */}
@@ -83,7 +88,7 @@ const Layout = () => {
               filter: blur(256px) saturate(1.2);
             `)} />
         <MenuBar />
-        <div className='bg-white'>
+        <div className=''>
           <Topbar />
         </div>
         <Main />

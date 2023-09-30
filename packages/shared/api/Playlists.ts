@@ -2,6 +2,7 @@ export enum PlaylistApiNames {
   FetchPlaylist = 'fetchPlaylist',
   FetchRecommendedPlaylists = 'fetchRecommendedPlaylists',
   FetchDailyRecommendPlaylists = 'fetchDailyRecommendPlaylists',
+  FetchDailyRecommendSongs = 'fetchDailyRecommendSongs',
   LikeAPlaylist = 'likeAPlaylist',
   FetchTopPlaylistParams = 'fetchTopPlaylist',
   FetchHQPlaylistParams = 'fetchHQPlaylist',
@@ -63,6 +64,16 @@ export interface FetchRecommendedPlaylistsResponse {
   category: number
   hasTaste: boolean
   result: Playlist[]
+}
+
+// 每日推荐歌曲（需要登录）
+export interface FetchDailyRecommendSongsResponse {
+  code: number
+  data: {
+    dailySongs: Track[]
+    orderSongs: []
+    recommendReasons: []
+  }
 }
 
 // 每日推荐歌单（需要登录）

@@ -10,6 +10,7 @@ import { Player, State as PlayerState } from '@/web/utils/player'
 import { startTransition } from 'react'
 import toast from 'react-hot-toast'
 import useIsMobile from '@/web/hooks/useIsMobile'
+import { motion } from 'framer-motion'
 
 const Lyrics = () => {
   const isMobile = useIsMobile()
@@ -98,7 +99,7 @@ const Lyrics = () => {
       index === currentLineIndex &&
         'line-clamp-4 font-bold text-accent-color-500 tracking-hilightLyric leading-lyric text-32',
       index !== currentLineIndex &&
-        'lyrics-padding normal-lyric-font-size font-black tracking-lyric leading-lyric text-white/30 text-24 blur-lyric',
+        'lyrics-padding normal-lyric-font-size font-black tracking-lyric leading-lyric transition-colors duration-400 text-dark/60 dark:text-white/60 text-24 blur-lyric',
       index !== currentLineIndex && isHovered && 'blur-none',
       isMobile && 'blur-none'
     )
@@ -142,7 +143,8 @@ const Lyrics = () => {
         {
           <div
             className={cx(
-              'artist-info  no-scrollbar padding-bottom-20 h-921 mb-8 mt-8 text-center text-21 font-medium text-white/30',
+              'transition-colors duration-400 text-dark/60 dark:text-white/40',
+              'artist-info  no-scrollbar padding-bottom-20 h-921 mb-8 mt-8 text-center text-21 font-medium',
               'text-center'
             )}
             style={{
@@ -183,11 +185,12 @@ const Lyrics = () => {
       <div
         className={cx(
           'lyrics-player h-921 ',
+          'transition-colors duration-400 text-dark/60 dark:text-white/60',
           'text-center',
           'font-Roboto font-bold backdrop-blur-md'
         )}
       >
-        <div
+        <motion.div
           className={cx(
             'lyrics-container no-scrollbar h-full  pb-lyricBottom mb-8 mt-8 pt-lyricTop ',
             'text-center'
@@ -195,11 +198,11 @@ const Lyrics = () => {
           ref={containerRef}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          // onScroll={handleScroll}
+            transition={{duration:0.3}}
         >
           <div
             className={cx(
-              'artist-info  no-scrollbar padding-bottom-20 mb-8 mt-8 text-left text-24 text-white/30',
+              'artist-info  no-scrollbar padding-bottom-20 mb-8 mt-8 text-left text-24',
               'text-center'
             )}
           >
@@ -207,7 +210,7 @@ const Lyrics = () => {
             <p className=''>By - {player.track?.ar[0].name}</p>
           </div>
           {renderedLyrics}
-        </div>
+        </motion.div>
       </div>
     </PageTransition>
   )

@@ -1,6 +1,5 @@
 import persistedUiStates from '@/web/states/persistedUiStates'
 import player from '@/web/states/player'
-import { ease } from '@/web/utils/const'
 import { cx, css } from '@emotion/css'
 import { MotionConfig, motion } from 'framer-motion'
 import { useSnapshot } from 'valtio'
@@ -18,6 +17,7 @@ import {
 } from '@/web/pages/Settings/Controls'
 import Slider from '@/web/components/Slider'
 import { ceil } from 'lodash'
+import { ease } from '@/web/utils/const'
 import { useTranslation } from 'react-i18next'
 
 const LikeButton = () => {
@@ -138,7 +138,8 @@ function VolumeSlider() {
   }
   return (
     <div
-      className={cx(css`
+      className={cx(
+        css`
         display: flex;
         flex-direction: row;
         justify-content: space-around;
@@ -146,17 +147,26 @@ function VolumeSlider() {
         text-align: center;
       `)}
     >
-      <Icon
-        name={player.volume == 0 ? 'volume-mute' : 'volume-half'}
-        className={cx('text-white/80', 'h-5 w-5')}
-      />
-      <div
+      <motion.button
+        layout='position'
+        className=' transition-colors duration-400 text-dark dark:text-white'
+      >
+        <Icon
+          name={player.volume == 0 ? 'volume-mute' : 'volume-half'}
+          className={cx(
+            'h-5 w-5'
+          )}
+        />
+      </motion.button>
+
+      <motion.div
         className={cx(
           'pr-1 pl-1',
           css(`
         width: 180px;
       `)
         )}
+        transition={{ ease}}
       >
         <Slider
           value={volume}
@@ -166,8 +176,16 @@ function VolumeSlider() {
           alwaysShowTrack
           alwaysShowThumb
         />
-      </div>
-      <Icon name='volume' className='h-5 w-5 text-white/80' />
+      </motion.div>
+      <motion.button
+        layout='position'
+        className=' transition-colors duration-400 text-dark dark:text-white'
+      >
+        <Icon name='volume' className={cx(
+          'h-5 w-5',
+        )} />
+      </motion.button>
+
     </div>
   )
 }

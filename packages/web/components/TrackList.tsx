@@ -43,7 +43,7 @@ const Actions = ({ track }: { track: Track }) => {
               dataSourceID: track.id,
             })
           }}
-          className='mr-3 flex h-10 w-10 items-center justify-center rounded-full  bg-white/10 text-white/40 transition-colors duration-400 hover:bg-white/30 hover:text-white/70'
+          className='mr-3 flex h-10 w-10 items-center justify-center rounded-full  transition-colors duration-400 hover:bg-white/30 hover:text-white/70'
         >
           <Icon name='more' className='h-4 w-5' />
         </button>
@@ -62,7 +62,7 @@ const Actions = ({ track }: { track: Track }) => {
             // translate
             toast('已添加到播放列表')
           }}
-          className='mr-3 flex h-10 w-10 items-center justify-center rounded-full  bg-white/10 text-white/40 transition-colors duration-400 hover:bg-white/30 hover:text-white/70'
+          className='mr-3 flex h-10 w-10 items-center justify-center rounded-full  transition-colors duration-400 hover:bg-white/30 hover:text-white/70'
         >
           <Icon name='plus' className='h-5 w-5' />
         </div>
@@ -82,7 +82,7 @@ const Actions = ({ track }: { track: Track }) => {
       >
         <div
           onClick={() => likeATrack.mutateAsync(track.id)}
-          className='flex h-10 w-10 items-center justify-center rounded-full text-white/40 transition duration-400 hover:bg-white/20 hover:text-white/70'
+          className='flex h-10 w-10 items-center justify-center rounded-full transition duration-400 hover:bg-white/20 hover:text-white/70'
         >
           <Icon
             name={likedTracksIDs?.ids.includes(track.id) ? 'heart' : 'heart-outline'}
@@ -108,7 +108,7 @@ function Track({
       key={track.id}
       onClick={e => handleClick(e, track.id)}
       onContextMenu={e => handleClick(e, track.id)}
-      className='group relative flex h-14 items-center py-2 text-16 font-medium text-neutral-200 transition duration-300'
+      className={cx('group relative flex h-14 items-center py-2 text-16 font-medium text-neutral-200 transition duration-300','text-black dark:text-white',)}
     >
       {/* Track no */}
       <div className='mr-3 lg:mr-6'>
@@ -126,17 +126,17 @@ function Track({
         <span className='line-clamp-1'>{track?.name}</span>
         {/* Explicit symbol */}
         {[1318912, 1310848].includes(track.mark) && (
-          <Icon name='explicit' className='ml-2 mr-1 mt-px h-3.5 w-3.5 text-white/20' />
+          <Icon name='explicit' className='ml-2 mr-1 mt-px h-3.5 w-3.5' />
         )}
         {/* Other artists */}
         {track?.ar?.length > 1 && (
-          <div className='text-white/20'>
+          <div className=''>
             <span className='px-1'>-</span>
             {track.ar.slice(1).map((artist, index) => (
               <span key={artist.id}>
                 <NavLink
                   to={`/artist/${artist.id}`}
-                  className='text-white/20 transition duration-300 hover:text-white/40'
+                  className=' transition duration-300 hover:dark:text-white/40 hover:text-black/40'
                 >
                   {artist.name}
                 </NavLink>
@@ -201,26 +201,28 @@ const TrackList = ({
   }
 
   return (
-    <div className={className}>
+    <div className={cx(className,)}>
       {(isLoading ? [] : tracks)?.map(track => (
         <Track key={track.id} track={track} handleClick={handleClick} />
       ))}
       {(isLoading ? Array.from(new Array(placeholderRows).keys()) : []).map(index => (
         <div
           key={index}
-          className='group relative flex h-14 items-center py-2 text-16 font-medium text-neutral-200 transition duration-300 ease-in-out'
+          className={cx(
+            'group relative flex h-14 items-center py-2 text-16 font-medium  transition duration-300 ease-in-out',
+          'text-black dark:text-white',)}
         >
           {/* Track no */}
-          <div className='mr-3 rounded-full bg-white/10 text-transparent lg:mr-6'>00</div>
+          <div className='mr-3 rounded-full  lg:mr-6'>00</div>
 
           {/* Track name */}
-          <div className='flex flex-grow items-center text-transparent'>
-            <span className='mr-4 rounded-full bg-white/10'>PLACEHOLDER1234567</span>
+          <div className='flex flex-grow items-center'>
+            <span className='mr-4 rounded-full '>PLACEHOLDER1234567</span>
           </div>
 
           {/* Track duration */}
-          <div className='hidden text-right text-transparent lg:block'>
-            <span className='rounded-full bg-white/10'>00:00</span>
+          <div className='hidden text-right lg:block'>
+            <span className='rounded-full '>00:00</span>
           </div>
         </div>
       ))}

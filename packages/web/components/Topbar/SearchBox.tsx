@@ -108,7 +108,7 @@ const SearchSuggestions = ({
               },
             }}
             className={cx(
-              'absolute mt-2 origin-top rounded-24 border border-white/10 bg-white/10 p-2 backdrop-blur-3xl',
+              'absolute mt-2 origin-top rounded-24 border border-dark/10 dark:border-white/10 p-2 backdrop-blur-3xl',
               css`
                 width: 286px;
               `
@@ -117,7 +117,7 @@ const SearchSuggestions = ({
             {suggestionsArray?.map(suggestion => (
               <div
                 key={`${suggestion.type}-${suggestion.id}`}
-                className='line-clamp-1 rounded-12 p-2 text-white hover:bg-white/10'
+                className='line-clamp-1 rounded-12 p-2 hover:bg-white/10'
                 onClick={() => {
                   setClickedSearchText(searchText)
                   if (['album', 'artist'].includes(suggestion.type)) {
@@ -145,12 +145,17 @@ const SearchBox = () => {
   const inputRef = useRef<HTMLInputElement>(null)
 
   return (
-    <div className='relative'>
+    <div className={cx(
+      'relative',
+      'dark:bg-white/30 bg-black/30 ',
+      'rounded-full',
+      )}>
       {/* Input */}
       <div
         onClick={() => inputRef.current?.focus()}
         className={cx(
-          'app-region-no-drag flex cursor-text items-center rounded-full bg-white/10 p-2.5 text-white/40 backdrop-blur-3xl',
+          'app-region-no-drag flex cursor-text items-center rounded-full p-2.5 backdrop-blur-3xl',
+          
           css`
             ${bp.lg} {
               min-width: 284px;
@@ -163,7 +168,7 @@ const SearchBox = () => {
           ref={inputRef}
           placeholder={t`search.search`}
           className={cx(
-            'flex-shrink bg-transparent font-medium  placeholder:text-white/40 dark:text-white/80',
+            'flex-shrink font-medium bg-transparent',
             css`
               @media (max-width: 420px) {
                 width: 142px;

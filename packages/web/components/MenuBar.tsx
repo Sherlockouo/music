@@ -53,7 +53,8 @@ const TabName = () => {
   return (
     <div
       className={cx(
-        'absolute bottom-8 right-0 left-0 z-10 flex rotate-180 select-none items-center font-bold text-brand-600 dark:text-brand-700',
+        'transition-colors duration-400',
+        'absolute bottom-8 right-0 left-0 z-10 flex rotate-180 select-none items-center font-bold dark:text-brand-700 text-brand-700',
         css`
           writing-mode: vertical-rl;
           text-orientation: mixed;
@@ -126,8 +127,9 @@ const Tabs = () => {
               reset: { scale: 1 },
             }}
             className={cx(
+              'text-black/60 dark:text-white/60',
               active === tab.path
-                ? 'text-brand-600  dark:text-brand-700'
+                ? 'text-brand-600  dark:text-white'
                 : 'lg:hover:text-black lg:dark:hover:text-white'
             )}
           >

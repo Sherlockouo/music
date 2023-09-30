@@ -24,7 +24,7 @@ const Artists = ({ artists }: { artists: Artist[] }) => {
           <img src={resizeImage(artist.img1v1Url, 'xs')} className='mr-4 h-14 w-14 rounded-full' />
           <div>
             <div className='text-lg font-semibold text-neutral-200'>{artist.name}</div>
-            <div className='mt-0.5 text-sm font-semibold text-white/30'>艺人</div>
+            <div className='mt-0.5 text-sm font-semibold'>艺人</div>
           </div>
         </div>
       ))}
@@ -45,7 +45,7 @@ const Albums = ({ albums }: { albums: Album[] }) => {
           <img src={resizeImage(album.picUrl, 'xs')} className='mr-4 h-14 w-14 rounded-lg' />
           <div>
             <div className='text-lg font-semibold text-neutral-200'>{album.name}</div>
-            <div className='mt-0.5 text-sm font-semibold text-white/30'>
+            <div className='mt-0.5 text-sm font-semibold'>
               专辑 · {album?.artist.name} · {dayjs(album.publishTime).year()}
             </div>
           </div>
@@ -89,7 +89,7 @@ const Track = ({
         >
           {track?.name}
         </div>
-        <div className='line-clamp-1 mt-1 text-14 font-bold text-neutral-200  text-white/30'>
+        <div className='line-clamp-1 mt-1 text-14 font-bold text-neutral-200 '>
           {track?.ar.map(a => a.name).join(', ')}
         </div>
       </div>
@@ -171,8 +171,8 @@ const Search = () => {
 
   return (
     <div>
-      <div className='mt-6 mb-8 text-4xl font-semibold dark:text-white'>
-        <span className='text-white/40'>搜索</span> &quot;{keywords}&quot;
+      <div className='mt-6 mb-8 text-4xl font-semibold'>
+        <span className=''>搜索</span> &quot;{keywords}&quot;
       </div>
 
       {/* Best match */}
@@ -197,7 +197,7 @@ const Search = () => {
                 />
                 <div>
                   <div className='text-xl font-semibold text-neutral-200'>{match.name}</div>
-                  <div className='mt-0.5 font-medium text-white/30'>
+                  <div className='mt-0.5 font-medium'>
                     {(match as Artist).occupation === '歌手'
                       ? '艺人'
                       : `专辑 · ${(match as Album).artist.name} · ${dayjs(

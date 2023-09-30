@@ -92,11 +92,11 @@ export function Button({ children, onClick }: { children: React.ReactNode; onCli
 }
 
 export function BlockTitle({ children }: { children: React.ReactNode }) {
-  return <div className='text-21 font-medium text-neutral-100'>{children}</div>
+  return <div className='text-21 font-medium'>{children}</div>
 }
 
 export function BlockDescription({ children }: { children: React.ReactNode }) {
-  return <div className='my-1 text-16 font-medium text-white/30'>{children}</div>
+  return <div className='my-1 text-16 font-medium'>{children}</div>
 }
 
 export function Option({ children }: { children: React.ReactNode }) {
@@ -104,5 +104,5 @@ export function Option({ children }: { children: React.ReactNode }) {
 }
 
 export function OptionText({ children }: { children: React.ReactNode }) {
-  return <div className='text-16 font-medium text-neutral-400'>{children}</div>
+  return <div className='text-16 font-medium'>{children}</div>
 }

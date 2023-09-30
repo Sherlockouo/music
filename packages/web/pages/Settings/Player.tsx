@@ -6,8 +6,9 @@ import { BlockDescription, BlockTitle, Button, Option, OptionText, Switch } from
 
 function Player() {
   return (
-    <div>
-      <FindTrackOnYouTube />
+    <div className='flex w-full justify-center iterms-center'>
+      {'developing'}
+      {/* <FindTrackOnYouTube /> */}
     </div>
   )
 }

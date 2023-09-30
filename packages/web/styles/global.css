@@ -151,6 +151,7 @@ input {
 }
 
 body {
+  border-radius: 24px;
   @apply overscroll-contain;
 }
 

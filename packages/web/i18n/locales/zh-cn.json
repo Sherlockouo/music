@@ -2,6 +2,7 @@
   "common": {
     "album_one": "专辑",
     "album_other": "专辑",
+    "daily":"日推",
     "album-with-count_one": "{{count}} 张专辑",
     "album-with-count_other": "{{count}} 张专辑",
     "artist_one": "艺人",

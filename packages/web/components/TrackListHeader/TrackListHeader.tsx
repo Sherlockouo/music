@@ -37,8 +37,10 @@ const TrackListHeader = ({
     <div
       className={cx(
         className,
-        'mx-2.5 rounded-48 p-8 dark:bg-white/10',
-        'lg:mx-0 lg:grid lg:grid-rows-1 lg:gap-10 lg:rounded-none lg:p-0 lg:dark:bg-transparent',
+        'mx-2.5 rounded-48 p-8 ',
+        // 'dark:bg-white/10',
+        'lg:mx-0 lg:grid lg:grid-rows-1 lg:gap-10 lg:rounded-none lg:p-0 ',
+        // 'lg:dark:bg-transparent',
         css`
           grid-template-columns: 318px auto;
         `

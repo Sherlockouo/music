@@ -45,7 +45,7 @@ const Album = () => {
             ? album.songs
             : undefined
         }
-        className='z-10 mx-2.5 mt-3 lg:mx-0 lg:mt-10'
+        className='z-10 mx-2.5 mt-3 lg:mx-0 lg:mt-10 text-black/60 dark:text-white/60'
         onPlay={onPlay}
         isLoading={isLoading}
       />

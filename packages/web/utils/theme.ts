@@ -5,6 +5,10 @@ export const changeTheme = (theme: 'light' | 'dark') => {
   }
 }
 
+export const getTheme = () => {
+  return document.body.getAttribute('class')
+}
+
 export const changeAccentColor = (color: string) => {
   document.body.setAttribute('data-accent-color', color)
 }
@@ -13,4 +17,4 @@ const settingsInStorage = localStorage.getItem('settings')
 const settings = settingsInStorage ? JSON.parse(settingsInStorage) : {}
 
 changeTheme(settings.theme || 'dark')
-changeAccentColor(settings?.accentColor || 'yellow')
+changeAccentColor(settings?.accentColor || 'lime')

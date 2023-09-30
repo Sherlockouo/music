@@ -38,7 +38,7 @@ const Header = () => {
       >
         <div
           className={cx(
-            'mx-2.5 rounded-48 bg-white/10 p-8 backdrop-blur-3xl lg:mx-0 lg:bg-transparent lg:p-0 lg:backdrop-blur-none',
+            'mx-2.5 rounded-48 bg-black/10 dark:bg-white/10 p-8 backdrop-blur-3xl lg:mx-0 lg:bg-transparent lg:p-0 lg:backdrop-blur-none',
             css`
               margin-top: -60px;
               ${bp.lg} {

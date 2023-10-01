@@ -60,3 +60,7 @@ packages/web/bundle-stats.html
 packages/web/storybook-static
 packages/desktop/esbuild-kit
 .idea
+
+# npm temporary file
+pnpm-lock.yaml
+package-lock.json

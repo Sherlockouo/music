@@ -26,7 +26,7 @@ const Controls = () => {
   }
 
   const classNames = cx(
-    'flex items-center justify-center text-white/80 hover:text-white hover:bg-white/20 transition duration-400',
+    'flex items-center justify-center dark:text-white text-neutral hover:text-neutral-300 hover:bg-neutral-100/20 dark:hover:text-white dark:hover:bg-white/20 transition duration-400',
     css`
       height: 28px;
       width: 48px;

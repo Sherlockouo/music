@@ -44,6 +44,7 @@ const Header = () => {
               ${bp.lg} {
                 margin-top: 0px;
               }
+              padding: 0.8rem;
             `
           )}
         >

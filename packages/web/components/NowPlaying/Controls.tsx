@@ -149,7 +149,8 @@ function VolumeSlider() {
     >
       <motion.button
         layout='position'
-        className=' transition-colors duration-400 text-dark dark:text-white'
+        className={cx( 
+        )}
       >
         <Icon
           name={player.volume == 0 ? 'volume-mute' : 'volume-half'}
@@ -179,7 +180,11 @@ function VolumeSlider() {
       </motion.div>
       <motion.button
         layout='position'
-        className=' transition-colors duration-400 text-dark dark:text-white'
+        className={cx(
+          // just dont need this I guess
+          // ' transition-colors duration-400 ',
+        // ' text-dark dark:text-white'
+        )}
       >
         <Icon name='volume' className={cx(
           'h-5 w-5',

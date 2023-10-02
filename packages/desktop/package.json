@@ -21,6 +21,7 @@
     "node": ">=16.0.0"
   },
   "dependencies": {
+    "@electron/rebuild": "^3.3.0",
     "@fastify/cookie": "^8.3.0",
     "@fastify/http-proxy": "^8.4.0",
     "@fastify/multipart": "^7.4.0",

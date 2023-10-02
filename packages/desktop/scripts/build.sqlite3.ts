@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const { rebuild } = require('electron-rebuild')
+const { rebuild } = require('@electron/rebuild')
 const fs = require('fs')
 const minimist = require('minimist')
 const pc = require('picocolors')
@@ -71,7 +71,7 @@ async function download(arch: Arch) {
   }
   const fileName = `better-sqlite3-v${betterSqlite3Version}-electron-v${electronModuleVersion}-${process.platform}-${arch}`
   const zipFileName = `${fileName}.tar.gz`
-  const url = `https://github.com/JoshuaWise/better-sqlite3/releases/download/v${betterSqlite3Version}/${zipFileName}`
+  const url = `https://ghproxy.com/https://github.com/JoshuaWise/better-sqlite3/releases/download/v${betterSqlite3Version}/${zipFileName}`
   if (!fs.existsSync(tmpDir)) {
     fs.mkdirSync(tmpDir, {
       recursive: true,

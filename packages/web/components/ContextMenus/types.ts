@@ -5,8 +5,9 @@ export interface ContextMenuPosition {
 }
 
 export interface ContextMenuItem {
-  type: 'item' | 'submenu' | 'divider' | 'list'
+  type: 'item' | 'submenu' | 'divider' | 'list' | 'div'
   label?: string | null
   onClick?: (e: MouseEvent) => void
   items?: ContextMenuItem[]
+  children?: React.ReactNode
 }

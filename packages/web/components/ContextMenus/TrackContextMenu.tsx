@@ -12,16 +12,26 @@ import player from '@/web/states/player'
 import useUserLikedTracksIDs, { useMutationLikeATrack } from '@/web/api/hooks/useUserLikedTracksIDs'
 import { useIsLoggedIn } from '@/web/api/hooks/useUser'
 import uiStates from '@/web/states/uiStates'
+import { useMemo, useRef } from 'react'
+import CoverRow from '@/web/components/CoverRow'
+import useUserPlaylists from '@/web/api/hooks/useUserPlaylists'
+import useUser from '@/web/api/hooks/useUser'
 
 const TrackContextMenu = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const user = useUser()
 
   const [, copyToClipboard] = useCopyToClipboard()
 
   const { type, dataSourceID, target, cursorPosition, options } = useSnapshot(contextMenus)
   const likeATrack = useMutationLikeATrack()
   const loggedIn = useIsLoggedIn()
+  const { data: playlists } = useUserPlaylists()
+  const myPlaylists = useMemo(
+    () => playlists?.playlist?.slice(1).filter(p => p.userId === user?.data?.account?.id),
+    [playlists, user]
+  )
 
   return (
     <AnimatePresence>
@@ -82,14 +92,16 @@ const TrackContextMenu = () => {
               },
             },
             {
-              type: 'item',
+              type: 'submenu',
               label: t`context-menu.add-to-playlist`,
               onClick: () => {
                 // 收藏到歌单
                 // player.addToPlayList(Number(dataSourceID))
                 toast.success('开发中')
               },
-              
+              children: <>
+                  <CoverRow playlists={myPlaylists} />
+              </>
             },
             {
               type: 'submenu',
@@ -99,7 +111,7 @@ const TrackContextMenu = () => {
                   type: 'item',
                   label: t`context-menu.copy-netease-link`,
                   onClick: () => {
-                    copyToClipboard(`https://music.163.com/#/album?id=${dataSourceID}`)
+                    copyToClipboard(`https://music.163.com/#/song?id=${dataSourceID}`)
                     toast.success(t`toasts.copied`)
                   },
                   
@@ -107,8 +119,9 @@ const TrackContextMenu = () => {
                 {
                   type: 'item',
                   label: t`context-menu.copy-r3playx-link`,
-                  onClick: () => {
-                    copyToClipboard(`${window.location.origin}/album/${dataSourceID}`)
+                  onClick: async () => {
+                    const audioSource = await player.getAudioSource(Number(dataSourceID))
+                    copyToClipboard(`${audioSource.audio}`)
                     toast.success(t`toasts.copied`)
                   },
                 },

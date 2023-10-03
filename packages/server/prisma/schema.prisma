@@ -40,6 +40,6 @@ model Artist {
 model ArtistBio {
   id     Int     @id @unique
   artist Artist  @relation(fields: [id], references: [id])
-  en_US  String? @map("en-US") 
-  zh_CN  String? @map("zh-CN") 
+  en_US  String? @map("en_US") 
+  zh_CN  String? @map("zh_CN") 
 }

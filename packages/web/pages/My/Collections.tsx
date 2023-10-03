@@ -32,8 +32,8 @@ const Albums = () => {
 }
 
 const Playlists = () => {
-  const { data: playlists } = useUserPlaylists()
   const user = useUser()
+  const { data: playlists } = useUserPlaylists()
   const myPlaylists = useMemo(
     () => playlists?.playlist?.slice(1).filter(p => p.userId === user?.data?.account?.id),
     [playlists, user]

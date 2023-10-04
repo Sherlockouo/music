@@ -48,7 +48,9 @@ const MenuPanel = forwardRef(
           exit={{ opacity: 0, scale: 0.96 }}
           transition={{ duration: 0.2 }}
           className={cx(
-            'rounded-12 border border-white/[.06] bg-gray-900/95 p-px py-2.5 shadow-xl outline outline-1 outline-black backdrop-blur-3xl',
+            'bg-white/90 dark:bg-black/90',
+            // 'bg-gray-900/95',
+            'rounded-12 border dark:border-white/[.06] border-black/[.06]  p-px py-2.5 shadow-xl outline outline-1 dark:outline-black outline-white backdrop-blur-3xl',
             css`
               min-width: 200px;
             `,

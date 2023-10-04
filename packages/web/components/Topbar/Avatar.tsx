@@ -54,13 +54,13 @@ const Avatar = ({className}: { className?: string }) => {
                                     setShowMenu(false)
                                 }}
                                 items={[
-                                    {
-                                        type: 'item',
-                                        label: 'Profile',
-                                        onClick: () => {
-                                            toast(' 开发中 ')
-                                        },
-                                    },
+                                    // {
+                                    //     type: 'item',
+                                    //     label: 'Profile',
+                                    //     onClick: () => {
+                                    //         toast(' 开发中 ')
+                                    //     },
+                                    // },
                                     {
                                         type: 'item',
                                         label: t`settings.settings`,

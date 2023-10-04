@@ -109,7 +109,7 @@ const CoverRow = ({
   return (
     <div className={cx('@container', className)}>
       {/* Title */}
-      {title && <h4 className='mb-6 text-14 font-bold uppercase dark:text-neutral-300'>{title}</h4>}
+      {title && <h4 className='mb-6 text-14 font-bold uppercase text-black dark:text-neutral-300'>{title}</h4>}
 
       {/* Items */}
       <div className='grid grid-cols-3 gap-4 @lg:gap-6 @4xl:grid-cols-4 @7xl:grid-cols-5'>

@@ -1,5 +1,6 @@
 export enum SearchApiNames {
   Search = 'search',
+  CloudSearch = 'cloudSearch',
   MultiMatchSearch = 'multiMatchSearch',
   FetchSearchSuggestions = 'fetchSearchSuggestions',
 }
@@ -64,6 +65,16 @@ export interface SearchResponse {
     sim_query: unknown
     voice: unknown
     voiceList: unknown
+  }
+}
+
+export interface CloudSearchResponse {
+  code: number
+  result: {
+    songCound?: number
+    songs?: Track[]
+    playlistCount: number
+    playlists: Playlist[]
   }
 }
 

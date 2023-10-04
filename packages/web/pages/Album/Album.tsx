@@ -22,7 +22,6 @@ const Album = () => {
   const onPlay = useCallback(
     async (trackID: number | null = null) => {
       if (!album?.album?.id) {
-        console.log('album',album);
         
         toast('无法播放专辑，该专辑不存在')
         return

@@ -99,9 +99,11 @@ const Lyrics = () => {
       index === currentLineIndex &&
         'line-clamp-4 font-bold text-accent-color-500 tracking-hilightLyric leading-lyric text-32',
       index !== currentLineIndex &&
-        'lyrics-padding normal-lyric-font-size font-black tracking-lyric leading-lyric text-dark/60 dark:text-white/60 text-24 blur-lyric',
-      index !== currentLineIndex && isHovered && 'transition-opacity duration-1000 blur-none',
-      isMobile && 'blur-none'
+        'lyrics-padding normal-lyric-font-size font-black tracking-lyric leading-lyric text-dark/60 dark:text-white/60 text-24 ',
+        // 'blur-lyric',
+      index !== currentLineIndex && isHovered && 'transition-opacity duration-1000',
+      // 'blur-none',
+      // isMobile && 'blur-none'
     )
 
     const hightlightStyle =

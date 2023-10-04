@@ -55,10 +55,8 @@ const Layout = () => {
               background-size: cover;
               background-position: center;
               transform: translate3d(0, 0, 0);
-            `,
-            //  这东西怪得很
-            !showBackgroundImage && 
-                  theme === 'dark' ? 'bg-black/90':'bg-white/90'
+            `, 
+            theme === 'dark' ? 'bg-black/90':'bg-white/90'
         )}
         style={{backgroundImage:showBackgroundImage?`url(${player.track?.al.picUrl})`:''}}
         initial={{ opacity: 0 }}
@@ -66,7 +64,17 @@ const Layout = () => {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3,ease }}
       >
-
+ <div
+    className={css`
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.15); /* 设置半透明背景颜色 */
+      z-index: 1; /* 设置层级为较高的值，确保遮罩在内容上方 */
+    `}
+  ></div>
       </motion.div>
       <div
         id='layout-foreground'
@@ -77,9 +85,8 @@ const Layout = () => {
           'rounded-24'
         )}
       >
-        {/* 暂时不要这个blur 用起来不是很协调 */}
         <BlurBackground className={cx(
-          'absolute z-0 object-cover opacity-70',
+          'fixed z-0 object-cover opacity-70',
           css`
               top: -400px;
               left: -370px;

@@ -164,7 +164,6 @@ function initOtherIpcMain() {
     }
     try {
       const data = await cache.get(api, query)
-      log.info('account data',data)
       return data
     } catch {
       return null

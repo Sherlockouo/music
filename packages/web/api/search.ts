@@ -7,6 +7,7 @@ import {
   MultiMatchSearchResponse,
   FetchSearchSuggestionsParams,
   FetchSearchSuggestionsResponse,
+  CloudSearchResponse
 } from '@/shared/api/Search'
 
 // 搜索
@@ -17,6 +18,18 @@ export function search(params: SearchParams): Promise<SearchResponse> {
     params: {
       ...params,
       type: SearchTypes[params.type ?? SearchTypes.All],
+    },
+  })
+}
+
+// 搜索
+export function cloudSearch(params: SearchParams): Promise<CloudSearchResponse> {
+  return request({
+    url: '/cloudsearch',
+    method: 'get',
+    params: {
+      ...params,
+      type: params.type,
     },
   })
 }

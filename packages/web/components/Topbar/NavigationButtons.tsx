@@ -4,8 +4,9 @@ import { useNavigate } from 'react-router-dom'
 import { ease } from '@/web/utils/const'
 import Icon from '../Icon'
 
-const buttonClassNames =
-  'app-region-no-drag rounded-full bg-white/10 p-2.5 backdrop-blur-3xl transition-colors duration-400 hover:bg-white/20 hover:text-white/60'
+
+const buttonClassNames = 'app-region-no-drag rounded-full dark:bg-white/10 bg-black/10 p-2.5 backdrop-blur-3xl transition-colors duration-400 dark:hover:bg-white/20 dark:hover:text-white/60 hover:bg-black/20 hover:text-black/60'
+
 
 const NavigationButtons = () => {
   const navigate = useNavigate()

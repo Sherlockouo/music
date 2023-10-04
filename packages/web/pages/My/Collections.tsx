@@ -173,7 +173,7 @@ const Collections = () => {
     <motion.div layout>
       <CollectionTabs showBg={isScrollReachBottom} />
       <div
-        className={cx('no-scrollbar overflow-y-auto px-2.5 pt-16 pb-16 lg:px-0')}
+        className={cx('no-scrollbar overflow-y-auto px-2.5 pt-24 pb-16 lg:px-0')}
         onScroll={onScroll}
         style={{
           // height: `calc(100vh - ${topbarHeight}px)`,

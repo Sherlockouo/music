@@ -144,3 +144,21 @@ export interface DailyCheckInResponse {
   code: number
   point: number
 }
+
+// 云盘信息 
+export interface CloudDiskInfoParam {
+  timestamp?: number
+  // 返回数量 , 默认为 30
+  limit: number
+  // 偏移数量，用于分页 , 如 :( 页数 -1)*200, 其中 200 为 limit 的值 , 默认为 0
+  offset: number
+}
+
+export interface CloudDiskInfoResponse {
+  code: number
+  count: number
+  hasMore: boolean
+  size: string
+  maxSize: string
+  data: SimpleSong[]
+}

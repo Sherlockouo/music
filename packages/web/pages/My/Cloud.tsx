@@ -9,8 +9,16 @@ import ScrollPagination from '@/web/components/ScrollPage'
 import { fetchArtistSongs } from '@/web/api/artist'
 import { fetchTracks } from '@/web/api/track'
 import toast from 'react-hot-toast'
+import { CloudDiskInfoParam } from '@/shared/api/User'
+import { cloudDisk } from '@/web/api/user'
+const reactQueryOptions = {
+  refetchOnWindowFocus: false,
+  refetchInterval: 1000 * 60 * 60, // 1 hour
+  refetchOnMount: false,
+}
 
-const ArtistSongs = () => {
+
+const Cloud = () => {
   const [dataSource, setDatasource] = useState<Track[]>([])
   const [songIDs, setSongIDs] = useState<number[]>([])
   const params = useParams()
@@ -18,19 +26,16 @@ const ArtistSongs = () => {
 
   const getData = async (pageNo: number, pageSize: number) => {
     if (hasMore === false) return
-    const songsParams: FetchArtistSongsParams = {
-      id: Number(params.id) || 0,
-      // order 加上time 会导致取不到更多的歌曲
-      order: '',
+    const cloudParams: CloudDiskInfoParam = {
       limit: pageSize || 50,
       offset: (pageNo - 1) * pageSize || 0,
     }
-    const resp = await fetchArtistSongs(songsParams)
-    console.log('params ', songsParams, resp)
+    const resp = await cloudDisk(cloudParams)
+    console.log('params ', cloudParams, resp)
 
-    setHasMore(resp.more)
+    setHasMore(resp.hasMore)
 
-    const songIDList = resp.songs ? resp.songs.map((song: Track) => song.id) : []
+    const songIDList = resp.data ? resp.data.map((song: SimpleSong) => song.simpleSong.id) : []
     let arr = [...songIDs, ...songIDList]
     setSongIDs([...new Set(arr)])
 
@@ -39,7 +44,7 @@ const ArtistSongs = () => {
     let arrSource = [...dataSource, ...(fetchTrackResp?.songs as Track[])]
     setDatasource([...new Set(arrSource)])
 
-    return { hasMore: resp.more }
+    return { hasMore: resp.hasMore }
   }
   const onPlay = (trackID: number | null = null) => {
     player.playAList(songIDs, trackID)
@@ -58,4 +63,5 @@ const ArtistSongs = () => {
   )
 }
 
-export default ArtistSongs
+
+export default Cloud

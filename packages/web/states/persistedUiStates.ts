@@ -5,7 +5,7 @@ interface PersistedUiStates {
   loginPhoneCountryCode: string
   loginType: 'phone' | 'email' | 'qrCode'
   minimizePlayer: boolean
-  librarySelectedTab: 'daily'|'playlists' | 'albums' | 'artists' | 'videos'
+  librarySelectedTab: 'daily'|'playlists' | 'albums' | 'artists' | 'videos' | 'cloud'
 }
 
 const initPersistedUiStates: PersistedUiStates = {

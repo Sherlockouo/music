@@ -222,3 +222,19 @@ declare interface Video {
   type: number
   vid: string
 }
+
+declare interface SimpleSong {
+  simpleSong: Track;
+  album: string;
+  artist: string;
+  bitrate: number;
+  songId: number;
+  songName: string;
+  addTime: number;
+  cover: number;
+  coverId: string;
+  lyricId: string;
+  version: number;
+  fileSize: number;
+  fileName: string;
+}

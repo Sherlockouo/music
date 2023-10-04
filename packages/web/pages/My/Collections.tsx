@@ -21,8 +21,9 @@ import persistedUiStates from '@/web/states/persistedUiStates'
 import settings from '@/web/states/settings'
 import useUser from '@/web/api/hooks/useUser'
 import Daily from './Daily'
+import Cloud from './Cloud'
 
-const collections = ['daily','playlists', 'albums', 'artists', 'videos'] as const
+const collections = ['daily','playlists', 'albums', 'artists', 'videos','cloud'] as const
 type Collection = typeof collections[number]
 
 const Albums = () => {
@@ -101,6 +102,10 @@ const CollectionTabs = ({ showBg }: { showBg: boolean }) => {
       id: 'videos',
       name: t`common.video_other`,
     },
+    {
+      id: 'cloud',
+      name: t`common.cloud`
+    }
   ]
 
   const { librarySelectedTab: selectedTab } = useSnapshot(persistedUiStates)
@@ -184,6 +189,7 @@ const Collections = () => {
         {selectedTab === 'playlists' && <Playlists />}
         {selectedTab === 'artists' && <Artists />}
         {selectedTab === 'videos' && <Videos />}
+        {selectedTab === 'cloud' && <Cloud />}
       </div>
       <div ref={observePoint}></div>
     </motion.div>

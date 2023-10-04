@@ -13,6 +13,8 @@ import {
   FetchUserVideosResponse,
   FetchUserVideosParams,
   DailyCheckInResponse,
+  CloudDiskInfoParam,
+  CloudDiskInfoResponse
 } from '@/shared/api/User'
 
 // 获取用户详情
@@ -176,7 +178,7 @@ export function fetchUserVideos(): Promise<FetchUserVideosResponse> {
  * @param {number} params.limit
  * @param {number=} params.offset
  */
-export function cloudDisk(params = {}) {
+export function cloudDisk(params:CloudDiskInfoParam): Promise<CloudDiskInfoResponse> {
   params.timestamp = new Date().getTime()
   return request({
     url: '/user/cloud',
@@ -188,7 +190,7 @@ export function cloudDisk(params = {}) {
 /**
  * 获取云盘歌曲详情（需要登录）
  */
-export function cloudDiskTrackDetail(id:Number) {
+export function cloudDiskTrackDetail(id:number) {
   return request({
     url: '/user/cloud/detail',
     method: 'get',
@@ -203,7 +205,7 @@ export function cloudDiskTrackDetail(id:Number) {
  * 删除云盘歌曲（需要登录）
  * @param {Array} id
  */
-export function cloudDiskTrackDelete(id) {
+export function cloudDiskTrackDelete(id:number) {
   return request({
     url: '/user/cloud/del',
     method: 'get',

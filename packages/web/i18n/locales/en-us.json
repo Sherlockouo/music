@@ -17,7 +17,8 @@
     "video_other": "Videos",
     "video-with-count_one": "{{count}} Video",
     "video-with-count_other": "{{count}} Videos",
-    "lyric-welcome":"Let's explore the most wonderful sounds of music!"
+    "lyric-welcome":"Let's explore the most wonderful sounds of music!",
+    "cloud":"cloud"
   },
   "navigation": {
     "goBack": "Go back",

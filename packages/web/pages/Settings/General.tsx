@@ -28,7 +28,7 @@ function Language() {
 
   return (
     <>
-      <BlockTitle>Language</BlockTitle>
+      <BlockTitle>{t`settings.title-language`}</BlockTitle>
       <Option>
         <OptionText>{t`settings.general-choose-language`}</OptionText>
         <Select options={supportedLanguages} value={language} onChange={setLanguage} />
@@ -38,6 +38,8 @@ function Language() {
 }
 
 function AppleMusic() {
+  const { t } = useTranslation()
+  
   const { playAnimatedArtworkFromApple, priorityDisplayOfAlbumArtistDescriptionFromAppleMusic } =
     useSnapshot(settings)
 
@@ -45,14 +47,14 @@ function AppleMusic() {
     <div className='mt-7'>
       <BlockTitle>Apple Music</BlockTitle>
       <Option>
-        <OptionText>Play Animated Artwork from Apple Music</OptionText>
+        <OptionText>{t`settings.play-animated-artwork-from-apple-music`}</OptionText>
         <Switch
           enabled={playAnimatedArtworkFromApple}
           onChange={v => (settings.playAnimatedArtworkFromApple = v)}
         />
       </Option>
       <Option>
-        <OptionText>Priority Display of Album/Artist Description from Apple Music</OptionText>
+        <OptionText>{t`settings.priority-display-description-from-apple-music`}</OptionText>
         <Switch
           enabled={priorityDisplayOfAlbumArtistDescriptionFromAppleMusic}
           onChange={v => (settings.priorityDisplayOfAlbumArtistDescriptionFromAppleMusic = v)}
@@ -63,12 +65,14 @@ function AppleMusic() {
 }
 
 function NeteaseMusic() {
+  const { t } = useTranslation()
+
   const { displayPlaylistsFromNeteaseMusic } = useSnapshot(settings)
   return (
     <div className='mt-7'>
-      <BlockTitle>Netease Music</BlockTitle>
+      <BlockTitle>{t`settings.title-netease-music`}</BlockTitle>
       <Option>
-        <OptionText>Display Playlists from Netease Music</OptionText>
+        <OptionText>{t`settings.display-playlists-from-netease-music`}</OptionText>
         <Switch
           enabled={displayPlaylistsFromNeteaseMusic}
           onChange={v => {

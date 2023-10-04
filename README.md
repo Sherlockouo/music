@@ -16,9 +16,8 @@
     高颜值的第三方音乐播放器
     <br />
     <a href="https://music.xtify.top/" target="blank"><strong>🌎 访问最新DEMO</strong></a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a href="https://https://r3play.app/" target="blank"><strong>🌎 访问原版DEMO</strong></a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a href="https://github.com/Sherlockouo/music/releases" target="blank"><strong>📦️ 下载安装包</strong></a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <br />
+    <a href="https://r3play.app/" target="blank"><strong>🌎 访问原版DEMO</strong></a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="https://github.com/Sherlockouo/music/releases" target="blank"><strong>📦️ 下载安装包</strong></a>
     <br />
   </p>
 </p>
@@ -37,7 +36,6 @@
 ----   
 ## 💡新特性
 - 📖 支持歌词展示
-- ~~新增歌词特效~~
 - 🎨 新增全局背景
 - 🎵 支持更多音源
 - 🐳 支持docker部署
@@ -47,10 +45,6 @@
 
 访问本项目的 [Releases](https://github.com/qier222/YesPlayMusic/releases)
 页面下载安装包。
-
-<!-- - macOS 用户可以通过 Homebrew 来安装：`brew install --cask yesplaymusic`
-
-- Windows 用户可以通过 Scoop 来安装：`scoop install extras/yesplaymusic` -->
 
 ## 📜 开源许可
 

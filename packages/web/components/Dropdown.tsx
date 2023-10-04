@@ -28,7 +28,7 @@ function Dropdown({ items, onClose }: { items: DropdownItem[]; onClose: () => vo
     >
       {items.map((item, index) => (
         <div
-          className='relative flex w-full items-center justify-between whitespace-nowrap rounded-[5px] p-3 text-16 font-medium transition-colors duration-400 hover:bg-black/[.06]'
+          className='relative flex w-full items-center justify-between whitespace-nowrap rounded-[5px] p-3 text-16 backdrop-blur-3xl font-medium hover:bg-black/[.06]'
           key={index}
           onClick={() => {
             item.onClick()

@@ -13,13 +13,13 @@ export function Switch({
     <motion.div
       className={cx(
         'flex w-11 items-center justify-start rounded-full p-1 transition-colors duration-500',
-        enabled ? 'bg-brand-700' : 'bg-white/10'
+        enabled ? 'bg-brand-700' : 'dark:bg-white/10 bg-black/10'
       )}
       onClick={() => onChange(!enabled)}
     >
       <motion.div
         animate={{ x: enabled ? 16 : 0 }}
-        className='h-5 w-5 rounded-full bg-white shadow-sm'
+        className='h-5 w-5 rounded-full bg-black dark:bg-white shadow-sm'
       ></motion.div>
     </motion.div>
   )

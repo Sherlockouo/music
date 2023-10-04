@@ -34,16 +34,16 @@ const AccentColor = () => {
 
   const accentColor = useSnapshot(settings).accentColor
   return (
-    <div className='mt-4 flex flex-wrap'>
-      <div className='mb-2 dark:text-white'>{t`settings.accent-color`}</div>
-      <div className=' flex items-center'>
+    <div className='mt-4 flex  flex-row items-center'>
+      <div className='w-full flex dark:text-white items-center'>{t`settings.accent-color`}</div>
+      <div className=' w-full justify-center flex items-center'>
         {Object.entries(colors).map(([color, bg]) => (
           <div
             key={color}
-            className={cx(bg, 'mr-2.5 flex h-5 w-5 items-center justify-center rounded-full')}
+            className={cx(bg, 'mr-2.5 flex h-5 w-5 items-center justify-center rounded-full bg-data-accent-color-500')}
             onClick={() => changeColor(color)}
           >
-            {color === accentColor && <div className='h-1.5 w-1.5 rounded-full bg-white'></div>}
+            {color === accentColor && <div className='h-1.5 w-1.5 rounded-full bg-black dark:bg-white'></div>}
           </div>
         ))}
       </div>
@@ -68,13 +68,16 @@ const ChangeLyricBackground = () => {
   const { t, i18n } = useTranslation()
   return (
     <>
-      <Option>
-        <OptionText>{t`settings.show-lyric-background-img`}</OptionText>
-        <Switch
-          enabled={showBackgroundImage}
-          onChange={value => (settings.showBackgroundImage = value)}
-        />
-      </Option>
+      <div>
+
+        <Option>
+          <OptionText>{t`settings.show-lyric-background-img`}</OptionText>
+          <Switch
+            enabled={showBackgroundImage}
+            onChange={value => (settings.showBackgroundImage = value)}
+          />
+        </Option>
+      </div>
     </>
   )
 }

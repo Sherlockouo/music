@@ -66,7 +66,7 @@ const RepeatButton = () => {
         player.mode == Mode.FM ? 'hidden' : 'block',
         'group relative transition duration-300 ease-linear',
         repeat == 0 && 'text-neutral-300 opacity-40 hover:opacity-100',
-        (repeat > 0) && 'text-brand-700 hover:text-brand-400'
+        (repeat > 0) && 'text-brand-700 hover:text-brand-300'
       )}
       style={buttonStyle}
     >
@@ -117,7 +117,7 @@ const Header = () => {
         'absolute top-0 left-0 z-20 flex w-full items-center justify-between bg-contain bg-repeat-x px-7 pb-6 text-14 font-bold lg:px-0'
       )}
     >
-      <div className='flex text-neutral-300'>
+      <div className='flex '>
         <div className='bg-accent-color-700 mr-2 h-4 w-1 rounded-full'></div>
         {t`player.queue`}
       </div>
@@ -176,12 +176,12 @@ const Track = ({
             'line-clamp-1 text-16 font-medium transition-colors duration-500',
             playingTrackIndex === index
               ? 'text-accent-color-500'
-              : 'text-neutral-700 dark:text-neutral-200'
+              : 'text-black dark:text-white'
           )}
         >
           {track?.name}
         </div>
-        <div className='line-clamp-1 mt-1 text-14 font-bold text-neutral-200 dark:text-white/25'>
+        <div className='line-clamp-1 mt-1 text-14 font-bold text-black/80  dark:text-white/80'>
           {track?.ar.map(a => a.name).join(', ')}
         </div>
       </div>

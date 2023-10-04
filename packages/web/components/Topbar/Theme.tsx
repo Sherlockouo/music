@@ -19,7 +19,7 @@ const Theme = () => {
         }
     }}>
 
-        <Icon name='sun' className="h-full w-full text-white"/>
+        <Icon name='sun' className="h-9 w-9 text-white"/>
     </div>
     </>
 )}

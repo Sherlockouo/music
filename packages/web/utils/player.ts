@@ -67,6 +67,7 @@ export class Player {
   state: State = State.Initializing
   mode: Mode = Mode.TrackList
   trackList: TrackID[] = []
+  originTrackList: TrackID[] = []
   trackListSource: TrackListSource | null = null
   fmTrackList: TrackID[] = []
   shuffle: boolean = false
@@ -426,6 +427,10 @@ export class Player {
     return response?.songs?.length ? response.songs[0] : null
   }
 
+  async getAudioSource(track_id: TrackID) {
+    return await this._fetchAudioSource(track_id)
+  }
+
   /**
    * Fetch unlocked audio source
    * @param trackID
@@ -467,17 +472,15 @@ export class Player {
       if (audio && audio.includes('126.net')) {
         audio = audio.replace('http://', 'https://')
       }
-      if (audio == '' || audio == null || audio == undefined) {
-        const unlockResp = this._fetchUnlockAudioSource(trackID)
-        console.log('unlock resp: ', unlockResp)
-        return unlockResp
-      }
       return {
         audio,
         id: trackID,
       }
     } catch {
-      console.log(console.error)
+      return {
+        audio: null,
+        id: trackID,
+      }
     }
   }
 
@@ -744,6 +747,15 @@ export class Player {
    */
   async shufflePlayList() {
     let playingSongID = this.trackList[this._trackIndex]
+    if(this.shuffle){
+      this.trackList = Array.from(this.originTrackList)
+      this._trackIndex = this.trackList.indexOf(playingSongID)
+      this.shuffle = !this.shuffle
+      return
+    }
+    this.originTrackList = Array.from(this.trackList)
+    this.shuffle = !this.shuffle
+    
     let len = this.trackList.length,
       tmp,
       idx

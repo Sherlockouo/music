@@ -12,9 +12,9 @@ import player from '@/web/states/player'
 import settings from '@/web/states/settings'
 import Theme from './Theme'
 const Background = () => {
-  const { showBackgroundImage,theme } = useSnapshot(settings)
-  
-  
+  const { showBackgroundImage, theme } = useSnapshot(settings)
+
+
   // keep background
   const { hideTopbarBackground } = useSnapshot(uiStates)
   const location = useLocation()
@@ -26,8 +26,8 @@ const Background = () => {
   const show = !hideTopbarBackground || !isPageHaveBlurBG
   const { fullscreen } = useSnapshot(uiStates)
   let bgURL = player.track?.al.picUrl
-  if(!showBackgroundImage) {
-    bgURL =  ''
+  if (!showBackgroundImage) {
+    bgURL = ''
   }
   return (
     <>
@@ -36,26 +36,27 @@ const Background = () => {
           <>
             <div className={cx(
               'absolute inset-0 h-full w-full ',
-              !showBackgroundImage && (theme === 'dark' ? 'bg-black/90':'bg-white/90'),
-              )}>
+              !showBackgroundImage && show && (theme === 'dark' ? 'bg-black/90' : 'bg-white/90'),
+            )}>
               {
-              (show)&&
-               <motion.div
-                className={cx(
-                  'absolute inset-0 z-0 h-full w-full ease',
-                   css`
+                (show) &&
+                <motion.div
+                  className={cx(
+                    'absolute inset-0 z-0 h-full w-full ease',
+                    css`
                     background-repeat: no-repeat;
                     background-size: cover;
-                    background-position: center top 20%;
+                    background-position: center top;
                   `
-                )}
-                style={{ backgroundImage: `url(${bgURL})` }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-              </motion.div>
+                  )}
+                  style={{ backgroundImage: `url(${bgURL})` }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  
+                </motion.div>
               }
               <motion.div
                 initial={{ opacity: 0 }}
@@ -65,16 +66,23 @@ const Background = () => {
                 className={cx(
                   'relative inset-0 z-0 ',
                   'h-full w-full',
-                  'backdrop-blur-4xl',
-                  window.env?.isElectron && fullscreen && 'rounded-tr-24 rounded-tl-24',
+                  show && 'backdrop-blur-2xl',
+                  window.env?.isElectron && !fullscreen && 'rounded-tr-24 rounded-tl-24',
                 )}
                 style={{
 
                 }}
               >
+                <div className={cx(
+                    'z-1 absolute w-full h-full',
+                    css`
+                    background-color: rgba(0, 0, 0, 0.14);
+                    `
+                    )}>
 
+                  </div>
               </motion.div>
-              
+
             </div>
           </>
         }
@@ -88,7 +96,7 @@ const TopbarDesktop = () => {
     <div
       className={cx(
         // app-region-drag 删除后即可移动console
-        'app-region-drag',
+        // 'app-region-drag',
         ' fixed top-0 left-0 right-0 z-20 flex items-center justify-between ',
         'pt-11 pb-10 pr-6',
         css`

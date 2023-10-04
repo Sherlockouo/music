@@ -4,12 +4,14 @@ import NeteaseCloudMusicApi from 'NeteaseCloudMusicApi'
 import { CacheAPIs} from '../../../../shared/CacheAPIs'
 import cache from '../../utils/cache'
 
+
 async function netease(fastify: FastifyInstance) {
   const getHandler = (name: string, neteaseApi: (params: any) => any) => {
     return async (
       req: FastifyRequest<{ Querystring: { [key: string]: string } }>,
       reply: FastifyReply
     ) => {
+
       // Get track details from cache
       if (name === CacheAPIs.Track) {
         const cacheData = await cache.get(name, req.query as any)
@@ -62,3 +64,4 @@ async function netease(fastify: FastifyInstance) {
 }
 
 export default netease
+

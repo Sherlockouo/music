@@ -24,7 +24,7 @@ const MenuItem = ({
   if (item.type === 'divider') {
     return (
       <div className='my-2 h-px w-full px-3'>
-        <div className='h-full w-full bg-white/20'></div>
+        <div className='h-full w-full bg-white/20 dark:bg-black/20'></div>
       </div>
     )
   }
@@ -67,7 +67,7 @@ const MenuItem = ({
     >
       <div
         className={cx(
-          'relative flex w-full items-center justify-between whitespace-nowrap rounded-[5px] p-3 text-16 font-medium text-neutral-200 transition-colors duration-400 hover:bg-white/[.06]',
+          'relative flex w-full items-center justify-between whitespace-nowrap rounded-[5px] p-3 text-16 font-medium text-black/80 dark:text-white/80 transition-colors duration-400 hover:bg-white/[.06]',
           item.type !== 'submenu' && !isHover && 'active:bg-gray/50',
           isHover && 'bg-white/[.06]'
         )}
@@ -99,9 +99,14 @@ const MenuItem = ({
 
             {/* 增加三角形，避免斜着移动到submenu时意外关闭菜单 */}
             <div className='absolute -right-8 -bottom-6 h-12 w-12 rotate-45'></div>
-            <div className='absolute -right-8 -top-6 h-12 w-12 rotate-45'></div>
+            {/* <div className='absolute -right-8 -top-6 h-12 w-12 rotate-45'></div> */}
           </>
         )}
+        {
+          item.children && <>
+          {item.children}
+          </>
+        }
       </div>
     </div>
   )

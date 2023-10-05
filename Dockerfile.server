@@ -8,7 +8,8 @@ ENV NODE_ENV=production \
   VITE_APP_NETEASE_API_URL=/netease
 
 # Set registry for npm
-# RUN npm config set registry https://registry.npmmirror.com/
+RUN npm config set registry https://registry.npmmirror.com/
+RUN pnpm config set registry https://registry.npmmirror.com/
 
 # Install global dependencies
 RUN npm i -g pnpm prisma fastify-cli turbo tsx

@@ -78,6 +78,7 @@ const Layout = () => {
       <div
         id='layout-foreground'
         className={cx(
+        'rounded-24',
           'backdrop-blur-md',
           'relative grid h-screen select-none overflow-hidden',
           'transition-colors duration-400 text-dark dark:text-white',

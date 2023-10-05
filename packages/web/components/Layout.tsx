@@ -38,7 +38,8 @@ const Layout = () => {
       {/* layout 元素的内容 */}
       <motion.div
         className={cx(
-          'h-full rounded-24',
+          window.env?.isElectron && !fullscreen && 'rounded-24',
+          'h-full',
           css`
             position: absolute;
             top: 0;
@@ -64,16 +65,18 @@ const Layout = () => {
         transition={{ duration: 0.3, ease }}
       >
         <div
-          className={css`
-            border-radius: 24px;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.15); /* 设置半透明背景颜色 */
-            z-index: 1; /* 设置层级为较高的值，确保遮罩在内容上方 */
-          `}
+          className={cx(
+            window.env?.isElectron && !fullscreen && 'rounded-24',
+            css`
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background-color: rgba(0, 0, 0, 0.15); /* 设置半透明背景颜色 */
+              z-index: 1; /* 设置层级为较高的值，确保遮罩在内容上方 */
+            `
+          )}
         ></div>
       </motion.div>
       <div

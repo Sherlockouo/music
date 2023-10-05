@@ -140,34 +140,34 @@ const Lyrics = () => {
             'rgb(255,255,255,' + currentVolumnValue / 5 + ') 0px 0px ' + currentVolumnValue + 'px',
           padding: '12px',
         }
-    return (
-      <PageTransition>
-        {
-          <div
-            className={cx(
-              'text-dark/60 dark:text-white/60 ',
-              'artist-info  no-scrollbar padding-bottom-20 h-921 mb-8 mt-8 text-center text-21 font-medium',
-              'text-center'
-            )}
-            style={{
-              paddingTop: '100px',
-              height: '921px',
-            }}
-          >
-            <div className='no-lyrics mb-4 mt-8 text-center'>
-              <p>{player.track?.name}</p>
-              <p>By - {player.track?.ar[0].name}</p>
-            </div>
-            <p className='normal-lyric-font-size highlight-lyric' style={hightlightStyle}>
-              请欣赏·纯音乐
-            </p>
-          </div>
-        }
-        <div className='artist-info padding-bottom-20 text-20 mb-8 mt-8 text-center font-medium text-neutral-400'>
-          {player.state == 'ready' && t`common.lyric-welcome`}
-        </div>
-      </PageTransition>
-    )
+    // return (
+    //   <PageTransition>
+    //     {
+    //       <div
+    //         className={cx(
+    //           'text-dark/60 dark:text-white/60 ',
+    //           'artist-info  no-scrollbar padding-bottom-20 h-921 mb-8 mt-8 text-center text-21 font-medium',
+    //           'text-center'
+    //         )}
+    //         style={{
+    //           paddingTop: '100px',
+    //           height: '921px',
+    //         }}
+    //       >
+    //         <div className='no-lyrics mb-4 mt-8 text-center'>
+    //           <p>{player.track?.name}</p>
+    //           <p>By - {player.track?.ar[0].name}</p>
+    //         </div>
+    //         <p className='normal-lyric-font-size highlight-lyric' style={hightlightStyle}>
+    //           请欣赏·纯音乐
+    //         </p>
+    //       </div>
+    //     }
+    //     <div className='artist-info padding-bottom-20 text-20 mb-8 mt-8 text-center font-medium text-neutral-400'>
+    //       {player.state == 'ready' && t`common.lyric-welcome`}
+    //     </div>
+    //   </PageTransition>
+    // )
   }
   // const handleScroll = () => {
   //   startTransition(() => {
@@ -210,7 +210,7 @@ const Lyrics = () => {
             )}
           >
             <p className=''>{player.track?.name}</p>
-            <p className=''>By - {player.track?.ar[0].name}</p>
+            <p className=''>By - {player.track?.ar[0].name ? player.track?.ar[0].name:'X'}</p>
           </div>
           {renderedLyrics}
         </motion.div>

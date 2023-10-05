@@ -1,5 +1,5 @@
 import Icon from '@/web/components/Icon'
-import Wave from '@/web/components/Wave'
+import Wave from '@/web/components/Animation/Wave'
 import { openContextMenu } from '@/web/states/contextMenus'
 import player from '@/web/states/player'
 import { formatDuration, resizeImage } from '@/web/utils/common'

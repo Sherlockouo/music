@@ -8,7 +8,7 @@ interface UIStates {
   mobileShowPlayingNext: boolean
   blurBackgroundImage: string | null
   fullscreen: boolean
-  playingVideoID: number | null
+  playingVideoID: string | null
   isPauseVideos: boolean
 }
 

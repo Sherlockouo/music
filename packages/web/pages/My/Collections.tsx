@@ -22,8 +22,10 @@ import settings from '@/web/states/settings'
 import useUser from '@/web/api/hooks/useUser'
 import Daily from './Daily'
 import Cloud from './Cloud'
+import Icon from '@/web/components/Icon'
+import FileUploader from '@/web/components/Tools/Upload'
 
-const collections = ['daily','playlists', 'albums', 'artists', 'videos','cloud'] as const
+const collections = ['daily', 'playlists', 'albums', 'artists', 'videos', 'cloud'] as const
 type Collection = typeof collections[number]
 
 const Albums = () => {
@@ -137,28 +139,33 @@ const CollectionTabs = ({ showBg }: { showBg: boolean }) => {
           ></motion.div>
         )}
       </AnimatePresence>
+      <div className='flex flex-row justify-between'>
 
-      <Tabs
-        tabs={tabs.filter(tab => {
-          if (!displayPlaylistsFromNeteaseMusic && tab.id === 'playlists') {
-            return false
-          }
-          return true
-        })}
-        value={selectedTab}
-        onChange={(id: Collection) => {
-          setSelectedTab(id)
-          scrollToBottom(true)
-        }}
-        className={cx(
-          'sticky',
-        'z-10',
-        '-mb-10',
-         'px-2.5 lg:px-0')}
-        style={{
-          top: `${topbarHeight}px`,
-        }}
-      />
+
+        <Tabs
+          tabs={tabs.filter(tab => {
+            if (!displayPlaylistsFromNeteaseMusic && tab.id === 'playlists') {
+              return false
+            }
+            return true
+          })}
+          value={selectedTab}
+          onChange={(id: Collection) => {
+            setSelectedTab(id)
+          }}
+          className={cx(
+            'sticky',
+            'z-10',
+            // '-mb-10',
+            'px-2.5 lg:px-0')}
+          style={{
+            top: `${topbarHeight}px`,
+          }}
+        />
+        <div className='items-center '>
+          {/* {selectedTab == 'cloud' && <FileUploader/> } */}
+        </div>
+      </div>
     </div>
   )
 }
@@ -175,10 +182,10 @@ const Collections = () => {
   }, 500)
 
   return (
-    <motion.div layout>
+    <motion.div>
       <CollectionTabs showBg={isScrollReachBottom} />
       <div
-        className={cx('no-scrollbar overflow-y-auto px-2.5 pt-24 pb-16 lg:px-0')}
+        className={cx('no-scrollbar overflow-y-auto px-2.5 pt-10 pb-16 lg:px-0')}
         onScroll={onScroll}
         style={{
           // height: `calc(100vh - ${topbarHeight}px)`,

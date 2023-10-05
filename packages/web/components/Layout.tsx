@@ -39,7 +39,6 @@ const Layout = () => {
       <motion.div
         className={cx(
           'h-full',
-          'rounded-24',
           css`
             position: absolute;
             top: 0;
@@ -82,10 +81,9 @@ const Layout = () => {
           'backdrop-blur-md',
           'relative grid h-screen select-none overflow-hidden',
           'transition-colors duration-400 text-dark dark:text-white',
-          'rounded-24'
         )}
       >
-        <BlurBackground className={cx(
+        {/* <BlurBackground className={cx(
           'fixed z-0 object-cover opacity-70',
           css`
               top: -400px;
@@ -93,7 +91,7 @@ const Layout = () => {
               width: 1572px;
               height: 528px;
               filter: blur(256px) saturate(1.2);
-            `)} />
+            `)} /> */}
         <MenuBar />
         <div className=''>
           <Topbar />
@@ -103,7 +101,7 @@ const Layout = () => {
         {showPlayer && <Player />}
 
         {window.env?.isMac && (
-          <div className='fixed top-6 left-6 z-30 translate-y-0.5'>
+          <div className=' fixed top-5 left-5 z-30 translate-y-0.5'>
             <TrafficLight />
           </div>
         )}
@@ -115,14 +113,14 @@ const Layout = () => {
         <ContextMenus />
 
         {/* Border */}
-        <div
+        {/* <div
           className={cx(
             'pointer-events-none fixed inset-0 z-50 rounded-24',
             css`
               box-shadow: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.06);
             `
           )}
-        ></div>
+        ></div> */}
       </div>
     </div>
   )

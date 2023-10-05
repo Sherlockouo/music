@@ -1,15 +1,22 @@
+import toast from 'react-hot-toast'
 import useUserVideos from '../api/hooks/useUserVideos'
 import uiStates from '../states/uiStates'
+import { isInteger } from 'lodash-es';
 
 const VideoRow = ({ videos }: { videos: Video[] }) => {
+  console.log('videos',videos);
+  
   return (
     <div className='@container'>
       <div className='grid grid-cols-2 gap-6 @3xl:grid-cols-3 @7xl:grid-cols-4'>
         {videos.map(video => (
-          <div key={video.vid} onClick={() => (uiStates.playingVideoID = Number(video.vid))}>
+          <div key={video.vid} onClick={() => {
+           console.log('video.vid'+video.vid) 
+            uiStates.playingVideoID = video.vid
+          }}>
             <img
               src={video.coverUrl}
-              className='aspect-video w-full rounded-24 border border-white/5 object-contain'
+              className='aspect-video w-full rounded-24 border object-contain'
             />
             <div className='line-clamp-2 mt-2 text-12 font-medium text-neutral-600'>
               {video.creator?.at(0)?.userName} - {video.title}

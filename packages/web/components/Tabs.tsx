@@ -23,9 +23,9 @@ function Tabs<T>({
           key={tab.id as string}
           className={cx(
             'mr-1 rounded-12 py-3 px-6 text-16 font-medium backdrop-blur transition duration-500', 
-            'dark:bg-white/10 dark:text-white/20 hover:dark:bg-white/20 hover:dark:text-white/40',
-            'bg-black/10 text-black/80 hover:bg-black/20 hover:text-black/80',
-            value === tab.id && 'bg-brand-700 dark:text-white text-black'
+            'dark:bg-white/10 dark:text-white/80 hover:dark:bg-white/20 ',
+            'bg-black/10 text-black/80 hover:bg-black/20 ',
+            value === tab.id && 'bg-accent-color-500 dark:bg-neutral-500 dark:text-white/80 text-black/80'
           )}
           onClick={() => onChange(tab.id)}
         >

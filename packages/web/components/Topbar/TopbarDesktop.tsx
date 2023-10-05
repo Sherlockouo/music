@@ -36,10 +36,10 @@ const Background = () => {
           <>
             <div className={cx(
               'absolute inset-0 h-full w-full ',
-              !showBackgroundImage && show && (theme === 'dark' ? 'bg-black/90' : 'bg-white/90'),
+              !showBackgroundImage && (theme === 'dark' ? 'bg-black/90' : 'bg-white/90'),
             )}>
               {
-                (show) &&
+                // (show) &&
                 <motion.div
                   className={cx(
                     'absolute inset-0 z-0 h-full w-full ease',
@@ -69,9 +69,6 @@ const Background = () => {
                   show && 'backdrop-blur-2xl',
                   window.env?.isElectron && !fullscreen && 'rounded-tr-24 rounded-tl-24',
                 )}
-                style={{
-
-                }}
               >
                 <div className={cx(
                     'z-1 absolute w-full h-full',
@@ -96,7 +93,7 @@ const TopbarDesktop = () => {
     <div
       className={cx(
         // app-region-drag 删除后即可移动console
-        // 'app-region-drag',
+        'app-region-drag',
         ' fixed top-0 left-0 right-0 z-20 flex items-center justify-between ',
         'pt-11 pb-10 pr-6',
         css`

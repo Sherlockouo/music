@@ -46,8 +46,6 @@ const ArtistSongs = () => {
   }
 
   const renderItems = () => {
-    console.log('render datasource', dataSource)
-
     return <TrackList tracks={dataSource} onPlay={onPlay}></TrackList>
   }
 

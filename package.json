@@ -2,7 +2,7 @@
   "name": "r3playx",
   "productName": "R3PLAYX",
   "private": true,
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "A nifty third-party NetEase Music player",
   "homepage": "https://github.com/sherlockouo/music",
   "license": "MIT",
@@ -39,7 +39,6 @@
     "@unblockneteasemusic/server": "^0.27.3",
     "NeteaseCloudMusicApi": "^4.13.2",
     "log4js": "^6.9.1",
-    "node-abi": "3.24.0",
     "sax": "^1.2.4"
   }
 }

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const { rebuild } = require('electron-rebuild')
+const { rebuild } = require('@electron/rebuild')
 const fs = require('fs')
 const minimist = require('minimist')
 const pc = require('picocolors')
@@ -39,8 +39,16 @@ if (!fs.existsSync(binDir)) {
 let electronModuleVersion = ''
 async function getElectronModuleVersion() {
   const releases = await axios({
-    method:'get',
-    url:'https://releases.electronjs.org/releases.json',
+    method: "get",
+    url: "https://releases.electronjs.org/releases.json",
+    headers: {
+      Connection: "keep-alive",
+      Cookie:
+        "_ga=GA1.2.1440531065.1691594509; _ga_7GG8HKLCLE=GS1.2.1695203360.15.0.1695203360.0.0.0",
+      "User-Agent":
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+    },
+    setTimeout: 120000,
   })
   if (!releases.data) {
     console.error(pc.red('Can not get electron releases'))
@@ -63,7 +71,7 @@ async function download(arch: Arch) {
   }
   const fileName = `better-sqlite3-v${betterSqlite3Version}-electron-v${electronModuleVersion}-${process.platform}-${arch}`
   const zipFileName = `${fileName}.tar.gz`
-  const url = `https://github.com/JoshuaWise/better-sqlite3/releases/download/v${betterSqlite3Version}/${zipFileName}`
+  const url = `https://ghproxy.com/https://github.com/JoshuaWise/better-sqlite3/releases/download/v${betterSqlite3Version}/${zipFileName}`
   if (!fs.existsSync(tmpDir)) {
     fs.mkdirSync(tmpDir, {
       recursive: true,

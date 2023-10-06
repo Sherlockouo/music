@@ -71,8 +71,9 @@ const LoginWithPhoneOrEmail = () => {
       toast.error('Please enter password')
       return
     }
-    if (email.match(/^[^\s@]+@(126|163|yeah|188|vip\.163|vip\.126)\.(com|net)$/) == null) {
-      toast.error('Please use netease email')
+    // /^[^\s@]+@(126|163|yeah|188|vip\.163|vip\.126)\.(com|net)$/
+    if (email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) == null) {
+      toast.error('Please use email')
       return
     }
 

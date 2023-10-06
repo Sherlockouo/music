@@ -138,7 +138,9 @@ module.exports = {
         '2xl': '20px',
         '3xl': '45px',
         '4xl': '60px',
-        'xxl':'128px',
+        'sxl':'64px',
+        'mxl':'128px',
+        'xxl':'256px',
       },
     },
     // screens: {

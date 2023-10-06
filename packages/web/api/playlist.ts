@@ -11,7 +11,9 @@ import {
   FetchTopPlaylistResponse,
   FetchHQPlaylistParams,
   FetchHQPlaylistResponse,
-  FetchDailyRecommendSongsResponse
+  FetchDailyRecommendSongsResponse,
+  AddSongToPlayListParams,
+  AddSongToPlayListResponse
 } from '@/shared/api/Playlists'
 
 // hq 歌单
@@ -91,6 +93,17 @@ export function likeAPlaylist(params: LikeAPlaylistParams): Promise<LikeAPlaylis
     params: {
       ...params,
       timestamp: Date.now(),
+    },
+  })
+}
+
+export function addSongToPlayList(params: AddSongToPlayListParams): Promise<AddSongToPlayListResponse> {
+  return request({
+    url: '/playlist/tracks',
+    method: 'get',
+    params: {
+      ...params,
+      // timestamp: Date.now(),
     },
   })
 }

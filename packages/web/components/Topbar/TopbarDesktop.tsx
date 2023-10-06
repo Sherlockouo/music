@@ -12,9 +12,9 @@ import player from '@/web/states/player'
 import settings from '@/web/states/settings'
 import Theme from './Theme'
 const Background = () => {
-  const { showBackgroundImage,theme } = useSnapshot(settings)
-  
-  
+  const { showBackgroundImage, theme } = useSnapshot(settings)
+
+
   // keep background
   const { hideTopbarBackground } = useSnapshot(uiStates)
   const location = useLocation()
@@ -26,8 +26,8 @@ const Background = () => {
   const show = !hideTopbarBackground || !isPageHaveBlurBG
   const { fullscreen } = useSnapshot(uiStates)
   let bgURL = player.track?.al.picUrl
-  if(!showBackgroundImage) {
-    bgURL =  ''
+  if (!showBackgroundImage) {
+    bgURL = ''
   }
   return (
     <>
@@ -39,23 +39,24 @@ const Background = () => {
               !showBackgroundImage && (theme === 'dark' ? 'top-bar-dark' : 'top-bar-light'),
             )}>
               {
-              (show)&&
-               <motion.div
-                className={cx(
-                  'absolute inset-0 z-0 h-full w-full ease',
-                   css`
+                // (show) &&
+                <motion.div
+                  className={cx(
+                    'absolute inset-0 z-0 h-full w-full ease',
+                    css`
                     background-repeat: no-repeat;
                     background-size: cover;
-                    background-position: center top 20%;
+                    background-position: center top;
                   `
-                )}
-                style={{ backgroundImage: `url(${bgURL})` }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-              </motion.div>
+                  )}
+                  style={{ backgroundImage: `url(${bgURL})` }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  
+                </motion.div>
               }
               <motion.div
                 initial={{ opacity: 0 }}
@@ -65,16 +66,20 @@ const Background = () => {
                 className={cx(
                   'relative inset-0 z-0 ',
                   'h-full w-full',
-                  'backdrop-blur-4xl',
-                  window.env?.isElectron && fullscreen && 'rounded-tr-24 rounded-tl-24',
+                  show && 'backdrop-blur-2xl',
+                  window.env?.isElectron && !fullscreen && 'rounded-tr-24 rounded-tl-24',
                 )}
-                style={{
-
-                }}
               >
+                <div className={cx(
+                    'z-1 absolute w-full h-full',
+                    css`
+                    background-color: rgba(0, 0, 0, 0.14);
+                    `
+                    )}>
 
+                  </div>
               </motion.div>
-              
+
             </div>
           </>
         }

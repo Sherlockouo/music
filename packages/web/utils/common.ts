@@ -11,10 +11,12 @@ import { SupportedLanguage } from '../i18n/i18n'
  * @param  {string} url 封面图片URL
  * @param  {'xs'|'sm'|'md'|'lg'} size - 大小，值对应为 128px | 256px | 512px | 1024px
  */
-export function resizeImage(url: string, size: 'xs' | 'sm' | 'md' | 'lg'): string {
+export function resizeImage(url: string, size: 'xxs'|'ms'|'xs' | 'sm' | 'md' | 'lg'): string {
   if (!url) return ''
 
   const sizeMap = {
+    xxs: '32',
+    ms: '64',
     xs: '128',
     sm: '256',
     md: '512',

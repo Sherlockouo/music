@@ -91,3 +91,29 @@ export interface LikeAPlaylistParams {
 export interface LikeAPlaylistResponse {
   code: number
 }
+
+export interface AddSongToPlayListParams {
+  // operation add|del
+  op: string
+  // playlist id 
+  pid: Number
+  // 添加到pid的song ids, split with ,
+  tracks: string
+}
+
+// 添加/删除歌曲到歌单
+export interface AddSongToPlayListParams {
+  // operation add|del
+  op: string
+  // playlist id 
+  pid: Number
+  // 添加到pid的song ids, split with ,
+  tracks: string
+}
+
+export interface AddSongToPlayListResponse {
+  trackIDS: string[]
+  code: Number
+  count: Number
+  cloudCount: Number
+}

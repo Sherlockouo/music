@@ -11,9 +11,6 @@ const App = () => {
   const isMobile = useIsMobile()
 
   return (
-    <div className={cx(
-      'rounded-24'
-    )}>
       <ErrorBoundary>
         {isMobile ? <LayoutMobile /> : <Layout />}
         <Toaster />
@@ -21,7 +18,6 @@ const App = () => {
         <IpcRendererReact />
         <Devtool />
       </ErrorBoundary>
-    </div>
   )
 }
 

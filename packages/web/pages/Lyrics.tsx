@@ -95,13 +95,15 @@ const Lyrics = () => {
     }
 
     const lineClassName = cx(
-      'lyrics-row transition duration-700 leading-120 tracking-lyricSpacing mt-5 mb-5 pb-2 ease-in-out',
+      'lyrics-row leading-120 tracking-lyricSpacing mt-5 mb-5 pb-2 ease-in-out',
       index === currentLineIndex &&
         'line-clamp-4 font-bold text-accent-color-500 tracking-hilightLyric leading-lyric text-32',
       index !== currentLineIndex &&
-        'lyrics-padding normal-lyric-font-size font-black tracking-lyric leading-lyric transition-colors duration-400 text-dark/60 dark:text-white/60 text-24 blur-lyric',
-      index !== currentLineIndex && isHovered && 'blur-none',
-      isMobile && 'blur-none'
+        'lyrics-padding normal-lyric-font-size font-black tracking-lyric leading-lyric text-dark/60 dark:text-white/60 text-24 ',
+        // 'blur-lyric',
+      index !== currentLineIndex && isHovered && 'transition-opacity duration-1000',
+      // 'blur-none',
+      // isMobile && 'blur-none'
     )
 
     const hightlightStyle =
@@ -138,34 +140,34 @@ const Lyrics = () => {
             'rgb(255,255,255,' + currentVolumnValue / 5 + ') 0px 0px ' + currentVolumnValue + 'px',
           padding: '12px',
         }
-    return (
-      <PageTransition>
-        {
-          <div
-            className={cx(
-              'transition-colors duration-400 text-dark/60 dark:text-white/40',
-              'artist-info  no-scrollbar padding-bottom-20 h-921 mb-8 mt-8 text-center text-21 font-medium',
-              'text-center'
-            )}
-            style={{
-              paddingTop: '100px',
-              height: '921px',
-            }}
-          >
-            <div className='no-lyrics mb-4 mt-8 text-center'>
-              <p>{player.track?.name}</p>
-              <p>By - {player.track?.ar[0].name}</p>
-            </div>
-            <p className='normal-lyric-font-size highlight-lyric' style={hightlightStyle}>
-              请欣赏·纯音乐
-            </p>
-          </div>
-        }
-        <div className='artist-info padding-bottom-20 text-20 mb-8 mt-8 text-center font-medium text-neutral-400'>
-          {player.state == 'ready' && t`common.lyric-welcome`}
-        </div>
-      </PageTransition>
-    )
+    // return (
+    //   <PageTransition>
+    //     {
+    //       <div
+    //         className={cx(
+    //           'text-dark/60 dark:text-white/60 ',
+    //           'artist-info  no-scrollbar padding-bottom-20 h-921 mb-8 mt-8 text-center text-21 font-medium',
+    //           'text-center'
+    //         )}
+    //         style={{
+    //           paddingTop: '100px',
+    //           height: '921px',
+    //         }}
+    //       >
+    //         <div className='no-lyrics mb-4 mt-8 text-center'>
+    //           <p>{player.track?.name}</p>
+    //           <p>By - {player.track?.ar[0].name}</p>
+    //         </div>
+    //         <p className='normal-lyric-font-size highlight-lyric' style={hightlightStyle}>
+    //           请欣赏·纯音乐
+    //         </p>
+    //       </div>
+    //     }
+    //     <div className='artist-info padding-bottom-20 text-20 mb-8 mt-8 text-center font-medium text-neutral-400'>
+    //       {player.state == 'ready' && t`common.lyric-welcome`}
+    //     </div>
+    //   </PageTransition>
+    // )
   }
   // const handleScroll = () => {
   //   startTransition(() => {
@@ -185,7 +187,7 @@ const Lyrics = () => {
       <div
         className={cx(
           'lyrics-player h-921 ',
-          'transition-colors duration-400 text-dark/60 dark:text-white/60',
+          // 'text-dark/60 dark:text-white/60',
           'text-center',
           'font-Roboto font-bold backdrop-blur-md'
         )}
@@ -198,16 +200,17 @@ const Lyrics = () => {
           ref={containerRef}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-            transition={{duration:0.3}}
+            transition={{duration:0.5}}
         >
           <div
             className={cx(
+              'text-dark/60 dark:text-white/60 ',
               'artist-info  no-scrollbar padding-bottom-20 mb-8 mt-8 text-left text-24',
               'text-center'
             )}
           >
             <p className=''>{player.track?.name}</p>
-            <p className=''>By - {player.track?.ar[0].name}</p>
+            <p className=''>By - {player.track?.ar[0].name ? player.track?.ar[0].name:'X'}</p>
           </div>
           {renderedLyrics}
         </motion.div>

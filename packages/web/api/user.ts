@@ -13,7 +13,10 @@ import {
   FetchUserVideosResponse,
   FetchUserVideosParams,
   DailyCheckInResponse,
+  CloudDiskInfoParam,
+  CloudDiskInfoResponse
 } from '@/shared/api/User'
+import Cookies from 'js-cookie'
 
 // 获取用户详情
 export function userDetail(uid: number) {
@@ -148,24 +151,25 @@ export function fetchUserVideos(): Promise<FetchUserVideosResponse> {
 /**
  * 上传歌曲到云盘（需要登录）
  */
-// export function uploadSong(file) {
-//   let formData = new FormData()
-//   formData.append('songFile', file)
-//   return request({
-//     url: '/cloud',
-//     method: 'post',
-//     params: {
-//       timestamp: new Date().getTime(),
-//     },
-//     data: formData,
-//     headers: {
-//       'Content-Type': 'multipart/form-data',
-//     },
-//     timeout: 200000,
-//   }).catch(error => {
-//     alert(`上传失败，Error: ${error}`)
-//   })
-// }
+export function uploadSong(file: any) {
+  console.log('uploadSong ',file);
+  let formData = new FormData()
+  formData.append('songFile', file)
+  return request({
+    url: '/cloud',
+    method: 'post',
+    params: {
+      time: new Date().getTime(),
+    },
+    data: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    timeout: 20000,
+  }).catch(error => {
+    alert(`上传失败，Error: ${error}`)
+  })
+}
 
 /**
  * 获取云盘歌曲（需要登录）
@@ -176,40 +180,40 @@ export function fetchUserVideos(): Promise<FetchUserVideosResponse> {
  * @param {number} params.limit
  * @param {number=} params.offset
  */
-// export function cloudDisk(params = {}) {
-//   params.timestamp = new Date().getTime()
-//   return request({
-//     url: '/user/cloud',
-//     method: 'get',
-//     params,
-//   })
-// }
+export function cloudDisk(params: CloudDiskInfoParam): Promise<CloudDiskInfoResponse> {
+  params.timestamp = new Date().getTime()
+  return request({
+    url: '/user/cloud',
+    method: 'get',
+    params,
+  })
+}
 
 /**
  * 获取云盘歌曲详情（需要登录）
  */
-// export function cloudDiskTrackDetail(id) {
-//   return request({
-//     url: '/user/cloud/detail',
-//     method: 'get',
-//     params: {
-//       timestamp: new Date().getTime(),
-//       id,
-//     },
-//   })
-// }
+export function cloudDiskTrackDetail(id: number) {
+  return request({
+    url: '/user/cloud/detail',
+    method: 'get',
+    params: {
+      timestamp: new Date().getTime(),
+      id,
+    },
+  })
+}
 
 /**
  * 删除云盘歌曲（需要登录）
  * @param {Array} id
  */
-// export function cloudDiskTrackDelete(id) {
-//   return request({
-//     url: '/user/cloud/del',
-//     method: 'get',
-//     params: {
-//       timestamp: new Date().getTime(),
-//       id,
-//     },
-//   })
-// }
+export function cloudDiskTrackDelete(id: number) {
+  return request({
+    url: '/user/cloud/del',
+    method: 'get',
+    params: {
+      timestamp: new Date().getTime(),
+      id,
+    },
+  })
+}

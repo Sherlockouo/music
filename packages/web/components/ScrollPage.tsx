@@ -1,7 +1,7 @@
 import React, { ReactNode, useState, useEffect, useRef } from 'react'
 import { throttle } from 'lodash'
 import toast from 'react-hot-toast'
-import Loading from './Loading'
+import Loading from './Animation/Loading'
 
 const ScrollPagination = ({
   getData,

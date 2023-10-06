@@ -2,14 +2,13 @@ import { formatDuration } from '@/web/utils/common'
 import { css, cx } from '@emotion/css'
 import player from '@/web/states/player'
 import { useSnapshot } from 'valtio'
-import Wave from './Wave'
+import Wave from './Animation/Wave'
 import Icon from '@/web/components/Icon'
 import useIsMobile from '@/web/hooks/useIsMobile'
 import useUserLikedTracksIDs, { useMutationLikeATrack } from '@/web/api/hooks/useUserLikedTracksIDs'
 import toast from 'react-hot-toast'
 import { memo, useEffect, useMemo, useState } from 'react'
 import contextMenus, { openContextMenu } from '@/web/states/contextMenus'
-import regexifyString from 'regexify-string'
 import { NavLink } from 'react-router-dom'
 
 const Actions = ({ track }: { track: Track }) => {
@@ -26,7 +25,9 @@ const Actions = ({ track }: { track: Track }) => {
   }, [menu.dataSourceID, menu.type])
 
   return (
-    <div className='mr-5 flex' onClick={e => e.stopPropagation()}>
+    <div className={cx('mr-5 flex',
+    'text-black/90 dark:text-white/90',
+    )} onClick={e => e.stopPropagation()}>
       {/* Context menu */}
       <div
         className={cx(
@@ -43,7 +44,10 @@ const Actions = ({ track }: { track: Track }) => {
               dataSourceID: track.id,
             })
           }}
-          className='mr-3 flex h-10 w-10 items-center justify-center rounded-full  transition-colors duration-400 hover:bg-white/30 hover:text-white/70'
+          className={cx('mr-3 flex h-10 w-10 items-center justify-center rounded-full  ',
+          'transition-colors duration-400 dark:hover:bg-white/30 dark:hover:text-white/70',
+          'hover:bg-black/30 hover:text-black/70'
+          )}
         >
           <Icon name='more' className='h-4 w-5' />
         </button>
@@ -62,7 +66,10 @@ const Actions = ({ track }: { track: Track }) => {
             // translate
             toast('已添加到播放列表')
           }}
-          className='mr-3 flex h-10 w-10 items-center justify-center rounded-full  transition-colors duration-400 hover:bg-white/30 hover:text-white/70'
+          className={cx('mr-3 flex h-10 w-10 items-center justify-center rounded-full ',
+          'transition-colors duration-400 dark:hover:bg-white/30 dark:hover:text-white/70',
+          'hover:bg-black/30 hover:text-black/70'
+          )}
         >
           <Icon name='plus' className='h-5 w-5' />
         </div>
@@ -82,7 +89,10 @@ const Actions = ({ track }: { track: Track }) => {
       >
         <div
           onClick={() => likeATrack.mutateAsync(track.id)}
-          className='flex h-10 w-10 items-center justify-center rounded-full transition duration-400 hover:bg-white/20 hover:text-white/70'
+          className={cx('flex h-10 w-10 items-center justify-center rounded-full ',
+          'transition-colors duration-400 dark:hover:bg-white/30 dark:hover:text-white/70',
+          'hover:bg-black/30 hover:text-black/70'
+          )}
         >
           <Icon
             name={likedTracksIDs?.ids.includes(track.id) ? 'heart' : 'heart-outline'}
@@ -108,7 +118,9 @@ function Track({
       key={track.id}
       onClick={e => handleClick(e, track.id)}
       onContextMenu={e => handleClick(e, track.id)}
-      className={cx('group relative flex h-14 items-center py-2 text-16 font-medium text-neutral-200 transition duration-300','text-black dark:text-white',)}
+      className={cx('group relative flex h-14 items-center py-2 text-16 font-medium text-neutral-200 transition duration-300',
+      'text-black/90 dark:text-white/90',
+      )}
     >
       {/* Track no */}
       <div className='mr-3 lg:mr-6'>
@@ -136,7 +148,7 @@ function Track({
               <span key={artist.id}>
                 <NavLink
                   to={`/artist/${artist.id}`}
-                  className=' transition duration-300 hover:dark:text-white/40 hover:text-black/40'
+                  className='transition duration-300 hover:dark:text-white/40 hover:text-black/40'
                 >
                   {artist.name}
                 </NavLink>
@@ -148,7 +160,9 @@ function Track({
       </div>
 
       {/* Desktop menu  */}
-      <div>
+      <div className={cx(
+        'text-black/90 dark:text-white/90',
+      )}>
         <Actions track={track} />
       </div>
 

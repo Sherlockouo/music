@@ -31,7 +31,7 @@ const initSettings: Settings = {
   playAnimatedArtworkFromApple: true,
   priorityDisplayOfAlbumArtistDescriptionFromAppleMusic: true,
   displayPlaylistsFromNeteaseMusic: true,
-  showBackgroundImage: true,
+  showBackgroundImage: false,
   unlock: true,
   theme: 'dark',
 }

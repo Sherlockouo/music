@@ -251,3 +251,17 @@ input[type='number']::-webkit-outer-spin-button {
 .bg-accent-color-700 {
   background-color: hsl(var(--brand-color-700));
 }
+
+.top-bar {
+  filter: blur(10px);
+  top: -10px;
+  height: calc( 100% + 10px );
+}
+
+.top-bar-dark {
+  background: linear-gradient(#000000e0, #00000070);
+}
+
+.top-bar-light {
+  background: linear-gradient(#ffffffe0, #ffffff70);
+}

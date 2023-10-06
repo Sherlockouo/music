@@ -14,7 +14,6 @@ import Theme from './Theme'
 const Background = () => {
   const { showBackgroundImage, theme } = useSnapshot(settings)
 
-
   // keep background
   const { hideTopbarBackground } = useSnapshot(uiStates)
   const location = useLocation()
@@ -34,29 +33,29 @@ const Background = () => {
       <AnimatePresence>
         {
           <>
-            <div className={cx(
-              'absolute inset-0 h-full w-full ',
-              !showBackgroundImage && (theme === 'dark' ? 'bg-black/90' : 'bg-white/90'),
-            )}>
+            <div
+              className={cx(
+                'top-bar absolute inset-0 h-full w-full',
+                !showBackgroundImage && (theme === 'dark' ? 'top-bar-dark' : 'top-bar-light')
+              )}
+            >
               {
                 // (show) &&
                 <motion.div
                   className={cx(
-                    'absolute inset-0 z-0 h-full w-full ease',
+                    'ease absolute inset-0 z-0 h-full w-full',
                     css`
-                    background-repeat: no-repeat;
-                    background-size: cover;
-                    background-position: center top;
-                  `
+                      background-repeat: no-repeat;
+                      background-size: cover;
+                      background-position: center top;
+                    `
                   )}
                   style={{ backgroundImage: `url(${bgURL})` }}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.5 }}
-                >
-                  
-                </motion.div>
+                ></motion.div>
               }
               <motion.div
                 initial={{ opacity: 0 }}
@@ -67,19 +66,18 @@ const Background = () => {
                   'relative inset-0 z-0 ',
                   'h-full w-full',
                   show && 'backdrop-blur-2xl',
-                  window.env?.isElectron && !fullscreen && 'rounded-tr-24 rounded-tl-24',
+                  window.env?.isElectron && !fullscreen && 'rounded-tr-24 rounded-tl-24'
                 )}
               >
-                <div className={cx(
-                    'z-1 absolute w-full h-full',
+                <div
+                  className={cx(
+                    'z-1 absolute h-full w-full',
                     css`
-                    background-color: rgba(0, 0, 0, 0.14);
+                      background-color: rgba(0, 0, 0, 0.14);
                     `
-                    )}>
-
-                  </div>
+                  )}
+                ></div>
               </motion.div>
-
             </div>
           </>
         }

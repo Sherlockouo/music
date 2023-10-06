@@ -35,9 +35,9 @@ const Background = () => {
         {
           <>
             <div className={cx(
-              'absolute inset-0 h-full w-full ',
-              !showBackgroundImage && (theme === 'dark' ? 'bg-black/90':'bg-white/90'),
-              )}>
+              'absolute inset-0 h-full w-full top-bar',
+              !showBackgroundImage && (theme === 'dark' ? 'top-bar-dark' : 'top-bar-light'),
+            )}>
               {
               (show)&&
                <motion.div

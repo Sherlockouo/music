@@ -20,7 +20,7 @@ export const createMenu = (win: BrowserWindow) => {
           label: '打开日志文件目录',
           click: async () => {
             if (isMac) {
-              exec(`open ${logsPath}`)
+              exec(`open "${logsPath}"`)
             } else {
               // TODO: 测试Windows和Linux是否能正确打开日志目录
               shell.openPath(logsPath)

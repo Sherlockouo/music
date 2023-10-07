@@ -86,7 +86,7 @@ class Main {
       minWidth: 1240,
       minHeight: 800,
       titleBarStyle: isMac ? 'customButtonsOnHover' : 'hidden',
-      trafficLightPosition: { x: 24, y: 24 },
+      trafficLightPosition: { x: 12, y: 12 },
       frame: false,
       fullscreenable: true,
       resizable: true,

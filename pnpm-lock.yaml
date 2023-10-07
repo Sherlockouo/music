@@ -344,6 +344,9 @@ importers:
       valtio:
         specifier: ^1.8.0
         version: 1.8.0(react@18.2.0)(vite@4.2.0)
+      web-audio-api:
+        specifier: ^0.2.2
+        version: registry.npmjs.org/web-audio-api@0.2.2
     devDependencies:
       '@babel/core':
         specifier: ^7.0.0
@@ -419,7 +422,7 @@ importers:
         version: 4.7.4
       vite:
         specifier: ^4.2.0
-        version: 4.2.0(@types/node@18.17.4)
+        version: 4.2.0(@types/node@18.6.4)
       vite-plugin-pwa:
         specifier: ^0.14.4
         version: 0.14.4(vite@4.2.0)(workbox-build@6.6.0)(workbox-window@6.6.0)
@@ -11416,10 +11419,28 @@ packages:
       - supports-color
     dev: false
 
+  registry.npmjs.org/aac@0.1.3(av@0.4.9):
+    resolution: {integrity: sha512-mhkqrzCOMndmoQovW43ry8tkMttuvKcpU0u9/K7zI+lF5NtCY2NE+HwAPiEgd3rHK7IuBT1ZsGL+LKeCPW9btQ==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/aac/-/aac-0.1.3.tgz}
+    id: registry.npmjs.org/aac/0.1.3
+    name: aac
+    version: 0.1.3
+    peerDependencies:
+      av: ~0.4.0
+    dependencies:
+      av: registry.npmjs.org/av@0.4.9
+    dev: false
+
   registry.npmjs.org/abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/abbrev/-/abbrev-1.1.1.tgz}
     name: abbrev
     version: 1.1.1
+    dev: false
+
+  registry.npmjs.org/abc@0.5.1:
+    resolution: {integrity: sha512-WRBP9wjuEdmzw1yFHCVf7Qp/PXSmfuUSX3FSs+5+uLG4qGKmhOPKl8LtZaG0p6xxuB6hX1tIzH4VaHL23+bU5A==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/abc/-/abc-0.5.1.tgz}
+    name: abc
+    version: 0.5.1
+    engines: {node: '>=0.4.0'}
     dev: false
 
   registry.npmjs.org/accepts@1.3.8:
@@ -11496,6 +11517,17 @@ packages:
       uri-js: registry.npmjs.org/uri-js@4.4.1
     dev: true
 
+  registry.npmjs.org/alac@0.1.0(av@0.4.9):
+    resolution: {integrity: sha512-+NBR/Nj/5zndHO7Oz4EOE7Qj+v+hk/0edJerBhjMQRznyjfaYV6/W+tUOOlLTZ0BWWD4p6eb11KKDHoPW5LsCw==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/alac/-/alac-0.1.0.tgz}
+    id: registry.npmjs.org/alac/0.1.0
+    name: alac
+    version: 0.1.0
+    peerDependencies:
+      av: ~0.4.0
+    dependencies:
+      av: registry.npmjs.org/av@0.4.9
+    dev: false
+
   registry.npmjs.org/ansi-regex@5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/ansi-regex/-/ansi-regex-5.0.1.tgz}
     name: ansi-regex
@@ -11565,6 +11597,12 @@ packages:
       is-shared-array-buffer: registry.npmjs.org/is-shared-array-buffer@1.0.2
     dev: true
 
+  registry.npmjs.org/assertion-error@1.0.0:
+    resolution: {integrity: sha512-g/gZV+G476cnmtYI+Ko9d5khxSoCSoom/EaNmmCfwpOvBXEJ18qwFrxfP1/CsIqk2no1sAKKwxndV0tP7ROOFQ==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/assertion-error/-/assertion-error-1.0.0.tgz}
+    name: assertion-error
+    version: 1.0.0
+    dev: false
+
   registry.npmjs.org/ast-types@0.13.4:
     resolution: {integrity: sha512-x1FCFnFifvYDDzTaLII71vG5uvDwgtmDTEVWAxrgeiR8VjMONcCXJx7E+USjDtHlwFmt9MysbqgF9b9Vjr6w+w==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/ast-types/-/ast-types-0.13.4.tgz}
     name: ast-types
@@ -11572,6 +11610,18 @@ packages:
     engines: {node: '>=4'}
     dependencies:
       tslib: registry.npmjs.org/tslib@2.4.1
+    dev: false
+
+  registry.npmjs.org/async@0.2.10:
+    resolution: {integrity: sha512-eAkdoKxU6/LkKDBzLpT+t6Ff5EtfSF4wx1WfJiPEEV7WNLnDaRXk0oVysiEPm262roaachGexwUv94WhSgN5TQ==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/async/-/async-0.2.10.tgz}
+    name: async
+    version: 0.2.10
+    dev: false
+
+  registry.npmjs.org/async@0.9.2:
+    resolution: {integrity: sha512-l6ToIJIotphWahxxHyzK9bnLR6kM4jJIIgLShZeqLY7iboHoGkdgFl7W2/Ivi4SkMJYGKqW8vSuk0uKUj6qsSw==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/async/-/async-0.9.2.tgz}
+    name: async
+    version: 0.9.2
     dev: false
 
   registry.npmjs.org/async@3.2.4:
@@ -11592,6 +11642,27 @@ packages:
     version: 1.0.0
     engines: {node: '>= 4.0.0'}
     dev: true
+
+  registry.npmjs.org/audiobuffer@0.2.0:
+    resolution: {integrity: sha512-wEZ3iAOK1yNCy1PNcSe2V1pzzCV5rezYg0r/TRwojZBIVupQF56ioI0x5PGgatmWxJ4t8sWXymg8AFfopPXfrg==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/audiobuffer/-/audiobuffer-0.2.0.tgz}
+    name: audiobuffer
+    version: 0.2.0
+    engines: {node: '>=0.10'}
+    dependencies:
+      underscore: registry.npmjs.org/underscore@1.4.4
+    dev: false
+
+  registry.npmjs.org/av@0.4.9:
+    resolution: {integrity: sha512-MvkT0k+co6o+zLMrBFFeVhYcG/S/jzy+2p00c/VwA71q6g90J28qUNh93NabKrcN06bkwFK0OeiEpFsQd7TS7g==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/av/-/av-0.4.9.tgz}
+    name: av
+    version: 0.4.9
+    dependencies:
+      coffeeify: registry.npmjs.org/coffeeify@0.6.0
+    optionalDependencies:
+      speaker: registry.npmjs.org/speaker@0.3.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   registry.npmjs.org/available-typed-arrays@1.0.5:
     resolution: {integrity: sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/available-typed-arrays/-/available-typed-arrays-1.0.5.tgz}
@@ -11875,6 +11946,15 @@ packages:
     version: 1.0.30001519
     dev: true
 
+  registry.npmjs.org/chai@1.7.2:
+    resolution: {integrity: sha512-iTItmoMR+S+g8g0xU7db2mrr2LeLMJ6Y+YJwJEOUSaVTzm6qyTBfj5r+5x+XQhlXUfVn6WfFS4sXpEtMg6Qwaw==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/chai/-/chai-1.7.2.tgz}
+    name: chai
+    version: 1.7.2
+    engines: {node: '>= 0.4.0'}
+    dependencies:
+      assertion-error: registry.npmjs.org/assertion-error@1.0.0
+    dev: false
+
   registry.npmjs.org/chalk@2.4.2:
     resolution: {integrity: sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/chalk/-/chalk-2.4.2.tgz}
     name: chalk
@@ -11970,6 +12050,27 @@ packages:
     name: clone
     version: 1.0.4
     engines: {node: '>=0.8'}
+    dev: false
+
+  registry.npmjs.org/coffee-script@1.7.1:
+    resolution: {integrity: sha512-W3s+SROY73OmrSGtPTTW/2wp2rmW5vuh0/tUuCK1NvTuyzLOVPccIP9whmhZ4cYWcr2NJPNENZIFaAMkTD5G3w==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/coffee-script/-/coffee-script-1.7.1.tgz}
+    name: coffee-script
+    version: 1.7.1
+    engines: {node: '>=0.8.0'}
+    deprecated: CoffeeScript on NPM has moved to "coffeescript" (no hyphen)
+    hasBin: true
+    dependencies:
+      mkdirp: registry.npmjs.org/mkdirp@0.3.5
+    dev: false
+
+  registry.npmjs.org/coffeeify@0.6.0:
+    resolution: {integrity: sha512-nt2rZwyeqLnzdbC15ZUBnQtokHLqNnbgfpUMYzAk1Pa33hObdtXnDV0SmTj2DWbzp47MpR87ix3uKHyutnzjsg==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/coffeeify/-/coffeeify-0.6.0.tgz}
+    name: coffeeify
+    version: 0.6.0
+    dependencies:
+      coffee-script: registry.npmjs.org/coffee-script@1.7.1
+      convert-source-map: registry.npmjs.org/convert-source-map@0.3.5
+      through: registry.npmjs.org/through@2.3.8
     dev: false
 
   registry.npmjs.org/color-convert@1.9.3:
@@ -12071,6 +12172,12 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
+  registry.npmjs.org/convert-source-map@0.3.5:
+    resolution: {integrity: sha512-+4nRk0k3oEpwUB7/CalD7xE2z4VmtEnnq0GO2IPTkrooTrAhEsWvuLF5iWP1dXrwluki/azwXV1ve7gtYuPldg==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/convert-source-map/-/convert-source-map-0.3.5.tgz}
+    name: convert-source-map
+    version: 0.3.5
+    dev: false
+
   registry.npmjs.org/convert-source-map@1.8.0:
     resolution: {integrity: sha512-+OQdjP49zViI/6i7nIJpA8rAl4sV/JdPfU9nZs3VqOwGIgizICvuN2ru6fMd+4llL0tar18UYJXfZ/TWtmhUjA==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/convert-source-map/-/convert-source-map-1.8.0.tgz}
     name: convert-source-map
@@ -12099,6 +12206,14 @@ packages:
     dependencies:
       browserslist: registry.npmjs.org/browserslist@4.21.10
     dev: true
+
+  registry.npmjs.org/core-util-is@1.0.3:
+    resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/core-util-is/-/core-util-is-1.0.3.tgz}
+    name: core-util-is
+    version: 1.0.3
+    requiresBuild: true
+    dev: false
+    optional: true
 
   registry.npmjs.org/cross-spawn@7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/cross-spawn/-/cross-spawn-7.0.3.tgz}
@@ -13135,6 +13250,16 @@ packages:
       path-exists: registry.npmjs.org/path-exists@4.0.0
     dev: false
 
+  registry.npmjs.org/flac@0.3.0:
+    resolution: {integrity: sha512-52oFJru3F/aELcnDwHtqDNXxruIZH7bE3vK6xQF4ALCelCZBXFggqPsPXPilVs9L242Iz1ROrbVX0UYXJMMinw==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/flac/-/flac-0.3.0.tgz}
+    name: flac
+    version: 0.3.0
+    engines: {node: '>=0.4'}
+    dependencies:
+      abc: registry.npmjs.org/abc@0.5.1
+      fsa: registry.npmjs.org/fsa@0.5.1
+    dev: false
+
   registry.npmjs.org/follow-redirects@1.15.1:
     resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.15.1.tgz}
     name: follow-redirects
@@ -13233,6 +13358,13 @@ packages:
     name: fs.realpath
     version: 1.0.0
     requiresBuild: true
+
+  registry.npmjs.org/fsa@0.5.1:
+    resolution: {integrity: sha512-HMdf0zJNXwP5dxROQb/ncUv+9BxuO4NM5R6/pSbUdfu5CUzMOg7+iP4tQUtBIv18PaScukzfxGIqLyJ3d9wg3Q==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/fsa/-/fsa-0.5.1.tgz}
+    name: fsa
+    version: 0.5.1
+    engines: {node: '>=0.4'}
+    dev: false
 
   registry.npmjs.org/fsevents@2.3.2:
     resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz}
@@ -13857,6 +13989,14 @@ packages:
       call-bind: registry.npmjs.org/call-bind@1.0.2
     dev: true
 
+  registry.npmjs.org/isarray@1.0.0:
+    resolution: {integrity: sha512-VLghIWNM6ELQzo7zwmcg0NmTVyWKYjvIeM83yjp0wRDTmUnrM678fQbcKBo6n2CJEF0szoG//ytg+TKla89ALQ==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/isarray/-/isarray-1.0.0.tgz}
+    name: isarray
+    version: 1.0.0
+    requiresBuild: true
+    dev: false
+    optional: true
+
   registry.npmjs.org/isarray@2.0.5:
     resolution: {integrity: sha512-xHjhDr3cNBK0BzdUJSPXZntQUx/mwMS5Rw4A7lPJ90XGAO6ISP/ePDNuo0vhqOZU+UD5JoodwCAAoZQd3FeAKw==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/isarray/-/isarray-2.0.5.tgz}
     name: isarray
@@ -14286,12 +14426,30 @@ packages:
     version: 0.5.3
     dev: false
 
+  registry.npmjs.org/mkdirp@0.3.5:
+    resolution: {integrity: sha512-8OCq0De/h9ZxseqzCH8Kw/Filf5pF/vMI6+BH7Lu0jXz2pqYCjTAQRolSxRIi+Ax+oCCjlxoJMP0YQ4XlrQNHg==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/mkdirp/-/mkdirp-0.3.5.tgz}
+    name: mkdirp
+    version: 0.3.5
+    deprecated: Legacy versions of mkdirp are no longer supported. Please update to mkdirp 1.x. (Note that the API surface has changed to use Promises in 1.x.)
+    dev: false
+
   registry.npmjs.org/mkdirp@1.0.4:
     resolution: {integrity: sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/mkdirp/-/mkdirp-1.0.4.tgz}
     name: mkdirp
     version: 1.0.4
     engines: {node: '>=10'}
     hasBin: true
+    dev: false
+
+  registry.npmjs.org/mp3@0.1.0(av@0.4.9):
+    resolution: {integrity: sha512-W9SQWAS8Gn7VvBHBSYnCIz2KAEzZccY+OAKJvO9JRRFBc0MfQ0icb7K4O9Sst/3SW1wcScC+zLNPYoiU6sSXww==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/mp3/-/mp3-0.1.0.tgz}
+    id: registry.npmjs.org/mp3/0.1.0
+    name: mp3
+    version: 0.1.0
+    peerDependencies:
+      av: ~0.4.0
+    dependencies:
+      av: registry.npmjs.org/av@0.4.9
     dev: false
 
   registry.npmjs.org/ms@2.0.0:
@@ -14344,6 +14502,14 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: false
+
+  registry.npmjs.org/nan@2.18.0:
+    resolution: {integrity: sha512-W7tfG7vMOGtD30sHoZSSc/JVYiyDPEyQVso/Zz+/uQd0B0L46gtC+pHha5FFMRpil6fm/AoEcRWyOVi4+E/f8w==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/nan/-/nan-2.18.0.tgz}
+    name: nan
+    version: 2.18.0
+    requiresBuild: true
+    dev: false
+    optional: true
 
   registry.npmjs.org/napi-build-utils@1.0.2:
     resolution: {integrity: sha512-ONmRUqK7zj7DWX0D9ADe03wbwOBZxNAfF20PlGfCWQcD3+/MakShIHrMqx9YwPTfxDdF1zLeL+RGZiR9kGMLdg==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/napi-build-utils/-/napi-build-utils-1.0.2.tgz}
@@ -14614,6 +14780,17 @@ packages:
     version: 0.1.7
     dev: false
 
+  registry.npmjs.org/pcm-boilerplate@0.1.1:
+    resolution: {integrity: sha512-2mU5wENQGQoiuYUiRbLJtI8cH7H+1yvjR400XfGH6JONyzERbSbAIFCJnfRUSfbGJi2WJdo1gbTjiTsDyFSY4Q==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/pcm-boilerplate/-/pcm-boilerplate-0.1.1.tgz}
+    name: pcm-boilerplate
+    version: 0.1.1
+    engines: {node: '>=0.10'}
+    dependencies:
+      async: registry.npmjs.org/async@0.2.10
+      chai: registry.npmjs.org/chai@1.7.2
+      underscore: registry.npmjs.org/underscore@1.4.4
+    dev: false
+
   registry.npmjs.org/peek-readable@4.1.0:
     resolution: {integrity: sha512-ZI3LnwUv5nOGbQzD9c2iDG6toheuXSZP5esSHBjopsXH4dg19soufvpUGA3uohi5anFtGb2lhAVdHzH6R/Evvg==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/peek-readable/-/peek-readable-4.1.0.tgz}
     name: peek-readable
@@ -14680,6 +14857,14 @@ packages:
     version: 5.6.0
     engines: {node: '>=6'}
     dev: true
+
+  registry.npmjs.org/process-nextick-args@2.0.1:
+    resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/process-nextick-args/-/process-nextick-args-2.0.1.tgz}
+    name: process-nextick-args
+    version: 2.0.1
+    requiresBuild: true
+    dev: false
+    optional: true
 
   registry.npmjs.org/progress@2.0.3:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/progress/-/progress-2.0.3.tgz}
@@ -14806,6 +14991,22 @@ packages:
       minimist: registry.npmjs.org/minimist@1.2.8
       strip-json-comments: registry.npmjs.org/strip-json-comments@2.0.1
     dev: false
+
+  registry.npmjs.org/readable-stream@2.3.7:
+    resolution: {integrity: sha512-Ebho8K4jIbHAxnuxi7o42OrZgF/ZTNcsZj6nRKyUmkhLFq8CHItp/fy6hQZuZmP/n3yZ9VBUbp4zz/mX8hmYPw==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/readable-stream/-/readable-stream-2.3.7.tgz}
+    name: readable-stream
+    version: 2.3.7
+    requiresBuild: true
+    dependencies:
+      core-util-is: registry.npmjs.org/core-util-is@1.0.3
+      inherits: registry.npmjs.org/inherits@2.0.4
+      isarray: registry.npmjs.org/isarray@1.0.0
+      process-nextick-args: registry.npmjs.org/process-nextick-args@2.0.1
+      safe-buffer: registry.npmjs.org/safe-buffer@5.1.2
+      string_decoder: registry.npmjs.org/string_decoder@1.1.1
+      util-deprecate: registry.npmjs.org/util-deprecate@1.0.2
+    dev: false
+    optional: true
 
   registry.npmjs.org/readable-stream@3.6.0:
     resolution: {integrity: sha512-BViHy7LKeTz4oNnkcLJ+lVSL6vpiFeX6/d3oSH8zCW7UxP2onchk+vTGB143xuFjHS3deTgkKoXXymXqymiIdA==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/readable-stream/-/readable-stream-3.6.0.tgz}
@@ -15017,7 +15218,6 @@ packages:
     resolution: {integrity: sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.1.2.tgz}
     name: safe-buffer
     version: 5.1.2
-    dev: true
 
   registry.npmjs.org/safe-buffer@5.2.1:
     resolution: {integrity: sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.2.1.tgz}
@@ -15266,6 +15466,21 @@ packages:
     deprecated: Please use @jridgewell/sourcemap-codec instead
     dev: true
 
+  registry.npmjs.org/speaker@0.3.1:
+    resolution: {integrity: sha512-LEqSy+FHYHPZj4kX8NHylzaOmy+VIqj57enm2GS4B568hj0SdKDYa9jALCGQy43LZa/JmQk1iF0nlMVbS1PfPg==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/speaker/-/speaker-0.3.1.tgz}
+    name: speaker
+    version: 0.3.1
+    requiresBuild: true
+    dependencies:
+      bindings: registry.npmjs.org/bindings@1.5.0
+      debug: registry.npmjs.org/debug@2.6.9
+      nan: registry.npmjs.org/nan@2.18.0
+      readable-stream: registry.npmjs.org/readable-stream@2.3.7
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+    optional: true
+
   registry.npmjs.org/sprintf-js@1.1.2:
     resolution: {integrity: sha512-VE0SOVEHCk7Qc8ulkWw3ntAzXuqf7S2lvwQaDLRnUeIEaKNQJzV6BwmLKhOqT61aGhfUMrXeaBk+oDGCzvhcug==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/sprintf-js/-/sprintf-js-1.1.2.tgz}
     name: sprintf-js
@@ -15353,6 +15568,16 @@ packages:
       define-properties: registry.npmjs.org/define-properties@1.2.0
       es-abstract: registry.npmjs.org/es-abstract@1.22.1
     dev: true
+
+  registry.npmjs.org/string_decoder@1.1.1:
+    resolution: {integrity: sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/string_decoder/-/string_decoder-1.1.1.tgz}
+    name: string_decoder
+    version: 1.1.1
+    requiresBuild: true
+    dependencies:
+      safe-buffer: registry.npmjs.org/safe-buffer@5.1.2
+    dev: false
+    optional: true
 
   registry.npmjs.org/string_decoder@1.3.0:
     resolution: {integrity: sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/string_decoder/-/string_decoder-1.3.0.tgz}
@@ -15521,6 +15746,12 @@ packages:
       commander: registry.npmjs.org/commander@2.20.3
       source-map-support: registry.npmjs.org/source-map-support@0.5.21
     dev: true
+
+  registry.npmjs.org/through@2.3.8:
+    resolution: {integrity: sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/through/-/through-2.3.8.tgz}
+    name: through
+    version: 2.3.8
+    dev: false
 
   registry.npmjs.org/to-fast-properties@2.0.0:
     resolution: {integrity: sha512-/OaKK0xYrs3DmxRYqL/yDc+FxFUVYhDlXMhRmv3z915w2HF1tnN1omB354j8VUGO/hbRzyD6Y3sA7v7GS/ceog==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/to-fast-properties/-/to-fast-properties-2.0.0.tgz}
@@ -15728,6 +15959,18 @@ packages:
       which-boxed-primitive: registry.npmjs.org/which-boxed-primitive@1.0.2
     dev: true
 
+  registry.npmjs.org/underscore@1.4.4:
+    resolution: {integrity: sha512-ZqGrAgaqqZM7LGRzNjLnw5elevWb5M8LEoDMadxIW3OWbcv72wMMgKdwOKpd5Fqxe8choLD8HN3iSj3TUh/giQ==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/underscore/-/underscore-1.4.4.tgz}
+    name: underscore
+    version: 1.4.4
+    dev: false
+
+  registry.npmjs.org/underscore@1.8.3:
+    resolution: {integrity: sha512-5WsVTFcH1ut/kkhAaHf4PVgI8c7++GiVcpCGxPouI6ZVjsqPnSDf8h/8HtVqc0t4fzRXwnMK70EcZeAs3PIddg==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/underscore/-/underscore-1.8.3.tgz}
+    name: underscore
+    version: 1.8.3
+    dev: false
+
   registry.npmjs.org/unicode-canonical-property-names-ecmascript@2.0.0:
     resolution: {integrity: sha512-yY5PpDlfVIU5+y/BSCxAJRBIS1Zc2dDG3Ujq+sR0U+JjUevW2JhocOF+soROYDSaAezOzOKuyyixhD6mBknSmQ==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/unicode-canonical-property-names-ecmascript/-/unicode-canonical-property-names-ecmascript-2.0.0.tgz}
     name: unicode-canonical-property-names-ecmascript
@@ -15859,6 +16102,25 @@ packages:
     version: 1.0.1
     dependencies:
       defaults: registry.npmjs.org/defaults@1.0.3
+    dev: false
+
+  registry.npmjs.org/web-audio-api@0.2.2:
+    resolution: {integrity: sha512-XidLn3tEz8V9jwuV4OOVTOgNHp3WT6SQwv28Ad3lNXU4R9aPxWDYnocfVBh/OIna96jYPpiuP74KvSrTIF0OTg==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/web-audio-api/-/web-audio-api-0.2.2.tgz}
+    name: web-audio-api
+    version: 0.2.2
+    engines: {node: '>=0.10'}
+    dependencies:
+      aac: registry.npmjs.org/aac@0.1.3(av@0.4.9)
+      alac: registry.npmjs.org/alac@0.1.0(av@0.4.9)
+      async: registry.npmjs.org/async@0.9.2
+      audiobuffer: registry.npmjs.org/audiobuffer@0.2.0
+      av: registry.npmjs.org/av@0.4.9
+      flac: registry.npmjs.org/flac@0.3.0
+      mp3: registry.npmjs.org/mp3@0.1.0(av@0.4.9)
+      pcm-boilerplate: registry.npmjs.org/pcm-boilerplate@0.1.1
+      underscore: registry.npmjs.org/underscore@1.8.3
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   registry.npmjs.org/webidl-conversions@4.0.2:

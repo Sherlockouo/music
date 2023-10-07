@@ -427,6 +427,19 @@ export class Player {
     return response?.songs?.length ? response.songs[0] : null
   }
 
+  // set play device
+  setDevice(deviceId: MediaDeviceInfo["deviceId"]){
+    // Get the currently playing audio element
+    const audioElement = _howler._sounds[0]._node;
+    audioElement.setSinkId(deviceId)
+      .then(() => {
+        console.log('Audio output device set successfully');
+      })
+      .catch((error: any)  => {
+        console.error('Error setting audio output device:', error);
+      });
+  }
+
   async getAudioSource(track_id: TrackID) {
     return await this._fetchAudioSource(track_id)
   }
@@ -528,7 +541,9 @@ export class Player {
       html5: true,
       autoplay,
       volume: 1,
-      onend: () => this._howlerOnEndCallback(),
+      onend: () => {
+        this._howlerOnEndCallback()
+      }
     })
     _howler = howler
     ;(window as any).howler = howler
@@ -546,7 +561,7 @@ export class Player {
       this._setupProgressInterval()
     }
 
-    await this.getSongFFT()
+    // await this.getSongFFT()
   }
 
   private _howlerOnEndCallback() {

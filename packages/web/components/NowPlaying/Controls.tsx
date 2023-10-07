@@ -19,7 +19,7 @@ import Slider from '@/web/components/Slider'
 import { ceil } from 'lodash'
 import { ease } from '@/web/utils/const'
 import { useTranslation } from 'react-i18next'
-
+import AudioOutputDevices from '@/web/components/Tools/Devices'
 const LikeButton = () => {
   const { track } = useSnapshot(player)
   const { data: likedIDs } = useUserLikedTracksIDs()
@@ -66,7 +66,7 @@ const Controls = () => {
         )}
       >
         <div className={cx(mini ? 'flex flex-wrap gap-3' : 'flex-col gap-2')}>
-          <div className={cx(mini ? 'flex-col text-center' : 'mb-5 flex  justify-between gap-6')}>
+          <div className={cx(mini ? 'flex-col text-center' : 'my-2 flex  justify-between gap-5')}>
             {/* Minimize */}
             <motion.button
               layout='position'
@@ -122,7 +122,10 @@ const Controls = () => {
             {/* Like */}
             <LikeButton />
           </div>
-
+          
+          {!mini && (<div className='flex justify-center iterms-center transition-colors duration-400'> 
+            <AudioOutputDevices />
+          </div>)}
           {!mini && <VolumeSlider />}
         </div>
       </motion.div>

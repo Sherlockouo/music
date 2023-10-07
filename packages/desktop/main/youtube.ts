@@ -171,7 +171,7 @@ class YoutubeDownloader {
       const proxy = 'http://127.0.0.1:8888'
       const agent = httpProxyAgent(proxy)
       const info = await ytdl.getInfo(video.id, {
-        // requestOptions: { agent },
+        requestOptions: { agent },
       })
       console.timeEnd('[youtube] getInfo')
       if (!info) return null

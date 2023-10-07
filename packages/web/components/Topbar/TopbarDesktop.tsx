@@ -36,7 +36,7 @@ const Background = () => {
             <div
               className={cx(
                 'top-bar absolute inset-0 h-full w-full',
-                !showBackgroundImage && (theme === 'dark' ? 'top-bar-dark' : 'top-bar-light')
+                !showBackgroundImage && (theme === 'dark' ? 'top-bar-dark bg-black/90' : 'top-bar-light bg-white/90')
               )}
             >
               {
@@ -66,7 +66,7 @@ const Background = () => {
                   'relative inset-0 z-0 ',
                   'h-full w-full',
                   show && 'backdrop-blur-2xl',
-                  window.env?.isElectron && !fullscreen && 'rounded-tr-24 rounded-tl-24'
+                  window.env?.isElectron && !fullscreen && 'rounded-tr-12 rounded-tl-12'
                 )}
               >
                 <div

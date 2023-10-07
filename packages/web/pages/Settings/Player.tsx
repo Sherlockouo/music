@@ -3,12 +3,11 @@ import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { useSnapshot } from 'valtio'
 import { BlockDescription, BlockTitle, Button, Option, OptionText, Switch } from './Controls'
-
+import AudioOutputDevices from '@/web/components/Tools/Devices'
 function Player() {
   return (
     <div className='flex w-full justify-center iterms-center'>
-      {'developing'}
-      {/* <FindTrackOnYouTube /> */}
+      <FindTrackOnYouTube />
     </div>
   )
 }

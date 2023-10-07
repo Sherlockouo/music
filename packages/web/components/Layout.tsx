@@ -38,7 +38,7 @@ const Layout = () => {
       {/* layout 元素的内容 */}
       <motion.div
         className={cx(
-          window.env?.isElectron && !fullscreen && 'rounded-24',
+          window.env?.isElectron && !fullscreen && 'rounded-12',
           'h-full',
           css`
             position: absolute;
@@ -66,7 +66,7 @@ const Layout = () => {
       >
         <div
           className={cx(
-            window.env?.isElectron && !fullscreen && 'rounded-24',
+            window.env?.isElectron && !fullscreen && 'rounded-12',
             css`
               position: absolute;
               top: 0;
@@ -82,7 +82,7 @@ const Layout = () => {
       <div
         id='layout-foreground'
         className={cx(
-          'rounded-24',
+          'rounded-12',
           'backdrop-blur-md',
           'relative grid h-screen select-none overflow-hidden',
           'text-dark transition-colors duration-400 dark:text-white'

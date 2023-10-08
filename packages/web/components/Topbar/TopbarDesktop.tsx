@@ -35,8 +35,8 @@ const Background = () => {
           <>
             <div
               className={cx(
-                'top-bar absolute inset-0 h-full w-full',
-                !showBackgroundImage && (theme === 'dark' ? 'top-bar-dark bg-black/90' : 'top-bar-light bg-white/90')
+                'absolute inset-0 h-full w-full',
+                !showBackgroundImage && (theme === 'dark' ? 'bg-black/90' : 'bg-white/90')
               )}
             >
               {

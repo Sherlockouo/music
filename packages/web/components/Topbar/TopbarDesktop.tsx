@@ -73,7 +73,7 @@ const Background = () => {
                   className={cx(
                     'z-1 absolute h-full w-full',
                     css`
-                      background-color: rgba(0, 0, 0, 0.05);
+                      background-color: rgba(0, 0, 0, 0.06);
                     `
                   )}
                 ></div>

@@ -12,7 +12,7 @@ const ArtistVideos = () => {
 
   return (
     <div>
-      <div className='mb-6 mt-10 text-12 font-medium uppercase text-neutral-300'>
+      <div className='mb-6 mt-10 text-12 font-medium uppercase text-neutral-700 dark:text-neutral-300'>
         {t`common.video_other`}
       </div>
 
@@ -23,7 +23,7 @@ const ArtistVideos = () => {
               src={video.imgurl16v9}
               className='aspect-video w-full rounded-24 border border-white/5 object-contain'
             />
-            <div className='mt-2 text-12 font-medium text-neutral-600'>{video.name}</div>
+            <div className='mt-2 text-12 font-medium text-neutral-700 dark:text-neutral-300'>{video.name}</div>
           </div>
         ))}
       </div>

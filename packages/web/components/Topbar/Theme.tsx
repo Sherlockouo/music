@@ -8,7 +8,7 @@ const Theme = () => {
     const {theme} = useSnapshot(settings)
     return (
     <>
-    <div className="app-region-no-drag flex h-12 w-12 items-center justify-center rounded-full bg-day-600 text-neutral-500 transition duration-400 dark:bg-white/10 dark:hover:bg-white/20 dark:hover:text-neutral-300" onClick={()=>{
+    <div className="app-region-no-drag flex h-12 w-12 items-center justify-center rounded-full  text-neutral-500 dark:text-neutral-500 dark:bg-neutral-700 bg-white/60 hover:bg-white transition duration-400 dark:hover:bg-neutral-100" onClick={()=>{
         if(theme == "dark") {
             changeTheme('light')
             settings.theme = 'light'

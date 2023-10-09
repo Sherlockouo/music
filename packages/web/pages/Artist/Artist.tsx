@@ -24,14 +24,14 @@ const Artist = () => {
             onClick={() => {
               changeShowAllSongs(!showAllSongs)
             }}
-            className='flex w-36 items-center justify-center gap-2 rounded-full bg-white/20 text-white'
+            className='flex w-36 items-center justify-center gap-2 rounded-full bg-dark/20 dark:bg-white/20'
           >
             {t`artist.synthesis`}
-            <Icon name={showAllSongs ? 'eye' : 'eye-off'} className='h-6 w-6 text-white/80' />
+            <Icon name={showAllSongs ? 'eye' : 'eye-off'} className='h-6 w-6' />
           </button>
         </div>
       ) : (
-        <div className='mb-7.5 mt-10 h-px w-full bg-white/20'></div>
+        <div className='mb-7.5 mt-10 h-px w-full bg-black/20 dark:bg-white/20'></div>
       )}
       {!showAllSongs && (
         <div>
@@ -42,7 +42,7 @@ const Artist = () => {
         </div>
       )}
       {showAllSongs && (
-        <div className='text-white'>
+        <div>
           <ArtistSongs />
         </div>
       )}

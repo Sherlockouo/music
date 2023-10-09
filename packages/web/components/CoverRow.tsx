@@ -56,9 +56,9 @@ const Album = ({
         onMouseOver={prefetch}
       />
       {title && (
-        <div className='line-clamp-2 mt-2 text-14 font-medium text-neutral-300'>{title}</div>
+        <div className='line-clamp-2 mt-2 text-14 font-medium text-neutral-700 dark:text-neutral-300'>{title}</div>
       )}
-      {subtitle && <div className='mt-1 text-14 font-medium text-neutral-700'>{subtitle}</div>}
+      {subtitle && <div className='mt-1 text-14 font-medium text-neutral-700 dark:text-neutral-300'>{subtitle}</div>}
     </div>
   )
 }
@@ -109,7 +109,7 @@ const CoverRow = ({
   return (
     <div className={cx('@container', className)}>
       {/* Title */}
-      {title && <h4 className='mb-6 text-14 font-bold uppercase text-black dark:text-neutral-300'>{title}</h4>}
+      {title && <h4 className='mb-6 text-14 font-bold uppercase text-black/80 dark:text-neutral-700'>{title}</h4>}
 
       {/* Items */}
       <div className='grid grid-cols-3 gap-4 @lg:gap-6 @4xl:grid-cols-4 @7xl:grid-cols-5'>

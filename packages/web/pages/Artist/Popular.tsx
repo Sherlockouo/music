@@ -40,12 +40,12 @@ const Track = ({
         <div
           className={cx(
             'line-clamp-1 text-16 font-medium ',
-            isPlaying ? 'text-brand-700' : 'text-neutral-700 dark:text-neutral-200'
+            isPlaying ? 'text-brand-700' : 'text-neutral-700 dark:text-neutral-300'
           )}
         >
           {track?.name}
         </div>
-        <div className='line-clamp-1 mt-1 text-14 font-bold text-neutral-200  dark:text-neutral-700'>
+        <div className='line-clamp-1 mt-1 text-14 font-bold text-neutral-700  dark:text-neutral-300'>
           {track?.ar.map(a => a.name).join(', ')}
         </div>
       </div>
@@ -71,21 +71,21 @@ const Popular = ({ showAllSongs }: { showAllSongs: Function }) => {
   }
 
   return (
-    <div>
+    <div className='text-neutral-700 dark:text-neutral-300'>
       <div className={cx('flex justify-between')}>
-        <div className='mb-4 text-12 font-medium uppercase text-neutral-300'>
+        <div className='mb-4 text-12 font-medium uppercase'>
           {t`artist.popular`}
         </div>
         <div
           className={cx(
-            'align-center mb-4 flex text-center text-12 font-medium uppercase text-white text-neutral-300'
+            'align-center flex justify-between text-center gap-1 iterms-center text-12 font-bold uppercase'
           )}
           onClick={() => {
             showAllSongs()
           }}
         >
           {t`artist.all-songs`}
-          <Icon name='right-arrow' className='h-4 w-4 text-white' />
+          <Icon name='right-arrow' className='flex h-4 w-4 items-center' />
         </div>
       </div>
 

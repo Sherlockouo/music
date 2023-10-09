@@ -20,7 +20,7 @@ const Album = ({ album }: { album?: Album }) => {
   return (
     <div
       onClick={() => navigate(`/album/${album.id}`)}
-      className='group flex rounded-24 bg-white/10 p-2.5 transition-colors duration-400 hover:bg-white/20'
+      className='group flex rounded-24 bg-white/20 p-2.5 transition-colors duration-400 hover:bg-white/40'
     >
       <Image
         src={resizeImage(album.picUrl, 'sm')}
@@ -34,14 +34,14 @@ const Album = ({ album }: { album?: Album }) => {
         )}
       />
       <div className='flex-shrink-1 ml-2'>
-        <div className='line-clamp-1 text-16 font-medium text-night-100 transition-colors duration-400 group-hover:text-night-50'>
+        <div className='line-clamp-1 text-16 font-medium text-neutral-700 dark:text-neutral-300 transition-colors duration-400 '>
           {album.name}
         </div>
-        <div className='mt-1 text-14 font-bold text-night-500 transition-colors duration-400 group-hover:text-night-200'>
+        <div className='mt-1 text-14 font-bold text-neutral-700 dark:text-neutral-300 transition-colors duration-400 '>
           {album.type}
           {album.size > 1 ? `· ${album.size} Tracks` : ''}
         </div>
-        <div className='mt-1.5 text-12 font-medium text-night-500 transition-colors duration-400 group-hover:text-night-200'>
+        <div className='mt-1.5 text-12 font-medium text-neutral-700 dark:text-neutral-300 transition-colors duration-400'>
           {dayjs(album?.publishTime || 0).format('MMM DD, YYYY')}
         </div>
       </div>
@@ -54,7 +54,7 @@ const Video = ({ video }: { video?: any }) => {
     <>
       {video && (
         <div
-          className='group mt-4 flex rounded-24 bg-white/10 p-2.5 transition-colors duration-400 hover:bg-white/20'
+          className='group mt-4 flex rounded-24 bg-white/20 p-2.5 transition-colors duration-400 hover:bg-white/40'
           onClick={() => (uiStates.playingVideoID = video.id)}
         >
           <img
@@ -68,13 +68,13 @@ const Video = ({ video }: { video?: any }) => {
             )}
           />
           <div className='flex-shrink-1 ml-2'>
-            <div className='line-clamp-1 text-16 font-medium text-night-100 transition-colors duration-400 group-hover:text-night-50'>
+            <div className='line-clamp-1 text-16 font-medium text-neutral-700 dark:text-neutral-300 transition-colors duration-400'>
               {video.name}
             </div>
-            <div className='mt-1 text-14 font-bold text-night-500  transition-colors duration-400 group-hover:text-night-200'>
+            <div className='mt-1 text-14 font-bold text-neutral-700 dark:text-neutral-300  transition-colors duration-400 '>
               MV
             </div>
-            <div className='mt-1.5 text-12 font-medium text-night-500  transition-colors duration-400 group-hover:text-night-200'>
+            <div className='mt-1.5 text-12 font-medium text-neutral-700 dark:text-neutral-300  transition-colors duration-400 '>
               {dayjs(video.publishTime).format('MMM DD, YYYY')}
             </div>
           </div>
@@ -105,7 +105,7 @@ const LatestRelease = () => {
     <>
       {!isLoadingVideos && !isLoadingAlbums && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className='mx-2.5 lg:mx-0'>
-          <div className='mb-3 mt-7 text-14 font-bold text-neutral-300'>
+          <div className='mb-3 mt-7 text-14 font-bold text-neutral-700 dark:text-neutral-300'>
             {t`artist.latest-releases`}
           </div>
 

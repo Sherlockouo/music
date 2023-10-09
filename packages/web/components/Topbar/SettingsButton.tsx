@@ -9,7 +9,7 @@ const SettingsButton = ({ className }: { className?: string }) => {
     <button
       onClick={() => navigate('/settings')}
       className={cx(
-        'app-region-no-drag flex h-12 w-12 items-center justify-center rounded-full bg-day-600 text-neutral-500 transition duration-400 dark:bg-white/10 dark:hover:bg-white/20 dark:hover:text-neutral-300',
+        'app-region-no-drag flex h-12 w-12 items-center justify-center rounded-full transition duration-400 text-neutral-500 dark:text-neutral-300 dark:bg-neutral-700 bg-white/60 hover:bg-white transition duration-400 dark:hover:bg-neutral-100',
         className
       )}
     >

@@ -108,7 +108,8 @@ const SearchSuggestions = ({
               },
             }}
             className={cx(
-              'absolute mt-2 origin-top rounded-24 border border-dark/10 dark:border-white/10 p-2 backdrop-blur-3xl',
+              'absolute mt-2 origin-top rounded-24 border border-dark/10 dark:border-white/10 p-2 backdrop-blur-xxl',
+              'bg-white/95 dark:bg-black/95',
               css`
                 width: 286px;
               `
@@ -117,7 +118,7 @@ const SearchSuggestions = ({
             {suggestionsArray?.map(suggestion => (
               <div
                 key={`${suggestion.type}-${suggestion.id}`}
-                className='line-clamp-1 rounded-12 p-2 hover:bg-white/10'
+                className='line-clamp-1 rounded-12 p-2 hover:bg-black/10 dark:hover:bg-white/10'
                 onClick={() => {
                   setClickedSearchText(searchText)
                   if (['album', 'artist'].includes(suggestion.type)) {
@@ -155,7 +156,7 @@ const SearchBox = () => {
         onClick={() => inputRef.current?.focus()}
         className={cx(
           'app-region-no-drag flex cursor-text items-center rounded-full p-2.5 backdrop-blur-3xl',
-          
+          'text-black dark:text-white ',
           css`
             ${bp.lg} {
               min-width: 284px;

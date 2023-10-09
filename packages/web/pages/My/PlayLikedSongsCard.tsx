@@ -127,14 +127,14 @@ const PlayLikedSongsCard = () => {
       <div className='flex justify-between'>
         <button
           onClick={handlePlay}
-          className='rounded-full bg-accent-color-500 py-5 px-6 text-16 font-medium text-white'
+          className='rounded-full bg-accent-color-400 py-5 px-6 text-16 font-medium text-neutral-700 dark:text-white'
         >
           {t`my.playNow`}
         </button>
         <button
           onClick={() => navigate(`/playlist/${likedSongsPlaylist?.playlist.id}`)}
           className={cx(
-            'flex items-center justify-center rounded-full bg-white/10 text-night-400 transition duration-400 hover:bg-white/20 hover:text-neutral-300',
+            'flex items-center justify-center rounded-full bg-white/10 text-neutral-700 dark:text-neutral-300 transition duration-400 hover:bg-white/20 hover:text-neutral-300',
             css`
               padding: 15.5px;
             `

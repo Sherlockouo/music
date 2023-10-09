@@ -32,7 +32,7 @@ const FMButton = () => {
       }}
       className={cx(
         'group relative transition duration-300 ease-linear text-neutral-300',
-        player.mode == Mode.FM ? 'text-brand-700 hover:text-brand-400'
+        player.mode == Mode.FM ? 'text-brand-700 hover:text-brand-500'
           : 'text-neutral-300 opacity-40 hover:opacity-100'
 
       )}
@@ -66,7 +66,7 @@ const RepeatButton = () => {
         player.mode == Mode.FM ? 'hidden' : 'block',
         'group relative transition duration-300 ease-linear',
         repeat == 0 && 'text-neutral-300 opacity-40 hover:opacity-100',
-        (repeat > 0) && 'text-brand-700 hover:text-brand-300'
+        (repeat > 0) && 'text-brand-700 hover:text-brand-500'
       )}
       style={buttonStyle}
     >
@@ -98,7 +98,7 @@ const ShuffleButton = () => {
         player.mode == Mode.FM ? 'hidden' : 'block',
         'group relative transition duration-300 ease-linear',
         shuffle
-          ? 'text-brand-700 hover:text-brand-400'
+          ? 'text-brand-700 hover:text-brand-500'
           : 'text-neutral-300 opacity-40 hover:opacity-100',
       )}
       style={buttonStyle}

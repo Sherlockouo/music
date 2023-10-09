@@ -35,12 +35,12 @@ const AccentColor = () => {
   const accentColor = useSnapshot(settings).accentColor
   return (
     <div className='mt-4 flex  flex-row items-center'>
-      <div className='w-full flex dark:text-white items-center'>{t`settings.accent-color`}</div>
-      <div className=' w-full justify-center flex items-center'>
+      <div className='w-full flex   min-w-[93px] items-center'>{t`settings.accent-color`}</div>
+      <div className=' w-full justify-center flex flex-wrap items-center'>
         {Object.entries(colors).map(([color, bg]) => (
           <div
             key={color}
-            className={cx(bg, 'mr-2.5 flex h-5 w-5 items-center justify-center rounded-full bg-data-accent-color-500')}
+            className={cx(bg, 'mr-2.5 mb-1 flex  h-5 w-5 items-center justify-center rounded-full bg-data-accent-color-500')}
             onClick={() => changeColor(color)}
           >
             {color === accentColor && <div className='h-1.5 w-1.5 rounded-full bg-black dark:bg-white'></div>}

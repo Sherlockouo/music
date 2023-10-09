@@ -29,7 +29,7 @@ const ArtistAlbum = () => {
 
   return (
     <div>
-      <div className='mb-4 mt-11 text-12 font-medium uppercase text-neutral-300'>
+      <div className='mb-4 mt-11 text-12 font-medium uppercase text-neutral-700'>
         {t`common.album_other`}
       </div>
 
@@ -40,7 +40,7 @@ const ArtistAlbum = () => {
             albums={page}
             itemTitle='name'
             itemSubtitle='year'
-            className='h-full w-full flex-shrink-0'
+            className='h-full w-full flex-shrink-0 '
           />
         ))}
       </div>

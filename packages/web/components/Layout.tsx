@@ -105,11 +105,11 @@ const Layout = () => {
         <Login />
         {showPlayer && <Player />}
 
-        {window.env?.isMac && (
+        {/* {window.env?.isMac && (
           <div className=' fixed top-5 left-5 z-30 translate-y-0.5'>
             <TrafficLight />
           </div>
-        )}
+        )} */}
 
         {(window.env?.isWindows ||
           window.env?.isLinux ||

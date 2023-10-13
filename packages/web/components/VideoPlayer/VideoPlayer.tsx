@@ -1,6 +1,6 @@
 import { css, cx } from '@emotion/css'
 import { createPortal } from 'react-dom'
-import useMV, { useMVUrl } from '../../api/hooks/useMV'
+import useMV, { useMVUrl, useVideoUrl } from '../../api/hooks/useMV'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ease } from '@/web/utils/const'
 import Icon from '../Icon'
@@ -9,14 +9,31 @@ import { toHttps } from '@/web/utils/common'
 import uiStates, { closeVideoPlayer } from '@/web/states/uiStates'
 import { useSnapshot } from 'valtio'
 import { useNavigate } from 'react-router-dom'
+import { FetchMVUrlResponse } from '@/shared/api/MV'
 
 const VideoPlayer = () => {
   const { playingVideoID } = useSnapshot(uiStates)
   const { fullscreen } = useSnapshot(uiStates)
   const navigate = useNavigate()
+  console.log('playing video id', playingVideoID);
+  const isNumber = (str: string) => {
+    return !isNaN(Number(str));
+  }
 
-  const { data: mv, isLoading } = useMV({ mvid: playingVideoID || 0 })
-  const { data: mvDetails } = useMVUrl({ id: playingVideoID || 0 })
+  
+
+  let mvDetails: FetchMVUrlResponse | undefined
+
+  if (!isNumber(playingVideoID as string)) {
+    const res = useVideoUrl({ id: playingVideoID || "" })
+    mvDetails = res?.data
+    console.log('mv', mvDetails);
+
+  } else {
+    const { data: mv, isLoading } = useMV({ mvid: playingVideoID || 0 })
+    const res = useMVUrl({ id: Number(playingVideoID) || 0 })
+    mvDetails = res.data
+  }
   const mvUrl = toHttps(mvDetails?.data?.url)
   const poster = toHttps(mv?.data.cover)
 

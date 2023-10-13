@@ -1,6 +1,6 @@
 import './preload' // must be first
 import './sentry'
-import { app, BrowserWindow, BrowserWindowConstructorOptions, shell } from 'electron'
+import { app,session, BrowserWindow, BrowserWindowConstructorOptions, shell, webContents } from 'electron'
 import { release } from 'os'
 import { join } from 'path'
 import log from './log'
@@ -42,6 +42,7 @@ class Main {
       this.handleAppEvents()
       this.handleWindowEvents()
       this.createTray()
+      this.disableCacheInDev()
       createMenu(this.win!)
       this.createThumbar()
       initIpcMain(this.win, this.tray, this.thumbar, store)
@@ -73,6 +74,12 @@ class Main {
 
   createThumbar() {
     if (isWindows) this.thumbar = createTaskbar(this.win!)
+  }
+  // disable cache in dev
+  disableCacheInDev(){
+    if(isDev){
+      
+    }
   }
 
   createWindow() {
@@ -109,6 +116,7 @@ class Main {
       if (url.startsWith('https://')) shell.openExternal(url)
       return { action: 'deny' }
     })
+
 
     // 减少显示空白窗口的时间
     this.win.once('ready-to-show', () => {

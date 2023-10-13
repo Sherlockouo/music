@@ -3,6 +3,8 @@ import {
   FetchMVParams,
   FetchMVUrlParams,
   FetchMVUrlResponse,
+  FetchVideoParams,
+  FetchVideoResponse,
 } from '@/shared/api/MV'
 import request from '@/web/utils/request'
 
@@ -18,10 +20,32 @@ export function fetchMV(params: FetchMVParams): Promise<FetchMVResponse> {
   })
 }
 
+
+// 获取 video 数据
+export function fetchVideo(params: FetchVideoParams): Promise<FetchVideoResponse> {
+  return request({
+    url: '/video/detail',
+    method: 'get',
+    params: {
+      params,
+      timestamp: new Date().getTime(),
+    },
+  })
+}
+
 // mv 地址
 export function fetchMVUrl(params: FetchMVUrlParams): Promise<FetchMVUrlResponse> {
   return request({
     url: '/mv/url',
+    method: 'get',
+    params,
+  })
+}
+
+// 视频 地址
+export function fetchVideoUrl(params: FetchVideoParams): Promise<FetchVideoResponse> {
+  return request({
+    url: '/video/url',
     method: 'get',
     params,
   })

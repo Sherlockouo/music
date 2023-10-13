@@ -5,14 +5,14 @@ import { ease } from '@/web/utils/const'
 import Icon from '../Icon'
 
 
-const buttonClassNames = 'app-region-no-drag rounded-full dark:bg-white/10 bg-black/10 p-2.5 backdrop-blur-3xl transition-colors duration-400 dark:hover:bg-white/20 dark:hover:text-white/60 hover:bg-black/20 hover:text-black/60'
+const buttonClassNames = 'app-region-no-drag rounded-full dark:bg-white/10 bg-black/10 p-2.5 backdrop-blur-3xl   dark:hover:bg-white/20 dark:hover:text-white/60 hover:bg-black/20 hover:text-black/60'
 
 
 const NavigationButtons = () => {
   const navigate = useNavigate()
   const controlsBack = useAnimation()
   const controlsForward = useAnimation()
-  const transition = { duration: 0.18, ease }
+  const transition = { duration: 0.08, ease }
 
   return (
     <>
@@ -28,7 +28,7 @@ const NavigationButtons = () => {
           className={buttonClassNames}
         >
           <motion.div animate={controlsBack} transition={transition} className={cx(
-            'transition-colors duration-400 text-dark dark:text-white',
+            ' text-dark dark:text-white',
           )}>
             <Icon name='back' className='h-7 w-7' />
           </motion.div>
@@ -44,7 +44,7 @@ const NavigationButtons = () => {
           className={cx('ml-2.5', buttonClassNames)}
         >
           <motion.div animate={controlsForward} transition={transition} className={cx(
-            'transition-colors duration-400 text-dark dark:text-white',
+            '  text-dark dark:text-white',
           )}>
             <Icon name='forward' className='h-7 w-7' />
           </motion.div>

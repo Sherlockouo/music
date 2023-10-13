@@ -711,6 +711,21 @@ export class Player {
    *
    * @param trackID
    */
+  addToFirstPlay(trackID: number) {
+    console.log(`trackID:${trackID}`)
+    // 判重
+    if (this.trackList.includes(trackID)) {
+      this.trackList = this.trackList.filter(item => item != trackID)
+      this.trackList.splice(0, 0, trackID)
+      return
+    }
+    this.trackList.splice(0, 0, trackID)
+  }
+  
+  /**
+   *
+   * @param trackID
+   */
   addToNextPlay(trackID: number) {
     // 判重
     if (this.trackList.includes(trackID)) {

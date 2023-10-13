@@ -24,7 +24,7 @@ const LayoutMobile = () => {
         <Router />
       </main>
       <div
-        className={cx('fixed bottom-0 left-0 right-0 z-20 pt-3 dark:bg-black')}
+        className={cx('fixed bottom-0 left-0 right-0 z-20 pt-3 dark:bg-black bg-white')}
         style={{
           paddingBottom: `calc(
               ${isIosPwa ? '24px' : 'env(safe-area-inset-bottom)'} + 0.75rem

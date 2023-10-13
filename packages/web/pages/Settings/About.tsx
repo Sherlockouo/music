@@ -9,7 +9,7 @@ const About = () => {
           'text-lg text-accent-color-500',
           'hover:underline'
         )}> 
-          <a href="https://github.com/Sherlockouo/music">欢迎参与开发设计</a>
+          <a href="https://github.com/Sherlockouo/music" target="_blank">欢迎参与开发设计</a>
         </div>
         <div className='basic-info padding-top-10'> 
         <span> 基于 https://github.com/qier222/YesPlayMusic 二次开发 </span>

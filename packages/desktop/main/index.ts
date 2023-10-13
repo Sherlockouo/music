@@ -113,7 +113,13 @@ class Main {
 
     // Make all links open with the browser, not with the application
     this.win.webContents.setWindowOpenHandler(({ url }) => {
-      if (url.startsWith('https://')) shell.openExternal(url)
+      const allowUrlList = ['github.com'];
+      const urlIsAllowed = allowUrlList.some((allowUrl) => url.includes(allowUrl));
+
+      if (urlIsAllowed) {
+        shell.openExternal(url);
+      }
+
       return { action: 'deny' }
     })
 

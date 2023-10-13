@@ -52,7 +52,7 @@ const Lyrics = ({ tracksIDs }: { tracksIDs: number[] }) => {
         {t('my.xxxs-liked-tracks', { nickname: user?.profile?.nickname })}
       </div>
       {lyricLines.map((line, index) => (
-        <div key={`${index}-${line}`} className='text-18 font-medium'>
+        <div key={`${index}-${line}`} className='text-18 font-medium whitespace-nowrap overflow-ellipsis overflow-hidden'>
           {line}
         </div>
       ))}
@@ -108,13 +108,7 @@ const PlayLikedSongsCard = () => {
     <motion.div
       layout
       className={cx(
-        'mx-2.5 flex flex-col justify-between rounded-24 p-8 bg-black/10 dark:bg-white/10 lg:mx-0',
-        css`
-          height: 372px;
-          ${bp.lg} {
-            height: 322px;
-          }
-        `
+        'mx-2.5 flex flex-col justify-between rounded-24 p-8 bg-black/10 dark:bg-white/10 lg:mx-0'
       )}
     >
       {/* Lyrics and Covers */}
@@ -124,7 +118,7 @@ const PlayLikedSongsCard = () => {
       </div>
 
       {/* Buttons */}
-      <div className='flex justify-between'>
+      <div className='flex justify-between mt-5'>
         <button
           onClick={handlePlay}
           className='rounded-full bg-accent-color-400 py-5 px-6 text-16 font-medium text-neutral-700 dark:text-white'

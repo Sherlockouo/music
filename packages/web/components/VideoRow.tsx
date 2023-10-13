@@ -14,7 +14,7 @@ const VideoRow = ({ videos }: { videos: Video[] }) => {
           }}>
             <img
               src={video.coverUrl}
-              className='aspect-video w-full rounded-24 border object-contain'
+              className='aspect-video w-full rounded-24 border object-cover'
             />
             <div className='line-clamp-2 mt-2 text-12 font-medium text-neutral-600'>
               {video.creator?.at(0)?.userName} - {video.title}

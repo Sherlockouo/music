@@ -77,6 +77,14 @@ const TrackContextMenu = () => {
           items={[
             {
               type: 'item',
+              label: t`context-menu.play`,
+              onClick: () => {
+                player.addToFirstPlay(Number(dataSourceID))
+                player.playTrack(Number(dataSourceID))
+              },
+            },
+            {
+              type: 'item',
               label: t`context-menu.add-to-queue`,
               onClick: () => {
                 player.addToNextPlay(Number(dataSourceID))

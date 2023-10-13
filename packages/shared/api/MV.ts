@@ -2,6 +2,7 @@ export enum MVApiNames {
   FetchMV = 'fetchMV',
   FetchMVUrl = 'fetchMVUrl',
   FetchVideoUrl = 'fetchVideoUrl',
+  FetchVideo = 'fetchVideo',
 }
 
 // MV详情

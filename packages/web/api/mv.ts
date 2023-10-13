@@ -5,6 +5,7 @@ import {
   FetchMVUrlResponse,
   FetchVideoParams,
   FetchVideoResponse,
+  FetchVideoURLResponse,
 } from '@/shared/api/MV'
 import request from '@/web/utils/request'
 
@@ -27,8 +28,7 @@ export function fetchVideo(params: FetchVideoParams): Promise<FetchVideoResponse
     url: '/video/detail',
     method: 'get',
     params: {
-      params,
-      timestamp: new Date().getTime(),
+      ...params
     },
   })
 }
@@ -43,11 +43,13 @@ export function fetchMVUrl(params: FetchMVUrlParams): Promise<FetchMVUrlResponse
 }
 
 // 视频 地址
-export function fetchVideoUrl(params: FetchVideoParams): Promise<FetchVideoResponse> {
+export function fetchVideoUrl(params: FetchVideoParams): Promise<FetchVideoURLResponse> {
   return request({
     url: '/video/url',
     method: 'get',
-    params,
+    params:{
+      ...params
+    }
   })
 }
 

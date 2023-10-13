@@ -1,4 +1,4 @@
-import { fetchMV, fetchMVUrl, fetchVideoUrl } from '@/web/api/mv'
+import { fetchMV, fetchMVUrl, fetchVideoUrl,fetchVideo } from '@/web/api/mv'
 import { IpcChannels } from '@/shared/IpcChannels'
 import { MVApiNames, FetchMVParams, FetchMVResponse, FetchMVUrlParams, FetchVideoParams } from '@/shared/api/MV'
 import { useQuery } from '@tanstack/react-query'
@@ -17,9 +17,16 @@ export function useMVUrl(params: FetchMVUrlParams) {
   })
 }
 
+export function useVideo(params: FetchVideoParams) {
+  return useQuery([MVApiNames.FetchVideo, params], () => fetchVideo(params), {
+    enabled: !!params.id && params.id != "",
+    staleTime: 5 * 60 * 1000, // 60 mins
+  })
+}
+
 export function useVideoUrl(params: FetchVideoParams) {
-  return useQuery([MVApiNames.FetchVideoUrl, params], () => fetchVideoUrl(params), {
-    enabled: !!params.id && params.id != "" && !isNaN(Number(params.id)),
+  return useQuery([MVApiNames.FetchVideo, params,'url'], () => fetchVideoUrl(params), {
+    enabled: !!params.id && params.id != "",
     staleTime: 60 * 60 * 1000, // 60 mins
   })
 }

@@ -8,6 +8,7 @@ import { useSnapshot } from 'valtio'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ease } from '@/web/utils/const'
 import { useLocation } from 'react-router-dom'
+import { IpcChannels } from '@/shared/IpcChannels'
 import player from '@/web/states/player'
 import settings from '@/web/states/settings'
 import Theme from './Theme'
@@ -87,17 +88,21 @@ const Background = () => {
 }
 
 const TopbarDesktop = () => {
+  const maxRestore = () => {
+    window.ipcRenderer?.send(IpcChannels.MaximizeOrUnmaximize)
+  }
   return (
     <div
       className={cx(
         // app-region-drag 删除后即可移动console
         'app-region-drag',
-        ' fixed top-0 left-0 right-0 z-20 flex items-center justify-between backdrop-blur-3xl',
+        'fixed top-0 left-0 right-0 z-20 flex items-center justify-between backdrop-blur-3xl',
         'pt-11 pb-10 pr-6',
         css`
           padding-left: 144px;
         `
       )}
+      onDoubleClick={ maxRestore }
     >
       {/* Background */}
       <Background />

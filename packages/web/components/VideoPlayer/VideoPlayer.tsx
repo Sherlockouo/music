@@ -27,7 +27,6 @@ const VideoPlayer = () => {
           id='video-player'
           className={cx(
             'fixed inset-0 z-20 flex select-none items-center justify-center overflow-hidden',
-            window.env?.isElectron && !fullscreen && 'rounded-24'
           )}
         >
           {/* Blur bg */}

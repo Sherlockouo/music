@@ -3,7 +3,10 @@ import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { useSnapshot } from 'valtio'
 import { BlockDescription, BlockTitle, Button, Option, OptionText, Switch } from './Controls'
-import AudioOutputDevices from '@/web/components/Tools/Devices'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
+import store from '@/desktop/main/store' 
+
 function Player() {
   return (
     <div className='flex w-full justify-center iterms-center'>
@@ -14,8 +17,9 @@ function Player() {
 
 function FindTrackOnYouTube() {
   const { t, i18n } = useTranslation()
-
+  
   const { enableFindTrackOnYouTube, httpProxyForYouTube } = useSnapshot(settings)
+  const [proxy, setProxy] = useState<string>(httpProxyForYouTube?.proxy as string)
 
   return (
     <div>
@@ -46,11 +50,38 @@ function FindTrackOnYouTube() {
         </OptionText>
         <Button
           onClick={() => {
-            toast('开发中')
+            // todo: check regex
+            if(proxy === "") {
+              toast.error("proxy is empty")
+              return
+            }
+            settings.httpProxyForYouTube!.proxy = proxy
+            toast.success('proxy is'+proxy)
           }}
         >
-          Edit
+          Submit
         </Button>
+      </Option>
+      <Option>
+        <OptionText>{t`settings.proxy`}</OptionText>
+        <AnimatePresence>
+          <motion.div
+            initial='hidden'
+            animate='show'
+            exit='hidden'
+            className='w-1/2'
+          >
+            <input
+              onChange={e => {
+                setProxy(e.target.value)
+              }}
+              className='w-full px-1 rounded-md flex-grow appearance-none placeholder:pl-1 placeholder:text-black/30 dark:placeholder:text-black/30'
+              placeholder={'ext. https://192.168.10.1:8080'}
+              type='proxy'
+              value={proxy}
+            />
+          </motion.div>
+        </AnimatePresence>
       </Option>
     </div>
   )

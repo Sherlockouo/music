@@ -1,8 +1,9 @@
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
-import React, { lazy, Suspense, startTransition } from 'react'
+import React, { lazy, Suspense, startTransition, useEffect} from 'react'
 import VideoPlayer from './VideoPlayer'
 import Loading from './Animation/Loading'
+import {useGASend} from '@/web/api/hooks/useGA'
 
 const My = lazy(() => import('@/web/pages/My'))
 const Discover = lazy(() => import('@/web/pages/Discover'))
@@ -16,6 +17,7 @@ const Settings = lazy(() => import('@/web/pages/Settings'))
 
 const Router = () => {
   const location = useLocation()
+  useGASend()
 
   return (
     // this keeps the UI updates responsive even on slow device and networ

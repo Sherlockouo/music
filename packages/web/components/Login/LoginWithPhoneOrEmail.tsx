@@ -185,7 +185,7 @@ const LoginWithPhoneOrEmail = () => {
               <input
                 onChange={e => setPhone(e.target.value)}
                 className='my-3.5 flex-grow appearance-none bg-transparent placeholder:text-white/30'
-                placeholder={t`auth.phone`}
+                placeholder={t`auth.phone`!}
                 type='tel'
                 value={phone}
               />
@@ -208,7 +208,7 @@ const LoginWithPhoneOrEmail = () => {
               <input
                 onChange={e => setEmail(e.target.value)}
                 className='w-full flex-grow appearance-none bg-transparent placeholder:text-white/30'
-                placeholder={t`auth.email`}
+                placeholder={t`auth.email`!}
                 type='email'
                 value={email}
               />
@@ -222,7 +222,7 @@ const LoginWithPhoneOrEmail = () => {
         <input
           onChange={e => setPassword(e.target.value)}
           className='w-full bg-transparent placeholder:text-white/30'
-          placeholder={t`auth.password`}
+          placeholder={t`auth.password`!}
           type='password'
           value={password}
         />

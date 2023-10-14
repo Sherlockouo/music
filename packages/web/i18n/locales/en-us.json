@@ -88,7 +88,8 @@
     "player-youtube-unlock": "YouTube Unlock",
     "player-find-alternative-track-on-youtube-if-not-available-on-netease": "Find alternative track on YouTube if not available on NetEase.",
     "volume-control": "Volume Control",
-    "about": "About"
+    "about": "About",
+    "host":"Proxy"
   },
   "context-menu": {
     "share": "Share",

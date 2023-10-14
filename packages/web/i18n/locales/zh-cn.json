@@ -88,7 +88,8 @@
     "player-find-alternative-track-on-youtube-if-not-available-on-netease": "当播放的歌曲无版权或无法播放时，自动从 YouTube 寻找替代音频。",
     "player-youtube-unlock": "YouTube 解锁",
     "volume-control": "音量控制",
-    "about": "关于"
+    "about": "关于",
+    "proxy":"代理"
   },
   "context-menu": {
     "share": "分享",

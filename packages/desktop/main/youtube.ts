@@ -17,18 +17,31 @@ class YoutubeDownloader {
     }[]
   > {
     let proxy: AxiosProxyConfig | false = false
-    if (store.get('settings.httpProxyForYouTube')) {
-      const host = store.get('settings.httpProxyForYouTube.host') as string | undefined
-      const port = store.get('settings.httpProxyForYouTube.port') as number | undefined
-      const auth = store.get('settings.httpProxyForYouTube.auth') as any | undefined
-      const protocol = store.get('settings.httpProxyForYouTube.protocol') as string | undefined
-      if (host && port) {
+    const httpProxyForYouTubeSettings  = store.get('settings.httpProxyForYouTube')
+    if (httpProxyForYouTubeSettings) {
+      const youtubeProxy = httpProxyForYouTubeSettings?.proxy
+      // const host = store.get('settings.httpProxyForYouTube.host') as string | undefined
+      // const port = store.get('settings.httpProxyForYouTube.port') as number | undefined
+      // const auth = store.get('settings.httpProxyForYouTube.auth') as any | undefined
+      // const protocol = store.get('settings.httpProxyForYouTube.protocol') as string | undefined
+      if (youtubeProxy) {
+        const parsedUrl = new URL(youtubeProxy);
+
+        const host = parsedUrl.hostname;
+        const port = Number(parsedUrl.port);
+        const protocol = parsedUrl.protocol;
+        const auth = {
+          username:"",
+          password:""
+        }
         proxy = { host, port, auth, protocol }
       }
     }
+    log.info('proxy ',proxy, ' keyword ',keyword)
     // proxy = { host: '127.0.0.1', port: 8888, protocol: 'http' }
     const webPage = await axios.get(`https://www.youtube.com/results`, {
       params: {
+        app:'desktop',
         search_query: keyword,
         sp: 'EgIQAQ==',
       },
@@ -36,6 +49,7 @@ class YoutubeDownloader {
       timeout: 5000,
       proxy,
     })
+    log.info("webpage ",webPage)
 
     if (webPage.status !== 200) {
       return []
@@ -140,6 +154,7 @@ class YoutubeDownloader {
   }> {
     const match = async () => {
       console.time('[youtube] search')
+      log.info('youtube videos search')
       const videos = await this.search(`${artist} ${trackName} audio`)
       console.timeEnd('[youtube] search')
       let video: {
@@ -168,8 +183,9 @@ class YoutubeDownloader {
       if (!video) return null
 
       console.time('[youtube] getInfo')
-      const proxy = 'http://127.0.0.1:8888'
-      const agent = httpProxyAgent(proxy)
+      
+      const httpProxyForYouTubeSettings  = store.get('settings.httpProxyForYouTube') 
+      const agent = httpProxyAgent(httpProxyForYouTubeSettings?.proxy)
       const info = await ytdl.getInfo(video.id, {
         requestOptions: { agent },
       })

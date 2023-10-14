@@ -5,14 +5,15 @@ import { cx } from '@emotion/css';
 import { motion } from 'framer-motion';
 import { IpcChannels } from '@/shared/IpcChannels'
 import Loading from '../Animation/Loading';
-
+import useGAEvent from '@/web/api/hooks/useGA'
 const AudioOutputDevices = () => {
     const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
     const [selectedDevice, setSelectedDevice] = useState('');
     const [isOpen, setIsOpen] = useState(false);
-
+    
     const togglePopover = () => {
         setIsOpen(!isOpen);
+        useGAEvent("user-action","devices","click",1)
     };
 
     useEffect(() => {
@@ -49,7 +50,10 @@ const AudioOutputDevices = () => {
                 'relative',
                 'text-black/90 transition-colors duration-400 dark:text-white/40 hover:dark:text-white/90',
             )}
-                onClick={togglePopover}
+                onClick={()=>{
+                    togglePopover()
+                }
+            }
             >
                 <Icon name='indent' className='h-5 w-5' />
                 {isOpen && (<div className={cx(

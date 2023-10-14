@@ -46,11 +46,9 @@ const Layout = () => {
             left: 0;
             width: 100%;
             height: 100%;
-            /* 其他样式属性 */
           `,
           showBackgroundImage &&
             css`
-              // background-image: '${player.track?.al.picUrl}'
               background-repeat: no-repeat;
               background-size: cover;
               background-position: center;
@@ -79,6 +77,14 @@ const Layout = () => {
           )}
         ></div>
       </motion.div>
+      {/* 遮罩 */}
+      <motion.div
+        className={cx(
+          window.env?.isElectron && !fullscreen && 'rounded-12',
+          'absolute inset-0 z-0',
+          theme === 'dark' ? 'bg-black/40' : 'bg-white/40',
+        )}
+      />
       <div
         id='layout-foreground'
         className={cx(

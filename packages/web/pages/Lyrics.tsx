@@ -99,7 +99,7 @@ const Lyrics = () => {
       index === currentLineIndex &&
         'line-clamp-4 font-bold text-accent-color-500 tracking-hilightLyric leading-lyric text-32',
       index !== currentLineIndex &&
-        'lyrics-padding normal-lyric-font-size font-black tracking-lyric leading-lyric text-dark/60 dark:text-white/60 text-24 ',
+        'lyrics-padding normal-lyric-font-size font-black tracking-lyric leading-lyric text-black/60 dark:text-white/60 text-24 ',
         // 'blur-lyric',
       index !== currentLineIndex && isHovered && 'transition-opacity duration-1000',
       // 'blur-none',
@@ -145,7 +145,7 @@ const Lyrics = () => {
     //     {
     //       <div
     //         className={cx(
-    //           'text-dark/60 dark:text-white/60 ',
+    //           'text-black/60 dark:text-white/60 ',
     //           'artist-info  no-scrollbar padding-bottom-20 h-921 mb-8 mt-8 text-center text-21 font-medium',
     //           'text-center'
     //         )}
@@ -187,7 +187,7 @@ const Lyrics = () => {
       <div
         className={cx(
           'lyrics-player h-921 ',
-          // 'text-dark/60 dark:text-white/60',
+          // 'text-black/60 dark:text-white/60',
           'text-center',
           'font-Roboto font-bold backdrop-blur-md'
         )}
@@ -204,7 +204,7 @@ const Lyrics = () => {
         >
           <div
             className={cx(
-              'text-dark/60 dark:text-white/60 ',
+              'text-black/60 dark:text-white/60 ',
               'artist-info  no-scrollbar padding-bottom-20 mb-8 mt-8 text-left text-24',
               'text-center'
             )}

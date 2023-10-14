@@ -36,8 +36,8 @@ const Background = () => {
           <>
             <div
               className={cx(
-                'absolute inset-0 h-full w-full backdrop-blur-3xl',
-                !showBackgroundImage && (theme === 'dark' ? 'bg-black/90' : 'bg-white/90')
+                'absolute inset-0 h-full w-full top-bar',
+                !showBackgroundImage && (theme === 'dark' ? 'top-bar-dark' : 'top-bar-light')
               )}
             >
               {
@@ -96,7 +96,7 @@ const TopbarDesktop = () => {
       className={cx(
         // app-region-drag 删除后即可移动console
         'app-region-drag',
-        'fixed top-0 left-0 right-0 z-20 flex items-center justify-between backdrop-blur-3xl',
+        ' fixed top-0 left-0 right-0 z-20 flex items-center justify-between',
         'pt-11 pb-10 pr-6',
         css`
           padding-left: 144px;

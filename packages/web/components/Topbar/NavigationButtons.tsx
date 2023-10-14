@@ -28,7 +28,7 @@ const NavigationButtons = () => {
           className={buttonClassNames}
         >
           <motion.div animate={controlsBack} transition={transition} className={cx(
-            ' text-dark dark:text-white',
+            ' text-black dark:text-white',
           )}>
             <Icon name='back' className='h-7 w-7' />
           </motion.div>
@@ -44,7 +44,7 @@ const NavigationButtons = () => {
           className={cx('ml-2.5', buttonClassNames)}
         >
           <motion.div animate={controlsForward} transition={transition} className={cx(
-            '  text-dark dark:text-white',
+            '  text-black dark:text-white',
           )}>
             <Icon name='forward' className='h-7 w-7' />
           </motion.div>

@@ -40,16 +40,15 @@ const Background = () => {
                 !showBackgroundImage && (theme === 'dark' ? 'top-bar-dark' : 'top-bar-light')
               )}
             >
-              {
-                // (show) &&
+              {bgURL ? (
                 <motion.div
                   className={cx(
                     'ease absolute inset-0 z-0 h-full w-full',
                     css`
-                      background-repeat: no-repeat;
-                      background-size: cover;
-                      background-position: center top;
-                    `
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    background-position: center top;
+                  `
                   )}
                   style={{ backgroundImage: `url(${bgURL})` }}
                   initial={{ opacity: 0 }}
@@ -57,7 +56,24 @@ const Background = () => {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.5 }}
                 ></motion.div>
-              }
+              ) : (
+                <motion.div
+                  className={cx(
+                    'ease absolute inset-0 z-0 h-full w-full bg-white dark:bg-black',
+                  )}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                ></motion.div>
+              )}
+              {/* 遮罩 */}
+              <motion.div
+                className={cx(
+                  'absolute inset-0 z-0',
+                  theme === 'dark' ? 'bg-black/50' : 'bg-white/50'
+                )}
+              />
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

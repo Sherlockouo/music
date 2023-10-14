@@ -63,7 +63,7 @@ const Track = ({
               <Fragment key={a.id}>
                 {index > 0 && ', '}
                 <NavLink
-                  className='transition-all duration-300 hover:text-dark/70 dark:hover:text-white/70'
+                  className='transition-all duration-300 hover:text-black/70 dark:hover:text-white/70'
                   to={`/artist/${a.id}`}
                 >
                   {a.name}

@@ -186,7 +186,7 @@ function VolumeSlider() {
         className={cx(
           // just dont need this I guess
           // ' transition-colors duration-400 ',
-        // ' text-dark dark:text-white'
+          // ' text-black dark:text-white'
         )}
       >
         <Icon name='volume' className={cx(

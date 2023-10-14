@@ -8,12 +8,20 @@ import { motion, useAnimationControls } from 'framer-motion'
 import General from './General'
 import About from './About'
 import Player from './Player'
+import KeyboardShortcuts from './KeyboardShortcuts'
 import Lab from './Lab'
 import PageTransition from '@/web/components/PageTransition'
 import { ease } from '@/web/utils/const'
 import useIsMobile from '@/web/hooks/useIsMobile'
 
-export const categoryIds = ['general', 'appearance', 'player', 'lab', 'about'] as const
+export const categoryIds = [
+  'general',
+  'appearance',
+  'player',
+  'keyboard-shortcuts',
+  'lab',
+  'about',
+] as const
 export type Category = typeof categoryIds[number]
 
 const Sidebar = ({
@@ -29,6 +37,7 @@ const Sidebar = ({
     { name: t`settings.general`, id: 'general' },
     { name: t`settings.appearance`, id: 'appearance' },
     { name: t`settings.player`, id: 'player' },
+    { name: t`settings.keyboard-shortcuts.title`, id: 'keyboard-shortcuts' },
     { name: t`settings.lab`, id: 'lab' },
     { name: t`settings.about`, id: 'about' },
   ]
@@ -41,8 +50,7 @@ const Sidebar = ({
   }, [activeCategory])
 
   return (
-    <div className={cx(
-    'relative flex flex-col', isMobile && 'w-2/5')}>
+    <div className={cx('relative flex flex-col', isMobile && 'w-2/5')}>
       <motion.div
         initial={{ y: 11.5 }}
         animate={indicatorAnimation}
@@ -60,7 +68,7 @@ const Sidebar = ({
             'flex items-center rounded-lg px-3 py-2 font-medium transition-colors duration-500',
             activeCategory === category.id
               ? 'text-accent-color-500'
-              : 'text-black/50 dark:text-white/50 hover:dark:text-white/90 hover:text-black/90'
+              : 'text-black/50 hover:text-black/90 dark:text-white/50 hover:dark:text-white/90'
           )}
         >
           {category.name}
@@ -79,6 +87,7 @@ const Settings = () => {
     { id: 'general', component: <General /> },
     { id: 'appearance', component: <Appearance /> },
     { id: 'player', component: <Player /> },
+    { id: 'keyboard-shortcuts', component: <KeyboardShortcuts /> },
     { id: 'lab', component: <Lab /> },
     { id: 'about', component: <About /> },
   ]

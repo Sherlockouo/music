@@ -2,7 +2,7 @@
   "common": {
     "album_one": "专辑",
     "album_other": "专辑",
-    "daily":"日推",
+    "daily": "日推",
     "album-with-count_one": "{{count}} 张专辑",
     "album-with-count_other": "{{count}} 张专辑",
     "artist_one": "艺人",
@@ -17,9 +17,10 @@
     "video_other": "视频",
     "video-with-count_one": "{{count}} 个视频",
     "video-with-count_other": "{{count}} 个视频",
-    "lyric-welcome":"今天听点什么呢？",
-    "cloud":"云盘",
-    "upload":"上传歌曲"
+    "lyric-welcome": "今天听点什么呢？",
+    "cloud": "云盘",
+    "upload": "上传歌曲",
+    "hide-show-player": "隐藏/显示播放器"
   },
   "navigation": {
     "goBack": "返回",
@@ -39,6 +40,7 @@
   "player": {
     "play": "播放",
     "pause": "暂停",
+    "play-pause": "播放/暂停",
     "next": "下一首",
     "previous": "上一首",
     "enable-shuffle": "开启随机播放",
@@ -48,7 +50,10 @@
     "disable-repeat": "关闭循环",
     "mini-mode": "Mini模式",
     "exit-mini-mode": "退出Mini模式",
-    "queue": "播放列表"
+    "queue": "播放列表",
+    "favorite": "喜欢歌曲",
+    "volume-up": "增加音量",
+    "volume-down": "减少音量"
   },
   "toasts": {
     "copied": "已复制",
@@ -70,14 +75,14 @@
   "settings": {
     "settings": "设置",
     "appearance": "外观",
-    "theme":"主题",
-    "accent-color":"强调色",
-    "lyric-style":"背景图片",
-    "show-lyric-background-img":"显示背景图片",
+    "theme": "主题",
+    "accent-color": "强调色",
+    "lyric-style": "背景图片",
+    "show-lyric-background-img": "显示背景图片",
     "general": "通用",
     "lab": "实验室",
-    "unlock":"解锁更多歌源",
-    "engine":"引擎",
+    "unlock": "解锁更多歌源",
+    "engine": "引擎",
     "player": "播放",
     "title-language": "语言",
     "title-netease-music": "网易云音乐",
@@ -88,7 +93,14 @@
     "player-find-alternative-track-on-youtube-if-not-available-on-netease": "当播放的歌曲无版权或无法播放时，自动从 YouTube 寻找替代音频。",
     "player-youtube-unlock": "YouTube 解锁",
     "volume-control": "音量控制",
-    "about": "关于"
+    "about": "关于",
+    "keyboard-shortcuts": {
+      "title": "快捷键",
+      "enable-global": "启用全局快捷键",
+      "function": "功能",
+      "local": "快捷键",
+      "global": "全局快捷键"
+    }
   },
   "context-menu": {
     "share": "分享",
@@ -112,7 +124,7 @@
     "listen": "播放",
     "latest-releases": "最新发行",
     "popular": "热门歌曲",
-    "all-songs":"所有歌曲",
-    "synthesis":"综合信息"
+    "all-songs": "所有歌曲",
+    "synthesis": "综合信息"
   }
 }

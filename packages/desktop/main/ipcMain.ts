@@ -13,6 +13,7 @@ import fastFolderSize from 'fast-folder-size'
 import path from 'path'
 import prettyBytes from 'pretty-bytes'
 import { db, Tables } from './db'
+import { getPlatform } from './utils'
 
 log.info('[electron] ipcMain.ts')
 
@@ -261,4 +262,11 @@ function initOtherIpcMain() {
     //   })
     // })
   }
+
+  /**
+   * 读取操作系统的平台类型
+   */
+  on(IpcChannels.GetPlatform, event => {
+    event.returnValue = getPlatform()
+  })
 }

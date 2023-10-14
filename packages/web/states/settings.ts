@@ -22,7 +22,30 @@ interface Settings {
   showBackgroundImage: boolean
   unlock: boolean
   theme: string
+  keyboardShortcuts: {
+    globalEnabled: boolean
+    localEnabled: boolean
+    darwin: KeyboardShortcuts
+    win32: KeyboardShortcuts
+    linux: KeyboardShortcuts
+  }
 }
+
+export interface KeyboardShortcuts {
+  playPause: KeyboardShortcutItem
+  next: KeyboardShortcutItem
+  previous: KeyboardShortcutItem
+  volumeUp: KeyboardShortcutItem
+  volumeDown: KeyboardShortcutItem
+  favorite: KeyboardShortcutItem
+  switchVisibility: KeyboardShortcutItem
+}
+
+/**
+ * A keyboard shortcut item
+ * [local, global]
+ */
+type KeyboardShortcutItem = [string | null, string | null]
 
 const initSettings: Settings = {
   accentColor: 'yellow',
@@ -34,6 +57,37 @@ const initSettings: Settings = {
   showBackgroundImage: false,
   unlock: true,
   theme: 'dark',
+  keyboardShortcuts: {
+    localEnabled: true,
+    globalEnabled: false,
+    darwin: {
+      playPause: ['space', 'option+command+p'],
+      next: ['command+right', 'option+command+right'],
+      previous: ['command+left', 'option+command+left'],
+      volumeUp: ['command+up', 'option+command+up'],
+      volumeDown: ['command+down', 'option+command+down'],
+      favorite: ['command+l', 'option+command+l'],
+      switchVisibility: ['command+m', 'option+command+m'],
+    },
+    win32: {
+      playPause: ['space', 'ctrl+p'],
+      next: ['right', 'ctrl+right'],
+      previous: ['left', 'ctrl+left'],
+      volumeUp: ['up', 'ctrl+up'],
+      volumeDown: ['down', 'ctrl+down'],
+      favorite: ['l', 'ctrl+l'],
+      switchVisibility: ['m', 'ctrl+m'],
+    },
+    linux: {
+      playPause: ['space', 'ctrl+p'],
+      next: ['right', 'ctrl+right'],
+      previous: ['left', 'ctrl+left'],
+      volumeUp: ['up', 'ctrl+up'],
+      volumeDown: ['down', 'ctrl+down'],
+      favorite: ['l', 'ctrl+l'],
+      switchVisibility: ['m', 'ctrl+m'],
+    },
+  },
 }
 
 const STORAGE_KEY = 'settings'

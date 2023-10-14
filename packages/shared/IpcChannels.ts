@@ -27,6 +27,7 @@ export const enum IpcChannels {
   GetAlbumFromAppleMusic = 'GetAlbumFromAppleMusic',
   GetArtistFromAppleMusic = 'GetArtistFromAppleMusic',
   Logout = 'Logout',
+  GetPlatform = 'GetPlatform',
 }
 
 // ipcMain.on params
@@ -70,6 +71,7 @@ export interface IpcChannelsParams {
   }
   [IpcChannels.GetArtistFromAppleMusic]: { id: number; name: string }
   [IpcChannels.Logout]: void
+  [IpcChannels.GetPlatform]: void
 }
 
 // ipcRenderer.on params
@@ -95,4 +97,5 @@ export interface IpcChannelsReturns {
   [IpcChannels.GetAlbumFromAppleMusic]: AppleMusicAlbum | undefined
   [IpcChannels.GetArtistFromAppleMusic]: AppleMusicArtist | undefined
   [IpcChannels.Logout]: void
+  [IpcChannels.GetPlatform]: 'win32' | 'darwin' | 'linux'
 }

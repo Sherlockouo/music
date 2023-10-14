@@ -21,19 +21,19 @@ export default function useUserVideos() {
   return useQuery(
     key,
     () => {
-      //   const existsQueryData = reactQueryClient.getQueryData(key)
-      //   if (!existsQueryData) {
-      //     window.ipcRenderer
-      //       ?.invoke(IpcChannels.GetApiCache, {
-      //         api: CacheAPIs.Likelist,
-      //         query: {
-      //           uid,
-      //         },
-      //       })
-      //       .then(cache => {
-      //         if (cache) reactQueryClient.setQueryData(key, cache)
-      //       })
-      //   }
+        const existsQueryData = reactQueryClient.getQueryData(key)
+        if (!existsQueryData) {
+          window.ipcRenderer
+            ?.invoke(IpcChannels.GetApiCache, {
+              api: CacheAPIs.Likelist,
+              query: {
+                uid,
+              },
+            })
+            .then(cache => {
+              if (cache) reactQueryClient.setQueryData(key, cache)
+            })
+        }
 
       return fetchUserVideos()
     },

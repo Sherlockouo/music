@@ -8,6 +8,7 @@ import { useSnapshot } from 'valtio'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ease } from '@/web/utils/const'
 import { useLocation } from 'react-router-dom'
+import { IpcChannels } from '@/shared/IpcChannels'
 import player from '@/web/states/player'
 import settings from '@/web/states/settings'
 import Theme from './Theme'
@@ -73,7 +74,7 @@ const Background = () => {
                   className={cx(
                     'z-1 absolute h-full w-full',
                     css`
-                      background-color: rgba(0, 0, 0, 0.05);
+                      background-color: rgba(0, 0, 0, 0.06);
                     `
                   )}
                 ></div>
@@ -87,6 +88,9 @@ const Background = () => {
 }
 
 const TopbarDesktop = () => {
+  const maxRestore = () => {
+    window.ipcRenderer?.send(IpcChannels.MaximizeOrUnmaximize)
+  }
   return (
     <div
       className={cx(
@@ -98,6 +102,7 @@ const TopbarDesktop = () => {
           padding-left: 144px;
         `
       )}
+      onDoubleClick={ maxRestore }
     >
       {/* Background */}
       <Background />

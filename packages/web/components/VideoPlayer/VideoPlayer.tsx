@@ -1,6 +1,6 @@
 import { css, cx } from '@emotion/css'
 import { createPortal } from 'react-dom'
-import useMV, { useMVUrl } from '../../api/hooks/useMV'
+import useMV, { useMVUrl, useVideo, useVideoUrl } from '../../api/hooks/useMV'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ease } from '@/web/utils/const'
 import Icon from '../Icon'
@@ -9,14 +9,99 @@ import { toHttps } from '@/web/utils/common'
 import uiStates, { closeVideoPlayer } from '@/web/states/uiStates'
 import { useSnapshot } from 'valtio'
 import { useNavigate } from 'react-router-dom'
+import { FetchMVUrlResponse,FetchMVResponse } from '@/shared/api/MV'
 
 const VideoPlayer = () => {
   const { playingVideoID } = useSnapshot(uiStates)
   const { fullscreen } = useSnapshot(uiStates)
   const navigate = useNavigate()
+  const isNumber = (str: string) => {
+    return !isNaN(Number(str));
+  }
+  // for MV
+  let mv : FetchMVResponse | undefined = {
+    code: 0,
+    loadingPic: "",
+    bufferPic: "",
+  loadingPicFS: "",
+  bufferPicFS: "",
+    data: {
+      artistId: 0,
+      artistName: '',
+      artists: [],
+      briefDesc: '',
+      brs: [],
+      commentCount: 0,
+      commentThreadId: '',
+      cover: '',
+      coverId: 0,
+      coverId_str: '',
+      desc: '',
+      duration: 0,
+      id: 0,
+      nType: 0,
+      name: '',
+      playCount: 0,
+      price: undefined,
+      publishTime: '',
+      shareCount: 0,
+      subCount: 0,
+      videoGroup: []
+    },
+    mp:{
+      cp: 0,
+      dl: 0,
+      fee: 0,
+      id: 0,
+      msg: null,
+      mvFee: 0,
+      normal: false,
+      payed: 0,
+      pl: 0,
+      sid: 0,
+      st: 0,
+      unauthorized: false
+    }
+  }
+  let isLoading: boolean
+  
 
-  const { data: mv, isLoading } = useMV({ mvid: playingVideoID || 0 })
-  const { data: mvDetails } = useMVUrl({ id: playingVideoID || 0 })
+  let mvDetails: FetchMVUrlResponse = {
+    code:0,
+    data: {
+      url: "",
+      code: 0,
+      expi: 0,
+      fee: 0,
+      id: 0,
+      md5: '',
+      msg: '',
+      mvFee: 0,
+      promotionVo: undefined,
+      r: 0,
+      size: 0,
+      st: 0
+    }
+  }
+
+  if (!isNumber(playingVideoID as string)) {
+    const videoResponse = useVideo({id: playingVideoID || ""})
+    // console.log('video response',videoResponse);
+    mv.data.cover = videoResponse.data?.data.coverUrl as string
+    mv.data.artistName = videoResponse.data?.data.creator.nickname as string
+    mv.data.name = videoResponse.data?.data.title as string
+    const res = useVideoUrl({ id: playingVideoID || "" })
+    console.log('video url respones',res);
+    
+    isLoading = res.isLoading
+    mvDetails.data.url = res.data?.urls[0].url as string
+  } else {
+    const mvResponse = useMV({ mvid: Number(playingVideoID) || 0 })
+    mv = mvResponse.data
+    isLoading = mvResponse.isLoading
+    const res = useMVUrl({ id: Number(playingVideoID) || 0 })
+    mvDetails.data.url = res.data?.data.url as string
+  }
   const mvUrl = toHttps(mvDetails?.data?.url)
   const poster = toHttps(mv?.data.cover)
 
@@ -27,7 +112,7 @@ const VideoPlayer = () => {
           id='video-player'
           className={cx(
             'fixed inset-0 z-20 flex select-none items-center justify-center overflow-hidden',
-            window.env?.isElectron && !fullscreen && 'rounded-24'
+            window.env?.isElectron && !fullscreen && 'rounded-12'
           )}
         >
           {/* Blur bg */}

@@ -92,6 +92,7 @@
   },
   "context-menu": {
     "share": "分享",
+    "play": "播放",
     "copy-netease-link": "复制网易云链接",
     "add-to-playlist": "收藏到歌单",
     "add-to-liked-tracks": "收藏到喜欢的音乐",

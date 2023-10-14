@@ -50,7 +50,7 @@ const ArtistSongs = () => {
   }
 
   return (
-    <div className='h-800 z-10 mt-10'>
+    <div className='h-800 z-10'>
       <ScrollPagination getData={getData} renderItems={renderItems} />
     </div>
   )

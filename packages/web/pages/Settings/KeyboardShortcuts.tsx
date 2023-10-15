@@ -8,7 +8,7 @@ import { FC, KeyboardEventHandler, useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
 import { BlockTitle, Option, OptionText, Switch } from './Controls'
 import { IpcChannels } from '@/shared/IpcChannels'
-import { clone, isEqual, last } from 'lodash-es'
+import { isEqual, last } from 'lodash-es'
 
 const modifierKeys = ['Control', 'Alt', 'Shift', 'Meta', 'Super', 'Cmd', 'Option']
 const keyNameMap = {
@@ -50,7 +50,7 @@ const ShortcutSwitchSettings = () => {
   const onChange = (value: boolean) => {
     settings.keyboardShortcuts.globalEnabled = value
     window.ipcRenderer?.invoke(IpcChannels.BindKeyboardShortcuts, {
-      shortcuts: clone(settings.keyboardShortcuts[platform]),
+      shortcuts: JSON.parse(JSON.stringify(settings.keyboardShortcuts)),
     })
   }
 
@@ -245,7 +245,7 @@ const ShortcutItemBindings: FC<{ fnKey: keyof KeyboardShortcuts; name: string }>
       settings.keyboardShortcuts[platform][fnKey][index] = value
       window.ipcRenderer
         ?.invoke(IpcChannels.BindKeyboardShortcuts, {
-          shortcuts: JSON.parse(JSON.stringify(settings.keyboardShortcuts[platform])),
+          shortcuts: JSON.parse(JSON.stringify(settings.keyboardShortcuts)),
         })
         .catch(error => {
           console.error(error)

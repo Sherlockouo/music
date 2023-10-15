@@ -43,5 +43,5 @@ export const getNetworkInfo = () => {
 export const sleep = (ms: number) => new Promise(r => setTimeout(r, ms))
 
 export const getPlatform = () => {
-  return os.platform()
+  return os.platform() as 'darwin' | 'win32' | 'linux'
 }

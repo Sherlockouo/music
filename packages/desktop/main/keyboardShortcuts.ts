@@ -10,18 +10,22 @@ export const readKeyboardShortcuts = () => {
   return store.get(`settings.keyboardShortcuts.${platform}`) as KeyboardShortcuts
 }
 
+export const readKeyboardShortcutSettings = () => {
+  return store.get(`settings.keyboardShortcuts`) as KeyboardShortcutSettings
+}
+
 const isGlobalKeyboardShortcutsEnabled = () => {
   return store.get('settings.keyboardShortcuts.globalEnabled') as boolean
 }
 
 export const bindingKeyboardShortcuts = (
   webContexts: WebContents,
-  shortcuts?: KeyboardShortcuts
+  shortcuts?: KeyboardShortcutSettings
 ) => {
   if (!shortcuts) {
-    shortcuts = readKeyboardShortcuts()
+    shortcuts = readKeyboardShortcutSettings()
   } else {
-    store.set(`settings.keyboardShortcuts.${getPlatform()}`, shortcuts)
+    store.set(`settings.keyboardShortcuts`, shortcuts)
   }
 
   createMenu(webContexts)
@@ -31,10 +35,10 @@ export const bindingKeyboardShortcuts = (
 
 const bindingGlobalKeyboardShortcuts = (
   webContexts: WebContents,
-  shortcuts?: KeyboardShortcuts
+  shortcuts?: KeyboardShortcutSettings
 ) => {
   if (!shortcuts) {
-    shortcuts = readKeyboardShortcuts()
+    shortcuts = readKeyboardShortcutSettings()
   } else {
     store.set(`settings.keyboardShortcuts.${getPlatform()}`, shortcuts)
   }
@@ -45,26 +49,29 @@ const bindingGlobalKeyboardShortcuts = (
     return
   }
 
-  if (shortcuts.playPause[1]) {
-    globalShortcut.register(formatForAccelerator(shortcuts.playPause[1])!, () => {
+  const platform = getPlatform()
+  const platformShortcuts = shortcuts[platform] as KeyboardShortcuts
+
+  if (platformShortcuts.playPause[1]) {
+    globalShortcut.register(formatForAccelerator(platformShortcuts.playPause[1])!, () => {
       webContexts.send(IpcChannels.PlayOrPause)
     })
   }
 
-  if (shortcuts.next[1]) {
-    globalShortcut.register(formatForAccelerator(shortcuts.next[1])!, () => {
+  if (platformShortcuts.next[1]) {
+    globalShortcut.register(formatForAccelerator(platformShortcuts.next[1])!, () => {
       webContexts.send(IpcChannels.Next)
     })
   }
 
-  if (shortcuts.previous[1]) {
-    globalShortcut.register(formatForAccelerator(shortcuts.previous[1])!, () => {
+  if (platformShortcuts.previous[1]) {
+    globalShortcut.register(formatForAccelerator(platformShortcuts.previous[1])!, () => {
       webContexts.send(IpcChannels.Previous)
     })
   }
 
-  if (shortcuts.favorite[1]) {
-    globalShortcut.register(formatForAccelerator(shortcuts.favorite[1])!, () => {
+  if (platformShortcuts.favorite[1]) {
+    globalShortcut.register(formatForAccelerator(platformShortcuts.favorite[1])!, () => {
       webContexts.send(IpcChannels.Like)
     })
   }

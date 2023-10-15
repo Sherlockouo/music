@@ -22,13 +22,7 @@ interface Settings {
   showBackgroundImage: boolean
   unlock: boolean
   theme: string
-  keyboardShortcuts: {
-    globalEnabled: boolean
-    localEnabled: boolean
-    darwin: KeyboardShortcuts
-    win32: KeyboardShortcuts
-    linux: KeyboardShortcuts
-  }
+  keyboardShortcuts: KeyboardShortcutSettings
 }
 
 const initSettings: Settings = {

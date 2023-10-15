@@ -224,20 +224,26 @@ declare interface Video {
 }
 
 declare interface SimpleSong {
-  simpleSong: Track;
-  album: string;
-  artist: string;
-  bitrate: number;
-  songId: number;
-  songName: string;
-  addTime: number;
-  cover: number;
-  coverId: string;
-  lyricId: string;
-  version: number;
-  fileSize: number;
-  fileName: string;
+  simpleSong: Track
+  album: string
+  artist: string
+  bitrate: number
+  songId: number
+  songName: string
+  addTime: number
+  cover: number
+  coverId: string
+  lyricId: string
+  version: number
+  fileSize: number
+  fileName: string
 }
+
+/**
+ * A keyboard shortcut item
+ * [local, global]
+ */
+declare type KeyboardShortcutItem = [string[] | null, string[] | null]
 
 declare interface KeyboardShortcuts {
   playPause: KeyboardShortcutItem
@@ -249,8 +255,10 @@ declare interface KeyboardShortcuts {
   switchVisibility: KeyboardShortcutItem
 }
 
-/**
- * A keyboard shortcut item
- * [local, global]
- */
-declare type KeyboardShortcutItem = [string[] | null, string[] | null]
+declare interface KeyboardShortcutSettings {
+  globalEnabled: boolean
+  localEnabled: boolean
+  darwin: KeyboardShortcuts
+  win32: KeyboardShortcuts
+  linux: KeyboardShortcuts
+}

@@ -74,7 +74,7 @@ export interface IpcChannelsParams {
   [IpcChannels.GetArtistFromAppleMusic]: { id: number; name: string }
   [IpcChannels.Logout]: void
   [IpcChannels.GetPlatform]: void
-  [IpcChannels.BindKeyboardShortcuts]: { shortcuts: KeyboardShortcuts }
+  [IpcChannels.BindKeyboardShortcuts]: { shortcuts: KeyboardShortcutSettings }
 }
 
 // ipcRenderer.on params

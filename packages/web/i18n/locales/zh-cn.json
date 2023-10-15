@@ -99,7 +99,11 @@
       "enable-global": "启用全局快捷键",
       "function": "功能",
       "local": "快捷键",
-      "global": "全局快捷键"
+      "global": "全局快捷键",
+      "item-clear": "清除快捷键",
+      "binding-input-waiting-keydown-placeholder": "请按键",
+      "keyboard-shortcut-in-used": "快捷键已使用",
+      "keyboard-shortcut-in-used-by-other-program": "该快捷键陂其他程序占用"
     }
   },
   "context-menu": {

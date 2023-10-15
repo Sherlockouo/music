@@ -99,7 +99,11 @@
       "enable-global": "Enable Global Keyboard Shortcuts",
       "function": "Function",
       "local": "Shortcut",
-      "global": "Global Shortcut"
+      "global": "Global Shortcut",
+      "item-clear": "Clear Shortcut",
+      "binding-input-waiting-keydown-placeholder": "please press key(s)",
+      "keyboard-shortcut-in-used": "Shortcut already used",
+      "keyboard-shortcut-in-used-by-other-program": "Shortcut is used by other program"
     }
   },
   "context-menu": {

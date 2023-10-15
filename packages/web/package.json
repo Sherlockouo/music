@@ -36,6 +36,7 @@
     "howler": "^2.2.3",
     "i18next": "^22.4.9",
     "js-cookie": "^3.0.1",
+    "keyboard-event-to-string": "^2.1.0",
     "lodash-es": "^4.17.21",
     "md5": "^2.3.0",
     "qrcode": "^1.5.1",

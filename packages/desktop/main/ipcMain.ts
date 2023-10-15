@@ -266,7 +266,7 @@ function initOtherIpcMain() {
   /**
    * 读取操作系统的平台类型
    */
-  on(IpcChannels.GetPlatform, event => {
+  handle(IpcChannels.GetPlatform, event => {
     event.returnValue = getPlatform()
   })
 }

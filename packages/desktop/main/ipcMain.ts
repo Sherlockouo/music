@@ -14,6 +14,7 @@ import path from 'path'
 import prettyBytes from 'pretty-bytes'
 import { db, Tables } from './db'
 import { getPlatform } from './utils'
+import { bindingKeyboardShortcuts } from './keyboardShortcuts'
 
 log.info('[electron] ipcMain.ts')
 
@@ -268,5 +269,12 @@ function initOtherIpcMain() {
    */
   handle(IpcChannels.GetPlatform, event => {
     event.returnValue = getPlatform()
+  })
+
+  /**
+   * 绑定键盘快捷键
+   */
+  handle(IpcChannels.BindKeyboardShortcuts, (ev, { shortcuts }) => {
+    bindingKeyboardShortcuts(ev.sender, shortcuts)
   })
 }

@@ -2,6 +2,7 @@ import { AppleMusicAlbum, AppleMusicArtist } from './AppleMusic'
 import { CacheAPIs } from './CacheAPIs'
 import { RepeatMode } from './playerDataTypes'
 
+
 export const enum IpcChannels {
   ClearAPICache = 'ClearAPICache',
   Minimize = 'Minimize',
@@ -28,6 +29,7 @@ export const enum IpcChannels {
   GetArtistFromAppleMusic = 'GetArtistFromAppleMusic',
   Logout = 'Logout',
   GetPlatform = 'GetPlatform',
+  BindKeyboardShortcuts = 'BindKeyboardShortcuts',
 }
 
 // ipcMain.on params
@@ -72,6 +74,7 @@ export interface IpcChannelsParams {
   [IpcChannels.GetArtistFromAppleMusic]: { id: number; name: string }
   [IpcChannels.Logout]: void
   [IpcChannels.GetPlatform]: void
+  [IpcChannels.BindKeyboardShortcuts]: { shortcuts: KeyboardShortcuts }
 }
 
 // ipcRenderer.on params
@@ -98,4 +101,5 @@ export interface IpcChannelsReturns {
   [IpcChannels.GetArtistFromAppleMusic]: AppleMusicArtist | undefined
   [IpcChannels.Logout]: void
   [IpcChannels.GetPlatform]: 'win32' | 'darwin' | 'linux'
+  [IpcChannels.BindKeyboardShortcuts]: void
 }

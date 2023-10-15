@@ -2,12 +2,13 @@ import Icon from '@/web/components/Icon'
 import useKeyboardShortcuts from '@/web/hooks/useKeyboardShortcuts'
 import useOSPlatform from '@/web/hooks/useOSPlatform'
 import useSettings from '@/web/hooks/useSettings'
-import settings, { KeyboardShortcuts } from '@/web/states/settings'
+import settings from '@/web/states/settings'
 import { t } from 'i18next'
-import { toString as event2String } from 'keyboard-event-to-string'
 import { FC, KeyboardEventHandler, useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
 import { BlockTitle, Option, OptionText, Switch } from './Controls'
+import { IpcChannels } from '@/shared/IpcChannels'
+import { isEqual } from 'lodash-es'
 
 const ShortcutSwitchSettings = () => {
   const {
@@ -29,11 +30,12 @@ const ShortcutSwitchSettings = () => {
 }
 
 const ShortcutBindingInput: FC<{
-  value: string | null
-  onChange?: (value: string | null) => void
+  value: string[] | null
+  onChange?: (value: string[] | null) => void
 }> = ({ value, onChange }) => {
   const [inputValue, setInputValue] = useState(value)
   const [isBinding, setBinding] = useState(false)
+  const platform = useOSPlatform()
 
   useEffect(() => {
     setInputValue(value)
@@ -45,10 +47,10 @@ const ShortcutBindingInput: FC<{
     }
 
     if (inputValue === null) {
-      return ''
+      return t`settings.keyboard-shortcuts.binding-input-unbound`
     }
 
-    return inputValue
+    return inputValue.join('+')
   }, [inputValue, isBinding])
 
   const clear = () => {
@@ -66,6 +68,9 @@ const ShortcutBindingInput: FC<{
       return
     }
 
+    e.preventDefault()
+    e.stopPropagation()
+
     if (e.key === 'Escape') {
       clear()
       return
@@ -77,8 +82,33 @@ const ShortcutBindingInput: FC<{
       return
     }
 
-    const text = event2String(e as any) // React keyboard event -> DOM keyboard event
-    setInputValue(text)
+    let arr = new Array<string>()
+
+    if (e.metaKey && platform === 'darwin') {
+      arr.push('Cmd')
+    } else if (e.metaKey && platform !== 'darwin') {
+      arr.push('Super')
+    }
+
+    if (e.altKey && platform === 'darwin') {
+      arr.push('Option')
+    } else if (e.altKey && platform !== 'darwin') {
+      arr.push('Alt')
+    }
+
+    if (e.ctrlKey) {
+      arr.push('Control')
+    }
+
+    if (e.shiftKey) {
+      arr.push('Shift')
+    }
+
+    arr.push(e.key.replace(/^Arrow(\w+)$/, '$1').replace(/^ $/, 'Space'))
+
+    console.log(arr, e)
+
+    setInputValue(arr)
   }
 
   const onBlur = () => {
@@ -125,9 +155,14 @@ const ShortcutItemBindings: FC<{ fnKey: keyof KeyboardShortcuts; name: string }>
   const platform = useOSPlatform()
 
   const updateBinding = (index: 0 | 1) => {
-    return (value: string | null) => {
+    return (value: string[] | null) => {
       const conflicted =
-        value !== null && Object.values(settings.keyboardShortcuts[platform]).flat().includes(value)
+        value !== null &&
+        Object.entries(settings.keyboardShortcuts[platform]).some(
+          ([key, v]: [string, KeyboardShortcutItem]) => {
+            return key !== fnKey && isEqual(v[index], value)
+          }
+        )
 
       if (conflicted) {
         toast.error(t`settings.keyboard-shortcuts.keyboard-shortcut-in-used`)
@@ -135,6 +170,14 @@ const ShortcutItemBindings: FC<{ fnKey: keyof KeyboardShortcuts; name: string }>
       }
 
       settings.keyboardShortcuts[platform][fnKey][index] = value
+      window.ipcRenderer
+        ?.invoke(IpcChannels.BindKeyboardShortcuts, {
+          shortcuts: JSON.parse(JSON.stringify(settings.keyboardShortcuts[platform])),
+        })
+        .catch(error => {
+          console.error(error)
+          toast.error(error.message)
+        })
     }
   }
 
@@ -165,8 +208,7 @@ const ShortcutBindings = () => {
         <ShortcutItemBindings fnKey='playPause' name={t`player.play-pause`} />
         <ShortcutItemBindings fnKey='next' name={t`player.next`} />
         <ShortcutItemBindings fnKey='previous' name={t`player.previous`} />
-        <ShortcutItemBindings fnKey='volumeUp' name={t`player.volume-up`} />
-        <ShortcutItemBindings fnKey='volumeDown' name={t`player.volume-down`} />
+        <ShortcutItemBindings fnKey='favorite' name={t`player.favorite`} />
         <ShortcutItemBindings fnKey='switchVisibility' name={t`common.hide-show-player`} />
       </tbody>
     </table>

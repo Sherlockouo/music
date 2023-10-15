@@ -238,3 +238,19 @@ declare interface SimpleSong {
   fileSize: number;
   fileName: string;
 }
+
+declare interface KeyboardShortcuts {
+  playPause: KeyboardShortcutItem
+  next: KeyboardShortcutItem
+  previous: KeyboardShortcutItem
+  volumeUp: KeyboardShortcutItem
+  volumeDown: KeyboardShortcutItem
+  favorite: KeyboardShortcutItem
+  switchVisibility: KeyboardShortcutItem
+}
+
+/**
+ * A keyboard shortcut item
+ * [local, global]
+ */
+declare type KeyboardShortcutItem = [string[] | null, string[] | null]

@@ -31,22 +31,6 @@ interface Settings {
   }
 }
 
-export interface KeyboardShortcuts {
-  playPause: KeyboardShortcutItem
-  next: KeyboardShortcutItem
-  previous: KeyboardShortcutItem
-  volumeUp: KeyboardShortcutItem
-  volumeDown: KeyboardShortcutItem
-  favorite: KeyboardShortcutItem
-  switchVisibility: KeyboardShortcutItem
-}
-
-/**
- * A keyboard shortcut item
- * [local, global]
- */
-type KeyboardShortcutItem = [string | null, string | null]
-
 const initSettings: Settings = {
   accentColor: 'yellow',
   language: getInitLanguage(),
@@ -61,31 +45,31 @@ const initSettings: Settings = {
     localEnabled: true,
     globalEnabled: false,
     darwin: {
-      playPause: ['space', 'option+command+p'],
-      next: ['command+right', 'option+command+right'],
-      previous: ['command+left', 'option+command+left'],
-      volumeUp: ['command+up', 'option+command+up'],
-      volumeDown: ['command+down', 'option+command+down'],
-      favorite: ['command+l', 'option+command+l'],
-      switchVisibility: ['command+m', 'option+command+m'],
+      playPause: [['Space'], ['Cmd', 'p']],
+      next: [['Right'], ['Cmd', 'Right']],
+      previous: [['Left'], ['Cmd', 'Left']],
+      volumeUp: [['Up'], ['Cmd', 'up']],
+      volumeDown: [['Down'], ['Cmd', 'Down']],
+      favorite: [['l'], ['Cmd', 'l']],
+      switchVisibility: [['m'], ['Cmd', 'm']],
     },
     win32: {
-      playPause: ['space', 'ctrl+p'],
-      next: ['right', 'ctrl+right'],
-      previous: ['left', 'ctrl+left'],
-      volumeUp: ['up', 'ctrl+up'],
-      volumeDown: ['down', 'ctrl+down'],
-      favorite: ['l', 'ctrl+l'],
-      switchVisibility: ['m', 'ctrl+m'],
+      playPause: [['Space'], ['Ctrl', 'Shift', 'p']],
+      next: [['Right'], ['Ctrl', 'Shift', 'Right']],
+      previous: [['Left'], ['Ctrl', 'Shift', 'Left']],
+      volumeUp: [['Up'], ['Ctrl', 'Shift', 'up']],
+      volumeDown: [['Down'], ['Ctrl', 'Shift', 'Down']],
+      favorite: [['l'], ['Ctrl', 'Shift', 'l']],
+      switchVisibility: [['m'], ['Ctrl', 'Shift', 'm']],
     },
     linux: {
-      playPause: ['space', 'ctrl+p'],
-      next: ['right', 'ctrl+right'],
-      previous: ['left', 'ctrl+left'],
-      volumeUp: ['up', 'ctrl+up'],
-      volumeDown: ['down', 'ctrl+down'],
-      favorite: ['l', 'ctrl+l'],
-      switchVisibility: ['m', 'ctrl+m'],
+      playPause: [['Space'], ['Ctrl', 'Shift', 'p']],
+      next: [['Right'], ['Ctrl', 'Shift', 'Right']],
+      previous: [['Left'], ['Ctrl', 'Shift', 'Left']],
+      volumeUp: [['Up'], ['Ctrl', 'Shift', 'up']],
+      volumeDown: [['Down'], ['Ctrl', 'Shift', 'Down']],
+      favorite: [['l'], ['Ctrl', 'Shift', 'l']],
+      switchVisibility: [['m'], ['Ctrl', 'Shift', 'm']],
     },
   },
 }

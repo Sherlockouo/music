@@ -305,9 +305,6 @@ importers:
       js-cookie:
         specifier: ^3.0.1
         version: 3.0.1
-      keyboard-event-to-string:
-        specifier: ^2.1.0
-        version: 2.1.0
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
@@ -8024,10 +8021,6 @@ packages:
       readable-stream: 2.3.7
       setimmediate: 1.0.5
     dev: true
-
-  /keyboard-event-to-string@2.1.0:
-    resolution: {integrity: sha512-ACRfkognB7i5ISqcaobzCR115t4CQx2OWXHZkWFAo55Hdrufiwp3zZjxkaTjRtPNAg/86MNZrqn1aod2w3xUtA==}
-    dev: false
 
   /keyv@4.3.3:
     resolution: {integrity: sha512-AcysI17RvakTh8ir03+a3zJr5r0ovnAH/XTXei/4HIv3bL2K/jzvgivLK9UuI/JbU1aJjM3NSAnVvVVd3n+4DQ==}

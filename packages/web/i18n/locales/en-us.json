@@ -103,7 +103,8 @@
       "item-clear": "Clear Shortcut",
       "binding-input-waiting-keydown-placeholder": "please press key(s)",
       "keyboard-shortcut-in-used": "Shortcut already used",
-      "keyboard-shortcut-in-used-by-other-program": "Shortcut is used by other program"
+      "keyboard-shortcut-in-used-by-other-program": "Shortcut is used by other program",
+      "binding-input-unbound": "Unbound"
     }
   },
   "context-menu": {

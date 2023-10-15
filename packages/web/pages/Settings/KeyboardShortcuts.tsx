@@ -8,7 +8,9 @@ import { FC, KeyboardEventHandler, useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
 import { BlockTitle, Option, OptionText, Switch } from './Controls'
 import { IpcChannels } from '@/shared/IpcChannels'
-import { clone, isEqual } from 'lodash-es'
+import { clone, isEqual, last } from 'lodash-es'
+
+const modifierKeys = ['Control', 'Alt', 'Shift', 'Meta', 'Super', 'Cmd', 'Option']
 
 const ShortcutSwitchSettings = () => {
   const platform = useOSPlatform()
@@ -109,9 +111,9 @@ const ShortcutBindingInput: FC<{
       arr.push('Shift')
     }
 
-    arr.push(e.key.replace(/^Arrow(\w+)$/, '$1').replace(/^ $/, 'Space'))
-
-    console.log(arr, e)
+    if (!modifierKeys.includes(e.key)) {
+      arr.push(e.key.replace(/^Arrow(\w+)$/, '$1').replace(/^ $/, 'Space'))
+    }
 
     setInputValue(arr)
   }
@@ -161,11 +163,26 @@ const ShortcutItemBindings: FC<{ fnKey: keyof KeyboardShortcuts; name: string }>
 
   const updateBinding = (index: 0 | 1) => {
     return (value: string[] | null) => {
+      if (value && index === 0) {
+        console.log(value, last(value), modifierKeys)
+        if (modifierKeys.includes(last(value)!) || value.length < 1) {
+          toast.error(t`settings.keyboard-shortcuts.local-shortcut-invalid`)
+          return
+        }
+      }
+
+      if (value && index === 1) {
+        if (modifierKeys.includes(last(value)!) || value.length <= 1) {
+          toast.error(t`settings.keyboard-shortcuts.global-shortcut-invalid`)
+          return
+        }
+      }
+
       const conflicted =
         value !== null &&
         Object.entries(settings.keyboardShortcuts[platform]).some(
           ([key, v]: [string, KeyboardShortcutItem]) => {
-            return key !== fnKey && isEqual(v[index], value)
+            return (key !== fnKey && isEqual(v[index], value)) || isEqual(v[(index + 1) % 2], value)
           }
         )
 

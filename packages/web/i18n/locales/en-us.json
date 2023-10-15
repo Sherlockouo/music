@@ -104,7 +104,9 @@
       "binding-input-waiting-keydown-placeholder": "please press key(s)",
       "keyboard-shortcut-in-used": "Shortcut already used",
       "keyboard-shortcut-in-used-by-other-program": "Shortcut is used by other program",
-      "binding-input-unbound": "Unbound"
+      "binding-input-unbound": "Unbound",
+      "global-shortcut-invalid": "Global Shortcut needs at least one modifier key and one non-modifier key",
+      "local-shortcut-invalid": "Local Shortcut needs at least one modifier key and one non-modifier key"
     }
   },
   "context-menu": {

@@ -11,6 +11,35 @@ import { IpcChannels } from '@/shared/IpcChannels'
 import { clone, isEqual, last } from 'lodash-es'
 
 const modifierKeys = ['Control', 'Alt', 'Shift', 'Meta', 'Super', 'Cmd', 'Option']
+const keyNameMap = {
+  darwin: new Map<string, string>([
+    ['Control', '⌃'],
+    ['Alt', '⌥'],
+    ['Shift', '⇧'],
+    ['Meta', '⌘'],
+    ['Super', '⌘'],
+    ['Option', '⌥'],
+    ['Cmd', '⌘'],
+  ]),
+  linux: new Map<string, string>([
+    ['Control', 'Ctrl'],
+    ['Alt', 'Alt'],
+    ['Shift', 'Shift'],
+    ['Meta', 'Super'],
+    ['Super', 'Super'],
+    ['Option', 'Alt'],
+    ['Cmd', 'Super'],
+  ]),
+  win32: new Map<string, string>([
+    ['Control', 'Ctrl'],
+    ['Alt', 'Alt'],
+    ['Shift', 'Shift'],
+    ['Meta', 'Alt'],
+    ['Super', 'Alt'],
+    ['Option', 'Alt'],
+    ['Cmd', 'Ctrl'],
+  ]),
+}
 
 const ShortcutSwitchSettings = () => {
   const platform = useOSPlatform()
@@ -48,7 +77,7 @@ const ShortcutBindingInput: FC<{
     setInputValue(value)
   }, [value])
 
-  const text = useMemo(() => {
+  const textOrKeys = useMemo(() => {
     if (isBinding && inputValue === null) {
       return t`settings.keyboard-shortcuts.binding-input-waiting-keydown-placeholder`
     }
@@ -57,7 +86,7 @@ const ShortcutBindingInput: FC<{
       return t`settings.keyboard-shortcuts.binding-input-unbound`
     }
 
-    return inputValue.join('+')
+    return inputValue
   }, [inputValue, isBinding])
 
   const clear = () => {
@@ -131,15 +160,38 @@ const ShortcutBindingInput: FC<{
     }
   }
 
+  const keys = useMemo(() => {
+    if (typeof textOrKeys === 'string') {
+      return <small className='opacity-70'>{textOrKeys}</small>
+    }
+
+    return (
+      <span className='flex gap-1'>
+        {textOrKeys
+          .map((it, index) => [
+            index === 0 ? null : <span>+</span>,
+            <kbd
+              key={it}
+              className='inline-block min-w-[2em] rounded-full bg-stone-50/50 px-2 py-0.5 text-sm dark:bg-stone-500/50'
+            >
+              {keyNameMap[platform]?.get(it) ?? it}
+            </kbd>,
+          ])
+          .flat()
+          .filter(Boolean)}
+      </span>
+    )
+  }, [textOrKeys])
+
   return (
     <div
-      className='group/binding-input mx-2 flex gap-2 rounded-lg bg-stone-400/20 py-1 px-3 font-mono outline-none backdrop-blur'
+      className='group/binding-input mx-2 flex items-center gap-2 rounded-lg bg-stone-400/20 py-1 px-3 font-mono outline-none backdrop-blur'
       onClick={startBinding}
       onKeyDown={onKeyDown}
       onBlur={onBlur}
       tabIndex={0}
     >
-      <span>{text}</span>
+      {keys}
       <button
         onClick={clear}
         className='ml-auto'
@@ -164,7 +216,6 @@ const ShortcutItemBindings: FC<{ fnKey: keyof KeyboardShortcuts; name: string }>
   const updateBinding = (index: 0 | 1) => {
     return (value: string[] | null) => {
       if (value && index === 0) {
-        console.log(value, last(value), modifierKeys)
         if (modifierKeys.includes(last(value)!) || value.length < 1) {
           toast.error(t`settings.keyboard-shortcuts.local-shortcut-invalid`)
           return

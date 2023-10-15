@@ -8,22 +8,27 @@ import { FC, KeyboardEventHandler, useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
 import { BlockTitle, Option, OptionText, Switch } from './Controls'
 import { IpcChannels } from '@/shared/IpcChannels'
-import { isEqual } from 'lodash-es'
+import { clone, isEqual } from 'lodash-es'
 
 const ShortcutSwitchSettings = () => {
+  const platform = useOSPlatform()
   const {
     keyboardShortcuts: { globalEnabled },
   } = useSettings()
+
+  const onChange = (value: boolean) => {
+    settings.keyboardShortcuts.globalEnabled = value
+    window.ipcRenderer?.invoke(IpcChannels.BindKeyboardShortcuts, {
+      shortcuts: clone(settings.keyboardShortcuts[platform]),
+    })
+  }
 
   return (
     <>
       <BlockTitle>{t`settings.keyboard-shortcuts.title`}</BlockTitle>
       <Option>
         <OptionText>{t`settings.keyboard-shortcuts.enable-global`}</OptionText>
-        <Switch
-          enabled={globalEnabled}
-          onChange={value => (settings.keyboardShortcuts.globalEnabled = value)}
-        />
+        <Switch enabled={globalEnabled} onChange={onChange} />
       </Option>
     </>
   )

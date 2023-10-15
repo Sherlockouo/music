@@ -33,7 +33,7 @@ export const createMenu = (webContexts: WebContents) => {
           click: () => {
             webContexts.send(IpcChannels.PlayOrPause)
           },
-          accelerator: formatForAccelerator(shortcuts?.playPause[0] ?? undefined),
+          accelerator: formatForAccelerator(shortcuts?.playPause[0]) ?? undefined,
         },
         {
           id: 'nextSong',
@@ -41,7 +41,7 @@ export const createMenu = (webContexts: WebContents) => {
           click: () => {
             webContexts.send(IpcChannels.Next)
           },
-          accelerator: formatForAccelerator(shortcuts?.next[0] ?? undefined),
+          accelerator: formatForAccelerator(shortcuts?.next[0]) ?? undefined,
         },
         {
           id: 'previousSong',
@@ -49,7 +49,7 @@ export const createMenu = (webContexts: WebContents) => {
           click: () => {
             webContexts.send(IpcChannels.Previous)
           },
-          accelerator: formatForAccelerator(shortcuts?.previous[0] ?? undefined),
+          accelerator: formatForAccelerator(shortcuts?.previous[0]) ?? undefined,
         },
         {
           id: 'favoriteSong',
@@ -57,7 +57,7 @@ export const createMenu = (webContexts: WebContents) => {
           click: () => {
             webContexts.send(IpcChannels.Like)
           },
-          accelerator: formatForAccelerator(shortcuts?.favorite[0] ?? undefined),
+          accelerator: formatForAccelerator(shortcuts?.favorite[0]) ?? undefined,
         },
       ],
     },

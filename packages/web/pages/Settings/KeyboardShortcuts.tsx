@@ -281,6 +281,8 @@ const ShortcutBindings = () => {
         <ShortcutItemBindings fnKey='playPause' name={t`player.play-pause`} />
         <ShortcutItemBindings fnKey='next' name={t`player.next`} />
         <ShortcutItemBindings fnKey='previous' name={t`player.previous`} />
+        <ShortcutItemBindings fnKey='volumeUp' name={t`player.volume-up`} />
+        <ShortcutItemBindings fnKey='volumeDown' name={t`player.volume-down`} />
         <ShortcutItemBindings fnKey='favorite' name={t`player.favorite`} />
         <ShortcutItemBindings fnKey='switchVisibility' name={t`common.hide-show-player`} />
       </tbody>

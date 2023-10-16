@@ -28,9 +28,13 @@ export const bindingKeyboardShortcuts = (
     store.set(`settings.keyboardShortcuts`, shortcuts)
   }
 
-  createMenu(webContexts)
+  try {
+    createMenu(webContexts)
 
-  bindingGlobalKeyboardShortcuts(webContexts, shortcuts)
+    bindingGlobalKeyboardShortcuts(webContexts, shortcuts)
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 const bindingGlobalKeyboardShortcuts = (
@@ -40,7 +44,7 @@ const bindingGlobalKeyboardShortcuts = (
   if (!shortcuts) {
     shortcuts = readKeyboardShortcutSettings()
   } else {
-    store.set(`settings.keyboardShortcuts.${getPlatform()}`, shortcuts)
+    store.set(`settings.keyboardShortcuts`, shortcuts)
   }
 
   globalShortcut.unregisterAll()
@@ -73,6 +77,18 @@ const bindingGlobalKeyboardShortcuts = (
   if (platformShortcuts.favorite[1]) {
     globalShortcut.register(formatForAccelerator(platformShortcuts.favorite[1])!, () => {
       webContexts.send(IpcChannels.Like)
+    })
+  }
+
+  if (platformShortcuts.volumeUp[1]) {
+    globalShortcut.register(formatForAccelerator(platformShortcuts.volumeUp[1])!, () => {
+      webContexts.send(IpcChannels.VolumeUp)
+    })
+  }
+
+  if (platformShortcuts.volumeDown[1]) {
+    globalShortcut.register(formatForAccelerator(platformShortcuts.volumeDown[1])!, () => {
+      webContexts.send(IpcChannels.VolumeDown)
     })
   }
 }

@@ -22,6 +22,8 @@ export const enum IpcChannels {
   Previous = 'Previous',
   Like = 'Like',
   Repeat = 'Repeat',
+  VolumeUp = 'VolumeUp',
+  VolumeDown = 'VolumeDown',
   SyncSettings = 'SyncSettings',
   GetAudioCacheSize = 'GetAudioCacheSize',
   ResetWindowSize = 'ResetWindowSize',
@@ -63,6 +65,8 @@ export interface IpcChannelsParams {
   [IpcChannels.Repeat]: {
     mode: RepeatMode
   }
+  [IpcChannels.VolumeUp]: void
+  [IpcChannels.VolumeDown]: void
   [IpcChannels.SyncSettings]: any
   [IpcChannels.GetAudioCacheSize]: void
   [IpcChannels.ResetWindowSize]: void
@@ -96,7 +100,11 @@ export interface IpcChannelsReturns {
   [IpcChannels.Previous]: void
   [IpcChannels.Like]: void
   [IpcChannels.Repeat]: RepeatMode
+  [IpcChannels.VolumeUp]: void
+  [IpcChannels.VolumeDown]: void
+  [IpcChannels.SyncSettings]: any
   [IpcChannels.GetAudioCacheSize]: void
+  [IpcChannels.ResetWindowSize]: void
   [IpcChannels.GetAlbumFromAppleMusic]: AppleMusicAlbum | undefined
   [IpcChannels.GetArtistFromAppleMusic]: AppleMusicArtist | undefined
   [IpcChannels.Logout]: void

@@ -19,48 +19,75 @@ log.info('[electron] menu.ts')
 export const createMenu = (webContexts: WebContents) => {
   const shortcuts = readKeyboardShortcuts()
 
+  const controlsMenuItem: MenuItemConstructorOptions | MenuItem | undefined = (() => {
+    try {
+      return {
+        id: 'controls',
+        label: '控制',
+        submenu: [
+          {
+            id: 'playPause',
+            label: '播放/暂停',
+            click: () => {
+              webContexts.send(IpcChannels.PlayOrPause)
+            },
+            accelerator: formatForAccelerator(shortcuts?.playPause[0]) ?? undefined,
+          },
+          {
+            id: 'nextSong',
+            label: '下一首',
+            click: () => {
+              webContexts.send(IpcChannels.Next)
+            },
+            accelerator: formatForAccelerator(shortcuts?.next[0]) ?? undefined,
+          },
+          {
+            id: 'previousSong',
+            label: '上一首',
+            click: () => {
+              webContexts.send(IpcChannels.Previous)
+            },
+            accelerator: formatForAccelerator(shortcuts?.previous[0]) ?? undefined,
+          },
+          {
+            id: 'favoriteSong',
+            label: '喜欢',
+            click: () => {
+              webContexts.send(IpcChannels.Like)
+            },
+            accelerator: formatForAccelerator(shortcuts?.favorite[0]) ?? undefined,
+          },
+          {
+            id: 'volumeUp',
+            label: '增加音量',
+            click: () => {
+              webContexts.send(IpcChannels.VolumeUp)
+            },
+            accelerator: formatForAccelerator(shortcuts?.volumeUp[0]) ?? undefined,
+          },
+          {
+            id: 'volumeDown',
+            label: '减少音量',
+            click: () => {
+              webContexts.send(IpcChannels.VolumeDown)
+            },
+            accelerator: formatForAccelerator(shortcuts?.volumeDown[0]) ?? undefined,
+          },
+        ],
+      }
+    } catch (err) {
+      console.error('create controls menu item template failed.')
+      console.error(err)
+
+      return undefined
+    }
+  })()
+
   const template: Array<MenuItemConstructorOptions | MenuItem> = [
     { role: 'appMenu' },
     { role: 'editMenu' },
     { role: 'viewMenu' },
-    {
-      id: 'controls',
-      label: '控制',
-      submenu: [
-        {
-          id: 'playPause',
-          label: '播放/暂停',
-          click: () => {
-            webContexts.send(IpcChannels.PlayOrPause)
-          },
-          accelerator: formatForAccelerator(shortcuts?.playPause[0]) ?? undefined,
-        },
-        {
-          id: 'nextSong',
-          label: '下一首',
-          click: () => {
-            webContexts.send(IpcChannels.Next)
-          },
-          accelerator: formatForAccelerator(shortcuts?.next[0]) ?? undefined,
-        },
-        {
-          id: 'previousSong',
-          label: '上一首',
-          click: () => {
-            webContexts.send(IpcChannels.Previous)
-          },
-          accelerator: formatForAccelerator(shortcuts?.previous[0]) ?? undefined,
-        },
-        {
-          id: 'favoriteSong',
-          label: '喜欢',
-          click: () => {
-            webContexts.send(IpcChannels.Like)
-          },
-          accelerator: formatForAccelerator(shortcuts?.favorite[0]) ?? undefined,
-        },
-      ],
-    },
+    controlsMenuItem as any,
     { role: 'windowMenu' },
     {
       label: '帮助',
@@ -121,7 +148,7 @@ export const createMenu = (webContexts: WebContents) => {
         },
       ],
     },
-  ]
+  ].filter(Boolean)
 
   const menu = Menu.buildFromTemplate(template)
 

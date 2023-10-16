@@ -80,6 +80,19 @@ function initWindowIpcMain(win: BrowserWindow | null) {
     win.webContents.send(IpcChannels.IsMaximized, isMaximized)
   })
 
+  on(IpcChannels.MinimizeOrUnminimize, () => {
+    if (!win) return false
+
+    if (win.isMinimized() || !win.isFocused()) {
+      win.show()
+    } else {
+      win.minimize()
+    }
+
+    isMaximized = !isMaximized
+    win.webContents.send(IpcChannels.IsMaximized, isMaximized)
+  })
+
   on(IpcChannels.Close, () => {
     app.exit()
   })

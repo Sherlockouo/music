@@ -1,4 +1,4 @@
-import { WebContents, globalShortcut } from 'electron'
+import { WebContents, globalShortcut, ipcMain } from 'electron'
 import store from './store'
 import { getPlatform } from './utils'
 import { createMenu } from './menu'
@@ -89,6 +89,13 @@ const bindingGlobalKeyboardShortcuts = (
   if (platformShortcuts.volumeDown[1]) {
     globalShortcut.register(formatForAccelerator(platformShortcuts.volumeDown[1])!, () => {
       webContexts.send(IpcChannels.VolumeDown)
+    })
+  }
+
+  if (platformShortcuts.switchVisibility[1]) {
+    globalShortcut.register(formatForAccelerator(platformShortcuts.switchVisibility[1])!, () => {
+      console.log('switchVisibility')
+      ipcMain.emit(IpcChannels.MinimizeOrUnminimize)
     })
   }
 }

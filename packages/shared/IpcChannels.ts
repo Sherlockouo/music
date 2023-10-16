@@ -7,6 +7,7 @@ export const enum IpcChannels {
   ClearAPICache = 'ClearAPICache',
   Minimize = 'Minimize',
   MaximizeOrUnmaximize = 'MaximizeOrUnmaximize',
+  MinimizeOrUnminimize = 'MinimizeOrUnminimize',
   Close = 'Close',
   IsMaximized = 'IsMaximized',
   FullscreenStateChange = 'FullscreenStateChange',
@@ -39,6 +40,7 @@ export interface IpcChannelsParams {
   [IpcChannels.ClearAPICache]: void
   [IpcChannels.Minimize]: void
   [IpcChannels.MaximizeOrUnmaximize]: void
+  [IpcChannels.MinimizeOrUnminimize]: void
   [IpcChannels.Close]: void
   [IpcChannels.IsMaximized]: void
   [IpcChannels.FullscreenStateChange]: void
@@ -86,6 +88,7 @@ export interface IpcChannelsReturns {
   [IpcChannels.ClearAPICache]: void
   [IpcChannels.Minimize]: void
   [IpcChannels.MaximizeOrUnmaximize]: void
+  [IpcChannels.MinimizeOrUnminimize]: void
   [IpcChannels.Close]: void
   [IpcChannels.IsMaximized]: boolean
   [IpcChannels.FullscreenStateChange]: boolean

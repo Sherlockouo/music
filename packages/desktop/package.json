@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "postinstall": "tsx scripts/build.sqlite3.ts",
-    "dev": "tsx scripts/build.main.ts --watch",
+    "dev": "tsx scripts/build.main.ts --watch ",
     "build": "tsx scripts/build.main.ts",
     "pack": "electron-builder build -c .electron-builder.config.js",
     "pack:test": "electron-builder build -c .electron-builder.config.js --publish never --mac --dir --arm64",
@@ -41,6 +41,7 @@
     "fastify": "^4.5.3",
     "http-proxy-agent": "^5.0.0",
     "pretty-bytes": "^6.0.0",
+    "@tanstack/react-query": "^4.26.1",
     "ytdl-core": "^4.11.2"
   },
   "devDependencies": {

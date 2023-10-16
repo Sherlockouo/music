@@ -39,13 +39,14 @@ class YoutubeDownloader {
     }
     log.info('proxy ',proxy, ' keyword ',keyword)
     // proxy = { host: '127.0.0.1', port: 8888, protocol: 'http' }
-    const webPage = await axios.get(`https://www.youtube.com/results`, {
+    const webPage = await axios.get(`https://m.youtube.com/results`, {
       params: {
-        app:'desktop',
         search_query: keyword,
-        sp: 'EgIQAQ==',
+        // sp: 'EgIQAQ==',
       },
-      headers: { 'Accept-Language': 'en-US' },
+      headers: { 
+        'Accept-Language': 'en-US',
+      },
       timeout: 5000,
       proxy,
     })
@@ -132,7 +133,7 @@ class YoutubeDownloader {
         )
       }
     }
-
+    console.log(webPage)
     const parsedJson = _getSearchData(webPage.data)
 
     const extracted = _extractData(parsedJson)
@@ -154,7 +155,7 @@ class YoutubeDownloader {
   }> {
     const match = async () => {
       console.time('[youtube] search')
-      log.info('youtube videos search')
+      console.log('youtube videos search')
       const videos = await this.search(`${artist} ${trackName} audio`)
       console.timeEnd('[youtube] search')
       let video: {

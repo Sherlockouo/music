@@ -142,7 +142,13 @@ async function audio(fastify: FastifyInstance) {
   fastify.get(
     '/netease/song/url/v1',
     async (
-      req: FastifyRequest<{ Querystring: { id: string | number; level: SoundQualityType } }>,
+      req: FastifyRequest<{ Querystring: { 
+        id: string | number; 
+        level: SoundQualityType;
+        qqCookie: string;
+        miguCookie: string;
+        jooxCookie: string;
+       } }>,
       reply
     ) => {
       const id = Number(req.query.id) || 0
@@ -185,7 +191,11 @@ async function audio(fastify: FastifyInstance) {
         })
         return
       }
-
+      process.env.QQ_COOKIE = req.query.qqCookie
+      process.env.MIGU_COOKIE = req.query.miguCookie
+      process.env.JOOX_COOKIE = req.query.jooxCookie
+      process.env.ENABLE_FLAC = "true"
+      process.env.ENABLE_LOCAL_VIP = "true"
       try {
         // todo: 暂时写死的，是否开放给用户配置
         await match(trackID, ['qq', 'kuwo', 'migu', 'kugou', 'joox']).then((data: unknown) => {

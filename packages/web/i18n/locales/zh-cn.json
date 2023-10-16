@@ -89,7 +89,13 @@
     "player-youtube-unlock": "YouTube 解锁",
     "volume-control": "音量控制",
     "about": "关于",
-    "proxy":"代理"
+    "proxy":"代理",
+    "qqCookie":"QQ_COOKIE",
+    "miguCookie":"MIGU_COOKIE",
+    "cookieSettingRefrence":"设置说明请参见此处",
+    "cookieDesc":"，留空则不进行相关设置",
+    "jooxCookie":"JOOX_COOKIE"
+    
   },
   "context-menu": {
     "share": "分享",

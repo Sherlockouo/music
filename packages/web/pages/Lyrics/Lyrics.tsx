@@ -1,4 +1,4 @@
-import PageTransition from '../components/PageTransition'
+import PageTransition from '../../components/PageTransition'
 import { useEffect, useRef, useState } from 'react'
 import { useSnapshot } from 'valtio'
 import { css, cx } from '@emotion/css'
@@ -12,12 +12,12 @@ import toast from 'react-hot-toast'
 import useIsMobile from '@/web/hooks/useIsMobile'
 import { motion } from 'framer-motion'
 
-const Lyrics = () => {
+const Lyrics = ({syncProgress,trackID}:{syncProgress?:()=>void,trackID?:number}) => {
   const isMobile = useIsMobile()
   const containerRef = useRef(null)
   const [currentLineIndex, setCurrentLineIndex] = useState(0)
   const [currentVolumnValue, setCurrentVolumnValue] = useState(128)
-  const lyricsRes = useLyric({ id: player.trackID })
+  const lyricsRes = useLyric({ id: trackID == undefined ? player.trackID : trackID})
   const lyricsResponse = lyricsRes.data
   const { lyric: lyrics, tlyric: tlyric } = lyricParser(lyricsResponse)
   const { state: playerState, progress, nowVolume } = useSnapshot(player)
@@ -123,7 +123,10 @@ const Lyrics = () => {
       <div
         className={cx(lineClassName, 'font-Roboto')}
         key={index}
-        onDoubleClick={setSongToLyric}
+        onDoubleClick={()=>{
+          setSongToLyric()
+          syncProgress && syncProgress()
+        }}
         style={hightlightStyle}
       >
         <p>{lyric}</p>

@@ -13,12 +13,21 @@ export const enum IpcChannels {
   DevDbExportJson = 'DevDbExportJson',
   CacheCoverColor = 'CacheCoverColor',
   SetTrayTooltip = 'SetTrayTooltip',
+  SetDesktopLyric = 'SetDesktopLyric',
+  PinDesktopLyric = 'PinDesktopLyric',
   // 准备三个播放相关channel, 为 mpris 预留接口
   Play = 'Play',
   Pause = 'Pause',
   PlayOrPause = 'PlayOrPause',
+  SyncProgress = 'SyncProgress',
   Next = 'Next',
   Previous = 'Previous',
+  LPlay = 'LPlay',
+  LPause = 'LPause',
+  LPlayOrPause = 'LPlayOrPause',
+  LSyncProgress = 'LSyncProgress',
+  LNext = 'LNext',
+  LPrevious = 'LPrevious',
   Like = 'Like',
   Repeat = 'Repeat',
   SyncSettings = 'SyncSettings',
@@ -37,6 +46,16 @@ export interface IpcChannelsParams {
   [IpcChannels.Close]: void
   [IpcChannels.IsMaximized]: void
   [IpcChannels.FullscreenStateChange]: void
+  [IpcChannels.PinDesktopLyric]: void
+  [IpcChannels.SyncProgress]: {
+    progress: number
+  }
+  [IpcChannels.LSyncProgress]: {
+    progress: number
+  }
+  [IpcChannels.SetDesktopLyric]: {
+    componentString: string
+  },
   [IpcChannels.GetApiCache]: {
     api: CacheAPIs
     query?: any
@@ -49,11 +68,24 @@ export interface IpcChannelsParams {
   [IpcChannels.SetTrayTooltip]: {
     text: string
   }
-  [IpcChannels.Play]: void
+  [IpcChannels.Play]: {
+    trackID: number
+  }
   [IpcChannels.Pause]: void
   [IpcChannels.PlayOrPause]: void
-  [IpcChannels.Next]: void
-  [IpcChannels.Previous]: void
+  [IpcChannels.Next]: {
+    trackID: number
+  }
+  [IpcChannels.Previous]: {
+    trackID: number
+  }
+  [IpcChannels.LPlay]: {
+    track: Track
+  }
+  [IpcChannels.LPause]: void
+  [IpcChannels.LPlayOrPause]: void
+  [IpcChannels.LNext]: void
+  [IpcChannels.LPrevious]: void
   [IpcChannels.Like]: {
     isLiked: boolean
   }
@@ -77,18 +109,35 @@ export interface IpcChannelsReturns {
   [IpcChannels.ClearAPICache]: void
   [IpcChannels.Minimize]: void
   [IpcChannels.MaximizeOrUnmaximize]: void
+  [IpcChannels.SetDesktopLyric]: boolean
+  [IpcChannels.PinDesktopLyric]: boolean
   [IpcChannels.Close]: void
   [IpcChannels.IsMaximized]: boolean
   [IpcChannels.FullscreenStateChange]: boolean
+  [IpcChannels.SyncProgress]: {
+    progress: number
+  }
+  [IpcChannels.LSyncProgress]: {
+    progress: number
+  }
   [IpcChannels.GetApiCache]: any
   [IpcChannels.DevDbExportJson]: void
   [IpcChannels.CacheCoverColor]: void
-  [IpcChannels.SetTrayTooltip]: void
-  [IpcChannels.Play]: void
+  [IpcChannels.SetTrayTooltip]: {
+    text: string
+  }
+  [IpcChannels.Play]: {
+    trackID: number
+  }
   [IpcChannels.Pause]: void
   [IpcChannels.PlayOrPause]: void
-  [IpcChannels.Next]: void
-  [IpcChannels.Previous]: void
+  [IpcChannels.Next]: {
+    trackID: number
+  }
+  [IpcChannels.Previous]: {
+    trackID: number
+  }
+
   [IpcChannels.Like]: void
   [IpcChannels.Repeat]: RepeatMode
   [IpcChannels.GetAudioCacheSize]: void

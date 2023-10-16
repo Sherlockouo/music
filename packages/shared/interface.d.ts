@@ -68,7 +68,7 @@ declare interface Playlist {
 declare interface Track {
   id: number
   a: null
-  al: Album
+  al?: Album
   alia: string[]
   ar: Artist[]
   cd: string

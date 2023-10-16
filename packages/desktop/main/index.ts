@@ -4,7 +4,7 @@ import { app,session, BrowserWindow, BrowserWindowConstructorOptions, shell, web
 import { release } from 'os'
 import { join } from 'path'
 import log from './log'
-import { initIpcMain } from './ipcMain'
+import { initIpcMain, lyricWin } from './ipcMain'
 import { createTray, YPMTray } from './tray'
 import { IpcChannels } from '@/shared/IpcChannels'
 import { createTaskbar, Thumbar } from './windowsTaskbar'
@@ -150,11 +150,11 @@ class Main {
       addCORSHeaders(requestHeaders)
 
       // 不加这几个 header 的话，使用 axios 加载 YouTube 音频会很慢
-      if (url.includes('googlevideo.com')) {
+      if (url.includes('googlevideo.com') || url.includes('github.com')) {
         requestHeaders['Sec-Fetch-Mode'] = 'no-cors'
         requestHeaders['Sec-Fetch-Dest'] = 'audio'
         requestHeaders['Range'] = 'bytes=0-'
-      }
+      } 
 
       callback({ requestHeaders })
     })
@@ -206,6 +206,7 @@ class Main {
   handleAppEvents() {
     app.on('window-all-closed', () => {
       this.win = null
+      if(lyricWin) lyricWin.win = null
       if (!isMac) app.quit()
     })
 
@@ -227,4 +228,5 @@ class Main {
   }
 }
 
-new Main()
+const main = new Main()
+export default main

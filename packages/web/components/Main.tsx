@@ -9,11 +9,11 @@ import persistedUiStates from '@/web/states/persistedUiStates'
 import { motion, useAnimation } from 'framer-motion'
 import { sleep } from '@/web/utils/common'
 import player from '@/web/states/player'
-import VideoPlayer from './VideoPlayer'
+import { useLocation } from 'react-router-dom'
 
 const Main = () => {
   const playerSnapshot = useSnapshot(player)
-
+  const location = useLocation()
   // Show/hide topbar background
   const observePoint = useRef<HTMLDivElement | null>(null)
   const { onScreen } = useIntersectionObserver(observePoint)
@@ -60,6 +60,7 @@ const Main = () => {
           margin-top: 132px;
         `}
       >
+        
         <Router />
       </div>
     </motion.main>

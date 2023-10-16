@@ -12,6 +12,7 @@ import {
 } from '@/shared/api/Track'
 import { CacheAPIs } from '@/shared/CacheAPIs'
 import { useQuery } from '@tanstack/react-query'
+import settings from '@/web/states/settings'
 
 export default function useTracks(params: FetchTracksParams) {
   return useQuery(
@@ -120,6 +121,9 @@ export function fetchTracksWithReactQuery(params: FetchTracksParams) {
 }
 
 export function fetchAudioSourceWithReactQuery(params: FetchAudioSourceParams) {
+  params.qqCookie = settings.qqCookie
+  params.miguCookie = settings.miguCookie
+  params.jooxCookie = settings.jooxCookie
   return reactQueryClient.fetchQuery(
     [TrackApiNames.FetchAudioSource, params],
     () => {

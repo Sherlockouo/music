@@ -56,6 +56,7 @@ let _analyser = Howler.ctx.createAnalyser()
 const isMobile = useIsMobile()
 
 export class Player {
+  private _lyricWinTrackID: number = 0
   private _track: Track | null = null
   private _trackIndex: number = 0
   private _progress: number = 0
@@ -102,7 +103,7 @@ export class Player {
   }
 
   /**
-   * Get prev track index
+   * Get prev track index 
    */
   get _prevTrackIndex(): number | undefined {
     switch (this.repeatMode) {
@@ -331,6 +332,7 @@ export class Player {
     return this._nowVolume
   }
 
+  
   /**
    * Get current playing track ID
    */
@@ -343,10 +345,38 @@ export class Player {
   }
 
   /**
+   * Set current playing track ID
+   * !! 
+   */
+  set trackID(value){
+    const { trackList, _trackIndex } = this
+    trackList[_trackIndex] = value
+    this.fmTrackList[0] = value
+  }
+
+  /**
+   *  !!WARNING!! set lyricWinTrackID only for lyricWindow
+   */
+  // set lyricWinTrackID(value) {
+  //   this._lyricWinTrackID = value 
+  // }
+
+  /**
+   * Get lyricWinTrackID
+   */
+  // get lyricWinTrackID():number {
+  //   return this._lyricWinTrackID ? this.lyricWinTrackID : 0
+  // }
+
+  /**
    * Get current playing track
    */
   get track(): Track | null {
     return this.mode === Mode.FM ? this.fmTrack : this._track
+  }
+
+  set track(value){
+    this._track = value
   }
 
   get trackIndex() {
@@ -445,34 +475,6 @@ export class Player {
   }
 
   /**
-   * Fetch unlocked audio source
-   * @param trackID
-   * @returns
-   */
-  private async _fetchUnlockAudioSource(trackID: TrackID) {
-    if (settings.unlock) {
-      try {
-        const data = await unblock({ track_id: trackID })
-        if (data.url === '')
-          return {
-            audio: null,
-            id: trackID,
-          }
-        return {
-          audio: data.url,
-          id: trackID,
-        }
-      } catch (err) {
-        console.log('[unblockneteasemusic] err', err)
-        return {
-          audio: null,
-          id: trackID,
-        }
-      }
-    }
-  }
-
-  /**
    * Fetch track audio source url from Netease
    * @param {TrackID} trackID
    */
@@ -533,7 +535,7 @@ export class Player {
 
   private async _playAudioViaHowler(audio: string, id: number, autoplay: boolean = true) {
     Howler.unload()
-    console.log(Howler.usingWebAudio)
+
     const url = audio.includes('?') ? `${audio}&dash-id=${id}` : `${audio}?dash-id=${id}`
     const howler = new Howl({
       src: [url],

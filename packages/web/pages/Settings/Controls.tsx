@@ -84,7 +84,7 @@ export function Button({ children, onClick }: { children: React.ReactNode; onCli
   return (
     <button
       onClick={onClick}
-      className='rounded-md bg-neutral-800 py-1 px-3 font-medium text-neutral-400 transition-colors duration-300 hover:bg-neutral-700 hover:text-neutral-300'
+      className='rounded-md bg-black/10 dark:bg-neutral-800 py-1 px-3 font-medium text-neutral-400 transition-colors duration-300 hover:bg-neutral-500 dark:hover:bg-neutral-300 hover:text-neutral-300'
     >
       {children}
     </button>

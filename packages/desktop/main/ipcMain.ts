@@ -1,9 +1,9 @@
-import { BrowserWindow, ipcMain, app } from 'electron'
-// import { db, Tables } from './db'
+import { BrowserWindow, ipcMain, app, BrowserWindowConstructorOptions, App } from 'electron'
+import { join } from 'path'
+import store from './store'
 import { IpcChannels, IpcChannelsParams } from '@/shared/IpcChannels'
 import cache from './cache'
 import log from './log'
-import fs from 'fs'
 import Store from 'electron-store'
 import { TypedElectronStore } from './store'
 import { CacheAPIs } from '@/shared/CacheAPIs'
@@ -13,6 +13,8 @@ import fastFolderSize from 'fast-folder-size'
 import path from 'path'
 import prettyBytes from 'pretty-bytes'
 import { db, Tables } from './db'
+import { LyricsWindow } from './lyricsWindow'
+import { IPCChannel } from '@sentry/electron/common'
 
 log.info('[electron] ipcMain.ts')
 
@@ -40,10 +42,16 @@ export function initIpcMain(
   initTrayIpcMain(tray)
   initTaskbarIpcMain(thumbar)
   initStoreIpcMain(store)
-  initOtherIpcMain()
+  initOtherIpcMain(win)
 }
 
-/**
+export let lyricWin: LyricsWindow | null
+let hidden: boolean = false
+export function handleLyricsWinClose() {
+  lyricWin = null
+  hidden = false
+}
+/** 
  * 处理需要win对象的事件
  * @param {BrowserWindow} win
  */
@@ -102,8 +110,17 @@ function initTrayIpcMain(tray: YPMTray | null) {
 
   on(IpcChannels.Like, (e, { isLiked }) => tray?.setLikeState(isLiked))
 
-  on(IpcChannels.Play, () => tray?.setPlayState(true))
-  on(IpcChannels.Pause, () => tray?.setPlayState(false))
+  on(IpcChannels.Play, (e, { trackID }) => {
+    !lyricWin && tray?.setPlayState(true)
+
+    lyricWin && lyricWin.win?.webContents.send(IpcChannels.Play, {
+      trackID: trackID
+    })
+  })
+  on(IpcChannels.Pause, () => {
+    !lyricWin && tray?.setPlayState(false)
+    lyricWin && lyricWin.win?.webContents.send(IpcChannels.Pause)
+  })
 
   on(IpcChannels.Repeat, (e, { mode }) => tray?.setRepeatMode(mode))
 }
@@ -113,7 +130,10 @@ function initTrayIpcMain(tray: YPMTray | null) {
  * @param {Thumbar} thumbar
  */
 function initTaskbarIpcMain(thumbar: Thumbar | null) {
-  on(IpcChannels.Play, () => thumbar?.setPlayState(true))
+  on(IpcChannels.Play, () => {
+
+    !lyricWin && thumbar?.setPlayState(true)
+  })
   on(IpcChannels.Pause, () => thumbar?.setPlayState(false))
 }
 
@@ -133,7 +153,7 @@ function initStoreIpcMain(store: Store<TypedElectronStore>) {
 /**
  * 处理其他事件
  */
-function initOtherIpcMain() {
+function initOtherIpcMain(win: BrowserWindow | null) {
   /**
    * 清除API缓存
    */
@@ -147,6 +167,59 @@ function initOtherIpcMain() {
     db.truncate(Tables.Audio)
     db.vacuum()
   })
+
+  handle(IpcChannels.SetDesktopLyric, (event, args) => {
+
+    // 在外部使用 LyricsWindow 类
+    if (lyricWin && lyricWin.win !== undefined) {
+      if (hidden) {
+        lyricWin.win?.show()
+        hidden = !hidden
+        return true
+      }
+      lyricWin.win?.hide()
+      hidden = !hidden
+      return false
+    }
+    // win cant be null
+    lyricWin = new LyricsWindow(win as BrowserWindow)
+    return true 
+  })
+
+  on(IpcChannels.Previous, (event, args) => {
+    lyricWin && lyricWin.win?.webContents.send(IpcChannels.Previous)
+  })
+
+  on(IpcChannels.Next, (event, args) => {
+    lyricWin && lyricWin.win?.webContents.send(IpcChannels.Next)
+  })
+
+  on(IpcChannels.SyncProgress, (event, args) => {
+    const { progress } = args
+    lyricWin && lyricWin.win?.webContents.send(IpcChannels.SyncProgress, {
+      progress: progress
+    })
+  })
+  // handle(IpcChannels.Previous, (event, args) => {
+  //   lyricWin && lyricWin.win?.webContents.send(IpcChannels.LPrevious)
+
+  // })
+  // handle(IpcChannels.Next, (event, args) => {
+  //   lyricWin && lyricWin.win?.webContents.send(IpcChannels.LNext)
+  // })
+
+  // handle(IpcChannels.SyncProgress, (event, args) => {
+  //   const {progress} = args
+  //   lyricWin && lyricWin.win?.webContents.send(IpcChannels.LSyncProgress,{
+  //     progress: progress
+  //   })
+  // })
+
+  // handle(IpcChannels.Play, (event, {track}) => {
+  //   lyricWin && lyricWin.win?.webContents.send(IpcChannels.LPlay,{
+  //     track: track
+  //   })
+  // })
 
   /**
    * Get API cache
@@ -170,6 +243,8 @@ function initOtherIpcMain() {
     }
   })
 
+
+
   /**
    * 缓存封面颜色
    */
@@ -184,7 +259,6 @@ function initOtherIpcMain() {
   on(IpcChannels.GetAudioCacheSize, event => {
     fastFolderSize(path.join(app.getPath('userData'), './audio_cache'), (error, bytes) => {
       if (error) throw error
-
       event.returnValue = prettyBytes(bytes ?? 0)
     })
   })

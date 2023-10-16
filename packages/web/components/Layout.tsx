@@ -15,7 +15,6 @@ import settings from '@/web/states/settings'
 import { useState } from 'react'
 import { MotionConfig, motion } from 'framer-motion'
 import { ease } from '../utils/const'
-import { getTheme } from '../utils/theme'
 
 const Layout = () => {
   const playerSnapshot = useSnapshot(player)

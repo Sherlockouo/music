@@ -1,6 +1,8 @@
 import player from '@/web/states/player'
 import { IpcChannels, IpcChannelsReturns, IpcChannelsParams } from '@/shared/IpcChannels'
 import uiStates from './states/uiStates'
+import settings from './states/settings'
+import toast from 'react-hot-toast'
 
 const on = <T extends keyof IpcChannelsParams>(
   channel: T,
@@ -10,8 +12,8 @@ const on = <T extends keyof IpcChannelsParams>(
 }
 
 export function ipcRenderer() {
-  on(IpcChannels.Play, () => {
-    player.play(true)
+  on(IpcChannels.Play, (e, { trackID }) => {
+    player.trackID = trackID
   })
 
   on(IpcChannels.Pause, () => {
@@ -22,12 +24,20 @@ export function ipcRenderer() {
     player.playOrPause()
   })
 
-  on(IpcChannels.Next, () => {
-    player.nextTrack()
+  on(IpcChannels.SetDesktopLyric, () => {
+    settings.showDesktopLyrics = false
   })
 
-  on(IpcChannels.Previous, () => {
-    player.prevTrack()
+  on(IpcChannels.SyncProgress, (e, { progress }) => {
+    player.progress = progress
+  })
+
+  on(IpcChannels.Next, (e, { trackID }) => {
+    player.playTrack(trackID)
+  })
+
+  on(IpcChannels.Previous, (e, { trackID }) => {
+    player.playTrack(trackID)
   })
 
   on(IpcChannels.Repeat, (e, mode) => {

@@ -6,6 +6,9 @@ import i18n, { getInitLanguage, SupportedLanguage, supportedLanguages } from '..
 interface Settings {
   accentColor: string
   language: SupportedLanguage
+  qqCookie: string
+  miguCookie: string
+  jooxCookie: string
   enableFindTrackOnYouTube: boolean
   httpProxyForYouTube?: {
     proxy: string
@@ -23,11 +26,15 @@ interface Settings {
   showBackgroundImage: boolean
   unlock: boolean
   theme: string
+  showDesktopLyrics: boolean
 }
 
 const initSettings: Settings = {
   accentColor: 'yellow',
   language: getInitLanguage(),
+  qqCookie:"",
+  miguCookie:"",
+  jooxCookie:"",
   enableFindTrackOnYouTube: false,
   playAnimatedArtworkFromApple: true,
   priorityDisplayOfAlbumArtistDescriptionFromAppleMusic: true,
@@ -41,6 +48,7 @@ const initSettings: Settings = {
   },
   unlock: true,
   theme: 'dark',
+  showDesktopLyrics: false
 }
 
 const STORAGE_KEY = 'settings'

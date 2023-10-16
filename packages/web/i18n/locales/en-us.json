@@ -89,7 +89,12 @@
     "player-find-alternative-track-on-youtube-if-not-available-on-netease": "Find alternative track on YouTube if not available on NetEase.",
     "volume-control": "Volume Control",
     "about": "About",
-    "host":"Proxy"
+    "host":"Proxy",
+    "qqCookie":"QQ_COOKIE",
+    "cookieSettingRefrence":"Click here for the configuration instruction. ",
+    "cookieDesc":"Leave empty to pick up the default value",
+    "miguCookie":"MIGU_COOKIE",
+    "jooxCookie":"JOOX_COOKIE"
   },
   "context-menu": {
     "share": "Share",

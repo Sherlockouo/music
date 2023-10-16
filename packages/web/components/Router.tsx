@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from 'react-router-dom'
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import React, { lazy, Suspense, startTransition, useEffect} from 'react'
 import VideoPlayer from './VideoPlayer'
@@ -11,14 +11,15 @@ const Browse = lazy(() => import('@/web/pages/Browse/Browse'))
 const Album = lazy(() => import('@/web/pages/Album'))
 const Playlist = lazy(() => import('@/web/pages/Playlist'))
 const Artist = lazy(() => import('@/web/pages/Artist'))
-const Lyrics = lazy(() => import('@/web/pages/Lyrics'))
+const Lyrics = lazy(() => import('@/web/pages/Lyrics/Lyrics'))
+const LyricsDesktop = lazy(() => import('@/web/pages/Lyrics/LyricsDesktop'))
 const Search = lazy(() => import('@/web/pages/Search'))
 const Settings = lazy(() => import('@/web/pages/Settings'))
 
 const Router = () => {
   const location = useLocation()
+  
   useGASend()
-
   return (
     // this keeps the UI updates responsive even on slow device and networ
     <AnimatePresence mode='wait'>
@@ -33,6 +34,7 @@ const Router = () => {
         <Route path='/artist/:id' element={<Artist />} />
         <Route path='/settings' element={<Settings />} />
         <Route path='/lyrics' element={<Lyrics />} />
+        <Route path='/desktoplyrics' element={<LyricsDesktop />} />
         <Route path='/search/:keywords' element={<Search />}>
           <Route path=':type' element={<Search />} />
         </Route>

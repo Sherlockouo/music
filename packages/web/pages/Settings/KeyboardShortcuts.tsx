@@ -169,7 +169,7 @@ const ShortcutBindingInput: FC<{
       <span className='flex gap-1'>
         {textOrKeys
           .map((it, index) => [
-            index === 0 ? null : <span>+</span>,
+            index === 0 ? null : <span key={`connector-${index}`}>+</span>,
             <kbd
               key={it}
               className='inline-block min-w-[2em] rounded-full bg-stone-50/50 px-2 py-0.5 text-sm dark:bg-stone-500/50'
@@ -206,10 +206,11 @@ const ShortcutBindingInput: FC<{
   )
 }
 
-const ShortcutItemBindings: FC<{ fnKey: keyof KeyboardShortcuts; name: string }> = ({
-  fnKey,
-  name,
-}) => {
+const ShortcutItemBindings: FC<{
+  fnKey: keyof KeyboardShortcuts
+  name: string
+  hideLocal?: boolean
+}> = ({ fnKey, name, hideLocal = false }) => {
   const keyboardShortcuts = useKeyboardShortcuts()
   const platform = useOSPlatform()
 
@@ -258,7 +259,9 @@ const ShortcutItemBindings: FC<{ fnKey: keyof KeyboardShortcuts; name: string }>
     <tr className='h-10 rounded-lg hover:bg-stone-100/20 hover:dark:bg-stone-600/10'>
       <td className='px-2 text-left font-normal'>{name}</td>
       <td className='text-center font-normal'>
-        <ShortcutBindingInput value={keyboardShortcuts[fnKey][0]} onChange={updateBinding(0)} />
+        {hideLocal ? null : (
+          <ShortcutBindingInput value={keyboardShortcuts[fnKey][0]} onChange={updateBinding(0)} />
+        )}
       </td>
       <td className='text-center font-normal'>
         <ShortcutBindingInput value={keyboardShortcuts[fnKey][1]} onChange={updateBinding(1)} />
@@ -271,7 +274,7 @@ const ShortcutBindings = () => {
   return (
     <table className='mt-7 w-full'>
       <thead>
-        <tr className='h-10  text-black/50 dark:text-white/50'>
+        <tr className='h-10 font-medium text-black/50 dark:text-white/50'>
           <th className='px-2 text-left font-normal'>{t`settings.keyboard-shortcuts.function`}</th>
           <th className='text-center font-normal'>{t`settings.keyboard-shortcuts.local`}</th>
           <th className='text-center font-normal'>{t`settings.keyboard-shortcuts.global`}</th>
@@ -284,7 +287,11 @@ const ShortcutBindings = () => {
         <ShortcutItemBindings fnKey='volumeUp' name={t`player.volume-up`} />
         <ShortcutItemBindings fnKey='volumeDown' name={t`player.volume-down`} />
         <ShortcutItemBindings fnKey='favorite' name={t`player.favorite`} />
-        <ShortcutItemBindings fnKey='switchVisibility' name={t`common.hide-show-player`} />
+        <ShortcutItemBindings
+          fnKey='switchVisibility'
+          name={t`common.hide-show-player`}
+          hideLocal
+        />
       </tbody>
     </table>
   )

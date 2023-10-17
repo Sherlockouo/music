@@ -2,6 +2,7 @@ import { IpcChannels } from '@/shared/IpcChannels'
 import { merge } from 'lodash-es'
 import { proxy, subscribe } from 'valtio'
 import i18n, { getInitLanguage, SupportedLanguage, supportedLanguages } from '../i18n/i18n'
+import { getKeyboardShortcutDefaultSettings } from '@/shared/defaultSettings'
 
 interface Settings {
   accentColor: string
@@ -35,37 +36,7 @@ const initSettings: Settings = {
   showBackgroundImage: false,
   unlock: true,
   theme: 'dark',
-  keyboardShortcuts: {
-    localEnabled: true,
-    globalEnabled: false,
-    darwin: {
-      playPause: [['Space'], ['Cmd', 'p']],
-      next: [['Right'], ['Cmd', 'Right']],
-      previous: [['Left'], ['Cmd', 'Left']],
-      volumeUp: [['Up'], ['Cmd', 'up']],
-      volumeDown: [['Down'], ['Cmd', 'Down']],
-      favorite: [['l'], ['Cmd', 'l']],
-      switchVisibility: [['m'], ['Cmd', 'm']],
-    },
-    win32: {
-      playPause: [['Space'], ['Ctrl', 'Shift', 'p']],
-      next: [['Right'], ['Ctrl', 'Shift', 'Right']],
-      previous: [['Left'], ['Ctrl', 'Shift', 'Left']],
-      volumeUp: [['Up'], ['Ctrl', 'Shift', 'up']],
-      volumeDown: [['Down'], ['Ctrl', 'Shift', 'Down']],
-      favorite: [['l'], ['Ctrl', 'Shift', 'l']],
-      switchVisibility: [['m'], ['Ctrl', 'Shift', 'm']],
-    },
-    linux: {
-      playPause: [['Space'], ['Ctrl', 'Shift', 'p']],
-      next: [['Right'], ['Ctrl', 'Shift', 'Right']],
-      previous: [['Left'], ['Ctrl', 'Shift', 'Left']],
-      volumeUp: [['Up'], ['Ctrl', 'Shift', 'up']],
-      volumeDown: [['Down'], ['Ctrl', 'Shift', 'Down']],
-      favorite: [['l'], ['Ctrl', 'Shift', 'l']],
-      switchVisibility: [['m'], ['Ctrl', 'Shift', 'm']],
-    },
-  },
+  keyboardShortcuts: getKeyboardShortcutDefaultSettings(),
 }
 
 const STORAGE_KEY = 'settings'

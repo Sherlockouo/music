@@ -106,7 +106,9 @@
       "keyboard-shortcut-in-used-by-other-program": "该快捷键陂其他程序占用",
       "binding-input-unbound": "未绑定",
       "global-shortcut-invalid": "全局快捷键需要至少一个修饰键和一个非修饰键",
-      "local-shortcut-invalid": "应用内快捷键需要一个非修饰键和可选的若干个修饰键"
+      "local-shortcut-invalid": "应用内快捷键需要一个非修饰键和可选的若干个修饰键",
+      "restore-factory-settings": "恢复默认设置",
+      "restore-factory-settings-success": "快捷键已恢复为默认设置"
     }
   },
   "context-menu": {

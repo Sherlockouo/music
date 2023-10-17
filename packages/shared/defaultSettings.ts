@@ -1,0 +1,31 @@
+export const getKeyboardShortcutDefaultSettings = (): KeyboardShortcutSettings => ({
+  localEnabled: true,
+  globalEnabled: false,
+  darwin: {
+    playPause: [['Space'], ['Cmd', 'p']],
+    next: [['Right'], ['Cmd', 'Right']],
+    previous: [['Left'], ['Cmd', 'Left']],
+    volumeUp: [['Up'], ['Cmd', 'up']],
+    volumeDown: [['Down'], ['Cmd', 'Down']],
+    favorite: [['l'], ['Cmd', 'l']],
+    switchVisibility: [['m'], ['Cmd', 'm']],
+  },
+  win32: {
+    playPause: [['Space'], ['Ctrl', 'Shift', 'p']],
+    next: [['Right'], ['Ctrl', 'Shift', 'Right']],
+    previous: [['Left'], ['Ctrl', 'Shift', 'Left']],
+    volumeUp: [['Up'], ['Ctrl', 'Shift', 'up']],
+    volumeDown: [['Down'], ['Ctrl', 'Shift', 'Down']],
+    favorite: [['l'], ['Ctrl', 'Shift', 'l']],
+    switchVisibility: [['m'], ['Ctrl', 'Shift', 'm']],
+  },
+  linux: {
+    playPause: [['Space'], ['Ctrl', 'Shift', 'p']],
+    next: [['Right'], ['Ctrl', 'Shift', 'Right']],
+    previous: [['Left'], ['Ctrl', 'Shift', 'Left']],
+    volumeUp: [['Up'], ['Ctrl', 'Shift', 'up']],
+    volumeDown: [['Down'], ['Ctrl', 'Shift', 'Down']],
+    favorite: [['l'], ['Ctrl', 'Shift', 'l']],
+    switchVisibility: [['m'], ['Ctrl', 'Shift', 'm']],
+  },
+})

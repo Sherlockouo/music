@@ -6,9 +6,10 @@ import settings from '@/web/states/settings'
 import { t } from 'i18next'
 import { FC, KeyboardEventHandler, useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
-import { BlockTitle, Option, OptionText, Switch } from './Controls'
+import { BlockTitle, Button, Option, OptionText, Switch } from './Controls'
 import { IpcChannels } from '@/shared/IpcChannels'
-import { isEqual, last } from 'lodash-es'
+import { cloneDeep, isEqual, last } from 'lodash-es'
+import { getKeyboardShortcutDefaultSettings } from '@/shared/defaultSettings'
 
 const modifierKeys = ['Control', 'Alt', 'Shift', 'Meta', 'Super', 'Cmd', 'Option']
 const keyNameMap = {
@@ -297,11 +298,33 @@ const ShortcutBindings = () => {
   )
 }
 
+const RestoreFactorySettings = () => {
+  const reset = () => {
+    toast.success(t`settings.keyboard-shortcuts.restore-factory-settings-success`)
+    settings.keyboardShortcuts = getKeyboardShortcutDefaultSettings()
+    window.ipcRenderer
+      ?.invoke(IpcChannels.BindKeyboardShortcuts, {
+        shortcuts: JSON.parse(JSON.stringify(settings.keyboardShortcuts)),
+      })
+      .catch(error => {
+        console.error(error)
+        toast.error(error.message)
+      })
+  }
+
+  return (
+    <div className='mt-7 w-full'>
+      <Button onClick={reset}>{t('settings.keyboard-shortcuts.restore-factory-settings')}</Button>
+    </div>
+  )
+}
+
 const KeyboardShortcuts: FC = () => {
   return (
     <>
       <ShortcutSwitchSettings />
       <ShortcutBindings />
+      <RestoreFactorySettings />
     </>
   )
 }

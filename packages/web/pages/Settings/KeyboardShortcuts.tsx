@@ -21,6 +21,11 @@ const keyNameMap = {
     ['Super', '⌘'],
     ['Option', '⌥'],
     ['Cmd', '⌘'],
+    ['Left', '◀'],
+    ['Right', '▶'],
+    ['Up', '▲'],
+    ['Down', '▼'],
+    ['Space', '␣'],
   ]),
   linux: new Map<string, string>([
     ['Control', 'Ctrl'],
@@ -30,6 +35,11 @@ const keyNameMap = {
     ['Super', 'Super'],
     ['Option', 'Alt'],
     ['Cmd', 'Super'],
+    ['Left', '←'],
+    ['Right', '→'],
+    ['Up', '↑'],
+    ['Down', '↓'],
+    ['Space', '␣'],
   ]),
   win32: new Map<string, string>([
     ['Control', 'Ctrl'],
@@ -39,6 +49,11 @@ const keyNameMap = {
     ['Super', 'Alt'],
     ['Option', 'Alt'],
     ['Cmd', 'Ctrl'],
+    ['Left', '←'],
+    ['Right', '→'],
+    ['Up', '↑'],
+    ['Down', '↓'],
+    ['Space', '␣'],
   ]),
 }
 
@@ -175,7 +190,7 @@ const ShortcutBindingInput: FC<{
               key={it}
               className='inline-block min-w-[2em] rounded-full bg-stone-50/50 px-2 py-0.5 text-sm dark:bg-stone-500/50'
             >
-              {keyNameMap[platform]?.get(it) ?? it}
+              {keyNameMap[platform]?.get(it) ?? (it.match(/[a-z]/i) ? it.toUpperCase() : it)}
             </kbd>,
           ])
           .flat()
@@ -200,7 +215,7 @@ const ShortcutBindingInput: FC<{
       >
         <Icon
           name='x'
-          className='ml-auto box-content h-4 w-4 rounded-full p-1 text-stone-300 opacity-0 transition-opacity hover:bg-stone-400/20 group-hover/binding-input:opacity-100 dark:text-stone-400'
+          className='ml-auto box-content h-4 w-4 rounded-full p-1 text-stone-500 opacity-0 transition-opacity hover:bg-stone-400/20 group-hover/binding-input:opacity-100 dark:text-stone-400'
         />
       </button>
     </div>

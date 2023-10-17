@@ -143,29 +143,32 @@ export class Player {
     const source = audioCtx.createMediaElementSource((_howler as any)._sounds[0]._node);
     source.connect(analyser);
     analyser.connect(audioCtx.destination);
-    // Creating output array (according to documentation https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API)
-    _analyser.fftSize = 2048
-
-    var bufferLength = _analyser.frequencyBinCount
-    
-    this.dataArray = new Uint8Array(bufferLength)
-    let start = 16, end = 128, smooth = 0.02
-    // Display array on time each 3 sec (just to debug)
-    setInterval(() => {
-      if(this.state != State.Playing || !uiStates.showSongFrequency || window.location.pathname != '/lyrics') return
-      // _analyser.getByteFrequencyData(dataArray)
-      analyser.getByteFrequencyData(this.dataArray)
+  
+    analyser.fftSize = 2048;
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+  
+    let start = 16, end = 128, smooth = 0.02;
+  
+    const updateFrequencyData = () => {
+      if (this.state !== State.Playing || !uiStates.showSongFrequency || window.location.pathname !== '/lyrics') {
+        return;
+      }
+  
+      analyser.getByteFrequencyData(dataArray);
+  
       let sum = 0;
-      this.dataArray.forEach((val, idx) => {
-        if (start <= idx && idx < end) {
-          sum += val;
-        }
-      });
-      this._nowVolume = this._nowVolume * smooth + (sum / (end - start)) * (1 - smooth);
-      // _analyser.getByteTimeDomainData(dataArray)
-      // console.log(this.dataArray);
-      
-    }, 50)
+      for (let i = start; i < end; i++) {
+        sum += dataArray[i];
+      }
+      const average = sum / (end - start);
+      this._nowVolume = this._nowVolume * smooth + average * (1 - smooth);
+  
+      // Uncomment the following line for debugging
+      // console.log(dataArray);
+    };
+  
+    setInterval(updateFrequencyData, 50);
   }
 
   // private fetchMP3(url: string): Promise<Blob> {

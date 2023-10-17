@@ -160,7 +160,7 @@ const Lyrics = ({syncProgress,trackID}:{syncProgress?:()=>void,trackID?:number})
           </div>
           {renderedLyrics}
         </motion.div>
-        <div className='sticky bottom-0 h-full w-full z-1'>
+        <div className='sticky bottom-0 h-full w-full'>
         {showSongFrequency && <AudioVisualization />}
         </div>
       </div>

@@ -51,7 +51,7 @@ const AudioVisualization: React.FC<AudioVisualizationProps> = () => {
 
   return (
     <>
-      <div className=''>
+      <div className='z-1'>
         <canvas ref={canvasRef} className='w-full w-full'></canvas>
 
       </div>

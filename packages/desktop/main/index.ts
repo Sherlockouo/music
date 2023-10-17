@@ -87,6 +87,7 @@ class Main {
       title: appName,
       webPreferences: {
         preload: join(__dirname, 'rendererPreload.js'),
+        webSecurity: false,
       },
       width: store.get('window.width'),
       height: store.get('window.height'),

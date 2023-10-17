@@ -220,6 +220,9 @@ importers:
       fastify-cli:
         specifier: ^4.4.0
         version: 4.4.0
+      fastify-cors:
+        specifier: ^6.1.0
+        version: registry.npmjs.org/fastify-cors@6.1.0
       fastify-plugin:
         specifier: ^3.0.0
         version: 3.0.1
@@ -13240,6 +13243,31 @@ packages:
     version: 2.1.0
     dev: true
 
+  registry.npmjs.org/fastify-cors@6.0.3:
+    resolution: {integrity: sha512-fMbXubKKyBHHCfSBtsCi3+7VyVRdhJQmGes5gM+eGKkRErCdm0NaYO0ozd31BQBL1ycoTIjbqOZhJo4RTF/Vlg==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/fastify-cors/-/fastify-cors-6.0.3.tgz}
+    name: fastify-cors
+    version: 6.0.3
+    dependencies:
+      fastify-plugin: registry.npmjs.org/fastify-plugin@3.0.1
+      vary: registry.npmjs.org/vary@1.1.2
+    dev: false
+
+  registry.npmjs.org/fastify-cors@6.1.0:
+    resolution: {integrity: sha512-QBKz32IoY/iuT74CunRY1XOSpjSTIOh9E3FxulXIBhd0D2vdgG0kDvy0eG6HA/88sRfWHeba43LkGEXPz0Rh8g==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/fastify-cors/-/fastify-cors-6.1.0.tgz}
+    name: fastify-cors
+    version: 6.1.0
+    deprecated: Please use @fastify/cors@7.0.0 instead
+    dependencies:
+      fastify-cors-deprecated: registry.npmjs.org/fastify-cors@6.0.3
+      process-warning: registry.npmjs.org/process-warning@1.0.0
+    dev: false
+
+  registry.npmjs.org/fastify-plugin@3.0.1:
+    resolution: {integrity: sha512-qKcDXmuZadJqdTm6vlCqioEbyewF60b/0LOFCcYN1B6BIZGlYJumWWOYs70SFYLDAH4YqdE1cxH/RKMG7rFxgA==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/fastify-plugin/-/fastify-plugin-3.0.1.tgz}
+    name: fastify-plugin
+    version: 3.0.1
+    dev: false
+
   registry.npmjs.org/fastify-plugin@4.5.1:
     resolution: {integrity: sha512-stRHYGeuqpEZTL1Ef0Ovr2ltazUT9g844X5z/zEBFLG8RYlpDiOCIG+ATvYEp+/zmc7sN29mcIMp8gvYplYPIQ==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/fastify-plugin/-/fastify-plugin-4.5.1.tgz}
     name: fastify-plugin
@@ -14967,6 +14995,12 @@ packages:
     requiresBuild: true
     dev: false
     optional: true
+
+  registry.npmjs.org/process-warning@1.0.0:
+    resolution: {integrity: sha512-du4wfLyj4yCZq1VupnVSZmRsPJsNuxoDQFdCFHLaYiEbFBD7QE0a+I4D7hOxrVnh78QE/YipFAj9lXHiXocV+Q==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/process-warning/-/process-warning-1.0.0.tgz}
+    name: process-warning
+    version: 1.0.0
+    dev: false
 
   registry.npmjs.org/progress@2.0.3:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==, registry: https://npmreg.proxy.ustclug.org/, tarball: https://registry.npmjs.org/progress/-/progress-2.0.3.tgz}

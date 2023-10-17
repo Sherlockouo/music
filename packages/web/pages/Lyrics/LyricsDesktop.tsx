@@ -101,9 +101,9 @@ const LyricsDesktop = () => {
     const lineClassName = cx(
       'lyrics-row leading-120 mt-5 mb-5 pb-2 ease-in-out',
       index === currentLineIndex &&
-      'line-clamp-4 font-bold text-accent-color-500 text-24',
+      'line-clamp-4 font-bold text-accent-color-500 text-2xl',
       index !== currentLineIndex &&
-      'font-black tracking-lyric leading-lyric text-black/60 dark:text-white/60 text-16 ',
+      'font-black tracking-lyric leading-lyric text-black/60 dark:text-white/60 text-md ',
       index !== currentLineIndex && 'transition-opacity duration-1000',
     )
 

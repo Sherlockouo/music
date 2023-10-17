@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next'
 import useIsMobile from '@/web/hooks/useIsMobile'
 import { motion } from 'framer-motion'
 import AudioVisualization from '@/web/components/Animation/WaveAnimation'
+import uiStates from '@/web/states/uiStates'
 
 const Lyrics = ({syncProgress,trackID}:{syncProgress?:()=>void,trackID?:number}) => {
   const isMobile = useIsMobile()
@@ -19,6 +20,7 @@ const Lyrics = ({syncProgress,trackID}:{syncProgress?:()=>void,trackID?:number})
   const lyricsResponse = lyricsRes.data
   const { lyric: lyrics, tlyric: tlyric } = lyricParser(lyricsResponse)
   const { state: playerState, progress, nowVolume } = useSnapshot(player)
+  const {showSongFrequency} = useSnapshot(uiStates)
   const { t } = useTranslation()
   // const [isScrolling, setIsScrolling] = useState(false);
   const [isHovered, setIsHovered] = useState(false)
@@ -93,20 +95,15 @@ const Lyrics = ({syncProgress,trackID}:{syncProgress?:()=>void,trackID?:number})
     }
 
     const lineClassName = cx(
-      'lyrics-row leading-120 tracking-lyricSpacing mt-5 mb-5 pb-2 ease-in-out',
+      'lyrics-row leading-120 mt-5 mb-5 pb-2 ease-in-out',
       index === currentLineIndex &&
-        'line-clamp-4 font-bold text-accent-color-500 tracking-hilightLyric leading-lyric text-32',
+      'line-clamp-4 font-bold text-accent-color-500 text-2xl',
       index !== currentLineIndex &&
-        'lyrics-padding normal-lyric-font-size font-black tracking-lyric leading-lyric text-black/60 dark:text-white/60 text-24 ',
-        // 'blur-lyric',
-      index !== currentLineIndex && isHovered && 'transition-opacity duration-1000',
-      // 'blur-none',
-      // isMobile && 'blur-none'
+      'font-black tracking-lyric leading-lyric text-black/60 dark:text-white/60 text-xl ',
+      index !== currentLineIndex && 'transition-opacity duration-1000',
     )
 
     const hightlightStyle =
-      index === currentLineIndex
-        ? // && isMobile
           {
             textShadow:
               'rgb(216,216,216,' +
@@ -115,7 +112,6 @@ const Lyrics = ({syncProgress,trackID}:{syncProgress?:()=>void,trackID?:number})
               currentVolumnValue +
               'px',
           }
-        : {}
 
     return (
       <div
@@ -133,69 +129,18 @@ const Lyrics = ({syncProgress,trackID}:{syncProgress?:()=>void,trackID?:number})
     )
   })
 
-  if (lyricsResponse == undefined || lyricsResponse.code != 200 || lyrics.length == 0) {
-    const hightlightStyle = isMobile
-      ? {}
-      : {
-          textShadow:
-            'rgb(255,255,255,' + currentVolumnValue / 5 + ') 0px 0px ' + currentVolumnValue + 'px',
-          padding: '12px',
-        }
-    // return (
-    //   <PageTransition>
-    //     {
-    //       <div
-    //         className={cx(
-    //           'text-black/60 dark:text-white/60 ',
-    //           'artist-info  no-scrollbar padding-bottom-20 h-921 mb-8 mt-8 text-center text-21 font-medium',
-    //           'text-center'
-    //         )}
-    //         style={{
-    //           paddingTop: '100px',
-    //           height: '921px',
-    //         }}
-    //       >
-    //         <div className='no-lyrics mb-4 mt-8 text-center'>
-    //           <p>{player.track?.name}</p>
-    //           <p>By - {player.track?.ar[0].name}</p>
-    //         </div>
-    //         <p className='normal-lyric-font-size highlight-lyric' style={hightlightStyle}>
-    //           请欣赏·纯音乐
-    //         </p>
-    //       </div>
-    //     }
-    //     <div className='artist-info padding-bottom-20 text-20 mb-8 mt-8 text-center font-medium text-neutral-400'>
-    //       {player.state == 'ready' && t`common.lyric-welcome`}
-    //     </div>
-    //   </PageTransition>
-    // )
-  }
-  // const handleScroll = () => {
-  //   startTransition(() => {
-  //     // 设置滚动状态为 true
-  //     setIsScrolling(true);
-
-  //     // 在一定时间后，将滚动状态设置为 false
-  //     clearTimeout(4000);
-  //     const scrollTimeout = setTimeout(() => {
-  //       setIsScrolling(false);
-  //     }, 4000);
-  //   })
-  // };
-
   return (
     <PageTransition>
       <div
         className={cx(
           'lyrics-player h-921 ',
-          // 'text-black/60 dark:text-white/60',
           'text-center',
           'font-Roboto font-bold backdrop-blur-md'
         )}
       >
         <motion.div
           className={cx(
-            'lyrics-container no-scrollbar h-full  pb-lyricBottom mb-8 mt-8 pt-lyricTop ',
+            'lyrics-container no-scrollbar h-full  z-2 pb-lyricBottom mb-8 mt-8 pt-lyricTop ',
             'text-center'
           )}
           ref={containerRef}
@@ -215,9 +160,9 @@ const Lyrics = ({syncProgress,trackID}:{syncProgress?:()=>void,trackID?:number})
           </div>
           {renderedLyrics}
         </motion.div>
-      </div>
-      <div className='w-full h-10'>
-      <AudioVisualization />
+        <div className='sticky bottom-0 h-full w-full z-1'>
+        {showSongFrequency && <AudioVisualization />}
+        </div>
       </div>
     </PageTransition>
   )

@@ -41,6 +41,7 @@
     "electron-updater": "^6.1.4",
     "fast-folder-size": "^1.7.1",
     "fastify": "^4.5.3",
+    "fastify-cors": "^6.1.0",
     "http-proxy-agent": "^5.0.0",
     "pretty-bytes": "^6.0.0",
     "ytdl-core": "^4.11.2"

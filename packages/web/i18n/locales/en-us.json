@@ -19,7 +19,9 @@
     "video-with-count_other": "{{count}} Videos",
     "lyric-welcome":"Let's explore the most wonderful sounds of music!",
     "cloud":"cloud",
-    "upload":"upload music"
+    "upload":"upload music",
+    "showSongFrequency":"Show song frequency",
+    "showSongFrequencyWarnning":"⚠️This is performance consuming"
   },
   "navigation": {
     "goBack": "Go back",

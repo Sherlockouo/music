@@ -6,6 +6,7 @@ import { Button } from './Controls'
 import { useState } from 'react'
 import axios from 'axios'
 import {checkAPPUpdate} from '@/web/utils/ipcRender'
+import toast from 'react-hot-toast'
 
 const About = () => {
   const currentVersion = pkg.version
@@ -13,6 +14,8 @@ const About = () => {
   const [newVersion, setNewVersion] = useState<string>("")
 
   const checkUpdate = () => {
+    toast.error("开发中 ｜ developing")
+    return 
     checkAPPUpdate()
     setChecking(true)
     axios({

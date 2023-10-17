@@ -4,6 +4,7 @@ import { useSnapshot } from 'valtio'
 import { cx, css } from '@emotion/css'
 import { BlockDescription, BlockTitle, Button, Option, OptionText, Switch } from './Controls'
 import { useTranslation } from 'react-i18next'
+import uiStates from '@/web/states/uiStates'
 
 const AccentColor = () => {
   const { t, i18n } = useTranslation()
@@ -94,7 +95,28 @@ const LayoutBackground = () => {
     </>
   )
 }
-1
+
+const ShowSongFrequency = () => {
+  const { t, i18n } = useTranslation()
+  const { showSongFrequency } = useSnapshot(uiStates)
+  return (
+    <>
+        <Option>
+          <div className='flex flex-col'>
+          <OptionText>{t`common.showSongFrequency`}</OptionText>
+          <div> 
+            {t`common.showSongFrequencyWarnning`}
+          </div>
+          </div>
+          <Switch
+            enabled={showSongFrequency}
+            onChange={value => (uiStates.showSongFrequency = value)}
+          ></Switch>
+        </Option>
+    </>
+  )
+}
+
 const Appearance = () => {
   return (
     <div
@@ -105,6 +127,7 @@ const Appearance = () => {
     >
       <Theme />
       <LayoutBackground />
+      <ShowSongFrequency />
     </div>
   )
 }

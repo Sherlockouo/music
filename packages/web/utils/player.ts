@@ -23,6 +23,7 @@ import { FetchAudioSourceResponse } from '@/shared/api/Track'
 import { LogLevel } from 'react-virtuoso'
 import settings from '@/web/states/settings'
 import useIsMobile from '@/web/hooks/useIsMobile'
+import uiStates from '../states/uiStates'
 
 type TrackID = number
 export enum TrackListSourceType {
@@ -74,6 +75,7 @@ export class Player {
   fmTrackList: TrackID[] = []
   shuffle: boolean = false
   fmTrack: Track | null = null
+  dataArray: Uint8Array = new Uint8Array()
 
   init(params: { [key: string]: any }) {
     if (params._track) this._track = params._track
@@ -136,38 +138,34 @@ export class Player {
   }
 
   private getSongFFT() {
-    _analyser = Howler.ctx.createAnalyser()
-    Howler.masterGain.connect(_analyser)
-
-    // Howler.volume(0.4)
-    // const source = Howler.ctx.createMediaElementSource((this.howler as any)._sounds[0]._node);
-    // source.connect(_analyser)
-    // Connect analyzer to destination
-    // _analyser.connect(Howler.ctx.destination);
-
+    const audioCtx = new (window.AudioContext)();
+    const analyser = audioCtx.createAnalyser();
+    const source = audioCtx.createMediaElementSource((_howler as any)._sounds[0]._node);
+    source.connect(analyser);
+    analyser.connect(audioCtx.destination);
     // Creating output array (according to documentation https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API)
     _analyser.fftSize = 2048
 
     var bufferLength = _analyser.frequencyBinCount
-    var dataArray = new Uint8Array(bufferLength)
-
-    var smooth = 0.02
-
-    var start = 16,
-      end = 128
-
+    
+    this.dataArray = new Uint8Array(bufferLength)
+    let start = 16, end = 128, smooth = 0.02
     // Display array on time each 3 sec (just to debug)
     setInterval(() => {
-      _analyser.getByteFrequencyData(dataArray)
-      var sum = 0
-      dataArray.forEach(function (val, idx, arr) {
+      if(this.state != State.Playing || !uiStates.showSongFrequency || window.location.pathname != '/lyrics') return
+      // _analyser.getByteFrequencyData(dataArray)
+      analyser.getByteFrequencyData(this.dataArray)
+      let sum = 0;
+      this.dataArray.forEach((val, idx) => {
         if (start <= idx && idx < end) {
-          sum += val
+          sum += val;
         }
-      }, 0)
-
-      this._nowVolume = this._nowVolume * smooth + (sum / (end - start)) * (1 - smooth)
-    }, 16)
+      });
+      this._nowVolume = this._nowVolume * smooth + (sum / (end - start)) * (1 - smooth);
+      // _analyser.getByteTimeDomainData(dataArray)
+      // console.log(this.dataArray);
+      
+    }, 50)
   }
 
   // private fetchMP3(url: string): Promise<Blob> {
@@ -588,7 +586,7 @@ export class Player {
     const prefetchNextTrack = async () => {
       const prefetchTrackID = this.fmTrackList[1]
       const track = await this._fetchTrack(prefetchTrackID)
-      if (track?.al.picUrl) {
+      if (track?.al?.picUrl) {
         axios.get(resizeImage(track.al.picUrl, 'md'))
         axios.get(resizeImage(track.al.picUrl, 'xs'))
       }

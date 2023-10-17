@@ -1,68 +1,60 @@
 import React, { useEffect, useRef } from 'react';
-import { Howl } from 'howler';
 import player from '@/web/states/player';
+import { useSnapshot } from 'valtio';
+import { State } from '@/web/utils/player';
+import { css, cx } from '@emotion/css';
 
 interface AudioVisualizationProps {
 }
 
 const AudioVisualization: React.FC<AudioVisualizationProps> = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
+  const { state, dataArray } = useSnapshot(player)
   useEffect(() => {
     const canvas = canvasRef.current;
-
+    const ctx = canvas!.getContext("2d");
     if (!canvas) return;
+    if (state == State.Playing) {
+      
+      console.log('drawing ');
 
-    const ctx = canvas.getContext('2d');
-    const analyser = Howler.ctx.createAnalyser();
-
-    (window as any).howler.on('play', () => {
-      const source = Howler.ctx.createMediaElementSource((window as any).howler._sounds[0]._node);
-      source.connect(analyser);
-      analyser.connect(Howler.ctx.destination);
-
-      const bufferLength = analyser.frequencyBinCount;
-      const dataArray = new Uint8Array(bufferLength);
+      var bufferLength = 1024
 
       const draw = () => {
         requestAnimationFrame(draw);
-
-        analyser.getByteFrequencyData(dataArray);
-
+      
         ctx!.clearRect(0, 0, canvas.width, canvas.height);
-
-        const barWidth = canvas.width / bufferLength;
+      
+        const barWidth = (canvas.width * 3) / bufferLength;
+        const maxHeight = canvas.height  * 0.8;
         let x = 0;
-
+      
         for (let i = 0; i < bufferLength; i++) {
           const barHeight = dataArray[i];
-          ctx!.fillStyle = `rgb(${barHeight}, 0, 0)`;
-          ctx!.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+          const height = (barHeight / 255) * maxHeight;
+          const y = canvas.height - height;
+      
+          const hue = ( i / bufferLength ) * 360 * 10;
+          
+      
+          ctx!.fillStyle = `hsl(${hue}, 120%, 50%)`; // 使用固定颜色，避免模糊
+          
+          ctx!.fillRect(x, y, barWidth, height);
+      
           x += barWidth + 1;
         }
       };
-
+      
       draw();
-    });
-
-    return () => {
-      // player.stop();
-    };
-  }, [player]);
-
-  const playAudio = () => {
-    player.play();
-  };
-
-  const pauseAudio = () => {
-    player.pause();
-  };
+    }
+  }, [state]);
 
   return (
     <>
-      <canvas ref={canvasRef}></canvas>
-      <button onClick={playAudio}>Play</button>
-      <button onClick={pauseAudio}>Pause</button>
+      <div className=''>
+        <canvas ref={canvasRef} className='w-full w-full'></canvas>
+
+      </div>
     </>
   );
 };

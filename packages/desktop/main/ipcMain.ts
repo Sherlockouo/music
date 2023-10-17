@@ -112,15 +112,10 @@ function initTrayIpcMain(tray: YPMTray | null) {
   on(IpcChannels.Like, (e, { isLiked }) => tray?.setLikeState(isLiked))
 
   on(IpcChannels.Play, (e, { trackID }) => {
-    !lyricWin && tray?.setPlayState(true)
-
-    lyricWin && lyricWin.win?.webContents.send(IpcChannels.Play, {
-      trackID: trackID
-    })
+    tray?.setPlayState(true)
   })
   on(IpcChannels.Pause, () => {
-    !lyricWin && tray?.setPlayState(false)
-    lyricWin && lyricWin.win?.webContents.send(IpcChannels.Pause)
+    tray?.setPlayState(false)
   })
 
   on(IpcChannels.Repeat, (e, { mode }) => tray?.setRepeatMode(mode))
@@ -132,8 +127,7 @@ function initTrayIpcMain(tray: YPMTray | null) {
  */
 function initTaskbarIpcMain(thumbar: Thumbar | null) {
   on(IpcChannels.Play, () => {
-
-    !lyricWin && thumbar?.setPlayState(true)
+    thumbar?.setPlayState(true)
   })
   on(IpcChannels.Pause, () => thumbar?.setPlayState(false))
 }

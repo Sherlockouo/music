@@ -1,9 +1,7 @@
 import { Howl, Howler } from 'howler'
-import request from '@/web/utils/request'
 import {
   fetchAudioSourceWithReactQuery,
   fetchTracksWithReactQuery,
-  unblock,
 } from '@/web/api/hooks/useTracks'
 import { fetchPersonalFMWithReactQuery } from '@/web/api/hooks/usePersonalFM'
 import { fmTrash } from '@/web/api/personalFM'
@@ -19,9 +17,6 @@ import toast from 'react-hot-toast'
 import { scrobble } from '@/web/api/user'
 import { fetchArtistWithReactQuery } from '../api/hooks/useArtist'
 import { appName } from './const'
-import { FetchAudioSourceResponse } from '@/shared/api/Track'
-import { LogLevel } from 'react-virtuoso'
-import settings from '@/web/states/settings'
 import useIsMobile from '@/web/hooks/useIsMobile'
 import uiStates from '../states/uiStates'
 
@@ -49,13 +44,10 @@ export enum State {
 }
 
 const PLAY_PAUSE_FADE_DURATION = 200
-const port = import.meta.env.DEV ? 10660 : 30003
 
 let _howler = new Howl({ src: [''], format: ['mp3', 'flac'] })
 
 let _analyser = Howler.ctx.createAnalyser()
-
-const isMobile = useIsMobile()
 
 export class Player {
   private _lyricWinTrackID: number = 0
@@ -146,7 +138,7 @@ export class Player {
   
     analyser.fftSize = 2048;
     const bufferLength = analyser.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
+    this.dataArray = new Uint8Array(bufferLength);
   
     let start = 16, end = 128, smooth = 0.02;
   
@@ -155,11 +147,11 @@ export class Player {
         return;
       }
   
-      analyser.getByteFrequencyData(dataArray);
+      analyser.getByteFrequencyData(this.dataArray);
   
       let sum = 0;
       for (let i = start; i < end; i++) {
-        sum += dataArray[i];
+        sum += this.dataArray[i];
       }
       const average = sum / (end - start);
       this._nowVolume = this._nowVolume * smooth + average * (1 - smooth);
@@ -168,7 +160,7 @@ export class Player {
       // console.log(dataArray);
     };
   
-    setInterval(updateFrequencyData, 50);
+    setInterval(updateFrequencyData, 80);
   }
 
   // private fetchMP3(url: string): Promise<Blob> {

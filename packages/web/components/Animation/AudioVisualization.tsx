@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import player from '@/web/states/player';
 import { useSnapshot } from 'valtio';
 import { State } from '@/web/utils/player';
-import { css, cx } from '@emotion/css';
 
 interface AudioVisualizationProps {
 }
@@ -10,13 +9,15 @@ interface AudioVisualizationProps {
 const AudioVisualization: React.FC<AudioVisualizationProps> = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const { state, dataArray } = useSnapshot(player)
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas!.getContext("2d");
     if (!canvas) return;
+    canvas.width = canvas.width * devicePixelRatio
+    canvas.height = canvas?.height * devicePixelRatio
     if (state == State.Playing) {
-      
-      console.log('drawing ');
 
       var bufferLength = 1024
 
@@ -51,9 +52,8 @@ const AudioVisualization: React.FC<AudioVisualizationProps> = () => {
 
   return (
     <>
-      <div className='z-1'>
+      <div className=''>
         <canvas ref={canvasRef} className='w-full w-full'></canvas>
-
       </div>
     </>
   );

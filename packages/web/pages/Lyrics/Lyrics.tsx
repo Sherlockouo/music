@@ -8,7 +8,7 @@ import { lyricParser } from '@/web/utils/lyric'
 import { useTranslation } from 'react-i18next'
 import useIsMobile from '@/web/hooks/useIsMobile'
 import { motion } from 'framer-motion'
-import AudioVisualization from '@/web/components/Animation/WaveAnimation'
+import AudioVisualization from '@/web/components/Animation/AudioVisualization'
 import uiStates from '@/web/states/uiStates'
 
 const Lyrics = ({syncProgress,trackID}:{syncProgress?:()=>void,trackID?:number}) => {
@@ -140,7 +140,7 @@ const Lyrics = ({syncProgress,trackID}:{syncProgress?:()=>void,trackID?:number})
       >
         <motion.div
           className={cx(
-            'lyrics-container no-scrollbar h-full  z-2 pb-lyricBottom mb-8 mt-8 pt-lyricTop ',
+            'lyrics-container no-scrollbar h-full  z-10 pb-lyricBottom mb-8 mt-8 pt-lyricTop ',
             'text-center'
           )}
           ref={containerRef}

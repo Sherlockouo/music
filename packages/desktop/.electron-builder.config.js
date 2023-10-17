@@ -24,7 +24,7 @@ module.exports = {
   publish: [
     {
       provider: 'github',
-      owner: 'feng',
+      owner: 'sherlockouo',
       repo: 'music',
       vPrefixedTagName: true,
       releaseType: 'draft',

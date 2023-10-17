@@ -23,7 +23,7 @@ const LayoutMobile = () => {
   return (
     <div id='layout' className='select-none bg-white pb-28 dark:bg-black'>
       {
-        location.pathname === '/desktoplyrics' ? <> <Router /> </> :
+        location.pathname === '/desktoplyrics' ? <div className=''> <Router /> </div> :
           <>
             <main id='main' className='min-h-screen overflow-y-auto overflow-x-hidden pb-16 '>
               {location.pathname === '/' && <Topbar />}

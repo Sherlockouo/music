@@ -51,6 +51,7 @@ const PLAY_PAUSE_FADE_DURATION = 200
 const port = import.meta.env.DEV ? 10660 : 30003
 
 let _howler = new Howl({ src: [''], format: ['mp3', 'flac'] })
+
 let _analyser = Howler.ctx.createAnalyser()
 
 const isMobile = useIsMobile()
@@ -135,12 +136,12 @@ export class Player {
   }
 
   private getSongFFT() {
-    if (isMobile) return
     _analyser = Howler.ctx.createAnalyser()
     Howler.masterGain.connect(_analyser)
 
     // Howler.volume(0.4)
-
+    // const source = Howler.ctx.createMediaElementSource((this.howler as any)._sounds[0]._node);
+    // source.connect(_analyser)
     // Connect analyzer to destination
     // _analyser.connect(Howler.ctx.destination);
 
@@ -164,7 +165,6 @@ export class Player {
           sum += val
         }
       }, 0)
-      // console.log(sum / (end - start));
 
       this._nowVolume = this._nowVolume * smooth + (sum / (end - start)) * (1 - smooth)
     }, 16)
@@ -460,7 +460,7 @@ export class Player {
   // set play device
   setDevice(deviceId: MediaDeviceInfo["deviceId"]){
     // Get the currently playing audio element
-    const audioElement = _howler._sounds[0]._node;
+    const audioElement = (_howler as any)._sounds[0]._node;
     audioElement.setSinkId(deviceId)
       .then(() => {
         console.log('Audio output device set successfully');
@@ -547,8 +547,8 @@ export class Player {
         this._howlerOnEndCallback()
       }
     })
-    _howler = howler
-    ;(window as any).howler = howler
+    _howler = howler;
+    (window as any).howler = howler
     if (autoplay) {
       this.play()
       this.state = State.Playing
@@ -561,7 +561,7 @@ export class Player {
       this._setupProgressInterval()
     }
 
-    // await this.getSongFFT()
+    this.getSongFFT()
   }
 
   private _howlerOnEndCallback() {

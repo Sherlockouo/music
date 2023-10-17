@@ -14,6 +14,7 @@ export const enum IpcChannels {
   CacheCoverColor = 'CacheCoverColor',
   SetTrayTooltip = 'SetTrayTooltip',
   SetDesktopLyric = 'SetDesktopLyric',
+  CheckUpdate = 'CheckUpdate',
   PinDesktopLyric = 'PinDesktopLyric',
   // 准备三个播放相关channel, 为 mpris 预留接口
   Play = 'Play',
@@ -46,6 +47,7 @@ export interface IpcChannelsParams {
   [IpcChannels.Close]: void
   [IpcChannels.IsMaximized]: void
   [IpcChannels.FullscreenStateChange]: void
+  [IpcChannels.CheckUpdate]: void
   [IpcChannels.PinDesktopLyric]: void
   [IpcChannels.SyncProgress]: {
     progress: number
@@ -140,6 +142,7 @@ export interface IpcChannelsReturns {
 
   [IpcChannels.Like]: void
   [IpcChannels.Repeat]: RepeatMode
+  [IpcChannels.CheckUpdate]: void
   [IpcChannels.GetAudioCacheSize]: void
   [IpcChannels.GetAlbumFromAppleMusic]: AppleMusicAlbum | undefined
   [IpcChannels.GetArtistFromAppleMusic]: AppleMusicArtist | undefined

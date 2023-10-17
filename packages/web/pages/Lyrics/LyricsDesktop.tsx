@@ -13,6 +13,8 @@ import toast from 'react-hot-toast'
 import Theme from '@/web/components/Topbar/Theme'
 import Pin from '@/web/components/Tools/Pin'
 import { IpcChannels } from '@/shared/IpcChannels'
+
+
 const LyricsDesktop = () => {
   const containerRef = useRef(null)
   const [currentLineIndex, setCurrentLineIndex] = useState(0)
@@ -21,31 +23,31 @@ const LyricsDesktop = () => {
   const lyricsRes = useLyric({ id: trackID })
   const lyricsResponse = lyricsRes.data
   const { lyric: lyrics, tlyric: tlyric } = lyricParser(lyricsResponse)
-  const [pin,setPin] = useState(false)
+  const [pin, setPin] = useState(false)
 
   // let trackInfo:= null
   const [trackInfo, setTrackInfo] = useState<Track | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetchTracksWithReactQuery({ ids: [trackID] });
-        const track = response?.songs?.length ? response.songs[0] : null;
-        setTrackInfo(track);
-      } catch (error) {
-        console.log('[lyricWin] err:', error);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetchTracksWithReactQuery({ ids: [trackID] });
+  //       const track = response?.songs?.length ? response.songs[0] : null;
+  //       setTrackInfo(track);
+  //     } catch (error) {
+  //       console.log('[lyricWin] err:', error);
 
-      }
-    };
-    fetchData();
-  }, []);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
   // toast.success('lyric trackID '+ trackInfo);
 
   useEffect(() => {
     const updateCurrentLineIndex = () => {
       var find = false
       for (let i = currentLineIndex; i < lyrics.length; i++) {
-        if ((progress + 10) >= lyrics[i]?.time && progress < lyrics[i + 1]?.time) {
+        if ((progress + 20) >= lyrics[i]?.time && progress < lyrics[i + 1]?.time) {
           find = true
           setCurrentLineIndex(i)
           break
@@ -97,11 +99,11 @@ const LyricsDesktop = () => {
     const tLyric = tlyric[index]?.content
 
     const lineClassName = cx(
-      'lyrics-row leading-120 tracking-lyricSpacing mt-5 mb-5 pb-2 ease-in-out',
+      'lyrics-row leading-120 mt-5 mb-5 pb-2 ease-in-out',
       index === currentLineIndex &&
-      'line-clamp-4 font-bold text-accent-color-500 tracking-hilightLyric leading-lyric text-24',
+      'line-clamp-4 font-bold text-accent-color-500 text-24',
       index !== currentLineIndex &&
-      'lyrics-padding normal-lyric-font-size font-black tracking-lyric leading-lyric text-black/60 dark:text-white/60 text-16 ',
+      'font-black tracking-lyric leading-lyric text-black/60 dark:text-white/60 text-16 ',
       index !== currentLineIndex && 'transition-opacity duration-1000',
     )
 
@@ -123,30 +125,30 @@ const LyricsDesktop = () => {
           {/* <div className='z-29 w-3/4 h-12 bg-brand-500 dark:bg-night-500 top-0 left-0 fixed app-region-drag'>
           </div> */}
           <div className='z-30 w-full flex flex-row-reverse fixed bg-brand-500 dark:bg-night-500 right-0 top-0'>
-              
-              <div className={cx('z-31 h-12 w-12 iterms-center right-0 pr-5',
-              )} onClick={async () => {
-                const pined = await window.ipcRenderer?.invoke(IpcChannels.PinDesktopLyric)
-                setPin(pined as boolean)
-                if(pin) {
-                  toast.success('unpined lyric winows')
-                }else{
-                  toast.success('pined lyric winows')
-                }
-              }}>
-                <Pin className={cx(
-                  'rounded-full hover:bg-white transition duration-400 dark:hover:bg-neutral-100',
-                  pin && 'bg-white dark:bg-white/60',
-                  !pin && 'bg-white/50'
-                )}/>
-              </div>
-              <Theme />
-              <div className='app-region-drag w-3/4'></div>
+
+            <div className={cx('z-31 h-12 w-12 iterms-center right-0 pr-5',
+            )} onClick={async () => {
+              const pined = await window.ipcRenderer?.invoke(IpcChannels.PinDesktopLyric)
+              setPin(pined as boolean)
+              if (pin) {
+                toast.success('unpined lyric winows')
+              } else {
+                toast.success('pined lyric winows')
+              }
+            }}>
+              <Pin className={cx(
+                'rounded-full hover:bg-white transition duration-400 dark:hover:bg-neutral-100',
+                pin && 'bg-white dark:bg-white/60',
+                !pin && 'bg-white/50'
+              )} />
             </div>
+            <Theme />
+            <div className='app-region-drag w-3/4'></div>
+          </div>
         </div>
         <div
           className={cx(
-            'lyrics-player h-921',
+            'h-921',
             // 'text-black/60 dark:text-white/60',
             'text-center',
             'font-Roboto font-bold backdrop-blur-md'
@@ -154,22 +156,21 @@ const LyricsDesktop = () => {
         >
           <motion.div
             className={cx(
-              'lyrics-container no-scrollbar h-full  pb-lyricBottom mb-8 pt-lyricTop ',
+              'no-scrollbar py-80',
               'text-center'
             )}
             ref={containerRef}
             transition={{ duration: 0.5 }}
           >
-            <div
+            {/* <div
               className={cx(
                 'text-black/60 dark:text-white/60 overflow-y-hidden',
                 'artist-info  no-scrollbar padding-bottom-20 mb-8 mt-8 text-left text-24',
                 'text-center'
-              )}
-            >
+              )}>
               <p className=''>{trackInfo!?.name}</p>
               <p className=''>By - {trackInfo!?.ar[0].name ? player.track?.ar[0].name : 'X'}</p>
-            </div>
+            </div> */}
             {renderedLyrics}
           </motion.div>
         </div>

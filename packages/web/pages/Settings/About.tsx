@@ -5,6 +5,7 @@ import Icon from '@/web/components/Icon'
 import { Button } from './Controls'
 import { useState } from 'react'
 import axios from 'axios'
+import {checkAPPUpdate} from '@/web/utils/ipcRender'
 
 const About = () => {
   const currentVersion = pkg.version
@@ -12,6 +13,7 @@ const About = () => {
   const [newVersion, setNewVersion] = useState<string>("")
 
   const checkUpdate = () => {
+    checkAPPUpdate()
     setChecking(true)
     axios({
       method: 'get',

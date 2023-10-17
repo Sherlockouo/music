@@ -52,46 +52,6 @@
     overflow: hidden;
     -webkit-line-clamp: 4;
   }
-
-  .highlight-lyric,.highlighted {
-    margin-top: 12px;
-    margin-bottom: 12px;
-    font-size: large;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    -webkit-line-clamp: 6;
-    -webkit-animation: pulsate-fwd 0.3s ease-in  both;
-	        animation: pulsate-fwd 0.3s ease-in  both;
-  }
-  
-  .lyrics-row.highlight-lyric.highlighted {
-    margin-top: 11px;
-    margin-bottom: 11px;
-    font-size: large;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    -webkit-line-clamp: 6;
-    -webkit-animation: pulsate-fwd-big 0.2s ease-in-out  both;
-	        animation: pulsate-fwd-big 0.2s ease-in-out  both;
-  }
-
-
-  .lyrics-padding {
-    padding-top: 6px;
-    padding-bottom:6px;
-  }
-
-  .highlight-lyrics-padding {
-    padding-top: 1px;
-    padding-bottom: 1px;
-  }
-
-  .normal-lyric-font-size {
-    font-size: 1.3rem;
-  }
-  
 }
 
 @keyframes pulsate-fwdj-big {

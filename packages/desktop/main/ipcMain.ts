@@ -15,6 +15,7 @@ import prettyBytes from 'pretty-bytes'
 import { db, Tables } from './db'
 import { LyricsWindow } from './lyricsWindow'
 import { IPCChannel } from '@sentry/electron/common'
+import NsisAppUpdater from './updateWindow'
 
 log.info('[electron] ipcMain.ts')
 
@@ -168,6 +169,10 @@ function initOtherIpcMain(win: BrowserWindow | null) {
     db.vacuum()
   })
 
+  handle(IpcChannels.CheckUpdate,()=>{
+    const nsis = new NsisAppUpdater()
+  })
+
   handle(IpcChannels.SetDesktopLyric, (event, args) => {
 
     // 在外部使用 LyricsWindow 类
@@ -183,7 +188,7 @@ function initOtherIpcMain(win: BrowserWindow | null) {
     }
     // win cant be null
     lyricWin = new LyricsWindow(win as BrowserWindow)
-    return true 
+    return true
   })
 
   on(IpcChannels.Previous, (event, args) => {

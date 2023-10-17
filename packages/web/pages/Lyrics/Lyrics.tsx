@@ -6,11 +6,9 @@ import useLyric from '@/web/api/hooks/useLyric'
 import player from '@/web/states/player'
 import { lyricParser } from '@/web/utils/lyric'
 import { useTranslation } from 'react-i18next'
-import { Player, State as PlayerState } from '@/web/utils/player'
-import { startTransition } from 'react'
-import toast from 'react-hot-toast'
 import useIsMobile from '@/web/hooks/useIsMobile'
 import { motion } from 'framer-motion'
+import AudioVisualization from '@/web/components/Animation/WaveAnimation'
 
 const Lyrics = ({syncProgress,trackID}:{syncProgress?:()=>void,trackID?:number}) => {
   const isMobile = useIsMobile()
@@ -217,6 +215,9 @@ const Lyrics = ({syncProgress,trackID}:{syncProgress?:()=>void,trackID?:number})
           </div>
           {renderedLyrics}
         </motion.div>
+      </div>
+      <div className='w-full h-10'>
+      <AudioVisualization />
       </div>
     </PageTransition>
   )

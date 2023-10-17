@@ -91,7 +91,7 @@ const Controls = () => {
                 layout='position'
                 animate={{ rotate: mini ? 90 : 0 }}
                 onClick={() => {
-                  if(!track) return
+                  if (!track) return
                   player.prevTrack()
                 }}
                 disabled={!track}
@@ -119,7 +119,7 @@ const Controls = () => {
                 layout='position'
                 animate={{ rotate: mini ? 90 : 0 }}
                 onClick={() => {
-                  if(!track) return
+                  if (!track) return
                   player.nextTrack()
                 }}
                 disabled={!track}
@@ -132,10 +132,13 @@ const Controls = () => {
             {/* Like */}
             <LikeButton />
           </div>
-          
-          {!mini && (<div className='flex flex-row gap-5 justify-center iterms-center transition-colors duration-400'> 
-            <AudioOutputDevices /> 
-            <DesktopLyric />
+
+          {!mini && (<div className='flex flex-row gap-5 justify-center iterms-center transition-colors duration-400'>
+            {window.env?.isElectron && <>
+              <AudioOutputDevices />
+              <DesktopLyric />
+            </>
+            }
           </div>)}
           {!mini && <VolumeSlider />}
         </div>
@@ -145,15 +148,13 @@ const Controls = () => {
 }
 
 function DesktopLyric() {
-  const {showDesktopLyrics} = useSnapshot(settings)
-  const toggleDesktopLyricShow = async ()=>{
+  const { showDesktopLyrics } = useSnapshot(settings)
+  const toggleDesktopLyricShow = async () => {
     settings.showDesktopLyrics = !showDesktopLyrics
-    
-    const  show = await window.ipcRenderer?.invoke(IpcChannels.SetDesktopLyric)
-    
-    console.log('show lyrics window',show);
-    
-      settings.showDesktopLyrics = show ? show : false 
+
+    const show = await window.ipcRenderer?.invoke(IpcChannels.SetDesktopLyric)
+
+    settings.showDesktopLyrics = show ? show : false
   }
   return (
     <div
@@ -168,7 +169,7 @@ function DesktopLyric() {
     >
       <motion.button
         layout='position'
-        className={cx( 
+        className={cx(
           showDesktopLyrics && 'text-brand-600'
         )}
         onClick={toggleDesktopLyricShow}
@@ -204,7 +205,7 @@ function VolumeSlider() {
     >
       <motion.button
         layout='position'
-        className={cx( 
+        className={cx(
         )}
       >
         <Icon
@@ -222,7 +223,7 @@ function VolumeSlider() {
         width: 180px;
       `)
         )}
-        transition={{ ease}}
+        transition={{ ease }}
       >
         <Slider
           value={volume}

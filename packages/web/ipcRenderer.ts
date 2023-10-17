@@ -33,11 +33,11 @@ export function ipcRenderer() {
   })
 
   on(IpcChannels.Next, (e, { trackID }) => {
-    player.playTrack(trackID)
+    player.nextTrack()
   })
 
   on(IpcChannels.Previous, (e, { trackID }) => {
-    player.playTrack(trackID)
+    player.prevTrack()
   })
 
   on(IpcChannels.Repeat, (e, mode) => {

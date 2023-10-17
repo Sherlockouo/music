@@ -1,12 +1,4 @@
-import {
-  app,
-  BrowserWindow,
-  Menu,
-  MenuItem,
-  MenuItemConstructorOptions,
-  shell,
-  WebContents,
-} from 'electron'
+import { app, Menu, MenuItem, MenuItemConstructorOptions, shell, WebContents } from 'electron'
 import { isMac } from './env'
 import { logsPath } from './utils'
 import { exec } from 'child_process'

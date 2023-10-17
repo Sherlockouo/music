@@ -94,7 +94,6 @@ const bindingGlobalKeyboardShortcuts = (
 
   if (platformShortcuts.switchVisibility[1]) {
     globalShortcut.register(formatForAccelerator(platformShortcuts.switchVisibility[1])!, () => {
-      console.log('switchVisibility')
       ipcMain.emit(IpcChannels.MinimizeOrUnminimize)
     })
   }

@@ -1,6 +1,6 @@
 import './preload' // must be first
 import './sentry'
-import { app,session, BrowserWindow, BrowserWindowConstructorOptions, shell, webContents } from 'electron'
+import { app, BrowserWindow, BrowserWindowConstructorOptions, shell } from 'electron'
 import { release } from 'os'
 import { join } from 'path'
 import log from './log'

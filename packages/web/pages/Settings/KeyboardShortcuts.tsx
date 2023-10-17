@@ -8,7 +8,7 @@ import { FC, KeyboardEventHandler, useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
 import { BlockTitle, Button, Option, OptionText, Switch } from './Controls'
 import { IpcChannels } from '@/shared/IpcChannels'
-import { cloneDeep, isEqual, last } from 'lodash-es'
+import { isEqual, last } from 'lodash-es'
 import { getKeyboardShortcutDefaultSettings } from '@/shared/defaultSettings'
 
 const modifierKeys = ['Control', 'Alt', 'Shift', 'Meta', 'Super', 'Cmd', 'Option']

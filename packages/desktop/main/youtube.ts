@@ -41,6 +41,7 @@ class YoutubeDownloader {
     // proxy = { host: '127.0.0.1', port: 8888, protocol: 'http' }
     const webPage = await axios.get(`https://m.youtube.com/results`, {
       params: {
+        app:'desktop',
         search_query: keyword,
         // sp: 'EgIQAQ==',
       },
@@ -155,7 +156,6 @@ class YoutubeDownloader {
   }> {
     const match = async () => {
       console.time('[youtube] search')
-      console.log('youtube videos search')
       const videos = await this.search(`${artist} ${trackName} audio`)
       console.timeEnd('[youtube] search')
       let video: {

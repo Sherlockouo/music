@@ -14,8 +14,9 @@ import path from 'path'
 import prettyBytes from 'pretty-bytes'
 import { db, Tables } from './db'
 import { LyricsWindow } from './lyricsWindow'
-import { IPCChannel } from '@sentry/electron/common'
 import NsisAppUpdater from './updateWindow'
+import { getPlatform } from './utils'
+import { bindingKeyboardShortcuts } from './keyboardShortcuts'
 
 log.info('[electron] ipcMain.ts')
 
@@ -81,6 +82,19 @@ function initWindowIpcMain(win: BrowserWindow | null) {
       const position = win.getPosition()
       windowPosition = { x: position[0], y: position[1] }
       win.maximize()
+    }
+
+    isMaximized = !isMaximized
+    win.webContents.send(IpcChannels.IsMaximized, isMaximized)
+  })
+
+  on(IpcChannels.MinimizeOrUnminimize, () => {
+    if (!win) return false
+
+    if (win.isMinimized() || !win.isFocused()) {
+      win.show()
+    } else {
+      win.minimize()
     }
 
     isMaximized = !isMaximized
@@ -334,4 +348,26 @@ function initOtherIpcMain(win: BrowserWindow | null) {
     //   })
     // })
   }
+
+  /**
+   * 读取操作系统的平台类型
+   */
+  handle(IpcChannels.GetPlatform, event => {
+    event.returnValue = getPlatform()
+  })
+
+  /**
+   * 绑定键盘快捷键
+   */
+  handle(IpcChannels.BindKeyboardShortcuts, (ev, { shortcuts }) => {
+    bindingKeyboardShortcuts(ev.sender, shortcuts)
+  })
+
+  /**
+   * 设置是否响应应用内快捷键
+   */
+  handle(IpcChannels.setInAppShortcutsEnabled, (ev, { enabled }) => {
+    console.log(enabled)
+    ev.sender.setIgnoreMenuShortcuts(!enabled)
+  })
 }

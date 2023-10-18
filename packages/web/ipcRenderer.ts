@@ -51,4 +51,12 @@ export function ipcRenderer() {
   on(IpcChannels.FullscreenStateChange, (e, isFullscreen) => {
     uiStates.fullscreen = isFullscreen
   })
+
+  on(IpcChannels.VolumeUp, () => {
+    player.volume += 0.1
+  })
+
+  on(IpcChannels.VolumeDown, () => {
+    player.volume -= 0.1
+  })
 }

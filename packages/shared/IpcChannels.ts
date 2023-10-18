@@ -2,10 +2,12 @@ import { AppleMusicAlbum, AppleMusicArtist } from './AppleMusic'
 import { CacheAPIs } from './CacheAPIs'
 import { RepeatMode } from './playerDataTypes'
 
+
 export const enum IpcChannels {
   ClearAPICache = 'ClearAPICache',
   Minimize = 'Minimize',
   MaximizeOrUnmaximize = 'MaximizeOrUnmaximize',
+  MinimizeOrUnminimize = 'MinimizeOrUnminimize',
   Close = 'Close',
   IsMaximized = 'IsMaximized',
   FullscreenStateChange = 'FullscreenStateChange',
@@ -31,12 +33,17 @@ export const enum IpcChannels {
   LPrevious = 'LPrevious',
   Like = 'Like',
   Repeat = 'Repeat',
+  VolumeUp = 'VolumeUp',
+  VolumeDown = 'VolumeDown',
   SyncSettings = 'SyncSettings',
   GetAudioCacheSize = 'GetAudioCacheSize',
   ResetWindowSize = 'ResetWindowSize',
   GetAlbumFromAppleMusic = 'GetAlbumFromAppleMusic',
   GetArtistFromAppleMusic = 'GetArtistFromAppleMusic',
   Logout = 'Logout',
+  GetPlatform = 'GetPlatform',
+  BindKeyboardShortcuts = 'BindKeyboardShortcuts',
+  setInAppShortcutsEnabled = 'setInAppShortcutsEnabled',
 }
 
 // ipcMain.on params
@@ -44,6 +51,7 @@ export interface IpcChannelsParams {
   [IpcChannels.ClearAPICache]: void
   [IpcChannels.Minimize]: void
   [IpcChannels.MaximizeOrUnmaximize]: void
+  [IpcChannels.MinimizeOrUnminimize]: void
   [IpcChannels.Close]: void
   [IpcChannels.IsMaximized]: void
   [IpcChannels.FullscreenStateChange]: void
@@ -94,6 +102,8 @@ export interface IpcChannelsParams {
   [IpcChannels.Repeat]: {
     mode: RepeatMode
   }
+  [IpcChannels.VolumeUp]: void
+  [IpcChannels.VolumeDown]: void
   [IpcChannels.SyncSettings]: any
   [IpcChannels.GetAudioCacheSize]: void
   [IpcChannels.ResetWindowSize]: void
@@ -104,6 +114,9 @@ export interface IpcChannelsParams {
   }
   [IpcChannels.GetArtistFromAppleMusic]: { id: number; name: string }
   [IpcChannels.Logout]: void
+  [IpcChannels.GetPlatform]: void
+  [IpcChannels.BindKeyboardShortcuts]: { shortcuts: KeyboardShortcutSettings }
+  [IpcChannels.setInAppShortcutsEnabled]: { enabled: boolean }
 }
 
 // ipcRenderer.on params
@@ -113,6 +126,7 @@ export interface IpcChannelsReturns {
   [IpcChannels.MaximizeOrUnmaximize]: void
   [IpcChannels.SetDesktopLyric]: boolean
   [IpcChannels.PinDesktopLyric]: boolean
+  [IpcChannels.MinimizeOrUnminimize]: void
   [IpcChannels.Close]: void
   [IpcChannels.IsMaximized]: boolean
   [IpcChannels.FullscreenStateChange]: boolean
@@ -143,8 +157,15 @@ export interface IpcChannelsReturns {
   [IpcChannels.Like]: void
   [IpcChannels.Repeat]: RepeatMode
   [IpcChannels.CheckUpdate]: void
+  [IpcChannels.VolumeUp]: void
+  [IpcChannels.VolumeDown]: void
+  [IpcChannels.SyncSettings]: any
   [IpcChannels.GetAudioCacheSize]: void
+  [IpcChannels.ResetWindowSize]: void
   [IpcChannels.GetAlbumFromAppleMusic]: AppleMusicAlbum | undefined
   [IpcChannels.GetArtistFromAppleMusic]: AppleMusicArtist | undefined
   [IpcChannels.Logout]: void
+  [IpcChannels.GetPlatform]: 'win32' | 'darwin' | 'linux'
+  [IpcChannels.BindKeyboardShortcuts]: void
+  [IpcChannels.setInAppShortcutsEnabled]: void
 }

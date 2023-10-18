@@ -33,6 +33,7 @@ export const enum IpcChannels {
   Logout = 'Logout',
   GetPlatform = 'GetPlatform',
   BindKeyboardShortcuts = 'BindKeyboardShortcuts',
+  setInAppShortcutsEnabled = 'setInAppShortcutsEnabled',
 }
 
 // ipcMain.on params
@@ -81,6 +82,7 @@ export interface IpcChannelsParams {
   [IpcChannels.Logout]: void
   [IpcChannels.GetPlatform]: void
   [IpcChannels.BindKeyboardShortcuts]: { shortcuts: KeyboardShortcutSettings }
+  [IpcChannels.setInAppShortcutsEnabled]: { enabled: boolean }
 }
 
 // ipcRenderer.on params
@@ -113,4 +115,5 @@ export interface IpcChannelsReturns {
   [IpcChannels.Logout]: void
   [IpcChannels.GetPlatform]: 'win32' | 'darwin' | 'linux'
   [IpcChannels.BindKeyboardShortcuts]: void
+  [IpcChannels.setInAppShortcutsEnabled]: void
 }

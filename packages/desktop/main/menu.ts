@@ -8,7 +8,7 @@ import { formatForAccelerator, readKeyboardShortcuts } from './keyboardShortcuts
 
 log.info('[electron] menu.ts')
 
-export const createMenu = (webContexts: WebContents) => {
+export const createMenu = (webContexts: WebContents, isBindingShortcuts: boolean = true) => {
   const shortcuts = readKeyboardShortcuts()
 
   const controlsMenuItem: MenuItemConstructorOptions | MenuItem | undefined = (() => {
@@ -23,7 +23,8 @@ export const createMenu = (webContexts: WebContents) => {
             click: () => {
               webContexts.send(IpcChannels.PlayOrPause)
             },
-            accelerator: formatForAccelerator(shortcuts?.playPause[0]) ?? undefined,
+            accelerator:
+              (isBindingShortcuts && formatForAccelerator(shortcuts?.playPause[0])) || undefined,
           },
           {
             id: 'nextSong',
@@ -31,7 +32,8 @@ export const createMenu = (webContexts: WebContents) => {
             click: () => {
               webContexts.send(IpcChannels.Next)
             },
-            accelerator: formatForAccelerator(shortcuts?.next[0]) ?? undefined,
+            accelerator:
+              (isBindingShortcuts && formatForAccelerator(shortcuts?.next[0])) || undefined,
           },
           {
             id: 'previousSong',
@@ -39,7 +41,8 @@ export const createMenu = (webContexts: WebContents) => {
             click: () => {
               webContexts.send(IpcChannels.Previous)
             },
-            accelerator: formatForAccelerator(shortcuts?.previous[0]) ?? undefined,
+            accelerator:
+              (isBindingShortcuts && formatForAccelerator(shortcuts?.previous[0])) || undefined,
           },
           {
             id: 'favoriteSong',
@@ -47,7 +50,8 @@ export const createMenu = (webContexts: WebContents) => {
             click: () => {
               webContexts.send(IpcChannels.Like)
             },
-            accelerator: formatForAccelerator(shortcuts?.favorite[0]) ?? undefined,
+            accelerator:
+              (isBindingShortcuts && formatForAccelerator(shortcuts?.favorite[0])) || undefined,
           },
           {
             id: 'volumeUp',
@@ -55,7 +59,8 @@ export const createMenu = (webContexts: WebContents) => {
             click: () => {
               webContexts.send(IpcChannels.VolumeUp)
             },
-            accelerator: formatForAccelerator(shortcuts?.volumeUp[0]) ?? undefined,
+            accelerator:
+              (isBindingShortcuts && formatForAccelerator(shortcuts?.volumeUp[0])) || undefined,
           },
           {
             id: 'volumeDown',
@@ -63,7 +68,8 @@ export const createMenu = (webContexts: WebContents) => {
             click: () => {
               webContexts.send(IpcChannels.VolumeDown)
             },
-            accelerator: formatForAccelerator(shortcuts?.volumeDown[0]) ?? undefined,
+            accelerator:
+              (isBindingShortcuts && formatForAccelerator(shortcuts?.volumeDown[0])) || undefined,
           },
         ],
       }

@@ -45,7 +45,7 @@ class Main {
       this.createTray()
       this.disableCacheInDev()
       createMenu(this.win!.webContents)
-      bindingKeyboardShortcuts(this.win!.webContents, )
+      bindingKeyboardShortcuts(this.win!.webContents, undefined, this.win!)
       this.createThumbar()
       initIpcMain(this.win, this.tray, this.thumbar, store)
       // this.initDevTools()

@@ -45,8 +45,8 @@ const keyNameMap = {
     ['Control', 'Ctrl'],
     ['Alt', 'Alt'],
     ['Shift', 'Shift'],
-    ['Meta', 'Alt'],
-    ['Super', 'Alt'],
+    ['Meta', 'Win'],
+    ['Super', 'Win'],
     ['Option', 'Alt'],
     ['Cmd', 'Ctrl'],
     ['Left', '←'],
@@ -156,8 +156,8 @@ const ShortcutBindingInput: FC<{
       arr.push('Shift')
     }
 
-    if (!modifierKeys.includes(e.key)) {
-      arr.push(e.key.replace(/^Arrow(\w+)$/, '$1').replace(/^ $/, 'Space'))
+    if (!modifierKeys.includes(e.code)) {
+      arr.push(e.code)
     }
 
     setInputValue(arr)
@@ -190,7 +190,8 @@ const ShortcutBindingInput: FC<{
               key={it}
               className='inline-block min-w-[2em] rounded-full bg-stone-50/50 px-2 py-0.5 text-sm dark:bg-stone-500/50'
             >
-              {keyNameMap[platform]?.get(it) ?? (it.match(/[a-z]/i) ? it.toUpperCase() : it)}
+              {keyNameMap[platform]?.get(it) ??
+                it.replace(/^Key(.)$/, '$1').replace(/^Digit(.)$/, '$1')}
             </kbd>,
           ])
           .flat()

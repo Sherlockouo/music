@@ -1,4 +1,4 @@
-import { WebContents, globalShortcut, ipcMain } from 'electron'
+import { BrowserWindow, WebContents, globalShortcut, ipcMain } from 'electron'
 import store from './store'
 import { getPlatform } from './utils'
 import { createMenu } from './menu'
@@ -20,7 +20,8 @@ const isGlobalKeyboardShortcutsEnabled = () => {
 
 export const bindingKeyboardShortcuts = (
   webContexts: WebContents,
-  shortcuts?: KeyboardShortcutSettings
+  shortcuts?: KeyboardShortcutSettings,
+  win?: BrowserWindow
 ) => {
   if (!shortcuts) {
     shortcuts = readKeyboardShortcutSettings()
@@ -29,9 +30,33 @@ export const bindingKeyboardShortcuts = (
   }
 
   try {
-    createMenu(webContexts)
+    let mainWindowFocused = false
+
+    createMenu(webContexts, !mainWindowFocused)
 
     bindingGlobalKeyboardShortcuts(webContexts, shortcuts)
+
+    // 只有主窗口失去焦点时，才绑定应用内快捷键。主窗口激活时，使用 web 内的快捷键实现
+
+    if (win) {
+      const handleFocus = () => {
+        mainWindowFocused = true
+        createMenu(webContexts, !mainWindowFocused)
+      }
+      const handleBlur = () => {
+        mainWindowFocused = false
+        createMenu(webContexts, !mainWindowFocused)
+      }
+      win.addListener('focus', handleFocus)
+      win.addListener('blur', handleBlur)
+
+      win.once('close', () => {
+        webContexts.removeListener('focus', handleFocus)
+        webContexts.removeListener('blur', handleBlur)
+        mainWindowFocused = false
+        createMenu(webContexts, !mainWindowFocused)
+      })
+    }
   } catch (err) {
     console.error(err)
   }
@@ -104,5 +129,12 @@ export const formatForAccelerator = (storeText: string[] | null) => {
     return null
   }
 
-  return storeText.join('+')
+  return storeText
+    .map(it =>
+      it
+        .replace(/^Key(.)$/, '$1')
+        .replace(/^Digit(.)$/, '$1')
+        .replace(/^NumberPad/, '')
+    )
+    .join('+')
 }

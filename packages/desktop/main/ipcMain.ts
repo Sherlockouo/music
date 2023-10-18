@@ -290,4 +290,12 @@ function initOtherIpcMain() {
   handle(IpcChannels.BindKeyboardShortcuts, (ev, { shortcuts }) => {
     bindingKeyboardShortcuts(ev.sender, shortcuts)
   })
+
+  /**
+   * 设置是否响应应用内快捷键
+   */
+  handle(IpcChannels.setInAppShortcutsEnabled, (ev, { enabled }) => {
+    console.log(enabled)
+    ev.sender.setIgnoreMenuShortcuts(!enabled)
+  })
 }

@@ -1,7 +1,7 @@
 {
   "common": {
     "artist_one": "Artist",
-    "daily":"Daily",
+    "daily": "Daily",
     "artist_other": "Artists",
     "track_one": "Track",
     "track_other": "Tracks",
@@ -17,9 +17,10 @@
     "video_other": "Videos",
     "video-with-count_one": "{{count}} Video",
     "video-with-count_other": "{{count}} Videos",
-    "lyric-welcome":"Let's explore the most wonderful sounds of music!",
-    "cloud":"cloud",
-    "upload":"upload music"
+    "lyric-welcome": "Let's explore the most wonderful sounds of music!",
+    "cloud": "cloud",
+    "upload": "upload music",
+    "hide-show-player": "Hide/Show Player"
   },
   "navigation": {
     "goBack": "Go back",
@@ -39,6 +40,7 @@
   "player": {
     "play": "Play",
     "pause": "Pause",
+    "play-pause": "Play/Pause",
     "next": "Next",
     "previous": "Previous",
     "enable-shuffle": "Enable shuffle",
@@ -48,7 +50,10 @@
     "disable-repeat": "Disable repeat",
     "mini-mode": "Mini Mode",
     "exit-mini-mode": "Exit Mini Mode",
-    "queue": "Queue"
+    "queue": "Queue",
+    "volume-up": "Volume Up",
+    "volume-down": "Volume Down",
+    "favorite": "Favorite"
   },
   "toasts": {
     "copied": "Copied",
@@ -71,13 +76,13 @@
     "settings": "Settings",
     "general": "General",
     "appearance": "Appearance",
-    "theme":"Theme",
-    "accent-color":"Accent color",
-    "lyric-style":"Background Image",
-    "show-lyric-background-img":"Show Backround Image",
+    "theme": "Theme",
+    "accent-color": "Accent color",
+    "lyric-style": "Background Image",
+    "show-lyric-background-img": "Show Backround Image",
     "lab": "Lab",
-    "unlock":"Unlock More Music Source",
-    "engine":"Engine",
+    "unlock": "Unlock More Music Source",
+    "engine": "Engine",
     "player": "Player",
     "title-language": "Language",
     "title-netease-music": "Netease Music",
@@ -88,7 +93,23 @@
     "player-youtube-unlock": "YouTube Unlock",
     "player-find-alternative-track-on-youtube-if-not-available-on-netease": "Find alternative track on YouTube if not available on NetEase.",
     "volume-control": "Volume Control",
-    "about": "About"
+    "about": "About",
+    "keyboard-shortcuts": {
+      "title": "Keyboard Shortcuts",
+      "enable-global": "Enable Global Keyboard Shortcuts",
+      "function": "Function",
+      "local": "Shortcut",
+      "global": "Global Shortcut",
+      "item-clear": "Clear Shortcut",
+      "binding-input-waiting-keydown-placeholder": "please press key(s)",
+      "keyboard-shortcut-in-used": "Shortcut already used",
+      "keyboard-shortcut-in-used-by-other-program": "Shortcut is used by other program",
+      "binding-input-unbound": "Unbound",
+      "global-shortcut-invalid": "Global Shortcut needs at least one modifier key and one non-modifier key",
+      "local-shortcut-invalid": "Local Shortcut needs at least one modifier key and one non-modifier key",
+      "restore-factory-settings": "Restore factory settings",
+      "restore-factory-settings-success": "Factory settings restored"
+    }
   },
   "context-menu": {
     "share": "Share",
@@ -112,7 +133,7 @@
     "listen": "Listen",
     "latest-releases": "Latest Releases",
     "popular": "Popular",
-    "all-songs":"All Songs",
-    "synthesis":"Synthesis"
+    "all-songs": "All Songs",
+    "synthesis": "Synthesis"
   }
 }

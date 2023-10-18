@@ -2,6 +2,7 @@ import { IpcChannels } from '@/shared/IpcChannels'
 import { merge } from 'lodash-es'
 import { proxy, subscribe } from 'valtio'
 import i18n, { getInitLanguage, SupportedLanguage, supportedLanguages } from '../i18n/i18n'
+import { getKeyboardShortcutDefaultSettings } from '@/shared/defaultSettings'
 
 interface Settings {
   accentColor: string
@@ -22,6 +23,7 @@ interface Settings {
   showBackgroundImage: boolean
   unlock: boolean
   theme: string
+  keyboardShortcuts: KeyboardShortcutSettings
 }
 
 const initSettings: Settings = {
@@ -34,6 +36,7 @@ const initSettings: Settings = {
   showBackgroundImage: false,
   unlock: true,
   theme: 'dark',
+  keyboardShortcuts: getKeyboardShortcutDefaultSettings(),
 }
 
 const STORAGE_KEY = 'settings'

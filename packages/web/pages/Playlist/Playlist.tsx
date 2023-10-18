@@ -16,8 +16,6 @@ const Playlist = () => {
     ids: playlist?.playlist?.trackIds?.map(t => t.id) ?? [],
   })
 
-  console.log('playlisttrack', playlistTracks)
-
   const onPlay = async (trackID: number | null = null) => {
     await player.playPlaylist(playlist?.playlist?.id, trackID)
   }

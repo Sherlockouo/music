@@ -478,9 +478,9 @@ export class Player {
    */
   private async _fetchAudioSource(trackID: TrackID) {
     try {
-      console.log(`[player] fetchAudioSourceWithReactQuery `, trackID)
+      // console.log(`[player] fetchAudioSourceWithReactQuery `, trackID)
       const response = await fetchAudioSourceWithReactQuery({ id: trackID })
-      console.log(`[player] fetchAudioSourceWithReactQuery `, response)
+      // console.log(`[player] fetchAudioSourceWithReactQuery `, response)
       let audio = response.data?.[0]?.url
       if (audio && audio.includes('126.net')) {
         audio = audio.replace('http://', 'https://')
@@ -548,12 +548,10 @@ export class Player {
     _howler = howler
     ;(window as any).howler = howler
     if (autoplay) {
-      // this.play()
+      this.play()
       this.state = State.Playing
     }
     _howler.once('load', () => {
-      console.log('howler loaded ',(_howler as any)._src);
-      
       this._cacheAudio((_howler as any)._src)
     })
 
@@ -875,7 +873,7 @@ export class Player {
   }
 
   private async _initMediaSession() {
-    console.log('init media session')
+    // console.log('init media session')
     if ('mediaSession' in navigator === false) return
     navigator.mediaSession.setActionHandler('play', () => this.play())
     navigator.mediaSession.setActionHandler('pause', () => this.pause())

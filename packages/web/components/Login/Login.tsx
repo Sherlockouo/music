@@ -77,7 +77,7 @@ const Login = () => {
       <AnimatePresence>
         {showLoginPanel && (
           <motion.div
-            className='fixed inset-0 z-30 bg-black/80 backdrop-blur-3xl lg:rounded-24'
+            className='fixed inset-0 z-30 bg-black/80 backdrop-blur-3xl lg:rounded-12'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -89,7 +89,7 @@ const Login = () => {
       {/* Content */}
       <AnimatePresence>
         {showLoginPanel && (
-          <div className='fixed inset-0 z-30 flex items-center justify-center rounded-24 pt-24'>
+          <div className='fixed inset-0 z-30 flex items-center justify-center rounded-12 pt-24'>
             <motion.div
               className='flex flex-col items-center'
               variants={{

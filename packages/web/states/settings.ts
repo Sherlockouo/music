@@ -9,6 +9,7 @@ interface Settings {
   language: SupportedLanguage
   enableFindTrackOnYouTube: boolean
   httpProxyForYouTube?: {
+    proxy: string
     host: string
     port: number
     protocol: 'http' | 'https'
@@ -34,6 +35,12 @@ const initSettings: Settings = {
   priorityDisplayOfAlbumArtistDescriptionFromAppleMusic: true,
   displayPlaylistsFromNeteaseMusic: true,
   showBackgroundImage: false,
+  httpProxyForYouTube: {
+    proxy: "",
+    host: "",
+    port: 0,
+    protocol: "http",
+  },
   unlock: true,
   theme: 'dark',
   keyboardShortcuts: getKeyboardShortcutDefaultSettings(),
@@ -54,7 +61,7 @@ subscribe(settings, () => {
   if (settings.language !== i18n.language && supportedLanguages.includes(settings.language)) {
     i18n.changeLanguage(settings.language)
   }
-
+  // 同步electron set settings
   localStorage.setItem(STORAGE_KEY, JSON.stringify(settings))
   window.ipcRenderer?.send(IpcChannels.SyncSettings, JSON.parse(JSON.stringify(settings)))
 })

@@ -66,7 +66,7 @@ const MoreByArtist = ({ album }: { album?: Album }) => {
             </NavLink>
           </>
         ) : (
-          <span className='inline-block h-full rounded-full bg-dark/10 dark:bg-white/10 text-transparent'>
+          <span className='bg-dark/10 inline-block h-full rounded-full text-transparent dark:bg-white/10'>
             MORE BY PLACEHOLDER
           </span>
         )}

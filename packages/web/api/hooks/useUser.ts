@@ -70,8 +70,8 @@ export function useDailyCheckIn() {
 
 // 判断是否登录,条件是否保存了用户id
 export const useIsLoggedIn = () => {
-  const { data, isLoading } = useUser() 
-  
+  const { data, isLoading } = useUser()
+
   if (isLoading) return true
   return !!data?.profile?.userId
 }

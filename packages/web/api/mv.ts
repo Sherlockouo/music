@@ -21,14 +21,13 @@ export function fetchMV(params: FetchMVParams): Promise<FetchMVResponse> {
   })
 }
 
-
 // 获取 video 数据
 export function fetchVideo(params: FetchVideoParams): Promise<FetchVideoResponse> {
   return request({
     url: '/video/detail',
     method: 'get',
     params: {
-      ...params
+      ...params,
     },
   })
 }
@@ -47,9 +46,9 @@ export function fetchVideoUrl(params: FetchVideoParams): Promise<FetchVideoURLRe
   return request({
     url: '/video/url',
     method: 'get',
-    params:{
-      ...params
-    }
+    params: {
+      ...params,
+    },
   })
 }
 

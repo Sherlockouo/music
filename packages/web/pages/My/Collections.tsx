@@ -106,8 +106,8 @@ const CollectionTabs = ({ showBg }: { showBg: boolean }) => {
     },
     {
       id: 'cloud',
-      name: t`common.cloud`
-    }
+      name: t`common.cloud`,
+    },
   ]
 
   const { librarySelectedTab: selectedTab } = useSnapshot(persistedUiStates)
@@ -140,8 +140,6 @@ const CollectionTabs = ({ showBg }: { showBg: boolean }) => {
         )}
       </AnimatePresence>
       <div className='flex flex-row justify-between'>
-
-
         <Tabs
           tabs={tabs.filter(tab => {
             if (!displayPlaylistsFromNeteaseMusic && tab.id === 'playlists') {
@@ -157,14 +155,13 @@ const CollectionTabs = ({ showBg }: { showBg: boolean }) => {
             'sticky',
             'z-10',
             // '-mb-10',
-            'px-2.5 lg:px-0')}
+            'px-2.5 lg:px-0'
+          )}
           style={{
             top: `${topbarHeight}px`,
           }}
         />
-        <div className='items-center '>
-          {/* {selectedTab == 'cloud' && <FileUploader/> } */}
-        </div>
+        <div className='items-center '>{/* {selectedTab == 'cloud' && <FileUploader/> } */}</div>
       </div>
     </div>
   )
@@ -187,9 +184,11 @@ const Collections = () => {
       <div
         className={cx('no-scrollbar overflow-y-auto px-2.5 pt-10 pb-16 lg:px-0')}
         onScroll={onScroll}
-        style={{
-          // height: `calc(100vh - ${topbarHeight}px)`,
-        }}
+        style={
+          {
+            // height: `calc(100vh - ${topbarHeight}px)`,
+          }
+        }
       >
         {selectedTab === 'daily' && <Daily />}
         {selectedTab === 'albums' && <Albums />}

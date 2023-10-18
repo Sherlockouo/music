@@ -97,4 +97,3 @@ export interface CacheAPIsResponse {
   [CacheAPIs.AppleMusicAlbum]: AppleMusicAlbum | 'no'
   [CacheAPIs.AppleMusicArtist]: AppleMusicArtist | 'no'
 }
-

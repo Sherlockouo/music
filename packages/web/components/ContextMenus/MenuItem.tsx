@@ -67,7 +67,7 @@ const MenuItem = ({
     >
       <div
         className={cx(
-          'relative flex w-full items-center justify-between whitespace-nowrap rounded-[5px] p-3 text-16 font-medium text-black/80 dark:text-white/80 transition-colors duration-400 hover:bg-white/[.06]',
+          'relative flex w-full items-center justify-between whitespace-nowrap rounded-[5px] p-3 text-16 font-medium text-black/80 transition-colors duration-400 hover:bg-white/[.06] dark:text-white/80',
           item.type !== 'submenu' && !isHover && 'active:bg-gray/50',
           isHover && 'bg-white/[.06]'
         )}
@@ -102,11 +102,7 @@ const MenuItem = ({
             {/* <div className='absolute -right-8 -top-6 h-12 w-12 rotate-45'></div> */}
           </>
         )}
-        {
-          item.children && <>
-          {item.children}
-          </>
-        }
+        {item.children && <>{item.children}</>}
       </div>
     </div>
   )

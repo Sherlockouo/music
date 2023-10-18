@@ -17,7 +17,6 @@ const reactQueryOptions = {
   refetchOnMount: false,
 }
 
-
 const Cloud = () => {
   const [dataSource, setDatasource] = useState<Track[]>([])
   const [songIDs, setSongIDs] = useState<number[]>([])
@@ -60,6 +59,5 @@ const Cloud = () => {
     </div>
   )
 }
-
 
 export default Cloud

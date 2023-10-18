@@ -7,7 +7,7 @@ import {
   MultiMatchSearchResponse,
   FetchSearchSuggestionsParams,
   FetchSearchSuggestionsResponse,
-  CloudSearchResponse
+  CloudSearchResponse,
 } from '@/shared/api/Search'
 
 // 搜索

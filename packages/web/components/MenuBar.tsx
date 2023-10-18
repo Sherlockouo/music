@@ -54,7 +54,7 @@ const TabName = () => {
     <div
       className={cx(
         'transition-colors duration-400',
-        'absolute bottom-8 right-0 left-0 z-10 flex rotate-180 select-none items-center font-bold dark:text-brand-700 text-brand-700',
+        'absolute bottom-8 right-0 left-0 z-10 flex rotate-180 select-none items-center font-bold text-brand-700 dark:text-brand-700',
         css`
           writing-mode: vertical-rl;
           text-orientation: mixed;

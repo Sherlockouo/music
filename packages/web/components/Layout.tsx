@@ -81,7 +81,7 @@ const Layout = () => {
         className={cx(
           window.env?.isElectron && !fullscreen && 'rounded-12',
           'absolute inset-0 z-0',
-          theme === 'dark' ? 'bg-black/40' : 'bg-white/40',
+          theme === 'dark' ? 'bg-black/40' : 'bg-white/40'
         )}
       />
       <div

@@ -1,4 +1,4 @@
-import { fetchPlaylist,fetchTopPlaylist,fetchHQPlaylist } from '@/web/api/playlist'
+import { fetchPlaylist, fetchTopPlaylist, fetchHQPlaylist } from '@/web/api/playlist'
 import reactQueryClient from '@/web/utils/reactQueryClient'
 import { IpcChannels } from '@/shared/IpcChannels'
 import { CacheAPIs } from '@/shared/CacheAPIs'
@@ -7,7 +7,7 @@ import {
   PlaylistApiNames,
   FetchPlaylistResponse,
   FetchTopPlaylistParams,
-  FetchHQPlaylistParams
+  FetchHQPlaylistParams,
 } from '@/shared/api/Playlists'
 import { useQuery } from '@tanstack/react-query'
 
@@ -15,11 +15,11 @@ const fetch = (params: FetchPlaylistParams) => {
   return fetchPlaylist(params)
 }
 
-const fetchTop = (params: FetchTopPlaylistParams) =>{ 
+const fetchTop = (params: FetchTopPlaylistParams) => {
   return fetchTopPlaylist(params)
 }
 
-const fetchHQ = (params: FetchHQPlaylistParams) =>{ 
+const fetchHQ = (params: FetchHQPlaylistParams) => {
   return fetchHQPlaylist(params)
 }
 

@@ -1,9 +1,8 @@
 import { pathCase, snakeCase } from 'change-case'
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
 import NeteaseCloudMusicApi from 'NeteaseCloudMusicApi'
-import { CacheAPIs} from '../../../../shared/CacheAPIs'
+import { CacheAPIs } from '../../../../shared/CacheAPIs'
 import cache from '../../utils/cache'
-
 
 async function netease(fastify: FastifyInstance) {
   const getHandler = (name: string, neteaseApi: (params: any) => any) => {
@@ -11,11 +10,10 @@ async function netease(fastify: FastifyInstance) {
       req: FastifyRequest<{ Querystring: { [key: string]: string } }>,
       reply: FastifyReply
     ) => {
-
       // Get track details from cache
       if (name === CacheAPIs.Track) {
         const cacheData = await cache.get(name, req.query as any)
-        
+
         if (cacheData) {
           return cacheData
         }
@@ -23,17 +21,15 @@ async function netease(fastify: FastifyInstance) {
 
       // Request netease api
       try {
-        
         const result = await neteaseApi({
           ...req.query,
           cookie: (req as any).cookies,
         })
-        
+
         cache.set(name as CacheAPIs, result.body, req.query)
 
         return reply.send(result.body)
       } catch (error: any) {
-
         if ([400, 301].includes(error.status)) {
           return reply.status(error.status).send(error.body)
         }
@@ -64,4 +60,3 @@ async function netease(fastify: FastifyInstance) {
 }
 
 export default netease
-

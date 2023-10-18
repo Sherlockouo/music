@@ -46,7 +46,7 @@ export enum State {
 const PLAY_PAUSE_FADE_DURATION = 200
 
 let _howler = new Howl({ src: [''], format: ['mp3', 'flac'] })
-
+let invoked = false
 let _analyser = Howler.ctx.createAnalyser()
 
 export class Player {
@@ -98,7 +98,7 @@ export class Player {
   }
 
   /**
-   * Get prev track index 
+   * Get prev track index
    */
   get _prevTrackIndex(): number | undefined {
     switch (this.repeatMode) {
@@ -130,37 +130,46 @@ export class Player {
   }
 
   private getSongFFT() {
-    const audioCtx = new (window.AudioContext)();
-    const analyser = audioCtx.createAnalyser();
-    const source = audioCtx.createMediaElementSource((_howler as any)._sounds[0]._node);
-    source.connect(analyser);
-    analyser.connect(audioCtx.destination);
-  
-    analyser.fftSize = 2048;
-    const bufferLength = analyser.frequencyBinCount;
-    this.dataArray = new Uint8Array(bufferLength);
-  
-    let start = 16, end = 128, smooth = 0.02;
-  
+    const audioCtx = new window.AudioContext()
+    const analyser = audioCtx.createAnalyser()
+    const source = audioCtx.createMediaElementSource((_howler as any)._sounds[0]._node)
+    if (!invoked) {
+      source.connect(analyser)
+      analyser.connect(audioCtx.destination)
+      invoked = !invoked
+    }
+
+    analyser.fftSize = 2048
+    const bufferLength = analyser.frequencyBinCount
+    this.dataArray = new Uint8Array(bufferLength)
+
+    let start = 16,
+      end = 128,
+      smooth = 0.02
+
     const updateFrequencyData = () => {
-      if (this.state !== State.Playing || !uiStates.showSongFrequency || window.location.pathname !== '/lyrics') {
-        return;
+      if (
+        this.state !== State.Playing ||
+        !uiStates.showSongFrequency ||
+        window.location.pathname !== '/lyrics'
+      ) {
+        return
       }
-  
-      analyser.getByteFrequencyData(this.dataArray);
-  
-      let sum = 0;
+
+      analyser.getByteFrequencyData(this.dataArray)
+
+      let sum = 0
       for (let i = start; i < end; i++) {
-        sum += this.dataArray[i];
+        sum += this.dataArray[i]
       }
-      const average = sum / (end - start);
-      this._nowVolume = this._nowVolume * smooth + average * (1 - smooth);
-  
+      const average = sum / (end - start)
+      this._nowVolume = this._nowVolume * smooth + average * (1 - smooth)
+
       // Uncomment the following line for debugging
       // console.log(dataArray);
-    };
-  
-    setInterval(updateFrequencyData, 80);
+    }
+
+    setInterval(updateFrequencyData, 80)
   }
 
   // private fetchMP3(url: string): Promise<Blob> {
@@ -325,7 +334,6 @@ export class Player {
     return this._nowVolume
   }
 
-  
   /**
    * Get current playing track ID
    */
@@ -339,9 +347,9 @@ export class Player {
 
   /**
    * Set current playing track ID
-   * !! 
+   * !!
    */
-  set trackID(value){
+  set trackID(value) {
     const { trackList, _trackIndex } = this
     trackList[_trackIndex] = value
     this.fmTrackList[0] = value
@@ -351,7 +359,7 @@ export class Player {
    *  !!WARNING!! set lyricWinTrackID only for lyricWindow
    */
   // set lyricWinTrackID(value) {
-  //   this._lyricWinTrackID = value 
+  //   this._lyricWinTrackID = value
   // }
 
   /**
@@ -368,7 +376,7 @@ export class Player {
     return this.mode === Mode.FM ? this.fmTrack : this._track
   }
 
-  set track(value){
+  set track(value) {
     this._track = value
   }
 
@@ -451,16 +459,17 @@ export class Player {
   }
 
   // set play device
-  setDevice(deviceId: MediaDeviceInfo["deviceId"]){
+  setDevice(deviceId: MediaDeviceInfo['deviceId']) {
     // Get the currently playing audio element
-    const audioElement = (_howler as any)._sounds[0]._node;
-    audioElement.setSinkId(deviceId)
+    const audioElement = (_howler as any)._sounds[0]._node
+    audioElement
+      .setSinkId(deviceId)
       .then(() => {
-        console.log('Audio output device set successfully');
+        console.log('Audio output device set successfully')
       })
-      .catch((error: any)  => {
-        console.error('Error setting audio output device:', error);
-      });
+      .catch((error: any) => {
+        console.error('Error setting audio output device:', error)
+      })
   }
 
   async getAudioSource(track_id: TrackID) {
@@ -538,10 +547,10 @@ export class Player {
       volume: 1,
       onend: () => {
         this._howlerOnEndCallback()
-      }
+      },
     })
-    _howler = howler;
-    (window as any).howler = howler
+    _howler = howler
+    ;(window as any).howler = howler
     if (autoplay) {
       this.play()
       this.state = State.Playing
@@ -567,7 +576,6 @@ export class Player {
   }
 
   private async _cacheAudio(audio: string) {
-    
     if (audio.includes(appName.toLowerCase()) || !window.ipcRenderer) return
     const id = Number(new URL(audio).searchParams.get('dash-id'))
     if (isNaN(id) || !id) return
@@ -714,7 +722,7 @@ export class Player {
     }
     this.trackList.splice(0, 0, trackID)
   }
-  
+
   /**
    *
    * @param trackID
@@ -770,7 +778,7 @@ export class Player {
    */
   async shufflePlayList() {
     let playingSongID = this.trackList[this._trackIndex]
-    if(this.shuffle){
+    if (this.shuffle) {
       this.trackList = Array.from(this.originTrackList)
       this._trackIndex = this.trackList.indexOf(playingSongID)
       this.shuffle = !this.shuffle
@@ -778,7 +786,7 @@ export class Player {
     }
     this.originTrackList = Array.from(this.trackList)
     this.shuffle = !this.shuffle
-    
+
     let len = this.trackList.length,
       tmp,
       idx

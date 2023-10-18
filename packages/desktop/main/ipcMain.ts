@@ -53,7 +53,7 @@ export function handleLyricsWinClose() {
   lyricWin = null
   hidden = false
 }
-/** 
+/**
  * 处理需要win对象的事件
  * @param {BrowserWindow} win
  */
@@ -177,12 +177,11 @@ function initOtherIpcMain(win: BrowserWindow | null) {
     db.vacuum()
   })
 
-  handle(IpcChannels.CheckUpdate,()=>{
+  handle(IpcChannels.CheckUpdate, () => {
     const nsis = new NsisAppUpdater()
   })
 
   handle(IpcChannels.SetDesktopLyric, (event, args) => {
-
     // 在外部使用 LyricsWindow 类
     if (lyricWin && lyricWin.win !== undefined) {
       if (hidden) {
@@ -209,9 +208,10 @@ function initOtherIpcMain(win: BrowserWindow | null) {
 
   on(IpcChannels.SyncProgress, (event, args) => {
     const { progress } = args
-    lyricWin && lyricWin.win?.webContents.send(IpcChannels.SyncProgress, {
-      progress: progress
-    })
+    lyricWin &&
+      lyricWin.win?.webContents.send(IpcChannels.SyncProgress, {
+        progress: progress,
+      })
   })
   // handle(IpcChannels.Previous, (event, args) => {
   //   lyricWin && lyricWin.win?.webContents.send(IpcChannels.LPrevious)
@@ -255,8 +255,6 @@ function initOtherIpcMain(win: BrowserWindow | null) {
       return null
     }
   })
-
-
 
   /**
    * 缓存封面颜色

@@ -11,16 +11,16 @@ import { motion } from 'framer-motion'
 import AudioVisualization from '@/web/components/Animation/AudioVisualization'
 import uiStates from '@/web/states/uiStates'
 
-const Lyrics = ({syncProgress,trackID}:{syncProgress?:()=>void,trackID?:number}) => {
+const Lyrics = ({ syncProgress, trackID }: { syncProgress?: () => void; trackID?: number }) => {
   const isMobile = useIsMobile()
   const containerRef = useRef(null)
   const [currentLineIndex, setCurrentLineIndex] = useState(0)
   const [currentVolumnValue, setCurrentVolumnValue] = useState(128)
-  const lyricsRes = useLyric({ id: trackID == undefined ? player.trackID : trackID})
+  const lyricsRes = useLyric({ id: trackID == undefined ? player.trackID : trackID })
   const lyricsResponse = lyricsRes.data
   const { lyric: lyrics, tlyric: tlyric } = lyricParser(lyricsResponse)
   const { state: playerState, progress, nowVolume } = useSnapshot(player)
-  const {showSongFrequency} = useSnapshot(uiStates)
+  const { showSongFrequency } = useSnapshot(uiStates)
   const { t } = useTranslation()
   // const [isScrolling, setIsScrolling] = useState(false);
   const [isHovered, setIsHovered] = useState(false)
@@ -37,7 +37,7 @@ const Lyrics = ({syncProgress,trackID}:{syncProgress?:()=>void,trackID?:number})
     const updateCurrentLineIndex = () => {
       var find = false
       for (let i = currentLineIndex; i < lyrics.length; i++) {
-        if ((progress + 10) >= lyrics[i]?.time && progress < lyrics[i + 1]?.time) {
+        if (progress + 10 >= lyrics[i]?.time && progress < lyrics[i + 1]?.time) {
           find = true
           setCurrentLineIndex(i)
           break
@@ -96,28 +96,22 @@ const Lyrics = ({syncProgress,trackID}:{syncProgress?:()=>void,trackID?:number})
 
     const lineClassName = cx(
       'lyrics-row leading-120 mt-5 mb-5 pb-2 ease-in-out',
-      index === currentLineIndex &&
-      'line-clamp-4 font-bold text-accent-color-500 text-2xl',
+      index === currentLineIndex && 'line-clamp-4 font-bold text-accent-color-500 text-2xl',
       index !== currentLineIndex &&
-      'font-black tracking-lyric leading-lyric text-black/60 dark:text-white/60 text-xl ',
-      index !== currentLineIndex && 'transition-opacity duration-1000',
+        'font-black tracking-lyric leading-lyric text-black/60 dark:text-white/60 text-xl ',
+      index !== currentLineIndex && 'transition-opacity duration-1000'
     )
 
-    const hightlightStyle =
-          {
-            textShadow:
-              'rgb(216,216,216,' +
-              currentVolumnValue / 25 +
-              ') 3px 3px ' +
-              currentVolumnValue +
-              'px',
-          }
+    const hightlightStyle = {
+      textShadow:
+        'rgb(216,216,216,' + currentVolumnValue / 25 + ') 3px 3px ' + currentVolumnValue + 'px',
+    }
 
     return (
       <div
         className={cx(lineClassName, 'font-Roboto')}
         key={index}
-        onDoubleClick={()=>{
+        onDoubleClick={() => {
           setSongToLyric()
           syncProgress && syncProgress()
         }}
@@ -140,13 +134,13 @@ const Lyrics = ({syncProgress,trackID}:{syncProgress?:()=>void,trackID?:number})
       >
         <motion.div
           className={cx(
-            'lyrics-container no-scrollbar h-full  z-10 pb-lyricBottom mb-8 mt-8 pt-lyricTop ',
+            'lyrics-container no-scrollbar z-10  mb-8 mt-8 h-full pb-lyricBottom pt-lyricTop ',
             'text-center'
           )}
           ref={containerRef}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-            transition={{duration:0.5}}
+          transition={{ duration: 0.5 }}
         >
           <div
             className={cx(
@@ -156,12 +150,12 @@ const Lyrics = ({syncProgress,trackID}:{syncProgress?:()=>void,trackID?:number})
             )}
           >
             <p className=''>{player.track?.name}</p>
-            <p className=''>By - {player.track?.ar[0].name ? player.track?.ar[0].name:'X'}</p>
+            <p className=''>By - {player.track?.ar[0].name ? player.track?.ar[0].name : 'X'}</p>
           </div>
           {renderedLyrics}
         </motion.div>
         <div className='sticky bottom-0 h-full w-full'>
-        {showSongFrequency && <AudioVisualization />}
+          {showSongFrequency && <AudioVisualization />}
         </div>
       </div>
     </PageTransition>

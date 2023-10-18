@@ -1,5 +1,5 @@
-import { IpcChannels } from "@/shared/IpcChannels"
+import { IpcChannels } from '@/shared/IpcChannels'
 
-export const checkAPPUpdate = ()=>{
-    window.ipcRenderer?.invoke(IpcChannels.CheckUpdate)
+export const checkAPPUpdate = () => {
+  window.ipcRenderer?.invoke(IpcChannels.CheckUpdate)
 }

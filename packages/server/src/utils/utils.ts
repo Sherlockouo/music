@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import os from 'os'
 import pkg from '../../../../package.json'
-import {isDev } from './env'
+import { isDev } from './env'
 import log from './log'
 
 log.info('[electron] utils.ts')

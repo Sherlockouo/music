@@ -6,14 +6,11 @@ import useLyric from '@/web/api/hooks/useLyric'
 import { lyricParser } from '@/web/utils/lyric'
 import { motion } from 'framer-motion'
 import player from '@/web/states/player'
-import {
-  fetchTracksWithReactQuery,
-} from '@/web/api/hooks/useTracks'
+import { fetchTracksWithReactQuery } from '@/web/api/hooks/useTracks'
 import toast from 'react-hot-toast'
 import Theme from '@/web/components/Topbar/Theme'
 import Pin from '@/web/components/Tools/Pin'
 import { IpcChannels } from '@/shared/IpcChannels'
-
 
 const LyricsDesktop = () => {
   const containerRef = useRef(null)
@@ -26,7 +23,7 @@ const LyricsDesktop = () => {
   const [pin, setPin] = useState(false)
 
   // let trackInfo:= null
-  const [trackInfo, setTrackInfo] = useState<Track | null>(null);
+  const [trackInfo, setTrackInfo] = useState<Track | null>(null)
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -47,7 +44,7 @@ const LyricsDesktop = () => {
     const updateCurrentLineIndex = () => {
       var find = false
       for (let i = currentLineIndex; i < lyrics.length; i++) {
-        if ((progress + 20) >= lyrics[i]?.time && progress < lyrics[i + 1]?.time) {
+        if (progress + 20 >= lyrics[i]?.time && progress < lyrics[i + 1]?.time) {
           find = true
           setCurrentLineIndex(i)
           break
@@ -100,18 +97,14 @@ const LyricsDesktop = () => {
 
     const lineClassName = cx(
       'lyrics-row leading-120 mt-5 mb-5 pb-2 ease-in-out',
-      index === currentLineIndex &&
-      'line-clamp-4 font-bold text-accent-color-500 text-2xl',
+      index === currentLineIndex && 'line-clamp-4 font-bold text-accent-color-500 text-2xl',
       index !== currentLineIndex &&
-      'font-black tracking-lyric leading-lyric text-black/60 dark:text-white/60 text-md ',
-      index !== currentLineIndex && 'transition-opacity duration-1000',
+        'font-black tracking-lyric leading-lyric text-black/60 dark:text-white/60 text-md ',
+      index !== currentLineIndex && 'transition-opacity duration-1000'
     )
 
     return (
-      <div
-        className={cx(lineClassName, 'font-Roboto')}
-        key={index}
-      >
+      <div className={cx(lineClassName, 'font-Roboto')} key={index}>
         <p>{lyric}</p>
         <p>{tLyric}</p>
       </div>
@@ -121,26 +114,29 @@ const LyricsDesktop = () => {
   return (
     <>
       <div className=''>
-        <div >
+        <div>
           {/* <div className='z-29 w-3/4 h-12 bg-brand-500 dark:bg-night-500 top-0 left-0 fixed app-region-drag'>
           </div> */}
-          <div className='z-30 w-full flex flex-row-reverse fixed bg-brand-500 dark:bg-night-500 right-0 top-0'>
-
-            <div className={cx('z-31 h-12 w-12 iterms-center right-0 pr-5',
-            )} onClick={async () => {
-              const pined = await window.ipcRenderer?.invoke(IpcChannels.PinDesktopLyric)
-              setPin(pined as boolean)
-              if (pin) {
-                toast.success('unpined lyric winows')
-              } else {
-                toast.success('pined lyric winows')
-              }
-            }}>
-              <Pin className={cx(
-                'rounded-full hover:bg-white transition duration-400 dark:hover:bg-neutral-100',
-                pin && 'bg-white dark:bg-white/60',
-                !pin && 'bg-white/50'
-              )} />
+          <div className='fixed right-0 top-0 z-30 flex w-full flex-row-reverse bg-brand-500 dark:bg-night-500'>
+            <div
+              className={cx('z-31 iterms-center right-0 h-12 w-12 pr-5')}
+              onClick={async () => {
+                const pined = await window.ipcRenderer?.invoke(IpcChannels.PinDesktopLyric)
+                setPin(pined as boolean)
+                if (pin) {
+                  toast.success('unpined lyric winows')
+                } else {
+                  toast.success('pined lyric winows')
+                }
+              }}
+            >
+              <Pin
+                className={cx(
+                  'rounded-full transition duration-400 hover:bg-white dark:hover:bg-neutral-100',
+                  pin && 'bg-white dark:bg-white/60',
+                  !pin && 'bg-white/50'
+                )}
+              />
             </div>
             <Theme />
             <div className='app-region-drag w-3/4'></div>
@@ -155,10 +151,7 @@ const LyricsDesktop = () => {
           )}
         >
           <motion.div
-            className={cx(
-              'no-scrollbar py-80',
-              'text-center'
-            )}
+            className={cx('no-scrollbar py-80', 'text-center')}
             ref={containerRef}
             transition={{ duration: 0.5 }}
           >

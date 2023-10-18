@@ -31,8 +31,9 @@ const getAudioFromCache = async (id: number) => {
       {
         source: cache.source,
         id: cache.id,
-        url: `http://127.0.0.1:${process.env.ELECTRON_WEB_SERVER_PORT
-          }/${appName.toLowerCase()}/audio/${audioFileName}`,
+        url: `http://127.0.0.1:${
+          process.env.ELECTRON_WEB_SERVER_PORT
+        }/${appName.toLowerCase()}/audio/${audioFileName}`,
         br: cache.bitRate,
         size: 0,
         md5: '',
@@ -149,8 +150,6 @@ async function audio(fastify: FastifyInstance) {
       req: FastifyRequest<{ Querystring: { id: string | number; level: SoundQualityType } }>,
       reply
     ) => {
-
-
       const id = Number(req.query.id) || 0
       if (!id || isNaN(id)) {
         return reply.status(400).send({
@@ -161,7 +160,6 @@ async function audio(fastify: FastifyInstance) {
 
       // const res = getAudioFromYouTube(id)
       // console.log('youtube ',res);
-
 
       const localCache = await getAudioFromCache(id)
       if (localCache) {
@@ -197,27 +195,25 @@ async function audio(fastify: FastifyInstance) {
         return
       }
       const qqCookie = store.get('settings.qqCookie')
-      if (qqCookie && qqCookie !== "")
-        process.env.QQ_COOKIE = qqCookie as string
+      if (qqCookie && qqCookie !== '') process.env.QQ_COOKIE = qqCookie as string
       const miguCookie = store.get('settings.miguCookie')
-      if (miguCookie && miguCookie !== "")
-        process.env.MIGU_COOKIE = miguCookie as string
+      if (miguCookie && miguCookie !== '') process.env.MIGU_COOKIE = miguCookie as string
       const jooxCookie = store.get('settings.jooxCookie')
-      if (jooxCookie && jooxCookie !== "")
-        process.env.MIGU_COOKIE = jooxCookie as string
+      if (jooxCookie && jooxCookie !== '') process.env.MIGU_COOKIE = jooxCookie as string
 
-      process.env.ENABLE_FLAC = "true"
-      process.env.ENABLE_LOCAL_VIP = "true"
+      process.env.ENABLE_FLAC = 'true'
+      process.env.ENABLE_LOCAL_VIP = 'true'
       const isEnglish = /^[a-zA-Z\s]+$/
       let source = ['qq', 'kuwo', 'migu', 'kugou', 'joox', 'youtube']
       const enableFindTrackOnYouTube = store.get('settings.enableFindTrackOnYouTube')
       const httpProxyForYouTubeSettings = store.get('settings.httpProxyForYouTube')
       if (enableFindTrackOnYouTube && httpProxyForYouTubeSettings) {
         const youtubeProxy = httpProxyForYouTubeSettings?.proxy
-        global.proxy = require('url').parse(youtubeProxy);
+        global.proxy = require('url').parse(youtubeProxy)
         const info = await getTrackInfo(trackID)
-        const artistName = info?.ar[0]?.name === undefined ? "" : info?.ar[0]?.name.replace(/[^a-zA-Z\s]/g, '')
-        const songName = info?.name === undefined ? "" : info?.name.replace(/[^a-zA-Z\s]/g, '')
+        const artistName =
+          info?.ar[0]?.name === undefined ? '' : info?.ar[0]?.name.replace(/[^a-zA-Z\s]/g, '')
+        const songName = info?.name === undefined ? '' : info?.name.replace(/[^a-zA-Z\s]/g, '')
 
         if (isEnglish.test(artistName) && isEnglish.test(songName)) {
           source = ['youtube']
@@ -244,7 +240,6 @@ async function audio(fastify: FastifyInstance) {
       } catch (err) {
         reply.code(500).send(err)
       }
-
 
       // 是试听歌曲就把url删掉
       if (fromNetease?.data?.[0].freeTrialInfo) {

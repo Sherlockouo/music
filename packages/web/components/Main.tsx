@@ -60,7 +60,6 @@ const Main = () => {
           margin-top: 132px;
         `}
       >
-        
         <Router />
       </div>
     </motion.main>

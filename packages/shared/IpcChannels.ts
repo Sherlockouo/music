@@ -2,7 +2,6 @@ import { AppleMusicAlbum, AppleMusicArtist } from './AppleMusic'
 import { CacheAPIs } from './CacheAPIs'
 import { RepeatMode } from './playerDataTypes'
 
-
 export const enum IpcChannels {
   ClearAPICache = 'ClearAPICache',
   Minimize = 'Minimize',
@@ -65,7 +64,7 @@ export interface IpcChannelsParams {
   }
   [IpcChannels.SetDesktopLyric]: {
     componentString: string
-  },
+  }
   [IpcChannels.GetApiCache]: {
     api: CacheAPIs
     query?: any

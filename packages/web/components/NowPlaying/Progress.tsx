@@ -14,8 +14,8 @@ const Progress = () => {
         max={(track?.dt ?? 100000) / 1000}
         value={progress}
         onChange={value => {
-          window.ipcRenderer?.send(IpcChannels.SyncProgress,{
-            progress: value
+          window.ipcRenderer?.send(IpcChannels.SyncProgress, {
+            progress: value,
           })
           player.progress = value
         }}

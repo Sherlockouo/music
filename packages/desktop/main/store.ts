@@ -9,7 +9,7 @@ export interface TypedElectronStore {
     height: number
     x?: number
     y?: number
-  },
+  }
   lyricsWindow: {
     width: number
     height: number

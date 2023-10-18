@@ -46,10 +46,10 @@ const Background = () => {
                   className={cx(
                     'ease absolute inset-0 z-0 h-full w-full',
                     css`
-                    background-repeat: no-repeat;
-                    background-size: cover;
-                    background-position: center top;
-                  `
+                      background-repeat: no-repeat;
+                      background-size: cover;
+                      background-position: center top;
+                    `
                   )}
                   style={{ backgroundImage: `url(${bgURL})` }}
                   initial={{ opacity: 0 }}
@@ -59,9 +59,7 @@ const Background = () => {
                 ></motion.div>
               ) : (
                 <motion.div
-                  className={cx(
-                    'ease absolute inset-0 z-0 h-full w-full bg-white dark:bg-black',
-                  )}
+                  className={cx('ease absolute inset-0 z-0 h-full w-full bg-white dark:bg-black')}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -119,7 +117,7 @@ const TopbarDesktop = () => {
           padding-left: 144px;
         `
       )}
-      onDoubleClick={ maxRestore }
+      onDoubleClick={maxRestore}
     >
       {/* Background */}
       <Background />

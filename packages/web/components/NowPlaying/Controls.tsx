@@ -133,13 +133,16 @@ const Controls = () => {
             <LikeButton />
           </div>
 
-          {!mini && (<div className='flex flex-row gap-5 justify-center iterms-center transition-colors duration-400'>
-            {window.env?.isElectron && <>
-              <AudioOutputDevices />
-              <DesktopLyric />
-            </>
-            }
-          </div>)}
+          {!mini && (
+            <div className='iterms-center flex flex-row justify-center gap-5 transition-colors duration-400'>
+              {window.env?.isElectron && (
+                <>
+                  <AudioOutputDevices />
+                  <DesktopLyric />
+                </>
+              )}
+            </div>
+          )}
           {!mini && <VolumeSlider />}
         </div>
       </motion.div>
@@ -160,28 +163,21 @@ function DesktopLyric() {
     <div
       className={cx(
         css`
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
-        text-align: center;
-      `)}
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          align-items: center;
+          text-align: center;
+        `
+      )}
     >
       <motion.button
         layout='position'
-        className={cx(
-          showDesktopLyrics && 'text-brand-600'
-        )}
+        className={cx(showDesktopLyrics && 'text-brand-600')}
         onClick={toggleDesktopLyricShow}
       >
-        <Icon
-          name='lyrics'
-          className={cx(
-            'h-5 w-5'
-          )}
-        />
+        <Icon name='lyrics' className={cx('h-5 w-5')} />
       </motion.button>
-
     </div>
   )
 }
@@ -196,24 +192,16 @@ function VolumeSlider() {
     <div
       className={cx(
         css`
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
-        text-align: center;
-      `)}
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          align-items: center;
+          text-align: center;
+        `
+      )}
     >
-      <motion.button
-        layout='position'
-        className={cx(
-        )}
-      >
-        <Icon
-          name={player.volume == 0 ? 'volume-mute' : 'volume-half'}
-          className={cx(
-            'h-5 w-5'
-          )}
-        />
+      <motion.button layout='position' className={cx()}>
+        <Icon name={player.volume == 0 ? 'volume-mute' : 'volume-half'} className={cx('h-5 w-5')} />
       </motion.button>
 
       <motion.div
@@ -236,17 +224,14 @@ function VolumeSlider() {
       </motion.div>
       <motion.button
         layout='position'
-        className={cx(
-          // just dont need this I guess
-          // ' transition-colors duration-400 ',
-          // ' text-black dark:text-white'
-        )}
+        className={cx()
+        // just dont need this I guess
+        // ' transition-colors duration-400 ',
+        // ' text-black dark:text-white'
+        }
       >
-        <Icon name='volume' className={cx(
-          'h-5 w-5',
-        )} />
+        <Icon name='volume' className={cx('h-5 w-5')} />
       </motion.button>
-
     </div>
   )
 }

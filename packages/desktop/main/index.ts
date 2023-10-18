@@ -155,7 +155,7 @@ class Main {
         requestHeaders['Sec-Fetch-Mode'] = 'no-cors'
         requestHeaders['Sec-Fetch-Dest'] = 'audio'
         requestHeaders['Range'] = 'bytes=0-'
-      } 
+      }
 
       callback({ requestHeaders })
     })
@@ -207,7 +207,7 @@ class Main {
   handleAppEvents() {
     app.on('window-all-closed', () => {
       this.win = null
-      if(lyricWin) lyricWin.win = null
+      if (lyricWin) lyricWin.win = null
       if (!isMac) app.quit()
     })
 

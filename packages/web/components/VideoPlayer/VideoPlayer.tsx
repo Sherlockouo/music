@@ -9,22 +9,22 @@ import { toHttps } from '@/web/utils/common'
 import uiStates, { closeVideoPlayer } from '@/web/states/uiStates'
 import { useSnapshot } from 'valtio'
 import { useNavigate } from 'react-router-dom'
-import { FetchMVUrlResponse,FetchMVResponse } from '@/shared/api/MV'
+import { FetchMVUrlResponse, FetchMVResponse } from '@/shared/api/MV'
 
 const VideoPlayer = () => {
   const { playingVideoID } = useSnapshot(uiStates)
   const { fullscreen } = useSnapshot(uiStates)
   const navigate = useNavigate()
   const isNumber = (str: string) => {
-    return !isNaN(Number(str));
+    return !isNaN(Number(str))
   }
   // for MV
-  let mv : FetchMVResponse | undefined = {
+  let mv: FetchMVResponse | undefined = {
     code: 0,
-    loadingPic: "",
-    bufferPic: "",
-  loadingPicFS: "",
-  bufferPicFS: "",
+    loadingPic: '',
+    bufferPic: '',
+    loadingPicFS: '',
+    bufferPicFS: '',
     data: {
       artistId: 0,
       artistName: '',
@@ -46,9 +46,9 @@ const VideoPlayer = () => {
       publishTime: '',
       shareCount: 0,
       subCount: 0,
-      videoGroup: []
+      videoGroup: [],
     },
-    mp:{
+    mp: {
       cp: 0,
       dl: 0,
       fee: 0,
@@ -60,16 +60,15 @@ const VideoPlayer = () => {
       pl: 0,
       sid: 0,
       st: 0,
-      unauthorized: false
-    }
+      unauthorized: false,
+    },
   }
   let isLoading: boolean
-  
 
   let mvDetails: FetchMVUrlResponse = {
-    code:0,
+    code: 0,
     data: {
-      url: "",
+      url: '',
       code: 0,
       expi: 0,
       fee: 0,
@@ -80,19 +79,19 @@ const VideoPlayer = () => {
       promotionVo: undefined,
       r: 0,
       size: 0,
-      st: 0
-    }
+      st: 0,
+    },
   }
 
   if (!isNumber(playingVideoID as string)) {
-    const videoResponse = useVideo({id: playingVideoID || ""})
+    const videoResponse = useVideo({ id: playingVideoID || '' })
     // console.log('video response',videoResponse);
     mv.data.cover = videoResponse.data?.data.coverUrl as string
     mv.data.artistName = videoResponse.data?.data.creator.nickname as string
     mv.data.name = videoResponse.data?.data.title as string
-    const res = useVideoUrl({ id: playingVideoID || "" })
-    console.log('video url respones',res);
-    
+    const res = useVideoUrl({ id: playingVideoID || '' })
+    console.log('video url respones', res)
+
     isLoading = res.isLoading
     mvDetails.data.url = res.data?.urls[0].url as string
   } else {

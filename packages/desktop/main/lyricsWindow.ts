@@ -28,7 +28,7 @@ export class LyricsWindow {
 
   createWindow(pWin: BrowserWindow) {
     const options: BrowserWindowConstructorOptions = {
-      title: "Lyrics",
+      title: 'Lyrics',
       webPreferences: {
         preload: join(__dirname, 'rendererPreload.js'),
         nodeIntegration: true,
@@ -42,23 +42,23 @@ export class LyricsWindow {
       frame: false,
       fullscreenable: true,
       resizable: false,
-      // transparent: true, 
+      // transparent: true,
       backgroundColor: 'rgba(0, 0, 0, 0)',
       show: false,
-    };
-
-    if (store.get('lyricsWindow')) {
-      options.x = store.get('lyricsWindow.x');
-      options.y = store.get('lyricsWindow.y');
     }
 
-    this.win = new BrowserWindow(options);
-    this.win.webContents.setAudioMuted(true);
-    this.win.loadURL(`http://localhost:${process.env.ELECTRON_WEB_SERVER_PORT}/desktoplyrics`);
+    if (store.get('lyricsWindow')) {
+      options.x = store.get('lyricsWindow.x')
+      options.y = store.get('lyricsWindow.y')
+    }
+
+    this.win = new BrowserWindow(options)
+    this.win.webContents.setAudioMuted(true)
+    this.win.loadURL(`http://localhost:${process.env.ELECTRON_WEB_SERVER_PORT}/desktoplyrics`)
 
     this.win.once('ready-to-show', () => {
       this.win && this.win.show()
-    });
+    })
     this.win.on('close', () => {
       pWin.webContents.send(IpcChannels.SetDesktopLyric)
       handleLyricsWinClose()
@@ -73,29 +73,26 @@ export class LyricsWindow {
     // 在窗口关闭时解除 'PinDesktopLyric' 事件的监听
     this.win?.on('closed', () => {
       ipcMain.removeHandler(IpcChannels.PinDesktopLyric)
-      ipcMain.removeListener(IpcChannels.PinDesktopLyric, this.handlePinDesktopLyrics);
-      this.win && this.win.close();
-    });
+      ipcMain.removeListener(IpcChannels.PinDesktopLyric, this.handlePinDesktopLyrics)
+      this.win && this.win.close()
+    })
   }
 
-  handlePinDesktopLyrics(win:BrowserWindow) {
+  handlePinDesktopLyrics(win: BrowserWindow) {
     // PinDesktopLyric
     handle(IpcChannels.PinDesktopLyric, () => {
       if (win && !win.isDestroyed()) {
-        win.setMovable(!win.movable);
-        // 
+        win.setMovable(!win.movable)
+        //
         win.setAlwaysOnTop(true)
         if (win.movable) {
           win.setAlwaysOnTop(false)
         }
 
-        return !win.movable;
+        return !win.movable
       } else {
-        return false;
+        return false
       }
-    }
-    )
+    })
   }
-
 }
-

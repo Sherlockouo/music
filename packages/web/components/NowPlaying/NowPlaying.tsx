@@ -10,7 +10,6 @@ import Progress from './Progress'
 import { ease } from '@/web/utils/const'
 import Icon from '../Icon'
 
-
 const NowPlaying = () => {
   const { track } = useSnapshot(player)
   const { minimizePlayer } = useSnapshot(persistedUiStates)
@@ -57,7 +56,7 @@ const NowPlaying = () => {
           </motion.div>
         )}
       </AnimatePresence>
-      
+
       {/* Controls */}
       <Controls />
     </>

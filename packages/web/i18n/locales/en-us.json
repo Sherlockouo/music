@@ -17,22 +17,12 @@
     "video_other": "Videos",
     "video-with-count_one": "{{count}} Video",
     "video-with-count_other": "{{count}} Videos",
-<<<<<<< HEAD
     "lyric-welcome":"Let's explore the most wonderful sounds of music!",
     "cloud":"cloud",
     "upload":"upload music",
     "showSongFrequency":"Show song frequency",
-    "showSongFrequencyWarnning":"⚠️This is performance consuming"
-||||||| b744c69
-    "lyric-welcome":"Let's explore the most wonderful sounds of music!",
-    "cloud":"cloud",
-    "upload":"upload music"
-=======
-    "lyric-welcome": "Let's explore the most wonderful sounds of music!",
-    "cloud": "cloud",
-    "upload": "upload music",
+    "showSongFrequencyWarnning":"⚠️This is performance consuming",
     "hide-show-player": "Hide/Show Player"
->>>>>>> dev
   },
   "navigation": {
     "goBack": "Go back",

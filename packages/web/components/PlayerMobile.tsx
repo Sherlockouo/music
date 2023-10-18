@@ -32,7 +32,15 @@ const LikeButton = () => {
   )
 }
 
-const PlayerMobile = ({playOrPause,ipcPrev,ipcNext}:{playOrPause?: () => void, ipcPrev?:()=>void,ipcNext?:()=>void} ) => {
+const PlayerMobile = ({
+  playOrPause,
+  ipcPrev,
+  ipcNext,
+}: {
+  playOrPause?: () => void
+  ipcPrev?: () => void
+  ipcNext?: () => void
+}) => {
   const { track, state } = useSnapshot(player)
   const bgColor = useCoverColor(track?.al?.picUrl ?? '')
   const [locked, setLocked] = useState(false)
@@ -149,9 +157,10 @@ const PlayerMobile = ({playOrPause,ipcPrev,ipcNext}:{playOrPause?: () => void, i
 
       {/* Play or pause */}
       <button
-        onClick={ ()=>{
-          playOrPause!()
-        }
+        onClick={
+          () => {
+            playOrPause!()
+          }
           // () => player.playOrPause()
         }
         className='ml-2.5 flex items-center justify-center rounded-full bg-white/20 p-2.5'

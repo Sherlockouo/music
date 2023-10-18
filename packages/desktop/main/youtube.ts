@@ -17,7 +17,7 @@ class YoutubeDownloader {
     }[]
   > {
     let proxy: AxiosProxyConfig | false = false
-    const httpProxyForYouTubeSettings  = store.get('settings.httpProxyForYouTube')
+    const httpProxyForYouTubeSettings = store.get('settings.httpProxyForYouTube')
     if (httpProxyForYouTubeSettings) {
       const youtubeProxy = httpProxyForYouTubeSettings?.proxy
       // const host = store.get('settings.httpProxyForYouTube.host') as string | undefined
@@ -25,33 +25,33 @@ class YoutubeDownloader {
       // const auth = store.get('settings.httpProxyForYouTube.auth') as any | undefined
       // const protocol = store.get('settings.httpProxyForYouTube.protocol') as string | undefined
       if (youtubeProxy) {
-        const parsedUrl = new URL(youtubeProxy);
+        const parsedUrl = new URL(youtubeProxy)
 
-        const host = parsedUrl.hostname;
-        const port = Number(parsedUrl.port);
-        const protocol = parsedUrl.protocol;
+        const host = parsedUrl.hostname
+        const port = Number(parsedUrl.port)
+        const protocol = parsedUrl.protocol
         const auth = {
-          username:"",
-          password:""
+          username: '',
+          password: '',
         }
         proxy = { host, port, auth, protocol }
       }
     }
-    log.info('proxy ',proxy, ' keyword ',keyword)
+    log.info('proxy ', proxy, ' keyword ', keyword)
     // proxy = { host: '127.0.0.1', port: 8888, protocol: 'http' }
     const webPage = await axios.get(`https://m.youtube.com/results`, {
       params: {
-        app:'desktop',
+        app: 'desktop',
         search_query: keyword,
         // sp: 'EgIQAQ==',
       },
-      headers: { 
+      headers: {
         'Accept-Language': 'en-US',
       },
       timeout: 5000,
       proxy,
     })
-    log.info("webpage ",webPage)
+    log.info('webpage ', webPage)
 
     if (webPage.status !== 200) {
       return []
@@ -184,8 +184,8 @@ class YoutubeDownloader {
       if (!video) return null
 
       console.time('[youtube] getInfo')
-      
-      const httpProxyForYouTubeSettings  = store.get('settings.httpProxyForYouTube') 
+
+      const httpProxyForYouTubeSettings = store.get('settings.httpProxyForYouTube')
       const agent = httpProxyAgent(httpProxyForYouTubeSettings?.proxy)
       const info = await ytdl.getInfo(video.id, {
         requestOptions: { agent },

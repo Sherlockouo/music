@@ -15,19 +15,23 @@ const Artists = ({ artists }: { artists: Artist[] }) => {
   const navigate = useNavigate()
   return (
     <>
-      {artists.length > 0 && artists.map(artist => (
-        <div
-          onClick={() => navigate(`/artist/${artist.id}`)}
-          key={artist.id}
-          className='flex items-center py-2.5'
-        >
-          <img src={resizeImage(artist.img1v1Url, 'xs')} className='mr-4 h-14 w-14 rounded-full' />
-          <div>
-            <div className='text-lg font-semibold'>{artist.name}</div>
-            <div className='mt-0.5 text-sm font-semibold'>艺人</div>
+      {artists.length > 0 &&
+        artists.map(artist => (
+          <div
+            onClick={() => navigate(`/artist/${artist.id}`)}
+            key={artist.id}
+            className='flex items-center py-2.5'
+          >
+            <img
+              src={resizeImage(artist.img1v1Url, 'xs')}
+              className='mr-4 h-14 w-14 rounded-full'
+            />
+            <div>
+              <div className='text-lg font-semibold'>{artist.name}</div>
+              <div className='mt-0.5 text-sm font-semibold'>艺人</div>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
     </>
   )
 }
@@ -101,9 +105,13 @@ const Search = () => {
   const { keywords = '', type = 'all' } = useParams()
   const offset = 0
   const limit = 100
-  const searchTrackList : keyof typeof SearchTypes = SearchTypes["Single"].toString() as keyof typeof SearchTypes
-  const searchPlayList : keyof typeof SearchTypes = SearchTypes["Playlist"].toString() as keyof typeof SearchTypes
-  
+  const searchTrackList: keyof typeof SearchTypes = SearchTypes[
+    'Single'
+  ].toString() as keyof typeof SearchTypes
+  const searchPlayList: keyof typeof SearchTypes = SearchTypes[
+    'Playlist'
+  ].toString() as keyof typeof SearchTypes
+
   const searchType: keyof typeof SearchTypes =
     type.toUpperCase() in SearchTypes ? (type.toUpperCase() as keyof typeof SearchTypes) : 'All'
 
@@ -131,22 +139,19 @@ const Search = () => {
     [SearchApiNames.CloudSearch, keywords, searchTrackList],
     () => cloudSearch({ keywords, offset: offset, limit: limit, type: searchTrackList })
   )
-  
-  const { data: cloudPlaylistSearchResult, isLoading: isLoadingCloudPlaylistSearchResult } = useQuery(
-    [SearchApiNames.CloudSearch, keywords, searchPlayList],
-    () => cloudSearch({ keywords, offset: offset, limit: limit, type: searchPlayList })
-  )
+
+  const { data: cloudPlaylistSearchResult, isLoading: isLoadingCloudPlaylistSearchResult } =
+    useQuery([SearchApiNames.CloudSearch, keywords, searchPlayList], () =>
+      cloudSearch({ keywords, offset: offset, limit: limit, type: searchPlayList })
+    )
   // toast(`${cloudSearchResult}`)
-  console.log(cloudTrackSearchResult,'\n',cloudPlaylistSearchResult);
-
-
+  console.log(cloudTrackSearchResult, '\n', cloudPlaylistSearchResult)
 
   const handlePlayTracks = useCallback(
     (trackID: number | null = null) => {
       let tracks = searchResult?.result?.song?.songs
       // tracks.push(...onlySongSearchResult?.songs)
-      console.log(tracks);
-
+      console.log(tracks)
 
       if (!tracks?.length) {
         toast('无法播放歌单')
@@ -204,8 +209,8 @@ const Search = () => {
                     {(match as Artist).occupation === '歌手'
                       ? '艺人'
                       : `专辑 · ${(match as Album).artist.name} · ${dayjs(
-                        match.publishTime
-                      ).year()}`}
+                          match.publishTime
+                        ).year()}`}
                   </div>
                 </div>
               </div>
@@ -221,39 +226,34 @@ const Search = () => {
             <div className='mb-2 text-14 font-bold uppercase '>艺人</div>
             <Artists artists={searchResult.result.artist.artists} />
           </div>
-        )
-        }
+        )}
         {searchResult?.result?.album?.albums && (
           <div>
             <div className='mb-2 text-14 font-bold uppercase '>专辑</div>
             <Albums albums={searchResult.result.album.albums} />
           </div>
         )}
-       
 
         {/* || onlySongSearchResult?.songs */}
-        {(cloudTrackSearchResult?.result?.songs) && (
+        {cloudTrackSearchResult?.result?.songs && (
           <div className='col-span-2'>
             <div className='mb-2 text-14 font-bold uppercase text-neutral-300'>歌曲</div>
             {cloudTrackSearchResult?.result?.songs && (
-              <div className='mt-4 grid grid-cols-3 grid-rows-8 gap-5 gap-y-6 overflow-hidden pb-12'>
+              <div className='grid-rows-8 mt-4 grid grid-cols-3 gap-5 gap-y-6 overflow-hidden pb-12'>
                 {cloudTrackSearchResult?.result?.songs.map(track => (
                   <Track key={track.id} track={track} onPlay={handlePlayTracks} />
                 ))}
               </div>
-            )
-            }
+            )}
           </div>
         )}
-        
-         {
-          cloudPlaylistSearchResult?.result?.playlists && (
-            <div className='col-span-2'>
+
+        {cloudPlaylistSearchResult?.result?.playlists && (
+          <div className='col-span-2'>
             <div className='mb-2 text-14 font-bold uppercase '>歌单</div>
             <CoverRowVirtual playlists={cloudPlaylistSearchResult?.result?.playlists} />
-            </div>
-          )
-        }
+          </div>
+        )}
       </div>
     </div>
   )

@@ -73,12 +73,10 @@ const Popular = ({ showAllSongs }: { showAllSongs: Function }) => {
   return (
     <div className='text-neutral-700 dark:text-neutral-300'>
       <div className={cx('flex justify-between')}>
-        <div className='mb-4 text-12 font-medium uppercase'>
-          {t`artist.popular`}
-        </div>
+        <div className='mb-4 text-12 font-medium uppercase'>{t`artist.popular`}</div>
         <div
           className={cx(
-            'align-center flex justify-between text-center gap-1 iterms-center text-12 font-bold uppercase'
+            'align-center iterms-center flex justify-between gap-1 text-center text-12 font-bold uppercase'
           )}
           onClick={() => {
             showAllSongs()

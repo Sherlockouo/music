@@ -1,7 +1,5 @@
-const Update = ()=>{
-    return (
-        <></>
-    )
+const Update = () => {
+  return <></>
 }
 
 export default Update

@@ -23,7 +23,9 @@ const ArtistVideos = () => {
               src={video.imgurl16v9}
               className='aspect-video w-full rounded-24 border border-white/5 object-contain'
             />
-            <div className='mt-2 text-12 font-medium text-neutral-700 dark:text-neutral-300'>{video.name}</div>
+            <div className='mt-2 text-12 font-medium text-neutral-700 dark:text-neutral-300'>
+              {video.name}
+            </div>
           </div>
         ))}
       </div>

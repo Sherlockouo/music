@@ -13,13 +13,13 @@ export function Switch({
     <motion.div
       className={cx(
         'flex w-11 items-center justify-start rounded-full p-1 transition-colors duration-500',
-        enabled ? 'bg-brand-700' : 'dark:bg-white/10 bg-black/10'
+        enabled ? 'bg-brand-700' : 'bg-black/10 dark:bg-white/10'
       )}
       onClick={() => onChange(!enabled)}
     >
       <motion.div
         animate={{ x: enabled ? 16 : 0 }}
-        className='h-5 w-5 rounded-full bg-black dark:bg-white shadow-sm'
+        className='h-5 w-5 rounded-full bg-black shadow-sm dark:bg-white'
       ></motion.div>
     </motion.div>
   )
@@ -84,7 +84,7 @@ export function Button({ children, onClick }: { children: React.ReactNode; onCli
   return (
     <button
       onClick={onClick}
-      className='rounded-md bg-black/10 dark:bg-neutral-800 py-1 px-3 font-medium text-neutral-400 transition-colors duration-300 hover:bg-neutral-500 dark:hover:bg-neutral-300 hover:text-neutral-300'
+      className='rounded-md bg-black/10 py-1 px-3 font-medium text-neutral-400 transition-colors duration-300 hover:bg-neutral-500 hover:text-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-300'
     >
       {children}
     </button>

@@ -36,15 +36,20 @@ const AccentColor = () => {
   const accentColor = useSnapshot(settings).accentColor
   return (
     <div className='mt-4 flex  flex-row items-center'>
-      <div className='w-full flex   min-w-[93px] items-center'>{t`settings.accent-color`}</div>
-      <div className=' w-full justify-center flex flex-wrap items-center'>
+      <div className='flex w-full   min-w-[93px] items-center'>{t`settings.accent-color`}</div>
+      <div className=' flex w-full flex-wrap items-center justify-center'>
         {Object.entries(colors).map(([color, bg]) => (
           <div
             key={color}
-            className={cx(bg, 'mr-2.5 mb-1 flex  h-5 w-5 items-center justify-center rounded-full bg-data-accent-color-500')}
+            className={cx(
+              bg,
+              'bg-data-accent-color-500 mr-2.5 mb-1  flex h-5 w-5 items-center justify-center rounded-full'
+            )}
             onClick={() => changeColor(color)}
           >
-            {color === accentColor && <div className='h-1.5 w-1.5 rounded-full bg-black dark:bg-white'></div>}
+            {color === accentColor && (
+              <div className='h-1.5 w-1.5 rounded-full bg-black dark:bg-white'></div>
+            )}
           </div>
         ))}
       </div>
@@ -70,7 +75,6 @@ const ChangeLyricBackground = () => {
   return (
     <>
       <div>
-
         <Option>
           <OptionText>{t`settings.show-lyric-background-img`}</OptionText>
           <Switch
@@ -101,18 +105,16 @@ const ShowSongFrequency = () => {
   const { showSongFrequency } = useSnapshot(uiStates)
   return (
     <>
-        <Option>
-          <div className='flex flex-col'>
+      <Option>
+        <div className='flex flex-col'>
           <OptionText>{t`common.showSongFrequency`}</OptionText>
-          <div> 
-            {t`common.showSongFrequencyWarnning`}
-          </div>
-          </div>
-          <Switch
-            enabled={showSongFrequency}
-            onChange={value => (uiStates.showSongFrequency = value)}
-          ></Switch>
-        </Option>
+          <div>{t`common.showSongFrequencyWarnning`}</div>
+        </div>
+        <Switch
+          enabled={showSongFrequency}
+          onChange={value => (uiStates.showSongFrequency = value)}
+        ></Switch>
+      </Option>
     </>
   )
 }

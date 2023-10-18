@@ -19,28 +19,29 @@ import useUser from '@/web/api/hooks/useUser'
 import Image from '../Image'
 import { resizeImage } from '@/web/utils/common'
 import { cx } from '@emotion/css'
-import {addSongToPlayList} from '../../api/playlist'
+import { addSongToPlayList } from '../../api/playlist'
 
-const Playlist = ({ playlist,datasourceID }: { playlist: Playlist,datasourceID:Number }) => {
+const Playlist = ({ playlist, datasourceID }: { playlist: Playlist; datasourceID: Number }) => {
   const { t } = useTranslation()
   return (
-    <div className={cx('rounded-24 items-center justify-space-between w-full group flex ',
-    'text-black dark:text-white hover:text-black/90 hover:dark:text-white/90 hover:bg-black/10 hover:dark:bg-white/10'
-    )}
-    onClick={()=>{
-      addSongToPlayList({
-        op:"add",
-        pid: playlist.id,
-        tracks: datasourceID + ''
-      })
-      toast.success(t`toasts.added-to-playlist`)
-    }}
+    <div
+      className={cx(
+        'justify-space-between group flex w-full items-center rounded-24 ',
+        'text-black hover:bg-black/10 hover:text-black/90 dark:text-white hover:dark:bg-white/10 hover:dark:text-white/90'
+      )}
+      onClick={() => {
+        addSongToPlayList({
+          op: 'add',
+          pid: playlist.id,
+          tracks: datasourceID + '',
+        })
+        toast.success(t`toasts.added-to-playlist`)
+      }}
     >
-  
       <Image
         key={playlist.id}
         src={resizeImage(playlist.coverImgUrl || playlist?.picUrl || '', 'xs')}
-        className='aspect-square rounded-24 h-10 w-10'
+        className='aspect-square h-10 w-10 rounded-24'
       />
       {/* Name */}
       <div className='bottom-0 p-3 text-sm font-medium  transition-all duration-400'>
@@ -138,16 +139,21 @@ const TrackContextMenu = () => {
               items: [
                 {
                   type: 'item',
-                  children:
+                  children: (
                     <>
-                    <div className='rounded-12 w-full h-64 no-scrollbar overflow-y-auto bg-white/10 dark:bg-black/10'>
-                      {myPlaylists?.map(playlist => (
-                          <Playlist key={playlist.id} playlist={playlist} datasourceID={Number(dataSourceID)} />
+                      <div className='no-scrollbar h-64 w-full overflow-y-auto rounded-12 bg-white/10 dark:bg-black/10'>
+                        {myPlaylists?.map(playlist => (
+                          <Playlist
+                            key={playlist.id}
+                            playlist={playlist}
+                            datasourceID={Number(dataSourceID)}
+                          />
                         ))}
-                        </div>
+                      </div>
                     </>
-                }
-              ]
+                  ),
+                },
+              ],
             },
             {
               type: 'submenu',
@@ -160,7 +166,6 @@ const TrackContextMenu = () => {
                     copyToClipboard(`https://music.163.com/#/song?id=${dataSourceID}`)
                     toast.success(t`toasts.copied`)
                   },
-
                 },
                 {
                   type: 'item',

@@ -14,7 +14,7 @@ import path from 'path'
 import prettyBytes from 'pretty-bytes'
 import { db, Tables } from './db'
 import { LyricsWindow } from './lyricsWindow'
-import NsisAppUpdater from './updateWindow'
+import AppUpdater from './updateWindow'
 import { getPlatform } from './utils'
 import { bindingKeyboardShortcuts } from './keyboardShortcuts'
 
@@ -177,8 +177,12 @@ function initOtherIpcMain(win: BrowserWindow | null) {
     db.vacuum()
   })
 
-  handle(IpcChannels.CheckUpdate, () => {
-    const nsis = new NsisAppUpdater()
+  handle(IpcChannels.CheckUpdate, (e) => {
+    const updater = new AppUpdater()
+    const check = async()=>{
+      e.returnValue = await updater.checkUpdate()
+    }
+    
   })
 
   handle(IpcChannels.SetDesktopLyric, (event, args) => {

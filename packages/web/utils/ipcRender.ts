@@ -1,5 +1,6 @@
 import { IpcChannels } from '@/shared/IpcChannels'
 
-export const checkAPPUpdate = () => {
-  window.ipcRenderer?.invoke(IpcChannels.CheckUpdate)
+export const checkAPPUpdate = async () => {
+  const res = await window.ipcRenderer?.invoke(IpcChannels.CheckUpdate)
+  console.log('log', res);
 }

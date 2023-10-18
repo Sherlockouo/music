@@ -14,8 +14,8 @@ const About = () => {
   const [newVersion, setNewVersion] = useState<string>('')
 
   const checkUpdate = () => {
-    toast.error('开发中 ｜ developing')
-    return
+    // toast.error('开发中 ｜ developing') 
+    // return
     checkAPPUpdate()
     setChecking(true)
     axios({

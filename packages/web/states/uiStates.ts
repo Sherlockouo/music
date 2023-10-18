@@ -16,7 +16,7 @@ interface UIStates {
 const initUIStates: UIStates = {
   showLyricPanel: false,
   showLoginPanel: false,
-  showSongFrequency: true,
+  showSongFrequency: false,
   hideTopbarBackground: false,
   mobileShowPlayingNext: false,
   blurBackgroundImage: null,

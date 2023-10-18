@@ -24,7 +24,7 @@ const AudioVisualization: React.FC<AudioVisualizationProps> = () => {
 
         ctx!.clearRect(0, 0, canvas.width, canvas.height)
 
-        const barWidth = (canvas.width * 3) / bufferLength
+        const barWidth = (canvas.width * 4) / bufferLength
         const maxHeight = canvas.height * 0.8
         let x = 0
 
@@ -33,7 +33,7 @@ const AudioVisualization: React.FC<AudioVisualizationProps> = () => {
           const height = (barHeight / 255) * maxHeight
           const y = canvas.height - height
 
-          const hue = (i / bufferLength) * 360 * 10
+          const hue = (i / bufferLength) * 1500
 
           ctx!.fillStyle = `hsl(${hue}, 120%, 50%)` // 使用固定颜色，避免模糊
 

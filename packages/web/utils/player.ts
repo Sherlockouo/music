@@ -130,9 +130,11 @@ export class Player {
   }
 
   private getSongFFT() {
+    if(window.env === undefined) return 
     const audioCtx = new window.AudioContext()
     const analyser = audioCtx.createAnalyser()
     const source = audioCtx.createMediaElementSource((_howler as any)._sounds[0]._node)
+    
     if (!invoked) {
       source.connect(analyser)
       analyser.connect(audioCtx.destination)

@@ -10,13 +10,14 @@ import useIsMobile from '@/web/hooks/useIsMobile'
 import { motion } from 'framer-motion'
 import AudioVisualization from '@/web/components/Animation/AudioVisualization'
 import uiStates from '@/web/states/uiStates'
+import toast from 'react-hot-toast'
 
-const Lyrics = ({ syncProgress, trackID }: { syncProgress?: () => void; trackID?: number }) => {
+const Lyrics = () => {
   const isMobile = useIsMobile()
   const containerRef = useRef(null)
   const [currentLineIndex, setCurrentLineIndex] = useState(0)
   const [currentVolumnValue, setCurrentVolumnValue] = useState(128)
-  const lyricsRes = useLyric({ id: trackID == undefined ? player.trackID : trackID })
+  const lyricsRes = useLyric({ id: player.trackID})
   const lyricsResponse = lyricsRes.data
   const { lyric: lyrics, tlyric: tlyric } = lyricParser(lyricsResponse)
   const { state: playerState, progress, nowVolume } = useSnapshot(player)
@@ -62,7 +63,7 @@ const Lyrics = ({ syncProgress, trackID }: { syncProgress?: () => void; trackID?
     // 添加一个钩子函数，在 currentLineIndex 发生变化时，调用一个函数来滚动歌词容器
     const scrollToCurrentLine = () => {
       // 获取所有的歌词行元素
-      const lines = containerRef.current?.querySelectorAll('.lyrics-row')
+      const lines = (containerRef.current as any).querySelectorAll('.lyrics-row')
       if (lines == null || lines.length == 0) {
         return
       }
@@ -89,8 +90,8 @@ const Lyrics = ({ syncProgress, trackID }: { syncProgress?: () => void; trackID?
     const time = lyrics[index]?.time || tlyric[index]?.time
     const tLyric = tlyric[index]?.content
 
-    const setSongToLyric = () => {
-      player.progress = time
+    const setSongToLyric = (index:number) => {
+      player.progress = lyrics[index].time
       player.play(true)
     }
 
@@ -112,8 +113,7 @@ const Lyrics = ({ syncProgress, trackID }: { syncProgress?: () => void; trackID?
         className={cx(lineClassName, 'font-Roboto')}
         key={index}
         onDoubleClick={() => {
-          setSongToLyric()
-          syncProgress && syncProgress()
+          setSongToLyric(index)
         }}
         style={hightlightStyle}
       >
@@ -154,9 +154,10 @@ const Lyrics = ({ syncProgress, trackID }: { syncProgress?: () => void; trackID?
           </div>
           {renderedLyrics}
         </motion.div>
-        <div className='sticky bottom-0 h-full w-full'>
+        {window.env !== undefined && <div className='sticky bottom-0 h-full w-full'>
           {showSongFrequency && <AudioVisualization />}
         </div>
+}
       </div>
     </PageTransition>
   )

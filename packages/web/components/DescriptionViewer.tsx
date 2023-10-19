@@ -27,7 +27,7 @@ function DescriptionViewer({
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className='fixed inset-0 z-30 bg-black/70 backdrop-blur-3xl dark:bg-white/70 '
+            className='fixed inset-0 z-30 bg-white/70 backdrop-blur-3xl dark:bg-black/70 '
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { duration: 0.3 } }}
             exit={{ opacity: 0, transition: { duration: 0.3, delay: 0.3 } }}
@@ -48,7 +48,7 @@ function DescriptionViewer({
           >
             <div className='relative'>
               {/* Title */}
-              <div className='line-clamp-1 absolute -top-8 mx-44 max-w-2xl select-none text-32 font-extrabold text-neutral-100 dark:text-neutral-700'>
+              <div className='line-clamp-1 absolute -top-8 mx-44 max-w-2xl select-none text-32 font-extrabold text-neutral-700 dark:text-neutral-100'>
                 {title}
               </div>
 
@@ -73,7 +73,7 @@ function DescriptionViewer({
                 >
                   <p
                     dangerouslySetInnerHTML={{ __html: description }}
-                    className='mt-8 whitespace-pre-wrap pb-8 text-16 font-bold leading-6 text-neutral-200 dark:text-neutral-700'
+                    className='mt-8 whitespace-pre-wrap pb-8 text-16 font-bold leading-6 text-neutral-700 dark:text-neutral-200'
                   ></p>
                 </div>
               </div>

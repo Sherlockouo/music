@@ -3,7 +3,7 @@ name: Build/Release
 on:
   push:
     branches:
-      - react
+      - release
 
 jobs:
   release:
@@ -36,7 +36,7 @@ jobs:
         run: node ./scripts/build.sqlite3.js
 
       - name: Install RPM & Pacman (Linux)
-        if: runner.os == 'Linux'
+        if: runner.os:= 'Linux'
         run: |
           sudo apt-get update &&
           sudo apt-get install --no-install-recommends -y rpm &&
@@ -54,10 +54,11 @@ jobs:
         uses: njzydark/action-electron-builder-pnpm@v1.1.0-pnpm
         env:
           ELECTRON_WEB_SERVER_PORT: 42710
-          VITE_APP_NETEASE_API_URL: /netease
-          VITE_APP_LASTFM_API_KEY: 09c55292403d961aa517ff7f5e8a3d9c
-          VITE_APP_LASTFM_API_SHARED_SECRET: 307c9fda32b3904e53654baff215cb67
+          ELECTRON_DEV_NETEASE_API_PORT: 30001
           UNBLOCK_SERVER_PORT: 30003
+          VITE_APP_NETEASE_API_URL: /netease
+          ENABLE_FLAC: "true"
+          ENABLE_LOCAL_VIP: "svip"
         with:
           # GitHub token, automatically provided to the action
           # (No need to define this secret in the repo settings)
@@ -72,20 +73,20 @@ jobs:
       - name: Upload Artifact (macOS)
         uses: actions/upload-artifact@v3
         with:
-          name: R3PLAY-mac
+          name: R3PLAYX-mac
           path: release/*-universal.dmg
           if-no-files-found: ignore
 
       - name: Upload Artifact (Windows)
         uses: actions/upload-artifact@v3
         with:
-          name: R3PLAY-win
+          name: R3PLAYX-win
           path: release/*x64-Setup.exe
           if-no-files-found: ignore
 
       - name: Upload Artifact (Linux)
         uses: actions/upload-artifact@v3
         with:
-          name: R3PLAY-linux
+          name: R3PLAYX-linux
           path: release/*.AppImage
           if-no-files-found: ignore

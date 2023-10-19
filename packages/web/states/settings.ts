@@ -24,6 +24,7 @@ interface Settings {
   unlock: boolean
   theme: string
   keyboardShortcuts: KeyboardShortcutSettings
+  showTrackListName: boolean
 }
 
 const initSettings: Settings = {
@@ -37,6 +38,7 @@ const initSettings: Settings = {
   unlock: true,
   theme: 'dark',
   keyboardShortcuts: getKeyboardShortcutDefaultSettings(),
+  showTrackListName: false,
 }
 
 const STORAGE_KEY = 'settings'

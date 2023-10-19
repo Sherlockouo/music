@@ -94,6 +94,7 @@
     "player-find-alternative-track-on-youtube-if-not-available-on-netease": "Find alternative track on YouTube if not available on NetEase.",
     "volume-control": "Volume Control",
     "about": "About",
+    "show-track-list-name": "Show Track List Name in Browse",
     "keyboard-shortcuts": {
       "title": "Keyboard Shortcuts",
       "enable-global": "Enable Global Keyboard Shortcuts",

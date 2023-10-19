@@ -94,7 +94,27 @@ const LayoutBackground = () => {
     </>
   )
 }
-1
+
+
+
+const Browse = () => {
+  const { showTrackListName } = useSnapshot(settings)
+  const { t } = useTranslation()
+  return (
+    <>
+      <div>
+        <Option>
+          <OptionText>{t`settings.show-track-list-name`}</OptionText>
+          <Switch
+            enabled={showTrackListName}
+            onChange={value => (settings.showTrackListName = value)}
+          />
+        </Option>
+      </div>
+    </>
+  )
+}
+
 const Appearance = () => {
   return (
     <div
@@ -105,6 +125,7 @@ const Appearance = () => {
     >
       <Theme />
       <LayoutBackground />
+      <Browse />
     </div>
   )
 }

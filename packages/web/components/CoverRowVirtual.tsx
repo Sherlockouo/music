@@ -1,5 +1,6 @@
 import { resizeImage } from '@/web/utils/common'
-import { cx,css } from '@emotion/css'
+import useSettings from '@/web/hooks/useSettings'
+import { cx } from '@emotion/css'
 import { useNavigate } from 'react-router-dom'
 import { prefetchAlbum } from '@/web/api/hooks/useAlbum'
 import { prefetchPlaylist } from '@/web/api/hooks/usePlaylist'
@@ -20,6 +21,7 @@ const CoverRow = ({
   containerStyle?: CSSProperties
 }) => {
   const navigate = useNavigate()
+  const { showTrackListName } = useSettings()
 
   const goTo = (id: number) => {
     if (albums) navigate(`/album/${id}`)
@@ -58,24 +60,31 @@ const CoverRow = ({
         itemSize={el => el.getBoundingClientRect().height + 24}
         totalCount={rows.length}
         components={{
-          Header: () => <div className={cx('ease-in-out',
-          )}></div>,
+          Header: () => <div className={cx('ease-in-out')}></div>,
           Footer: () => <div className='h-16'></div>,
         }}
         itemContent={(index, row) => (
           <div key={index} className='grid w-full grid-cols-4 gap-4 lg:mb-6 lg:gap-6'>
             {row.map((item: Item) => (
-              <img
+              <div
                 onClick={() => goTo(item.id)}
-                key={item.id}
-                alt={item.name}
-                src={resizeImage(
-                  item?.picUrl || (item as Playlist)?.coverImgUrl || item?.picUrl || '',
-                  'md'
-                )}
-                className='aspect-square w-full rounded-24'
                 onMouseOver={() => prefetch(item.id)}
-              />
+                key={item.id}
+              >
+                <img
+                  alt={item.name}
+                  src={resizeImage(
+                    item?.picUrl || (item as Playlist)?.coverImgUrl || item?.picUrl || '',
+                    'md'
+                  )}
+                  className='aspect-square w-full rounded-24'
+                />
+                {showTrackListName && (
+                  <h4 className='overflow-hidden text-ellipsis whitespace-nowrap p-2 text-center'>
+                    {item.name}
+                  </h4>
+                )}
+              </div>
             ))}
           </div>
         )}

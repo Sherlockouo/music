@@ -82,7 +82,7 @@ function DescriptionViewer({
               <div className='absolute -bottom-24 flex w-full justify-center'>
                 <div
                   onClick={onClose}
-                  className='flex h-14 w-14 items-center justify-center rounded-full bg-white/10 transition-colors duration-300 hover:bg-white/20 hover:text-white/70'
+                  className='flex h-14 w-14 items-center justify-center rounded-full bg-black/10 transition-colors duration-300 hover:bg-black/20 hover:text-black/70 dark:bg-white/10 dark:text-white/50 dark:hover:bg-white/20 dark:hover:text-white/70'
                 >
                   <Icon name='x' className='h-6 w-6' />
                 </div>

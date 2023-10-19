@@ -18,14 +18,12 @@ const LayoutMobile = () => {
   const playerSnapshot = useSnapshot(player)
   const showPlayer = !!playerSnapshot.track
   const location = useLocation()
-  console.log('location ', location.pathname)
 
   return (
-    <div id='layout' className='select-none bg-white pb-28 dark:bg-black'>
-      {location.pathname === '/desktoplyrics' ? (
-        <div className=''>
-          {' '}
-          <Router />{' '}
+    <div id='layout' className=' select-none bg-white pb-28 dark:bg-black'>
+      {location.pathname == '/desktoplyrics' ? (
+        <div className='no-scrollbar'>
+          <Router />
         </div>
       ) : (
         <>

@@ -134,7 +134,7 @@ const Lyrics = () => {
       >
         <motion.div
           className={cx(
-            'lyrics-container no-scrollbar z-10  mb-8 mt-8 h-full pb-lyricBottom pt-lyricTop ',
+            'lyrics-container no-scrollbar  mb-8 mt-8 h-full pb-lyricBottom pt-lyricTop ',
             'text-center'
           )}
           ref={containerRef}

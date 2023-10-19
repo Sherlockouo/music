@@ -35,15 +35,16 @@ export class LyricsWindow {
       },
       width: store.get('lyricsWindow.width'),
       height: store.get('lyricsWindow.height'),
-      minWidth: 1240,
-      minHeight: 800,
+      minWidth: 300,
+      minHeight: 600,
       titleBarStyle: 'hidden',
       trafficLightPosition: { x: 12, y: 6 },
+      minimizable: true,  // 允许最小化
+      maximizable: true,  // 允许最大化
       frame: false,
-      fullscreenable: true,
+      fullscreenable: false,
       resizable: false,
-      // transparent: true,
-      backgroundColor: 'rgba(0, 0, 0, 0)',
+      transparent:true,
       show: false,
     }
 

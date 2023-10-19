@@ -13,6 +13,7 @@ const on = <T extends keyof IpcChannelsParams>(
 
 export function ipcRenderer() {
   on(IpcChannels.Play, (e, { trackID }) => {
+    
     if (!trackID) {
       player.play(true)
       return

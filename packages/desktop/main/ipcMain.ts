@@ -127,6 +127,7 @@ function initTrayIpcMain(tray: YPMTray | null) {
 
   on(IpcChannels.Play, (e, { trackID }) => {
     tray?.setPlayState(true)
+    lyricWin?.win?.webContents.send(IpcChannels.Play,{trackID})
   })
   on(IpcChannels.Pause, () => {
     tray?.setPlayState(false)

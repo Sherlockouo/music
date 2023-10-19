@@ -91,33 +91,35 @@ const LyricsDesktop = () => {
   }, [currentLineIndex]) // 当 currentLineIndex 变化时，重新执行该钩子函数
 
   const maxLength = Math.max(lyrics.length, tlyric.length)
-  const renderedLyrics = Array.from({ length: maxLength }, (_, index) => {
-    const lyric = lyrics[index]?.content
-    const tLyric = tlyric[index]?.content
-
-    const lineClassName = cx(
-      'lyrics-row leading-120 mt-5 mb-5 pb-2 ease-in-out',
-      index === currentLineIndex && 'line-clamp-4 font-bold text-accent-color-500 text-2xl',
-      index !== currentLineIndex &&
-        'font-black tracking-lyric leading-lyric text-black/60 dark:text-white/60 text-md ',
-      index !== currentLineIndex && 'transition-opacity duration-1000'
-    )
-
-    return (
-      <div className={cx(lineClassName, 'font-Roboto')} key={index}>
-        <p>{lyric}</p>
-        <p>{tLyric}</p>
-      </div>
-    )
-  })
+ const renderedLyrics = Array.from({ length: maxLength }, (_, index) => {
+      const lyric = lyrics[index]?.content
+      const tLyric = tlyric[index]?.content
+  
+      const lineClassName = cx(
+        'lyrics-row leading-120 mt-5 mb-5 pb-2 ease-in-out',
+        index === currentLineIndex && 'line-clamp-4 font-bold text-accent-color-500 text-2xl',
+        index !== currentLineIndex &&
+          'font-black tracking-lyric leading-lyric text-black/60 dark:text-white/60 text-md ',
+        index !== currentLineIndex && 'transition-opacity duration-1000'
+      )
+  
+      return (
+        <div className={cx(lineClassName, 'font-Roboto')} key={index}>
+          <p>{lyric}</p>
+          <p>{tLyric}</p>
+        </div>
+      )
+    })
+  
+  
 
   return (
     <>
       <div className=''>
         <div>
           {/* <div className='z-29 w-3/4 h-12 bg-brand-500 dark:bg-night-500 top-0 left-0 fixed app-region-drag'>
-          </div> */}
-          <div className='fixed right-0 top-0 z-30 flex w-full flex-row-reverse bg-brand-500 dark:bg-night-500'>
+          </div> */} 
+          <div className='fixed right-0 top-0 z-10 flex w-full flex-row-reverse bg-brand-500 dark:bg-night-500'>
             <div
               className={cx('z-31 iterms-center right-0 h-12 w-12 pr-5')}
               onClick={async () => {
@@ -144,14 +146,13 @@ const LyricsDesktop = () => {
         </div>
         <div
           className={cx(
-            'h-921',
-            // 'text-black/60 dark:text-white/60',
-            'text-center',
-            'font-Roboto font-bold backdrop-blur-md'
+            'h-600',
+            'text-center no-scrollbar',
+            'font-Roboto font-bold backdrop-blur-xl py-80',
           )}
         >
           <motion.div
-            className={cx('no-scrollbar py-80', 'text-center')}
+            className={cx('text-center')}
             ref={containerRef}
             transition={{ duration: 0.5 }}
           >
@@ -164,7 +165,9 @@ const LyricsDesktop = () => {
               <p className=''>{trackInfo!?.name}</p>
               <p className=''>By - {trackInfo!?.ar[0].name ? player.track?.ar[0].name : 'X'}</p>
             </div> */}
-            {renderedLyrics}
+            {renderedLyrics.length == 0 ? <>
+              Enjoy the music
+            </> :renderedLyrics}
           </motion.div>
         </div>
       </div>

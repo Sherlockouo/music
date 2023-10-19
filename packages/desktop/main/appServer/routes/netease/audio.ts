@@ -11,6 +11,7 @@ import { FetchTracksResponse } from '@/shared/api/Track'
 import store from '@/desktop/main/store'
 import { db, Tables } from '@/desktop/main/db'
 const match = require('@unblockneteasemusic/server')
+const dotenv = require('dotenv');
 
 log.info('[electron] appServer/routes/r3play/audio.ts')
 
@@ -31,9 +32,8 @@ const getAudioFromCache = async (id: number) => {
       {
         source: cache.source,
         id: cache.id,
-        url: `http://127.0.0.1:${
-          process.env.ELECTRON_WEB_SERVER_PORT
-        }/${appName.toLowerCase()}/audio/${audioFileName}`,
+        url: `http://127.0.0.1:${process.env.ELECTRON_WEB_SERVER_PORT
+          }/${appName.toLowerCase()}/audio/${audioFileName}`,
         br: cache.bitRate,
         size: 0,
         md5: '',
@@ -194,15 +194,21 @@ async function audio(fastify: FastifyInstance) {
         })
         return
       }
-      const qqCookie = store.get('settings.qqCookie')
-      if (qqCookie && qqCookie !== '') process.env.QQ_COOKIE = qqCookie as string
-      const miguCookie = store.get('settings.miguCookie')
-      if (miguCookie && miguCookie !== '') process.env.MIGU_COOKIE = miguCookie as string
-      const jooxCookie = store.get('settings.jooxCookie')
-      if (jooxCookie && jooxCookie !== '') process.env.MIGU_COOKIE = jooxCookie as string
+      // 从存储中获取环境变量的值
+      const qqCookie = store.get('settings.qqCookie');
+      const miguCookie = store.get('settings.miguCookie');
+      const jooxCookie = store.get('settings.jooxCookie');
 
-      process.env.ENABLE_FLAC = 'true'
-      process.env.ENABLE_LOCAL_VIP = 'true'
+      // 动态生成 `.env` 文件的内容
+      const envConfig = `
+QQ_COOKIE=${qqCookie}
+MIGU_COOKIE=${miguCookie}
+JOOX_COOKIE=${jooxCookie}
+ENABLE_FLAC=true
+ENABLE_LOCAL_VIP=true
+`;
+      // 加载动态的环境变量
+      dotenv.config({ path: envConfig });
       const isEnglish = /^[a-zA-Z\s]+$/
       let source = ['qq', 'kuwo', 'migu', 'kugou', 'joox', 'youtube']
       const enableFindTrackOnYouTube = store.get('settings.enableFindTrackOnYouTube')

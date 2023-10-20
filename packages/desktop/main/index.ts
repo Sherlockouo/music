@@ -88,6 +88,7 @@ class Main {
       title: appName,
       webPreferences: {
         preload: join(__dirname, 'rendererPreload.js'),
+        // for lyrics effect
         webSecurity: false,
       },
       width: store.get('window.width'),

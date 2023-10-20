@@ -23,7 +23,7 @@ export class LyricsWindow {
   constructor(pWin: BrowserWindow) {
     this.createWindow(pWin)
     this.handlePinDesktopLyrics(this.win as BrowserWindow)
-    this.registerIPCListeners()
+    this.registerIPCListeners(pWin)
   }
 
   createWindow(pWin: BrowserWindow) {
@@ -36,17 +36,19 @@ export class LyricsWindow {
       width: store.get('lyricsWindow.width'),
       height: store.get('lyricsWindow.height'),
       minWidth: 300,
-      minHeight: 600,
+      maxWidth: 300,
+      maxHeight: 640,
       titleBarStyle: 'hidden',
       trafficLightPosition: { x: 12, y: 6 },
-      minimizable: true,  // 允许最小化
-      maximizable: true,  // 允许最大化
-      frame: false,
       fullscreenable: false,
-      resizable: false,
-      transparent:true,
+      resizable: true,
+      minimizable: true,
       show: false,
+      transparent: true,
+      backgroundColor: 'rgba(0, 0, 0, 0)',
+      closable: true
     }
+
 
     if (store.get('lyricsWindow')) {
       options.x = store.get('lyricsWindow.x')
@@ -60,22 +62,40 @@ export class LyricsWindow {
     this.win.once('ready-to-show', () => {
       this.win && this.win.show()
     })
-    this.win.on('close', () => {
-      pWin.webContents.send(IpcChannels.SetDesktopLyric)
-      handleLyricsWinClose()
-    })
-    // this.win.on('closed', () => {
-    //   ipcMain.removeListener(IpcChannels.PinDesktopLyric, handle)
-    //   this.win && this.win.close();
-    // });
+
+    // Save window position
+    const saveBounds = () => {
+      const bounds = this.win?.getBounds()
+      if (bounds) {
+        store.set('lyricsWindow', bounds)
+      }
+    }
+    this.win.on('moved', saveBounds)
   }
 
-  registerIPCListeners() {
+  registerIPCListeners(pWin:BrowserWindow) {
     // 在窗口关闭时解除 'PinDesktopLyric' 事件的监听
     this.win?.on('closed', () => {
       ipcMain.removeHandler(IpcChannels.PinDesktopLyric)
+      ipcMain.removeHandler(IpcChannels.LyricsWindowClose)
+      ipcMain.removeHandler(IpcChannels.LyricsWindowMinimize)
       ipcMain.removeListener(IpcChannels.PinDesktopLyric, this.handlePinDesktopLyrics)
       this.win && this.win.close()
+    })
+
+    this.win?.on('close', () => {
+      pWin.webContents.send(IpcChannels.SetDesktopLyric)
+      handleLyricsWinClose()
+    })
+
+    on(IpcChannels.LyricsWindowMinimize, () => {
+      this.win?.minimize()
+    })
+    on(IpcChannels.LyricsWindowClose, () => {
+      pWin.webContents.send(IpcChannels.SetDesktopLyric)
+      this.win?.close()
+      // If you only close the window without setting this window to null, when you reopen it, you will find it unclosable.
+      this.win = null
     })
   }
 
@@ -84,7 +104,7 @@ export class LyricsWindow {
     handle(IpcChannels.PinDesktopLyric, () => {
       if (win && !win.isDestroyed()) {
         win.setMovable(!win.movable)
-        //
+        // pined and set to the top
         win.setAlwaysOnTop(true)
         if (win.movable) {
           win.setAlwaysOnTop(false)

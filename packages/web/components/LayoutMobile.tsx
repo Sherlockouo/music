@@ -11,7 +11,6 @@ import Login from './Login'
 import { useLocation } from 'react-router-dom'
 import PlayingNext from './PlayingNextMobile'
 import ContextMenus from './ContextMenus/ContextMenus'
-import LyricsDesktop from '../pages/Lyrics/LyricsDesktop'
 import { State } from '../utils/player'
 
 const LayoutMobile = () => {
@@ -20,11 +19,12 @@ const LayoutMobile = () => {
   const location = useLocation()
 
   return (
-    <div id='layout' className=' select-none bg-white pb-28 dark:bg-black'>
+    <div id='layout' className={cx(
+      'select-none bg-white dark:bg-black',
+      location.pathname !== '/desktoplyrics' && 'pb-28'
+      )}>
       {location.pathname == '/desktoplyrics' ? (
-        <div className='no-scrollbar'>
           <Router />
-        </div>
       ) : (
         <>
           <main id='main' className='min-h-screen overflow-y-auto overflow-x-hidden pb-16 '>

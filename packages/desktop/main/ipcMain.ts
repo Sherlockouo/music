@@ -187,7 +187,6 @@ function initOtherIpcMain(win: BrowserWindow | null) {
   })
 
   handle(IpcChannels.SetDesktopLyric, (event, args) => {
-    // 在外部使用 LyricsWindow 类
     if (lyricWin && lyricWin.win !== undefined) {
       if (hidden) {
         lyricWin.win?.show()
@@ -201,6 +200,16 @@ function initOtherIpcMain(win: BrowserWindow | null) {
     // win cant be null
     lyricWin = new LyricsWindow(win as BrowserWindow)
     return true
+  })
+
+  on(IpcChannels.SyncAccentColor,(e,{color})=>{
+    lyricWin?.win?.webContents.send(IpcChannels.SyncAccentColor,{color:color})
+  })
+
+  on(IpcChannels.SyncTheme,(e,{theme})=>{
+    console.log('e theme',theme);
+    
+    lyricWin?.win?.webContents.send(IpcChannels.SyncTheme,{theme:theme})
   })
 
   on(IpcChannels.Previous, (event, args) => {

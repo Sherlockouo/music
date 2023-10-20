@@ -1,16 +1,13 @@
 import PageTransition from '../../components/PageTransition'
 import { useEffect, useRef, useState } from 'react'
 import { useSnapshot } from 'valtio'
-import { css, cx } from '@emotion/css'
+import { cx } from '@emotion/css'
 import useLyric from '@/web/api/hooks/useLyric'
 import { lyricParser } from '@/web/utils/lyric'
 import { motion } from 'framer-motion'
 import player from '@/web/states/player'
-import { fetchTracksWithReactQuery } from '@/web/api/hooks/useTracks'
-import toast from 'react-hot-toast'
-import Theme from '@/web/components/Topbar/Theme'
-import Pin from '@/web/components/Tools/Pin'
-import { IpcChannels } from '@/shared/IpcChannels'
+import LyricsWindowTitleBar from '@/web/components/LyricsWindow/LyricsWindowTitleBar'
+
 
 const LyricsDesktop = () => {
   const containerRef = useRef(null)
@@ -21,24 +18,6 @@ const LyricsDesktop = () => {
   const lyricsResponse = lyricsRes.data
   const { lyric: lyrics, tlyric: tlyric } = lyricParser(lyricsResponse)
   const [pin, setPin] = useState(false)
-
-  // let trackInfo:= null
-  const [trackInfo, setTrackInfo] = useState<Track | null>(null)
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetchTracksWithReactQuery({ ids: [trackID] });
-  //       const track = response?.songs?.length ? response.songs[0] : null;
-  //       setTrackInfo(track);
-  //     } catch (error) {
-  //       console.log('[lyricWin] err:', error);
-
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-  // toast.success('lyric trackID '+ trackInfo);
 
   useEffect(() => {
     const updateCurrentLineIndex = () => {
@@ -69,7 +48,7 @@ const LyricsDesktop = () => {
     // 添加一个钩子函数，在 currentLineIndex 发生变化时，调用一个函数来滚动歌词容器
     const scrollToCurrentLine = () => {
       // 获取所有的歌词行元素
-      const lines = containerRef.current?.querySelectorAll('.lyrics-row')
+      const lines = (containerRef.current as any).querySelectorAll('.lyrics-row')
       if (lines == null || lines.length == 0) {
         return
       }
@@ -115,38 +94,12 @@ const LyricsDesktop = () => {
 
   return (
     <>
-      <div className=''>
-        <div>
-          {/* <div className='z-29 w-3/4 h-12 bg-brand-500 dark:bg-night-500 top-0 left-0 fixed app-region-drag'>
-          </div> */} 
-          <div className='fixed right-0 top-0 z-10 flex w-full flex-row-reverse bg-brand-500 dark:bg-night-500'>
-            <div
-              className={cx('z-31 iterms-center right-0 h-12 w-12 pr-5')}
-              onClick={async () => {
-                const pined = await window.ipcRenderer?.invoke(IpcChannels.PinDesktopLyric)
-                setPin(pined as boolean)
-                if (pin) {
-                  toast.success('unpined lyric winows')
-                } else {
-                  toast.success('pined lyric winows')
-                }
-              }}
-            >
-              <Pin
-                className={cx(
-                  'rounded-full transition duration-400 hover:bg-white dark:hover:bg-neutral-100',
-                  pin && 'bg-white dark:bg-white/60',
-                  !pin && 'bg-white/50'
-                )}
-              />
-            </div>
-            <Theme />
-            <div className='app-region-drag w-3/4'></div>
-          </div>
+      <div className='dark:text-white/80'>
+        <LyricsWindowTitleBar />
         </div>
         <div
           className={cx(
-            'h-600',
+            'h-[640px] overflow-scroll',
             'text-center no-scrollbar',
             'font-Roboto font-bold backdrop-blur-xl py-80',
           )}
@@ -156,21 +109,11 @@ const LyricsDesktop = () => {
             ref={containerRef}
             transition={{ duration: 0.5 }}
           >
-            {/* <div
-              className={cx(
-                'text-black/60 dark:text-white/60 overflow-y-hidden',
-                'artist-info  no-scrollbar padding-bottom-20 mb-8 mt-8 text-left text-24',
-                'text-center'
-              )}>
-              <p className=''>{trackInfo!?.name}</p>
-              <p className=''>By - {trackInfo!?.ar[0].name ? player.track?.ar[0].name : 'X'}</p>
-            </div> */}
             {renderedLyrics.length == 0 ? <>
               Enjoy the music
             </> :renderedLyrics}
           </motion.div>
         </div>
-      </div>
     </>
   )
 }

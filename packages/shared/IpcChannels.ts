@@ -5,9 +5,11 @@ import { RepeatMode } from './playerDataTypes'
 export const enum IpcChannels {
   ClearAPICache = 'ClearAPICache',
   Minimize = 'Minimize',
+  LyricsWindowMinimize = 'LyricsWindowMinimize',
   MaximizeOrUnmaximize = 'MaximizeOrUnmaximize',
   MinimizeOrUnminimize = 'MinimizeOrUnminimize',
   Close = 'Close',
+  LyricsWindowClose = 'LyricsWindowClose',
   IsMaximized = 'IsMaximized',
   FullscreenStateChange = 'FullscreenStateChange',
   GetApiCache = 'GetApiCache',
@@ -35,6 +37,8 @@ export const enum IpcChannels {
   VolumeUp = 'VolumeUp',
   VolumeDown = 'VolumeDown',
   SyncSettings = 'SyncSettings',
+  SyncTheme = 'SyncTheme',
+  SyncAccentColor = 'SyncAccentColor',
   GetAudioCacheSize = 'GetAudioCacheSize',
   ResetWindowSize = 'ResetWindowSize',
   GetAlbumFromAppleMusic = 'GetAlbumFromAppleMusic',
@@ -49,9 +53,11 @@ export const enum IpcChannels {
 export interface IpcChannelsParams {
   [IpcChannels.ClearAPICache]: void
   [IpcChannels.Minimize]: void
+  [IpcChannels.LyricsWindowMinimize]: void
   [IpcChannels.MaximizeOrUnmaximize]: void
   [IpcChannels.MinimizeOrUnminimize]: void
   [IpcChannels.Close]: void
+  [IpcChannels.LyricsWindowClose]: void
   [IpcChannels.IsMaximized]: void
   [IpcChannels.FullscreenStateChange]: void
   [IpcChannels.CheckUpdate]: void
@@ -104,6 +110,12 @@ export interface IpcChannelsParams {
   [IpcChannels.VolumeUp]: void
   [IpcChannels.VolumeDown]: void
   [IpcChannels.SyncSettings]: any
+  [IpcChannels.SyncAccentColor]: {
+    color: string
+  }
+  [IpcChannels.SyncTheme]: {
+    theme: string
+  }
   [IpcChannels.GetAudioCacheSize]: void
   [IpcChannels.ResetWindowSize]: void
   [IpcChannels.GetAlbumFromAppleMusic]: {
@@ -122,6 +134,7 @@ export interface IpcChannelsParams {
 export interface IpcChannelsReturns {
   [IpcChannels.ClearAPICache]: void
   [IpcChannels.Minimize]: void
+  [IpcChannels.LyricsWindowMinimize]: void
   [IpcChannels.MaximizeOrUnmaximize]: void
   [IpcChannels.SetDesktopLyric]: boolean
   [IpcChannels.PinDesktopLyric]: boolean
@@ -159,6 +172,12 @@ export interface IpcChannelsReturns {
   [IpcChannels.VolumeUp]: void
   [IpcChannels.VolumeDown]: void
   [IpcChannels.SyncSettings]: any
+  [IpcChannels.SyncAccentColor]: {
+    color: string
+  }
+  [IpcChannels.SyncTheme]: {
+    theme: string
+  }
   [IpcChannels.GetAudioCacheSize]: void
   [IpcChannels.ResetWindowSize]: void
   [IpcChannels.GetAlbumFromAppleMusic]: AppleMusicAlbum | undefined

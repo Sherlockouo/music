@@ -11,7 +11,7 @@ import { useLocation } from 'react-router-dom'
 import { IpcChannels } from '@/shared/IpcChannels'
 import player from '@/web/states/player'
 import settings from '@/web/states/settings'
-import Theme from './Theme'
+import Theme from '../Appearence/Theme'
 const Background = () => {
   const { showBackgroundImage, theme } = useSnapshot(settings)
 
@@ -25,7 +25,7 @@ const Background = () => {
     location.pathname.startsWith('/lyrics/')
   const show = !hideTopbarBackground || !isPageHaveBlurBG
   const { fullscreen } = useSnapshot(uiStates)
-  let bgURL = player.track?.al.picUrl
+  let bgURL = player.track?.al?.picUrl
   if (!showBackgroundImage) {
     bgURL = ''
   }

@@ -105,7 +105,7 @@ const PlayerMobile = ({
         }}
       >
         <Image
-          src={resizeImage(track?.al.picUrl || '', 'sm')}
+          src={resizeImage(track?.al?.picUrl || '', 'sm')}
           className='z-10 aspect-square h-full rounded-lg'
         />
       </div>

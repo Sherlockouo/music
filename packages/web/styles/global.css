@@ -111,12 +111,12 @@ input {
 }
 
 body {
-  border-radius: 24px;
+  border-radius: 12px;
   @apply overscroll-contain;
 }
 
 html {
-  @apply bg-black lg:bg-transparent;
+  @apply bg-transparent;
   min-height: calc(100% + env(safe-area-inset-top));
 }
 

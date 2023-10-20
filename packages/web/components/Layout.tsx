@@ -11,6 +11,7 @@ import uiStates from '@/web/states/uiStates'
 import ContextMenus from './ContextMenus/ContextMenus'
 import settings from '@/web/states/settings'
 import { ease } from '../utils/const'
+import { motion } from 'framer-motion'
 
 const Layout = () => {
   const playerSnapshot = useSnapshot(player)

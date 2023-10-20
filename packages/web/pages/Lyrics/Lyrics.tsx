@@ -38,7 +38,7 @@ const Lyrics = () => {
     const updateCurrentLineIndex = () => {
       var find = false
       for (let i = currentLineIndex; i < lyrics.length; i++) {
-        if (progress + 10 >= lyrics[i]?.time && progress < lyrics[i + 1]?.time) {
+        if (progress + 0.2 >= lyrics[i]?.time && progress < lyrics[i + 1]?.time) {
           find = true
           setCurrentLineIndex(i)
           break

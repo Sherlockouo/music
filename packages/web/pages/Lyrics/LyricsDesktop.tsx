@@ -17,13 +17,15 @@ const LyricsDesktop = () => {
   const lyricsRes = useLyric({ id: trackID })
   const lyricsResponse = lyricsRes.data
   const { lyric: lyrics, tlyric: tlyric } = lyricParser(lyricsResponse)
+  
+  
   const [pin, setPin] = useState(false)
 
   useEffect(() => {
     const updateCurrentLineIndex = () => {
       var find = false
       for (let i = currentLineIndex; i < lyrics.length; i++) {
-        if (progress + 20 >= lyrics[i]?.time && progress < lyrics[i + 1]?.time) {
+        if (progress + 0.2 >= lyrics[i]?.time && progress < lyrics[i + 1]?.time) {
           find = true
           setCurrentLineIndex(i)
           break
@@ -32,6 +34,8 @@ const LyricsDesktop = () => {
           setCurrentLineIndex(i)
         }
       }
+      
+      
       if (!find) {
         setCurrentLineIndex(0)
       }
@@ -39,10 +43,11 @@ const LyricsDesktop = () => {
     updateCurrentLineIndex()
   }, [progress])
 
-  useEffect(() => {
-    var light = (1 / (1 + Math.exp(-(nowVolume - 128) / 64))) * 20
-    setCurrentVolumnValue(light)
-  }, [nowVolume])
+  // comment the lyrics effect
+  // useEffect(() => {
+  //   var light = (1 / (1 + Math.exp(-(nowVolume - 128) / 64))) * 20
+  //   setCurrentVolumnValue(light)
+  // }, [nowVolume])
 
   useEffect(() => {
     // 添加一个钩子函数，在 currentLineIndex 发生变化时，调用一个函数来滚动歌词容器
@@ -94,14 +99,14 @@ const LyricsDesktop = () => {
 
   return (
     <>
-      <div className='dark:text-white/80'>
+      <div className='dark:text-white/80  bg-transparent '>
         <LyricsWindowTitleBar />
         </div>
         <div
           className={cx(
-            'h-[640px] overflow-scroll',
+            'h-[640px] overflow-scroll   rounded-md',
             'text-center no-scrollbar',
-            'font-Roboto font-bold backdrop-blur-xl py-80',
+            'font-Roboto font-bold py-80',
           )}
         >
           <motion.div

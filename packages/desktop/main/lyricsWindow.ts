@@ -43,10 +43,9 @@ export class LyricsWindow {
       fullscreenable: false,
       resizable: true,
       minimizable: true,
-      show: false,
+      frame: false,
       transparent: true,
       backgroundColor: 'rgba(0, 0, 0, 0)',
-      closable: true
     }
 
 
@@ -57,6 +56,7 @@ export class LyricsWindow {
 
     this.win = new BrowserWindow(options)
     this.win.webContents.setAudioMuted(true)
+    
     this.win.loadURL(`http://localhost:${process.env.ELECTRON_WEB_SERVER_PORT}/desktoplyrics`)
 
     this.win.once('ready-to-show', () => {

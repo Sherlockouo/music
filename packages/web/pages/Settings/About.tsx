@@ -16,7 +16,7 @@ const About = () => {
   const checkUpdate = () => {
     // toast.error('开发中 ｜ developing') 
     // return
-    checkAPPUpdate()
+    // checkAPPUpdate()
     setChecking(true)
     axios({
       method: 'get',
@@ -28,10 +28,12 @@ const About = () => {
         const regex = /\/Sherlockouo\/music\/releases\/tag\/(.*?)"/
         const matches = html.match(regex)
         let latestVersion = matches[1]
-        // console.log('匹配到的标签版本号是：', latestVersion);
+        console.log('匹配到的标签版本号是：', latestVersion);
         if (latestVersion > currentVersion) {
-          // setNewVersion(latestVersion)
+          setNewVersion(latestVersion)
           console.log('newversion', newVersion)
+        }else{
+          setNewVersion(currentVersion)
         }
       })
       .catch(error => {
@@ -40,8 +42,12 @@ const About = () => {
       .finally(() => {
         setChecking(false)
       })
-
-    return '2.7.0'
+    if(newVersion != currentVersion) {
+      toast.success("new version found "+newVersion)
+    }else {
+      toast.success("you're running the latest version")
+    }
+    
   }
   return (
     <PageTransition>

@@ -21,10 +21,13 @@ const LayoutMobile = () => {
   return (
     <div id='layout' className={cx(
       'select-none bg-white dark:bg-black',
+      location.pathname === '/desktoplyrics' && 'rounded-lg',
       location.pathname !== '/desktoplyrics' && 'pb-28'
       )}>
       {location.pathname == '/desktoplyrics' ? (
+        // <div className='rounded-lg'>
           <Router />
+        // </div>
       ) : (
         <>
           <main id='main' className='min-h-screen overflow-y-auto overflow-x-hidden pb-16 '>

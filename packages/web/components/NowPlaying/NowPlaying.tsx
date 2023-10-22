@@ -36,7 +36,6 @@ const NowPlaying = () => {
           >
             {/* Cover */}
             <Cover />
-            
             {/* Info & Controls */}
             <Info />
             

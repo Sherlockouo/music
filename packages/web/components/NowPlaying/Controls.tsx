@@ -20,6 +20,7 @@ import { ceil } from 'lodash'
 import { ease } from '@/web/utils/const'
 import { useTranslation } from 'react-i18next'
 import AudioOutputDevices from '@/web/components/Tools/Devices'
+import Progress from './Progress'
 const LikeButton = () => {
   const { track } = useSnapshot(player)
   const { data: likedIDs } = useUserLikedTracksIDs()
@@ -47,7 +48,7 @@ const Controls = () => {
     <MotionConfig transition={{ ease, duration: 0.5 }}>
       <motion.div
         className={cx(
-          'fixed bottom-0 right-0 flex',
+          '-mb-3 fixed bottom-0 right-0 flex z-10',
           mini ? 'flex-col items-center justify-between' : 'items-center justify-between',
           mini
             ? css`
@@ -66,6 +67,8 @@ const Controls = () => {
         )}
       >
         <div className={cx(mini ? 'flex flex-wrap gap-3' : 'flex-col gap-2')}>
+          {/* Progress */}
+          <Progress />
           <div className={cx(mini ? 'flex-col text-center' : 'my-2 flex  justify-between gap-5')}>
             {/* Minimize */}
             <motion.button
@@ -122,8 +125,8 @@ const Controls = () => {
             {/* Like */}
             <LikeButton />
           </div>
-          
-          {!mini && (<div className='flex justify-center iterms-center transition-colors duration-400'> 
+
+          {!mini && (<div className='flex justify-center iterms-center transition-colors duration-400'>
             <AudioOutputDevices />
           </div>)}
           {!mini && <VolumeSlider />}
@@ -152,7 +155,7 @@ function VolumeSlider() {
     >
       <motion.button
         layout='position'
-        className={cx( 
+        className={cx(
         )}
       >
         <Icon
@@ -170,7 +173,7 @@ function VolumeSlider() {
         width: 180px;
       `)
         )}
-        transition={{ ease}}
+        transition={{ ease }}
       >
         <Slider
           value={volume}

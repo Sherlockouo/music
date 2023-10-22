@@ -4,6 +4,7 @@ import { proxy } from 'valtio'
 interface UIStates {
   showLyricPanel: boolean
   showLoginPanel: boolean
+  showSongFrequency: boolean
   hideTopbarBackground: boolean
   mobileShowPlayingNext: boolean
   blurBackgroundImage: string | null
@@ -15,6 +16,7 @@ interface UIStates {
 const initUIStates: UIStates = {
   showLyricPanel: false,
   showLoginPanel: false,
+  showSongFrequency: false,
   hideTopbarBackground: false,
   mobileShowPlayingNext: false,
   blurBackgroundImage: null,

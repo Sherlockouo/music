@@ -39,7 +39,7 @@ function Language() {
 
 function AppleMusic() {
   const { t } = useTranslation()
-  
+
   const { playAnimatedArtworkFromApple, priorityDisplayOfAlbumArtistDescriptionFromAppleMusic } =
     useSnapshot(settings)
 

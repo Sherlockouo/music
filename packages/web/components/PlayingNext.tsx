@@ -31,21 +31,16 @@ const FMButton = () => {
         player.nextTrack()
       }}
       className={cx(
-        'group relative transition duration-300 ease-linear text-neutral-300',
-        player.mode == Mode.FM ? 'text-brand-500 opacity-100 hover:opacity-80'
+        'group relative text-neutral-300 transition duration-300 ease-linear',
+        player.mode == Mode.FM
+          ? 'text-brand-500 opacity-100 hover:opacity-80'
           : 'text-neutral-500 opacity-60 hover:opacity-100'
-
       )}
       style={buttonStyle}
     >
       <div className='absolute top-1/2  left-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white opacity-0 blur group-hover:opacity-100'></div>
-      {
-        !fm && <Icon name='fm' className='h-7 w-7' />
-      }
-      {
-        fm && <Icon name='fm' className='h-7 w-7' />
-      }
-
+      {!fm && <Icon name='fm' className='h-7 w-7' />}
+      {fm && <Icon name='fm' className='h-7 w-7' />}
     </motion.button>
   )
 }
@@ -66,20 +61,14 @@ const RepeatButton = () => {
         player.mode == Mode.FM ? 'hidden' : 'block',
         'group relative transition duration-300 ease-linear',
         repeat == 0 && 'text-neutral-500 opacity-60 hover:opacity-100',
-        (repeat > 0) && 'text-brand-500 opacity-100 hover:opacity-80'
+        repeat > 0 && 'text-brand-500 opacity-100 hover:opacity-80'
       )}
       style={buttonStyle}
     >
       <div className='absolute top-1/2  left-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white opacity-0 blur group-hover:opacity-100'></div>
-      {
-        repeat == 0 && <Icon name='repeat' className='h-7 w-7' />
-      }
-      {
-        repeat == 1 && <Icon name='repeat' className='h-7 w-7' />
-      }
-      {
-        repeat == 2 && <Icon name='repeat-1' className='h-7 w-7' />
-      }
+      {repeat == 0 && <Icon name='repeat' className='h-7 w-7' />}
+      {repeat == 1 && <Icon name='repeat' className='h-7 w-7' />}
+      {repeat == 2 && <Icon name='repeat-1' className='h-7 w-7' />}
     </motion.button>
   )
 }
@@ -99,7 +88,7 @@ const ShuffleButton = () => {
         'group relative transition duration-300 ease-linear',
         shuffle
           ? 'text-brand-500 opacity-100 hover:opacity-90'
-          : 'text-neutral-500 opacity-60 hover:opacity-100',
+          : 'text-neutral-500 opacity-60 hover:opacity-100'
       )}
       style={buttonStyle}
     >
@@ -141,11 +130,11 @@ const Track = ({
   playingTrackIndex: number
   state: PlayerState
 }) => {
-
   return (
     <div
-      className={cx('mb-5 flex items-center justify-between',
-      // player.mode == Mode.FM && 'pointer-events-none'
+      className={cx(
+        'mb-5 flex items-center justify-between'
+        // player.mode == Mode.FM && 'pointer-events-none'
       )}
       onClick={e => {
         if (e.detail === 2 && track?.id) player.playTrack(track.id)
@@ -174,9 +163,7 @@ const Track = ({
         <div
           className={cx(
             'line-clamp-1 text-16 font-medium transition-colors duration-500',
-            playingTrackIndex === index
-              ? 'text-accent-color-500'
-              : 'text-black dark:text-white'
+            playingTrackIndex === index ? 'text-accent-color-500' : 'text-black dark:text-white'
           )}
         >
           {track?.name}
@@ -214,8 +201,7 @@ const TrackList = ({ className }: { className?: string }) => {
       <div
         className={cx(css`
           mask-image: linear-gradient(to bottom, transparent 22px, black 42px); // 顶部渐变遮罩
-        `
-        )}
+        `)}
       >
         <Virtuoso
           style={{
@@ -247,7 +233,6 @@ const TrackList = ({ className }: { className?: string }) => {
             />
           )}
         ></Virtuoso>
-
       </div>
     </motion.div>
   )

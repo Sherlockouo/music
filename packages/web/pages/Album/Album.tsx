@@ -22,7 +22,6 @@ const Album = () => {
   const onPlay = useCallback(
     async (trackID: number | null = null) => {
       if (!album?.album?.id) {
-        
         toast('无法播放专辑，该专辑不存在')
         return
       }
@@ -44,7 +43,7 @@ const Album = () => {
             ? album.songs
             : undefined
         }
-        className='z-10 mx-2.5 mt-3 lg:mx-0 lg:mt-10 text-black/60 dark:text-white/60'
+        className='z-10 mx-2.5 mt-3 text-black/60 dark:text-white/60 lg:mx-0 lg:mt-10'
         onPlay={onPlay}
         isLoading={isLoading}
       />

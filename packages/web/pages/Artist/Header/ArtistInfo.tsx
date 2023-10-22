@@ -68,7 +68,7 @@ const ArtistInfo = ({ artist, isLoading }: { artist?: Artist; isLoading: boolean
         ) : (
           <div
             className={cx(
-              'line-clamp-5 mt-6 overflow-hidden whitespace-pre-wrap text-14 font-bold transition-colors duration-500 hover:dark:text-white/60 hover:text-black/60',
+              'line-clamp-5 mt-6 overflow-hidden whitespace-pre-wrap text-14 font-bold transition-colors duration-500 hover:text-black/60 hover:dark:text-white/60',
               css`
                 height: 85px;
               `

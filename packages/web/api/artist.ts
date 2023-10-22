@@ -24,11 +24,13 @@ export function fetchArtist(params: FetchArtistParams): Promise<FetchArtistRespo
 }
 
 // 获取歌手所有歌曲
-export function fetchArtistSongs(params: FetchArtistSongsParams): Promise<FetchArtistSongsResponse> {
+export function fetchArtistSongs(
+  params: FetchArtistSongsParams
+): Promise<FetchArtistSongsResponse> {
   return request({
     url: '/artist/songs',
     method: 'get',
-    params: { ...params},
+    params: { ...params },
   })
 }
 

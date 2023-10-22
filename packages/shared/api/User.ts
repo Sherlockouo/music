@@ -145,7 +145,7 @@ export interface DailyCheckInResponse {
   point: number
 }
 
-// 云盘信息 
+// 云盘信息
 export interface CloudDiskInfoParam {
   timestamp?: number
   // 返回数量 , 默认为 30

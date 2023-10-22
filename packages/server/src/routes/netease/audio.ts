@@ -2,7 +2,7 @@ import { FastifyInstance, FastifyRequest } from 'fastify'
 import NeteaseCloudMusicApi, { SoundQualityType } from 'NeteaseCloudMusicApi'
 import log from '../../utils/log'
 import cache from '../../utils/cache'
-import { CacheAPIs} from '../../../../shared/CacheAPIs'
+import { CacheAPIs } from '../../../../shared/CacheAPIs'
 import fs from 'fs'
 import { db, Tables } from '../../utils/db'
 import pkg from '../../../../../package.json'
@@ -124,7 +124,7 @@ export const getAudioFromCache = async (id: number) => {
 //   }
 // }
 function stringifyCookie(cookies: string | string[] | undefined) {
-  if(!cookies) return 
+  if (!cookies) return
   var result = ''
   for (var i = 0; i < cookies.length; i++) {
     var cookie = cookies[i]
@@ -142,7 +142,15 @@ async function audio(fastify: FastifyInstance) {
   fastify.get(
     '/netease/song/url/v1',
     async (
-      req: FastifyRequest<{ Querystring: { id: string | number; level: SoundQualityType } }>,
+      req: FastifyRequest<{
+        Querystring: {
+          id: string | number
+          level: SoundQualityType
+          qqCookie: string
+          miguCookie: string
+          jooxCookie: string
+        }
+      }>,
       reply
     ) => {
       const id = Number(req.query.id) || 0
@@ -157,7 +165,6 @@ async function audio(fastify: FastifyInstance) {
       if (localCache) {
         return localCache
       }
-      
 
       const { body: fromNetease }: { body: any } = await NeteaseCloudMusicApi.song_url_v1({
         ...req.query,
@@ -185,7 +192,11 @@ async function audio(fastify: FastifyInstance) {
         })
         return
       }
-
+      process.env.QQ_COOKIE = req.query.qqCookie
+      process.env.MIGU_COOKIE = req.query.miguCookie
+      process.env.JOOX_COOKIE = req.query.jooxCookie
+      process.env.ENABLE_FLAC = 'true'
+      process.env.ENABLE_LOCAL_VIP = 'true'
       try {
         // todo: 暂时写死的，是否开放给用户配置
         await match(trackID, ['qq', 'kuwo', 'migu', 'kugou', 'joox']).then((data: unknown) => {
@@ -206,7 +217,6 @@ async function audio(fastify: FastifyInstance) {
       } catch (err) {
         reply.code(500).send(err)
       }
-
 
       // 是试听歌曲就把url删掉
       if (fromNetease?.data?.[0].freeTrialInfo) {

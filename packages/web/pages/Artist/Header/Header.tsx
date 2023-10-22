@@ -55,7 +55,7 @@ const Header = () => {
     //     <LatestRelease />
     //   </div>
     // </div>
-    <div className={cx('flex flex-col w-full')}>
+    <div className={cx('flex w-full flex-col')}>
       <div className={cx('grid grid-cols-6 gap-4')}>
         <div className={cx('col-span-4')}>
           <ArtistInfo isLoading={isLoading} artist={artist} />

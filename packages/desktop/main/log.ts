@@ -1,6 +1,6 @@
 /**  By default, it writes logs to the following locations:
  * on Linux: ~/.config/R3PLAY/logs/main.log
- * on macOS: ~/Library/Logs/r3play/main.log
+ * on macOS: ~/Library/Logs/r3playx/main.log
  * on Windows: %USERPROFILE%\AppData\Roaming\r3play\logs\main.log
  * @see https://www.npmjs.com/package/electron-log
  */

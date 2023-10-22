@@ -2,6 +2,7 @@ import player from '@/web/states/player'
 import { formatDuration } from '@/web/utils/common'
 import { useSnapshot } from 'valtio'
 import Slider from '../Slider'
+import { IpcChannels } from '@/shared/IpcChannels'
 
 const Progress = () => {
   const { track, progress } = useSnapshot(player)
@@ -13,6 +14,9 @@ const Progress = () => {
         max={(track?.dt ?? 100000) / 1000}
         value={progress}
         onChange={value => {
+          window.ipcRenderer?.send(IpcChannels.SyncProgress, {
+            progress: value,
+          })
           player.progress = value
         }}
         onlyCallOnChangeAfterDragEnded={true}

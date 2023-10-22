@@ -23,8 +23,7 @@ export const enum Tables {
   AppData = 'AppData',
   AppleMusicAlbum = 'AppleMusicAlbum',
   AppleMusicArtist = 'AppleMusicArtist',
-  Unblock = 'Unblock'
-
+  Unblock = 'Unblock',
 }
 interface CommonTableStructure {
   id: number
@@ -49,15 +48,15 @@ export interface TablesStructures {
     bitRate: number
     format: 'mp3' | 'flac' | 'ogg' | 'wav' | 'm4a' | 'aac' | 'unknown' | 'opus'
     source:
-    | 'unknown'
-    | 'netease'
-    | 'migu'
-    | 'kuwo'
-    | 'kugou'
-    | 'youtube'
-    | 'qq'
-    | 'bilibili'
-    | 'joox'
+      | 'unknown'
+      | 'netease'
+      | 'migu'
+      | 'kuwo'
+      | 'kugou'
+      | 'youtube'
+      | 'qq'
+      | 'bilibili'
+      | 'joox'
     queriedAt: number
   }
   [Tables.CoverColor]: {
@@ -90,7 +89,8 @@ class DB {
       createFileIfNotExist(this.dbFilePath)
       // log.info('bin path',this.getBinPath(), ' ', this.sqlite)
       // todo docker 和 electron 版本需要区别
-      this.sqlite = new SQLite3(this.dbFilePath,
+      this.sqlite = new SQLite3(
+        this.dbFilePath
         // {
         //   nativeBinding: this.getBinPath(),
         // }
@@ -245,6 +245,5 @@ class DB {
     return this.sqlite.prepare('VACUUM').run()
   }
 }
-
 
 export const db = new DB()

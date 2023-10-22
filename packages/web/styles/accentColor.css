@@ -22,7 +22,6 @@
   --brand-color-700: 0 74% 42%;
   --brand-color-800: 0 70% 35%;
   --brand-color-900: 0 63% 31%;
-
 }
 
 [data-accent-color='orange'] {
@@ -220,96 +219,114 @@
   --brand-color-900: 342 75% 30%;
 }
 
-
-  .bg-brand-50 {
-    background-color: hsl(var-(-brand-color-50));
-  }
-  .bg-brand-100 {
-    background-color: hsl(var-(-brand-color-100));
-  }
-  .bg-brand-200 {
-    background-color: hsl(var(--brand-color-200));
-  }
-  .bg-brand-300 {
-    background-color: hsl(var(--brand-color-300));
-  }
-  .bg-brand-400 {
-    background-color: hsl(var(--brand-color-400));
-  }
-  .bg-brand-500 {
-    background-color: hsl(var(--brand-color-500));
-  }
-  .bg-brand-600 {
-    background-color: hsl(var(--brand-color-600));
-  }
-  .bg-brand-700 {
-    background-color: hsl(var(--brand-color-700));
-  }
-  .bg-brand-800 {
-    background-color: hsl(var(--brand-color-800));
-  }
-  .bg-brand-900 {
-    background-color: hsl(var(--brand-color-900));
-  }
-
+.bg-brand-50 {
+  background-color: hsl(var-(-brand-color-50));
+}
+.bg-brand-100 {
+  background-color: hsl(var-(-brand-color-100));
+}
+.bg-brand-200 {
+  background-color: hsl(var(--brand-color-200));
+}
+.bg-brand-300 {
+  background-color: hsl(var(--brand-color-300));
+}
+.bg-brand-400 {
+  background-color: hsl(var(--brand-color-400));
+}
+.bg-brand-500 {
+  background-color: hsl(var(--brand-color-500));
+}
+.bg-brand-600 {
+  background-color: hsl(var(--brand-color-600));
+}
+.bg-brand-700 {
+  background-color: hsl(var(--brand-color-700));
+}
+.bg-brand-800 {
+  background-color: hsl(var(--brand-color-800));
+}
+.bg-brand-900 {
+  background-color: hsl(var(--brand-color-900));
+}
 
 .text-brand-50 {
-    &{color: hsl(var(--brand-color-50));}
-    .dark & {
-        color: hsl(var(--brand-color-50));
-    }
+  & {
+    color: hsl(var(--brand-color-50));
+  }
+  .dark & {
+    color: hsl(var(--brand-color-50));
+  }
 }
 .text-brand-100 {
-    &{color: hsl(var(--brand-color-100));}
-    .dark & {
-        color: hsl(var(--brand-color-100));
-    }
+  & {
+    color: hsl(var(--brand-color-100));
+  }
+  .dark & {
+    color: hsl(var(--brand-color-100));
+  }
 }
 .text-brand-200 {
-    &{color: hsl(var(--brand-color-200));}
-    .dark & {
-        color: hsl(var(--brand-color-200));
-    }
+  & {
+    color: hsl(var(--brand-color-200));
+  }
+  .dark & {
+    color: hsl(var(--brand-color-200));
+  }
 }
 .text-brand-300 {
-    &{color: hsl(var(--brand-color-300));}
-    .dark & {
-        color: hsl(var(--brand-color-300));
-    }
+  & {
+    color: hsl(var(--brand-color-300));
+  }
+  .dark & {
+    color: hsl(var(--brand-color-300));
+  }
 }
 .text-brand-400 {
-    &{color: hsl(var(--brand-color-400));}
-    .dark & {
-        color: hsl(var(--brand-color-400));
-    }
+  & {
+    color: hsl(var(--brand-color-400));
+  }
+  .dark & {
+    color: hsl(var(--brand-color-400));
+  }
 }
 .text-brand-500 {
-    &{color: hsl(var(--brand-color-500));}
-    .dark & {
-        color: hsl(var(--brand-color-500));
-    }
+  & {
+    color: hsl(var(--brand-color-500));
+  }
+  .dark & {
+    color: hsl(var(--brand-color-500));
+  }
 }
 .text-brand-600 {
-    &{color: hsl(var(--brand-color-600));}
-    .dark & {
-        color: hsl(var(--brand-color-600));
-    }
+  & {
+    color: hsl(var(--brand-color-600));
+  }
+  .dark & {
+    color: hsl(var(--brand-color-600));
+  }
 }
 .text-brand-700 {
-    &{color: hsl(var(--brand-color-700));}
-    .dark & {
-        color: hsl(var(--brand-color-700));
-    }
+  & {
+    color: hsl(var(--brand-color-700));
+  }
+  .dark & {
+    color: hsl(var(--brand-color-700));
+  }
 }
 .text-brand-800 {
-    &{color: hsl(var(--brand-color-800));}
-    .dark & {
-        color: hsl(var(--brand-color-800));
-    }
+  & {
+    color: hsl(var(--brand-color-800));
+  }
+  .dark & {
+    color: hsl(var(--brand-color-800));
+  }
 }
 .text-brand-900 {
-    &{color: hsl(var(--brand-color-900));}
-    .dark & {
-        color: hsl(var(--brand-color-900));
-    }
+  & {
+    color: hsl(var(--brand-color-900));
+  }
+  .dark & {
+    color: hsl(var(--brand-color-900));
+  }
 }

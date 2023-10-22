@@ -2,7 +2,7 @@ import { db, Tables } from './db'
 import type { FetchTracksResponse } from '../../../shared/api/Track'
 import log from './log'
 import fs from 'fs'
-import {IAudioMetadata} from 'music-metadata'
+import { IAudioMetadata } from 'music-metadata'
 import { CacheAPIs, CacheAPIsParams } from '../../../shared/CacheAPIs'
 import { TablesStructures } from '../../../desktop/main/db'
 import { FastifyReply } from 'fastify'
@@ -301,7 +301,10 @@ class Cache {
     }
   }
 
-  async setAudio(buffer: Buffer, { id, url,bitrate }: { id: number; url: string;bitrate:number }) {
+  async setAudio(
+    buffer: Buffer,
+    { id, url, bitrate }: { id: number; url: string; bitrate: number }
+  ) {
     const path = `${dirname}/audio_cache`
 
     try {
@@ -309,13 +312,13 @@ class Cache {
     } catch (e) {
       fs.mkdirSync(path)
     }
-    let meta! : IAudioMetadata
-    (async () => {
-      const { parseBuffer } = await import('music-metadata');
-      await parseBuffer(buffer).then(res=>{
+    let meta!: IAudioMetadata
+    ;(async () => {
+      const { parseBuffer } = await import('music-metadata')
+      await parseBuffer(buffer).then(res => {
         meta = res
       })
-    })();
+    })()
     const bitRate = meta?.format?.codec === 'OPUS' ? 165000 : meta.format.bitrate ?? 0
     const type =
       {

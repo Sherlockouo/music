@@ -13,12 +13,12 @@ import {
   FetchHQPlaylistResponse,
   FetchDailyRecommendSongsResponse,
   AddSongToPlayListParams,
-  AddSongToPlayListResponse
+  AddSongToPlayListResponse,
 } from '@/shared/api/Playlists'
 
 // hq 歌单
 export function fetchHQPlaylist(params: FetchHQPlaylistParams): Promise<FetchHQPlaylistResponse> {
-  console.log('hq params: ',params);
+  console.log('hq params: ', params)
   return request({
     url: '/top/playlist/highquality',
     method: 'get',
@@ -29,7 +29,9 @@ export function fetchHQPlaylist(params: FetchHQPlaylistParams): Promise<FetchHQP
 }
 
 // top歌单
-export function fetchTopPlaylist(params: FetchTopPlaylistParams): Promise<FetchTopPlaylistResponse> {
+export function fetchTopPlaylist(
+  params: FetchTopPlaylistParams
+): Promise<FetchTopPlaylistResponse> {
   if (!params.cat) params.cat = ''
   return request({
     url: '/top/playlist',
@@ -97,7 +99,9 @@ export function likeAPlaylist(params: LikeAPlaylistParams): Promise<LikeAPlaylis
   })
 }
 
-export function addSongToPlayList(params: AddSongToPlayListParams): Promise<AddSongToPlayListResponse> {
+export function addSongToPlayList(
+  params: AddSongToPlayListParams
+): Promise<AddSongToPlayListResponse> {
   return request({
     url: '/playlist/tracks',
     method: 'get',

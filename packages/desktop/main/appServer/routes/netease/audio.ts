@@ -11,6 +11,7 @@ import { FetchTracksResponse } from '@/shared/api/Track'
 import store from '@/desktop/main/store'
 import { db, Tables } from '@/desktop/main/db'
 const match = require('@unblockneteasemusic/server')
+const dotenv = require('dotenv');
 
 log.info('[electron] appServer/routes/r3play/audio.ts')
 
@@ -31,9 +32,8 @@ const getAudioFromCache = async (id: number) => {
       {
         source: cache.source,
         id: cache.id,
-        url: `http://127.0.0.1:${
-          process.env.ELECTRON_WEB_SERVER_PORT
-        }/${appName.toLowerCase()}/audio/${audioFileName}`,
+        url: `http://127.0.0.1:${process.env.ELECTRON_WEB_SERVER_PORT
+          }/${appName.toLowerCase()}/audio/${audioFileName}`,
         br: cache.bitRate,
         size: 0,
         md5: '',
@@ -128,6 +128,20 @@ const getAudioFromYouTube = async (id: number) => {
   }
 }
 
+const getTrackInfo = async (id: number): Promise<Track | undefined> => {
+  let fetchTrackResult: FetchTracksResponse | undefined = await cache.get(CacheAPIs.Track, {
+    ids: String(id),
+  })
+  if (!fetchTrackResult) {
+    log.info(`[audio] getAudioFromYouTube no fetchTrackResult, fetch from netease api `)
+    fetchTrackResult = (await NeteaseCloudMusicApi.song_detail({
+      ids: String(id),
+    })) as unknown as FetchTracksResponse
+  }
+  const track = fetchTrackResult?.songs?.[0]
+  if (!track) return
+  return track
+}
 async function audio(fastify: FastifyInstance) {
   // 劫持网易云的song/url api，将url替换成缓存的音频文件url
   fastify.get(
@@ -143,6 +157,9 @@ async function audio(fastify: FastifyInstance) {
           msg: 'id is required or id is invalid',
         })
       }
+
+      // const res = getAudioFromYouTube(id)
+      // console.log('youtube ',res);
 
       const localCache = await getAudioFromCache(id)
       if (localCache) {
@@ -162,6 +179,8 @@ async function audio(fastify: FastifyInstance) {
         reply.status(200).send(fromNetease)
         return
       }
+      // console.log(fromNetease);
+
       const trackID = id
       // 先查缓存
       const cacheData = await cache.get(CacheAPIs.Unblock, trackID)
@@ -175,10 +194,41 @@ async function audio(fastify: FastifyInstance) {
         })
         return
       }
+      // 从存储中获取环境变量的值
+      const qqCookie = store.get('settings.qqCookie');
+      const miguCookie = store.get('settings.miguCookie');
+      const jooxCookie = store.get('settings.jooxCookie');
 
+      // 动态生成 `.env` 文件的内容
+      const envConfig = `
+QQ_COOKIE=${qqCookie}
+MIGU_COOKIE=${miguCookie}
+JOOX_COOKIE=${jooxCookie}
+ENABLE_FLAC=true
+ENABLE_LOCAL_VIP=true
+`;
+      // 加载动态的环境变量
+      dotenv.config({ path: envConfig });
+      const isEnglish = /^[a-zA-Z\s]+$/
+      let source = ['qq', 'kuwo', 'migu', 'kugou', 'joox', 'youtube']
+      const enableFindTrackOnYouTube = store.get('settings.enableFindTrackOnYouTube')
+      const httpProxyForYouTubeSettings = store.get('settings.httpProxyForYouTube')
+      if (enableFindTrackOnYouTube && httpProxyForYouTubeSettings) {
+        const youtubeProxy = httpProxyForYouTubeSettings?.proxy
+        global.proxy = require('url').parse(youtubeProxy)
+        const info = await getTrackInfo(trackID)
+        const artistName =
+          info?.ar[0]?.name === undefined ? '' : info?.ar[0]?.name.replace(/[^a-zA-Z\s]/g, '')
+        const songName = info?.name === undefined ? '' : info?.name.replace(/[^a-zA-Z\s]/g, '')
+
+        if (isEnglish.test(artistName) && isEnglish.test(songName)) {
+          source = ['youtube']
+        }
+      }
       try {
         // todo: 暂时写死的，是否开放给用户配置
-        await match(trackID, ['qq', 'kuwo', 'migu', 'kugou', 'joox']).then((data: unknown) => {
+        await match(trackID, source).then((data: unknown) => {
+          // await match(trackID, ['youtube']).then((data: unknown) => {
           if (data === null || data === undefined || (data as any)?.url === '') {
             reply.code(500).send({
               code: 400,
@@ -195,13 +245,6 @@ async function audio(fastify: FastifyInstance) {
         })
       } catch (err) {
         reply.code(500).send(err)
-      }
-
-      if (store.get('settings.enableFindTrackOnYouTube')) {
-        const fromYoutube = getAudioFromYouTube(id)
-        if (fromYoutube) {
-          return fromYoutube
-        }
       }
 
       // 是试听歌曲就把url删掉

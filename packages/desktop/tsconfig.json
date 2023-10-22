@@ -8,6 +8,7 @@
     "esModuleInterop": true,
     "moduleResolution": "Node",
     "resolveJsonModule": true,
+    "outDir": "dist",
     "strict": true,
     "jsx": "react-jsx",
     "baseUrl": "../",
@@ -15,5 +16,5 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["./**/*.ts", "../shared/**/*.ts", "./**/unlock.js"]
+  "include": ["./**/*.ts", "../shared/**/*.ts", "./**/unlock.js", "main/lyrics.tsx","main/lyricsWindow.tsx"]
 }

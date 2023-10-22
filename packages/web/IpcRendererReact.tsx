@@ -10,7 +10,7 @@ import { appName } from './utils/const'
 
 const IpcRendererReact = () => {
   const [isPlaying, setIsPlaying] = useState(false)
-  const { track, state } = useSnapshot(player)
+  const { track, state, progress, trackID } = useSnapshot(player)
   const trackIDRef = useRef(0)
 
   // Liked songs ids
@@ -38,11 +38,27 @@ const IpcRendererReact = () => {
     })
   }, [userLikedSongs, track])
 
+  // 同步歌词进度›
+  useEffect(() => {
+    window.ipcRenderer?.send(IpcChannels.SyncProgress, {
+      progress: progress,
+    })
+  }, [progress])
+
+  // 同步歌曲
+  useEffect(() => {
+    window.ipcRenderer?.send(IpcChannels.Play, {
+      trackID: trackID,
+    })
+  }, [trackID])
+
   useEffect(() => {
     const playing = [PlayerState.Playing, PlayerState.Loading].includes(state)
     if (isPlaying === playing) return
 
-    window.ipcRenderer?.send(playing ? IpcChannels.Play : IpcChannels.Pause)
+    // window.ipcRenderer?.send(playing ? IpcChannels.Play : IpcChannels.Pause)
+    if (!isPlaying) window.ipcRenderer?.send(IpcChannels.Pause)
+
     setIsPlaying(playing)
   }, [isPlaying, state])
 

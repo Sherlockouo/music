@@ -15,7 +15,7 @@ const My = () => {
     <PageTransition>
       {isLoggedIn ? (
         <LayoutGroup>
-          <div className='grid grid-cols-1 gap-10 flex'>
+          <div className='flex grid grid-cols-1 gap-10'>
             <PlayLikedSongsCard />
             <RecentlyListened />
             <Collections />

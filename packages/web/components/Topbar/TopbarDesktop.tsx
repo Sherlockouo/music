@@ -11,7 +11,7 @@ import { useLocation } from 'react-router-dom'
 import { IpcChannels } from '@/shared/IpcChannels'
 import player from '@/web/states/player'
 import settings from '@/web/states/settings'
-import Theme from './Theme'
+import Theme from '../Appearence/Theme'
 const Background = () => {
   const { showBackgroundImage, theme } = useSnapshot(settings)
 
@@ -25,7 +25,7 @@ const Background = () => {
     location.pathname.startsWith('/lyrics/')
   const show = !hideTopbarBackground || !isPageHaveBlurBG
   const { fullscreen } = useSnapshot(uiStates)
-  let bgURL = player.track?.al.picUrl
+  let bgURL = player.track?.al?.picUrl
   if (!showBackgroundImage) {
     bgURL = ''
   }
@@ -36,7 +36,8 @@ const Background = () => {
           <>
             <div
               className={cx(
-                'absolute inset-0 h-full w-full top-bar',
+                'top-bar',
+                'absolute inset-0 h-full w-full',
                 !showBackgroundImage && (theme === 'dark' ? 'top-bar-dark' : 'top-bar-light')
               )}
             >
@@ -45,10 +46,10 @@ const Background = () => {
                   className={cx(
                     'ease absolute inset-0 z-0 h-full w-full',
                     css`
-                    background-repeat: no-repeat;
-                    background-size: cover;
-                    background-position: center top;
-                  `
+                      background-repeat: no-repeat;
+                      background-size: cover;
+                      background-position: center top;
+                    `
                   )}
                   style={{ backgroundImage: `url(${bgURL})` }}
                   initial={{ opacity: 0 }}
@@ -58,9 +59,7 @@ const Background = () => {
                 ></motion.div>
               ) : (
                 <motion.div
-                  className={cx(
-                    'ease absolute inset-0 z-0 h-full w-full bg-white dark:bg-black',
-                  )}
+                  className={cx('ease absolute inset-0 z-0 h-full w-full bg-white dark:bg-black')}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -111,14 +110,14 @@ const TopbarDesktop = () => {
     <div
       className={cx(
         // app-region-drag 删除后即可移动console
-        'app-region-drag',
+        // 'app-region-drag',
         ' fixed top-0 left-0 right-0 z-20 flex items-center justify-between',
         'pt-11 pb-10 pr-6',
         css`
           padding-left: 144px;
         `
       )}
-      onDoubleClick={ maxRestore }
+      onDoubleClick={maxRestore}
     >
       {/* Background */}
       <Background />

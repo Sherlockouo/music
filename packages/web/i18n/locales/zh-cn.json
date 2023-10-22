@@ -17,9 +17,11 @@
     "video_other": "视频",
     "video-with-count_one": "{{count}} 个视频",
     "video-with-count_other": "{{count}} 个视频",
-    "lyric-welcome": "今天听点什么呢？",
-    "cloud": "云盘",
-    "upload": "上传歌曲",
+    "lyric-welcome":"今天听点什么呢？",
+    "cloud":"云盘",
+    "upload":"上传歌曲",
+    "showSongFrequency":"展示歌曲频谱图",
+    "showSongFrequencyWarnning":"⚠️此功能非常消耗性能",
     "hide-show-player": "隐藏/显示播放器"
   },
   "navigation": {
@@ -94,6 +96,12 @@
     "player-youtube-unlock": "YouTube 解锁",
     "volume-control": "音量控制",
     "about": "关于",
+    "proxy":"代理",
+    "qqCookie":"QQ_COOKIE",
+    "miguCookie":"MIGU_COOKIE",
+    "cookieSettingRefrence":"设置说明请参见此处",
+    "cookieDesc":"，留空则不进行相关设置",
+    "jooxCookie":"JOOX_COOKIE",
     "keyboard-shortcuts": {
       "title": "快捷键",
       "enable-global": "启用全局快捷键",

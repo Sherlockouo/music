@@ -24,7 +24,7 @@ const Artist = () => {
             onClick={() => {
               changeShowAllSongs(!showAllSongs)
             }}
-            className='flex w-36 items-center justify-center gap-2 rounded-full bg-dark/20 dark:bg-white/20'
+            className='bg-dark/20 flex w-36 items-center justify-center gap-2 rounded-full dark:bg-white/20'
           >
             {t`artist.synthesis`}
             <Icon name={showAllSongs ? 'eye' : 'eye-off'} className='h-6 w-6' />

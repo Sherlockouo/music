@@ -20,6 +20,9 @@ import { ceil } from 'lodash'
 import { ease } from '@/web/utils/const'
 import { useTranslation } from 'react-i18next'
 import AudioOutputDevices from '@/web/components/Tools/Devices'
+import { useState } from 'react'
+import { IpcChannels } from '@/shared/IpcChannels'
+import settings from '@/web/states/settings'
 const LikeButton = () => {
   const { track } = useSnapshot(player)
   const { data: likedIDs } = useUserLikedTracksIDs()
@@ -87,7 +90,10 @@ const Controls = () => {
               <motion.button
                 layout='position'
                 animate={{ rotate: mini ? 90 : 0 }}
-                onClick={() => track && player.prevTrack()}
+                onClick={() => {
+                  if (!track) return
+                  player.prevTrack()
+                }}
                 disabled={!track}
                 className='rounded-full bg-black/10 p-2.5 transition-colors duration-400 dark:bg-white/10 hover:dark:bg-white/20'
               >
@@ -96,7 +102,10 @@ const Controls = () => {
               <motion.button
                 layout='position'
                 animate={{ rotate: mini ? 90 : 0 }}
-                onClick={() => track && player.playOrPause()}
+                onClick={() => {
+                  track && player.playOrPause()
+                  window.ipcRenderer?.send(IpcChannels.Pause)
+                }}
                 className='rounded-full bg-black/10 p-2.5 transition-colors duration-400 dark:bg-white/10 hover:dark:bg-white/20'
               >
                 <Icon
@@ -110,7 +119,8 @@ const Controls = () => {
                 layout='position'
                 animate={{ rotate: mini ? 90 : 0 }}
                 onClick={() => {
-                  track && player.nextTrack()
+                  if (!track) return
+                  player.nextTrack()
                 }}
                 disabled={!track}
                 className='rounded-full bg-black/10 p-2.5 transition-colors duration-400 dark:bg-white/10 hover:dark:bg-white/20'
@@ -122,14 +132,53 @@ const Controls = () => {
             {/* Like */}
             <LikeButton />
           </div>
-          
-          {!mini && (<div className='flex justify-center iterms-center transition-colors duration-400'> 
-            <AudioOutputDevices />
-          </div>)}
+
+          {!mini && (
+            <div className='iterms-center flex flex-row justify-center gap-5 transition-colors duration-400'>
+              {window.env?.isElectron && (
+                <>
+                  <AudioOutputDevices />
+                  <DesktopLyric />
+                </>
+              )}
+            </div>
+          )}
           {!mini && <VolumeSlider />}
         </div>
       </motion.div>
     </MotionConfig>
+  )
+}
+
+function DesktopLyric() {
+  const { showDesktopLyrics } = useSnapshot(settings)
+  const toggleDesktopLyricShow = async () => {
+    settings.showDesktopLyrics = !showDesktopLyrics
+
+    const show = await window.ipcRenderer?.invoke(IpcChannels.SetDesktopLyric)
+
+    settings.showDesktopLyrics = show ? show : false
+  }
+  return (
+    <div
+      className={cx(
+        css`
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          align-items: center;
+          text-align: center;
+        `
+      )}
+    >
+      <motion.button
+        layout='position'
+        className={cx(showDesktopLyrics && 'text-brand-600')}
+        onClick={toggleDesktopLyricShow}
+      >
+        <Icon name='lyrics' className={cx('h-5 w-5')} />
+      </motion.button>
+    </div>
   )
 }
 
@@ -143,24 +192,16 @@ function VolumeSlider() {
     <div
       className={cx(
         css`
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
-        text-align: center;
-      `)}
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          align-items: center;
+          text-align: center;
+        `
+      )}
     >
-      <motion.button
-        layout='position'
-        className={cx( 
-        )}
-      >
-        <Icon
-          name={player.volume == 0 ? 'volume-mute' : 'volume-half'}
-          className={cx(
-            'h-5 w-5'
-          )}
-        />
+      <motion.button layout='position' className={cx()}>
+        <Icon name={player.volume == 0 ? 'volume-mute' : 'volume-half'} className={cx('h-5 w-5')} />
       </motion.button>
 
       <motion.div
@@ -170,7 +211,7 @@ function VolumeSlider() {
         width: 180px;
       `)
         )}
-        transition={{ ease}}
+        transition={{ ease }}
       >
         <Slider
           value={volume}
@@ -183,17 +224,14 @@ function VolumeSlider() {
       </motion.div>
       <motion.button
         layout='position'
-        className={cx(
-          // just dont need this I guess
-          // ' transition-colors duration-400 ',
-          // ' text-black dark:text-white'
-        )}
+        className={cx()
+        // just dont need this I guess
+        // ' transition-colors duration-400 ',
+        // ' text-black dark:text-white'
+        }
       >
-        <Icon name='volume' className={cx(
-          'h-5 w-5',
-        )} />
+        <Icon name='volume' className={cx('h-5 w-5')} />
       </motion.button>
-
     </div>
   )
 }

@@ -7,8 +7,12 @@ import { getKeyboardShortcutDefaultSettings } from '@/shared/defaultSettings'
 interface Settings {
   accentColor: string
   language: SupportedLanguage
+  qqCookie: string
+  miguCookie: string
+  jooxCookie: string
   enableFindTrackOnYouTube: boolean
   httpProxyForYouTube?: {
+    proxy: string
     host: string
     port: number
     protocol: 'http' | 'https'
@@ -23,19 +27,30 @@ interface Settings {
   showBackgroundImage: boolean
   unlock: boolean
   theme: string
+  showDesktopLyrics: boolean
   keyboardShortcuts: KeyboardShortcutSettings
 }
 
 const initSettings: Settings = {
   accentColor: 'yellow',
   language: getInitLanguage(),
+  qqCookie: '',
+  miguCookie: '',
+  jooxCookie: '',
   enableFindTrackOnYouTube: false,
   playAnimatedArtworkFromApple: true,
   priorityDisplayOfAlbumArtistDescriptionFromAppleMusic: true,
   displayPlaylistsFromNeteaseMusic: true,
   showBackgroundImage: false,
+  httpProxyForYouTube: {
+    proxy: '',
+    host: '',
+    port: 0,
+    protocol: 'http',
+  },
   unlock: true,
   theme: 'dark',
+  showDesktopLyrics: false,
   keyboardShortcuts: getKeyboardShortcutDefaultSettings(),
 }
 
@@ -54,7 +69,7 @@ subscribe(settings, () => {
   if (settings.language !== i18n.language && supportedLanguages.includes(settings.language)) {
     i18n.changeLanguage(settings.language)
   }
-
+  // 同步electron set settings
   localStorage.setItem(STORAGE_KEY, JSON.stringify(settings))
   window.ipcRenderer?.send(IpcChannels.SyncSettings, JSON.parse(JSON.stringify(settings)))
 })

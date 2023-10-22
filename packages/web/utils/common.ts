@@ -11,7 +11,7 @@ import { SupportedLanguage } from '../i18n/i18n'
  * @param  {string} url 封面图片URL
  * @param  {'xs'|'sm'|'md'|'lg'} size - 大小，值对应为 128px | 256px | 512px | 1024px
  */
-export function resizeImage(url: string, size: 'xxs'|'ms'|'xs' | 'sm' | 'md' | 'lg'): string {
+export function resizeImage(url: string, size: 'xxs' | 'ms' | 'xs' | 'sm' | 'md' | 'lg'): string {
   if (!url) return ''
 
   const sizeMap = {
@@ -169,8 +169,8 @@ export async function calcCoverColor(coverUrl: string) {
 
 export const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
 export const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
-export const isPWA =
-  () => (navigator as any).standalone || window.matchMedia('(display-mode: standalone)').matches
+export const isPWA = () =>
+  (navigator as any).standalone || window.matchMedia('(display-mode: standalone)').matches
 export const isIosPwa = isIOS && isPWA() && isSafari
 
 export const sleep = (ms: number) => new Promise(r => setTimeout(r, ms))

@@ -10,6 +10,12 @@ export interface TypedElectronStore {
     x?: number
     y?: number
   }
+  lyricsWindow: {
+    width: number
+    height: number
+    x?: number
+    y?: number
+  }
   // settings: State['settings']
 }
 
@@ -18,6 +24,10 @@ const store = new Store<TypedElectronStore>({
     window: {
       width: 1440,
       height: 1024,
+    },
+    lyricsWindow: {
+      width: 300,
+      height: 600,
     },
     // settings: initialState.settings,
   },

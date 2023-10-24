@@ -1,4 +1,3 @@
-import PageTransition from '../../components/PageTransition'
 import { useEffect, useRef, useState } from 'react'
 import { useSnapshot } from 'valtio'
 import { cx } from '@emotion/css'
@@ -12,14 +11,11 @@ import LyricsWindowTitleBar from '@/web/components/LyricsWindow/LyricsWindowTitl
 const LyricsDesktop = () => {
   const containerRef = useRef(null)
   const [currentLineIndex, setCurrentLineIndex] = useState(0)
-  const [currentVolumnValue, setCurrentVolumnValue] = useState(128)
-  const { progress, nowVolume, trackID } = useSnapshot(player)
+  const { progress, trackID } = useSnapshot(player)
   const lyricsRes = useLyric({ id: trackID })
   const lyricsResponse = lyricsRes.data
   const { lyric: lyrics, tlyric: tlyric } = lyricParser(lyricsResponse)
   const lyricsAnimation = useAnimation()
-  
-  const [pin, setPin] = useState(false)
 
   useEffect(() => {
     const updateCurrentLineIndex = () => {
@@ -77,7 +73,6 @@ const LyricsDesktop = () => {
   const maxLength = Math.max(lyrics.length, tlyric.length)
   const renderedLyrics = Array.from({ length: maxLength }, (_, index) => {
     const lyric = lyrics[index]?.content
-    // const time = lyrics[index]?.time || tlyric[index]?.time
     const tLyric = tlyric[index]?.content
 
     const lineClassName = cx(
@@ -85,27 +80,30 @@ const LyricsDesktop = () => {
       'tracking-lyric leading-lyric text-lg transition duration-400 dark:hover:bg-white/10 hover:bg-gray-500/10  rounded-lg',
       index === currentLineIndex && 'line-clamp-4 font-bold text-accent-color-500 text-xl my-3',
       index !== currentLineIndex && 'text-black/80 dark:text-white/60 '
-
     )
-
+    // todo: lyrics animation or effects
     return (
       <div
         className={cx(lineClassName, 'font-barlow')}
         key={index}
       >
         <motion.span
-          initial={{ opacity: 0 }}
+          initial={{ opacity: 100 }}
           exit={{ opacity: 0 }}
           animate={lyricsAnimation}
           transition={{ duration: 0.4, ease: "backOut", }}
-        >{lyric}</motion.span>
+        >
+          {lyric}
+        </motion.span>
         <br />
         <motion.span
-          initial={{ opacity: 0 }}
+          initial={{ opacity: 100 }}
           exit={{ opacity: 0 }}
           animate={lyricsAnimation}
           transition={{ duration: 0.4, ease: "backOut", }}
-        >{tLyric}</motion.span>
+        >
+          {tLyric}
+          </motion.span>
 
       </div>
     )
@@ -126,7 +124,7 @@ const LyricsDesktop = () => {
           )}
         >
           <motion.div
-            className={cx('text-center')}
+            className={cx('text-center inline-block')}
             ref={containerRef}
             transition={{ duration: 0.5 }}
           >

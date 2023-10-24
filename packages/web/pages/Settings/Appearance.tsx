@@ -4,9 +4,8 @@ import { useSnapshot } from 'valtio'
 import { cx, css } from '@emotion/css'
 import { BlockDescription, BlockTitle, Button, Option, OptionText, Switch } from './Controls'
 import { useTranslation } from 'react-i18next'
-import uiStates from '@/web/states/uiStates'
 import AccentColor from '@/web/components/Appearence/AccentColor'
-
+import uiStates from '@/web/states/uiStates'
 
 
 const Theme = () => {
@@ -16,7 +15,6 @@ const Theme = () => {
       <div className='text-xl font-medium text-gray-800 dark:text-white/70'>{t`settings.theme`}</div>
       <div className='h-px w-full bg-black/5 dark:bg-white/10'></div>
       <AccentColor />
-      {/* <div className='h-px w-full bg-black/5 dark:bg-white/10'></div> */}
     </>
   )
 }
@@ -52,24 +50,61 @@ const LayoutBackground = () => {
   )
 }
 
-const ShowSongFrequency = () => {
+
+
+const ShowDesktopLyrics = () => {
   const { t, i18n } = useTranslation()
-  const { showSongFrequency } = useSnapshot(uiStates)
+  const { showDeskttopLyrics } = useSnapshot(uiStates)
   return (
     <>
       <Option>
         <div className='flex flex-col'>
-          <OptionText>{t`common.showSongFrequency`}</OptionText>
-          <div>{t`common.showSongFrequencyWarnning`}</div>
+          <OptionText>{t`common.showDeskttopLyrics`}</OptionText>
         </div>
         <Switch
-          enabled={showSongFrequency}
-          onChange={value => (uiStates.showSongFrequency = value)}
+          enabled={showDeskttopLyrics}
+          onChange={value => (uiStates.showDeskttopLyrics = value)}
         ></Switch>
       </Option>
     </>
   )
 }
+
+const ShowDevices = () => {
+  const { t, i18n } = useTranslation()
+  const { showDevices } = useSnapshot(uiStates)
+  return (
+    <>
+      <Option>
+        <div className='flex flex-col'>
+          <OptionText>{t`common.showDevices`}</OptionText>
+        </div>
+        <Switch
+          enabled={showDevices}
+          onChange={value => (uiStates.showDevices = value)}
+        ></Switch>
+      </Option>
+    </>
+  )
+}
+const LyricsBlur = () => {
+  const { t, i18n } = useTranslation()
+  const { lyricsBlur } = useSnapshot(uiStates)
+  return (
+    <>
+      <Option>
+        <div className='flex flex-col'>
+          <OptionText>{t`common.lyricsBlur`}</OptionText>
+        </div>
+        <Switch
+          enabled={lyricsBlur}
+          onChange={value => (uiStates.lyricsBlur = value)}
+        ></Switch>
+      </Option>
+    </>
+  )
+}
+
 
 const Appearance = () => {
   return (
@@ -81,7 +116,9 @@ const Appearance = () => {
     >
       <Theme />
       <LayoutBackground />
-      <ShowSongFrequency />
+      <ShowDesktopLyrics />
+      <ShowDevices />
+      <LyricsBlur />
     </div>
   )
 }

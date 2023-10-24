@@ -150,13 +150,7 @@ export class Player {
       smooth = 0.02
 
     const updateFrequencyData = () => {
-      if (
-        this.state !== State.Playing ||
-        !uiStates.showSongFrequency ||
-        window.location.pathname !== '/lyrics'
-      ) {
-        return
-      }
+   
 
       analyser.getByteFrequencyData(this.dataArray)
 
@@ -166,9 +160,6 @@ export class Player {
       }
       const average = sum / (end - start)
       this._nowVolume = this._nowVolume * smooth + average * (1 - smooth)
-
-      // Uncomment the following line for debugging
-      // console.log(dataArray);
     }
 
     setInterval(updateFrequencyData, 80)

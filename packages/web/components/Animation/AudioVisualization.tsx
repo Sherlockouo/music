@@ -16,19 +16,18 @@ const AudioVisualization: React.FC<AudioVisualizationProps> = () => {
     if (!canvas) return
     canvas.width = canvas.width * devicePixelRatio
     canvas.height = canvas?.height * devicePixelRatio
-    if (state == State.Playing) {
-      var bufferLength = 1024
+    var bufferLength = 1024
 
       const draw = () => {
         requestAnimationFrame(draw)
 
         ctx!.clearRect(0, 0, canvas.width, canvas.height)
 
-        const barWidth = (canvas.width * 4) / bufferLength
+        const barWidth = (canvas.width * 3) / bufferLength
         const maxHeight = canvas.height * 0.8
         let x = 0
 
-        for (let i = 0; i < bufferLength; i++) {
+        for (let i = 0; i < bufferLength; i+=2) {
           const barHeight = dataArray[i]
           const height = (barHeight / 255) * maxHeight
           const y = canvas.height - height
@@ -42,9 +41,8 @@ const AudioVisualization: React.FC<AudioVisualizationProps> = () => {
           x += barWidth + 1
         }
       }
-
       draw()
-    }
+    
   }, [state])
 
   return (

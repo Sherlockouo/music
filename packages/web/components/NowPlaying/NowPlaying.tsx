@@ -35,7 +35,7 @@ const NowPlaying = () => {
             <Cover />
 
             {/* Info & Controls */}
-            <div className='m-3 flex flex-col items-center rounded-20 bg-white/60 p-5 font-medium backdrop-blur-3xl dark:bg-black/70'>
+            <div className='m-3 flex flex-col items-center rounded-20 bg-white/60 p-8 font-medium backdrop-blur-3xl dark:bg-black/70'>
               {/* Track Info */}
               <div className='line-clamp-1 text-lg text-black dark:text-white'>{track?.name}</div>
               <ArtistInline

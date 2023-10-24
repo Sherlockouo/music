@@ -28,10 +28,10 @@ const About = () => {
         const regex = /\/Sherlockouo\/music\/releases\/tag\/(.*?)"/
         const matches = html.match(regex)
         let latestVersion = matches[1]
-        console.log('匹配到的标签版本号是：', latestVersion);
+        
+        toast.success("latest version: "+latestVersion)
         if (latestVersion > currentVersion) {
           setNewVersion(latestVersion)
-          console.log('newversion', newVersion)
         }else{
           setNewVersion(currentVersion)
         }
@@ -42,11 +42,12 @@ const About = () => {
       .finally(() => {
         setChecking(false)
       })
-    if(newVersion != currentVersion) {
-      toast.success("new version found "+newVersion)
-    }else {
-      toast.success("you're running the latest version")
-    }
+      
+    // if(newVersion != currentVersion) {
+    //   toast.success("new version found "+newVersion)
+    // }else {
+    //   toast.success("you're running the latest version")
+    // }
     
   }
   return (

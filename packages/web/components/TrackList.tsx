@@ -123,7 +123,7 @@ function Track({
       onClick={e => handleClick(e, track.id)}
       onContextMenu={e => handleClick(e, track.id)}
       className={cx(
-        'group relative flex h-14 items-center py-2 text-16 font-medium text-neutral-200 transition duration-300',
+        'group relative flex h-14 items-center py-2 text-16 font-medium transition duration-300',
         'text-black/90 dark:text-white/90'
       )}
     >

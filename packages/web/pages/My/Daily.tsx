@@ -34,7 +34,9 @@ const Daily = () => {
   return (
     <>
       {isLoadingDaily ? (
-        <Loading />
+        <div className='flex justify-center'>
+          <Loading />
+        </div>
       ) : (
         <TrackList tracks={dailyRecommendSongs?.data?.dailySongs || []} onPlay={onPlay}></TrackList>
       )}

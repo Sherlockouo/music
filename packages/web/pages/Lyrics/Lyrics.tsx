@@ -6,24 +6,21 @@ import useLyric from '@/web/api/hooks/useLyric'
 import player from '@/web/states/player'
 import { lyricParser } from '@/web/utils/lyric'
 import { useTranslation } from 'react-i18next'
-import useIsMobile from '@/web/hooks/useIsMobile'
 import { motion } from 'framer-motion'
 import AudioVisualization from '@/web/components/Animation/AudioVisualization'
 import uiStates from '@/web/states/uiStates'
-import toast from 'react-hot-toast'
+import { State } from '@/web/utils/player'
 
 const Lyrics = () => {
-  const isMobile = useIsMobile()
   const containerRef = useRef(null)
   const [currentLineIndex, setCurrentLineIndex] = useState(0)
   const [currentVolumnValue, setCurrentVolumnValue] = useState(128)
-  const lyricsRes = useLyric({ id: player.trackID})
+  const lyricsRes = useLyric({ id: player.trackID })
   const lyricsResponse = lyricsRes.data
   const { lyric: lyrics, tlyric: tlyric } = lyricParser(lyricsResponse)
   const { state: playerState, progress, nowVolume } = useSnapshot(player)
-  const { showSongFrequency } = useSnapshot(uiStates)
+  const { showSongFrequency,lyricsBlur } = useSnapshot(uiStates)
   const { t } = useTranslation()
-  // const [isScrolling, setIsScrolling] = useState(false);
   const [isHovered, setIsHovered] = useState(false)
 
   const handleMouseEnter = () => {
@@ -78,6 +75,7 @@ const Lyrics = () => {
           inline: 'center', // 水平方向上将元素居中对齐
         })
       }
+      
     }
 
     // 调用 scrollToCurrentLine 函数
@@ -87,38 +85,52 @@ const Lyrics = () => {
   const maxLength = Math.max(lyrics.length, tlyric.length)
   const renderedLyrics = Array.from({ length: maxLength }, (_, index) => {
     const lyric = lyrics[index]?.content
-    const time = lyrics[index]?.time || tlyric[index]?.time
+    // const time = lyrics[index]?.time || tlyric[index]?.time
     const tLyric = tlyric[index]?.content
 
-    const setSongToLyric = (index:number) => {
+    const setSongToLyric = (index: number) => {
       player.progress = lyrics[index].time
       player.play(true)
     }
 
     const lineClassName = cx(
-      'lyrics-row leading-120 mt-5 mb-5 pb-2 ease-in-out',
-      index === currentLineIndex && 'line-clamp-4 font-bold text-accent-color-500 text-2xl',
-      index !== currentLineIndex &&
-        'font-black tracking-lyric leading-lyric text-black/60 dark:text-white/60 text-xl ',
-      index !== currentLineIndex && 'transition-opacity duration-1000'
-    )
+      'lyrics-row leading-120 my-2 p-4 ease-in-out iterms-center text-center',
+      'tracking-lyric leading-lyric text-2xl transition duration-400 dark:hover:bg-white/10 hover:bg-black/10  rounded-lg',
+      index === currentLineIndex && 'line-clamp-4 font-bold text-accent-color-500 text-3xl my-3',
+      index !== currentLineIndex && 'text-black/80 dark:text-white/60',
+      index !== currentLineIndex && lyricsBlur && 'blur-sm',
+      index !== currentLineIndex && isHovered && 'blur-none'
 
-    const hightlightStyle = {
-      textShadow:
-        'rgb(216,216,216,' + currentVolumnValue / 25 + ') 3px 3px ' + currentVolumnValue + 'px',
+    )
+    const variants = {
+      current: { opacity: 0.98 },
+      notCurrent: { opacity: 0.8 },
     }
 
     return (
       <div
-        className={cx(lineClassName, 'font-Roboto')}
+        className={cx(lineClassName, 'font-barlow')}
         key={index}
         onDoubleClick={() => {
           setSongToLyric(index)
         }}
-        style={hightlightStyle}
       >
-        <p>{lyric}</p>
-        <p>{tLyric}</p>
+        <motion.span
+          initial={{ opacity: 0 }}
+          exit={{ opacity: 0 }}
+          animate={currentLineIndex === index ? 'current' : 'notCurrent'}
+          variants={variants}
+          transition={{ duration: 0.4, ease: "backOut", }}
+        >{lyric}</motion.span>
+        <br />
+        <motion.span
+          initial={{ opacity: 0 }}
+          exit={{ opacity: 0 }}
+          animate={currentLineIndex === index ? 'current' : 'notCurrent'}
+          variants={variants}
+          transition={{ duration: 0.4, ease: "backOut", }}
+        >{tLyric}</motion.span>
+
       </div>
     )
   })
@@ -129,35 +141,26 @@ const Lyrics = () => {
         className={cx(
           'lyrics-player h-921 ',
           'text-center',
-          'font-Roboto font-bold backdrop-blur-md'
+          'font-Roboto font-bold backdrop-blur-xxl'
         )}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         <motion.div
           className={cx(
             'lyrics-container no-scrollbar  mb-8 mt-8 h-full pb-lyricBottom pt-lyricTop ',
-            'text-center'
+            'inline-block',
           )}
           ref={containerRef}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
           transition={{ duration: 0.5 }}
         >
-          <div
-            className={cx(
-              'text-black/60 dark:text-white/60 ',
-              'artist-info  no-scrollbar padding-bottom-20 mb-8 mt-8 text-left text-24',
-              'text-center'
-            )}
-          >
-            <p className=''>{player.track?.name}</p>
-            <p className=''>By - {player.track?.ar[0].name ? player.track?.ar[0].name : 'X'}</p>
-          </div>
+          
           {renderedLyrics}
         </motion.div>
         {window.env !== undefined && <div className='sticky bottom-0 h-full w-full'>
-          {showSongFrequency && <AudioVisualization />}
+          {showSongFrequency && playerState == State.Playing && <AudioVisualization />}
         </div>
-}
+        }
       </div>
     </PageTransition>
   )

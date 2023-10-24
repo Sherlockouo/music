@@ -4,7 +4,7 @@ import { useSnapshot } from 'valtio'
 import { cx } from '@emotion/css'
 import useLyric from '@/web/api/hooks/useLyric'
 import { lyricParser } from '@/web/utils/lyric'
-import { motion } from 'framer-motion'
+import { motion, useAnimation } from 'framer-motion'
 import player from '@/web/states/player'
 import LyricsWindowTitleBar from '@/web/components/LyricsWindow/LyricsWindowTitleBar'
 
@@ -17,7 +17,7 @@ const LyricsDesktop = () => {
   const lyricsRes = useLyric({ id: trackID })
   const lyricsResponse = lyricsRes.data
   const { lyric: lyrics, tlyric: tlyric } = lyricParser(lyricsResponse)
-  
+  const lyricsAnimation = useAnimation()
   
   const [pin, setPin] = useState(false)
 
@@ -75,25 +75,41 @@ const LyricsDesktop = () => {
   }, [currentLineIndex]) // 当 currentLineIndex 变化时，重新执行该钩子函数
 
   const maxLength = Math.max(lyrics.length, tlyric.length)
- const renderedLyrics = Array.from({ length: maxLength }, (_, index) => {
-      const lyric = lyrics[index]?.content
-      const tLyric = tlyric[index]?.content
-  
-      const lineClassName = cx(
-        'lyrics-row leading-120 mt-5 mb-5 pb-2 ease-in-out',
-        index === currentLineIndex && 'line-clamp-4 font-bold text-accent-color-500 text-2xl',
-        index !== currentLineIndex &&
-          'font-black tracking-lyric leading-lyric text-black/60 dark:text-white/60 text-md ',
-        index !== currentLineIndex && 'transition-opacity duration-1000'
-      )
-  
-      return (
-        <div className={cx(lineClassName, 'font-Roboto')} key={index}>
-          <p>{lyric}</p>
-          <p>{tLyric}</p>
-        </div>
-      )
-    })
+  const renderedLyrics = Array.from({ length: maxLength }, (_, index) => {
+    const lyric = lyrics[index]?.content
+    // const time = lyrics[index]?.time || tlyric[index]?.time
+    const tLyric = tlyric[index]?.content
+
+    const lineClassName = cx(
+      'lyrics-row leading-120 my-2 p-4 ease-in-out iterms-center text-center',
+      'tracking-lyric leading-lyric text-lg transition duration-400 dark:hover:bg-white/10 hover:bg-gray-500/10  rounded-lg',
+      index === currentLineIndex && 'line-clamp-4 font-bold text-accent-color-500 text-xl my-3',
+      index !== currentLineIndex && 'text-black/80 dark:text-white/60 '
+
+    )
+
+    return (
+      <div
+        className={cx(lineClassName, 'font-barlow')}
+        key={index}
+      >
+        <motion.span
+          initial={{ opacity: 0 }}
+          exit={{ opacity: 0 }}
+          animate={lyricsAnimation}
+          transition={{ duration: 0.4, ease: "backOut", }}
+        >{lyric}</motion.span>
+        <br />
+        <motion.span
+          initial={{ opacity: 0 }}
+          exit={{ opacity: 0 }}
+          animate={lyricsAnimation}
+          transition={{ duration: 0.4, ease: "backOut", }}
+        >{tLyric}</motion.span>
+
+      </div>
+    )
+  })
   
   
 

@@ -23,6 +23,7 @@ import AudioOutputDevices from '@/web/components/Tools/Devices'
 import { useState } from 'react'
 import { IpcChannels } from '@/shared/IpcChannels'
 import settings from '@/web/states/settings'
+import uiStates from '@/web/states/uiStates'
 const LikeButton = () => {
   const { track } = useSnapshot(player)
   const { data: likedIDs } = useUserLikedTracksIDs()
@@ -45,6 +46,7 @@ const LikeButton = () => {
 const Controls = () => {
   const { state, track } = useSnapshot(player)
   const { minimizePlayer: mini } = useSnapshot(persistedUiStates)
+  const { showDeskttopLyrics,showDevices } = useSnapshot(uiStates)
 
   return (
     <MotionConfig transition={{ ease, duration: 0.5 }}>
@@ -69,7 +71,7 @@ const Controls = () => {
         )}
       >
         <div className={cx(mini ? 'flex flex-wrap gap-3' : 'flex-col gap-2')}>
-          <div className={cx(mini ? 'flex-col text-center' : 'my-2 flex  justify-between gap-5')}>
+          <div className={cx(mini ? 'flex-col text-center' : (showDevices || showDeskttopLyrics ) ? 'my-3 flex  justify-between gap-5':'my-5 flex  justify-between gap-5')}>
             {/* Minimize */}
             <motion.button
               layout='position'
@@ -137,8 +139,8 @@ const Controls = () => {
             <div className='iterms-center flex flex-row justify-center gap-5 transition-colors duration-400'>
               {window.env?.isElectron && (
                 <>
-                  <AudioOutputDevices />
-                  <DesktopLyric />
+                  { showDevices && <AudioOutputDevices />}
+                  {showDeskttopLyrics && <DesktopLyric />}
                 </>
               )}
             </div>
@@ -219,7 +221,7 @@ function VolumeSlider() {
           max={1}
           onChange={onChange}
           alwaysShowTrack
-          alwaysShowThumb
+          alwaysShowThumb={false}
         />
       </motion.div>
       <motion.button

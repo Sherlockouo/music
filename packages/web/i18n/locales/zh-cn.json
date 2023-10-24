@@ -17,11 +17,13 @@
     "video_other": "视频",
     "video-with-count_one": "{{count}} 个视频",
     "video-with-count_other": "{{count}} 个视频",
-    "lyric-welcome":"今天听点什么呢？",
+    "lyricsBlur":"歌词模糊效果",
     "cloud":"云盘",
     "upload":"上传歌曲",
     "showSongFrequency":"展示歌曲频谱图",
     "showSongFrequencyWarnning":"⚠️此功能非常消耗性能",
+    "showDeskttopLyrics":"展示桌面歌词",
+    "showDevices":"展示音频播放设备",
     "hide-show-player": "隐藏/显示播放器"
   },
   "navigation": {
@@ -82,7 +84,9 @@
     "lyric-style": "背景图片",
     "show-lyric-background-img": "显示背景图片",
     "general": "通用",
-    "lab": "实验室",
+    "lab": {
+      "title":"实验室"
+    },
     "unlock": "解锁更多歌源",
     "engine": "引擎",
     "player": "播放",

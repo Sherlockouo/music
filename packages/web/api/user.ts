@@ -16,7 +16,6 @@ import {
   CloudDiskInfoParam,
   CloudDiskInfoResponse,
 } from '@/shared/api/User'
-import Cookies from 'js-cookie'
 
 // 获取用户详情
 export function userDetail(uid: number) {

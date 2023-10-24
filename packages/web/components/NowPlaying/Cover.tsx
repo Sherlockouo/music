@@ -10,13 +10,13 @@ import { subscribeKey } from 'valtio/utils'
 
 const Cover = () => {
   const { track } = useSnapshot(player)
-  const [cover, setCover] = useState(track?.al.picUrl)
+  const [cover, setCover] = useState(track?.al?.picUrl)
   const controls = useAnimation()
   const navigate = useNavigate()
 
   useEffect(() => {
     const unsubscribe = subscribeKey(player, 'track', async () => {
-      const coverUrl = player.track?.al.picUrl
+      const coverUrl = player.track?.al?.picUrl
       await controls.start({
         opacity: 0,
         transition: { duration: 0.2 },
@@ -42,7 +42,7 @@ const Cover = () => {
       className='absolute inset-0 w-full'
       src={cover}
       onClick={() => {
-        const id = track?.al.id
+        const id = track?.al?.id
         if (id) navigate(`/album/${id}`)
       }}
     />

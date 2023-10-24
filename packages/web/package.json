@@ -11,7 +11,7 @@
     "test:coverage": "vitest run --coverage",
     "test:types": "tsc --noEmit --project ./tsconfig.json",
     "analyze:css": "npx windicss-analysis",
-    "analyze:js": "yarn run build && open-cli bundle-stats-renderer.html",
+    "analyze:js": "npm run build && open-cli bundle-stats-renderer.html",
     "generate:accent-color-css": "node ./scripts/generate.accent.color.css.js",
     "api:netease": "PORT=30001 npx NeteaseCloudMusicApi@latest"
   },

@@ -104,6 +104,7 @@ module.exports = {
         lyric: '1px',
       },
       fontFamily: {
+        barlow: ['Barlow'],
         mono: ['Roboto Mono', 'ui-monospace'],
       },
       margin: {

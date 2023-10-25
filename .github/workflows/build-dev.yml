@@ -1,4 +1,4 @@
-name: Build/PreRelease
+name: Build-PreRelease
 
 on:
   push:
@@ -11,7 +11,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-18.04]
+        os: [macos-latest, windows-latest, ubuntu-latest]
 
     steps:
       - name: Check out Git repository
@@ -36,7 +36,7 @@ jobs:
         run: node ./scripts/build.sqlite3.js
 
       - name: Install RPM & Pacman (Linux)
-        if: runner.os:= 'Linux'
+        if: runner.os == 'Linux'
         run: |
           sudo apt-get update &&
           sudo apt-get install --no-install-recommends -y rpm &&
@@ -50,7 +50,7 @@ jobs:
         #   Disable since the Snapcraft token is currently not working
         #   snapcraft_token: ${{ secrets.snapcraft_token }}
 
-      - name: Build/Release Electron app
+      - name: Build-Release Electron app
         uses: njzydark/action-electron-builder-pnpm@v1.1.0-pnpm
         env:
           ELECTRON_WEB_SERVER_PORT: 42710

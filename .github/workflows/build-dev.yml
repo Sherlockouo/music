@@ -23,7 +23,7 @@ jobs:
         with:
           version: 6.29.0
 
-      - name: Install Node.js 16
+      - name: Install Node.js 18
         uses: actions/setup-node@v2
         with:
           node-version: 18.12.1
@@ -32,8 +32,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile false
 
-      - name: Build sqlite3 binaries
-        run: node ./scripts/build.sqlite3.js
+      # - name: Build sqlite3 binaries
+      #   run: tsx ./scripts/build.sqlite3.ts
 
       - name: Install RPM & Pacman (Linux)
         if: runner.os == 'Linux'

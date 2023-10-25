@@ -26,7 +26,7 @@ jobs:
       - name: Install Node.js 16
         uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: 18.12.1
           cache: 'pnpm'
 
       - name: Install dependencies

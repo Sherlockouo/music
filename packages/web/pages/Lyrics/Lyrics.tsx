@@ -99,13 +99,9 @@ const Lyrics = () => {
       index === currentLineIndex && 'line-clamp-4 font-bold text-accent-color-500 text-3xl my-3',
       index !== currentLineIndex && 'text-black/80 dark:text-white/60',
       index !== currentLineIndex && lyricsBlur && 'blur-sm',
-      index !== currentLineIndex && isHovered && 'blur-none'
+      index !== currentLineIndex && isHovered && 'transition duration-500 blur-none'
 
     )
-    const variants = {
-      current: { opacity: 0.98 },
-      notCurrent: { opacity: 0.8 },
-    }
 
     return (
       <div
@@ -116,18 +112,16 @@ const Lyrics = () => {
         }}
       >
         <motion.span
-          initial={{ opacity: 0 }}
+          initial={{ opacity: 100 }}
           exit={{ opacity: 0 }}
           animate={currentLineIndex === index ? 'current' : 'notCurrent'}
-          variants={variants}
           transition={{ duration: 0.4, ease: "backOut", }}
         >{lyric}</motion.span>
         <br />
         <motion.span
-          initial={{ opacity: 0 }}
+          initial={{ opacity: 100 }}
           exit={{ opacity: 0 }}
           animate={currentLineIndex === index ? 'current' : 'notCurrent'}
-          variants={variants}
           transition={{ duration: 0.4, ease: "backOut", }}
         >{tLyric}</motion.span>
 
@@ -155,7 +149,9 @@ const Lyrics = () => {
           transition={{ duration: 0.5 }}
         >
           
-          {renderedLyrics}
+          {renderedLyrics.length == 0 ? <>
+              Enjoy the music
+            </> :renderedLyrics}
         </motion.div>
         {window.env !== undefined && <div className='sticky bottom-0 h-full w-full'>
           {showSongFrequency && playerState == State.Playing && <AudioVisualization />}

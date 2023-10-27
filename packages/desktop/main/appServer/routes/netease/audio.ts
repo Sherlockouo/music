@@ -214,15 +214,15 @@ ENABLE_LOCAL_VIP=true
       const enableFindTrackOnYouTube = store.get('settings.enableFindTrackOnYouTube')
       const httpProxyForYouTubeSettings = store.get('settings.httpProxyForYouTube')
       if (enableFindTrackOnYouTube && httpProxyForYouTubeSettings) {
-        const youtubeProxy = httpProxyForYouTubeSettings?.proxy
-        global.proxy = require('url').parse(youtubeProxy)
+        const youtubeProxy = (httpProxyForYouTubeSettings as any).proxy as string
+        (global as any).proxy = require('url').parse(youtubeProxy)
         const info = await getTrackInfo(trackID)
         const artistName =
           info?.ar[0]?.name === undefined ? '' : info?.ar[0]?.name.replace(/[^a-zA-Z\s]/g, '')
         const songName = info?.name === undefined ? '' : info?.name.replace(/[^a-zA-Z\s]/g, '')
 
         if (isEnglish.test(artistName) && isEnglish.test(songName)) {
-          source = ['youtube']
+          source = ['youtube','migu']
         }
       }
       try {

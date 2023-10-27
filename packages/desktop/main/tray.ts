@@ -3,6 +3,9 @@ import { app, BrowserWindow, Menu, MenuItemConstructorOptions, nativeImage, Tray
 import { IpcChannels } from '@/shared/IpcChannels'
 import { RepeatMode } from '@/shared/playerDataTypes'
 import { appName } from './env'
+const fs = require('fs')
+const axios = require('axios');
+const https = require('https');
 import log from './log'
 
 log.info('[electron] tray.ts')
@@ -21,6 +24,7 @@ enum MenuItemIDs {
 
 export interface YPMTray {
   setTooltip(text: string): void
+  setCoverImg(coverImg: string): void
   setLikeState(isLiked: boolean): void
   setPlayState(isPlaying: boolean): void
   setRepeatMode(mode: RepeatMode): void
@@ -34,14 +38,14 @@ function createMenuTemplate(win: BrowserWindow): MenuItemConstructorOptions[] {
   const template: MenuItemConstructorOptions[] =
     process.platform === 'linux'
       ? [
-          {
-            label: '显示主面板',
-            click: () => win.show(),
-          },
-          {
-            type: 'separator',
-          },
-        ]
+        {
+          label: '显示主面板',
+          click: () => win.show(),
+        },
+        {
+          type: 'separator',
+        },
+      ]
       : []
 
   return template.concat([
@@ -142,6 +146,30 @@ class YPMTrayImpl implements YPMTray {
 
   setTooltip(text: string) {
     this._tray.setToolTip(text)
+  }
+
+  setCoverImg(coverImg: string): void {
+    // 请求封面图片
+    axios
+      .get(coverImg, {
+        responseType: 'arraybuffer',
+        httpsAgent: new https.Agent({
+          rejectUnauthorized: false,
+        }),
+      })
+      .then((response) => {
+        const imagePath = './cover.jpg'
+        console.log('cover-path ',imagePath);
+        fs.writeFileSync(imagePath, Buffer.from(response.data));
+
+        const coverImage = nativeImage.createFromPath(imagePath);
+        console.log('cover-path ',coverImage);
+        
+        this._tray.setImage(coverImage);
+      })
+      .catch(() => {
+        console.error('Failed to load cover image');
+      });
   }
 
   setLikeState(isLiked: boolean) {

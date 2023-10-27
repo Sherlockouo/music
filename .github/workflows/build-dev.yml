@@ -69,6 +69,7 @@ jobs:
           args: --config .electron-builder.config.js
           skip_package_manager_install: true
           package_manager: pnpm
+        run: pnpm package
 
       - name: Upload Artifact (macOS)
         uses: actions/upload-artifact@v3

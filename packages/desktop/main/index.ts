@@ -152,7 +152,7 @@ class Main {
       addCORSHeaders(requestHeaders)
 
       // 不加这几个 header 的话，使用 axios 加载 YouTube 音频会很慢
-      if (url.includes('googlevideo.com') || url.includes('github.com')) {
+      if (url.includes('googlevideo.com') || url.includes('github.com') || url.includes('music.126.net')) {
         requestHeaders['Sec-Fetch-Mode'] = 'no-cors'
         requestHeaders['Sec-Fetch-Dest'] = 'audio'
         requestHeaders['Range'] = 'bytes=0-'

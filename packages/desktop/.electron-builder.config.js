@@ -79,17 +79,17 @@ module.exports = {
   },
   linux: {
     target: [
-      // {
-      //   target: 'deb',
-      //   arch: [
-      //     'x64',
-      //     // 'arm64',
-      //     // 'armv7l'
-      //   ],
-      // },
+      {
+        target: 'deb',
+        arch: [
+          'x64',
+          'arm64',
+          // 'armv7l'
+        ],
+      },
       {
         target: 'AppImage',
-        arch: ['x64'],
+        arch: ['x64','arm'],
       },
       // {
       //   target: 'snap',
@@ -99,10 +99,10 @@ module.exports = {
       //   target: 'pacman',
       //   arch: ['x64'],
       // },
-      // {
-      //   target: 'rpm',
-      //   arch: ['x64'],
-      // },
+      {
+        target: 'rpm',
+        arch: ['x64','arm'],
+      },
       // {
       //   target: 'tar.gz',
       //   arch: ['x64'],

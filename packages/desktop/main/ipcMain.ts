@@ -121,7 +121,12 @@ function initWindowIpcMain(win: BrowserWindow | null) {
  * @param {YPMTray} tray
  */
 function initTrayIpcMain(tray: YPMTray | null) {
-  on(IpcChannels.SetTrayTooltip, (e, { text }) => tray?.setTooltip(text))
+  on(IpcChannels.SetTrayTooltip, (e, { text,coverImg }) => {
+    tray?.setTooltip(text)
+    console.log('cover ',coverImg);
+    if(coverImg && coverImg !== '')
+      tray?.setCoverImg(coverImg)
+  })
 
   on(IpcChannels.Like, (e, { isLiked }) => tray?.setLikeState(isLiked))
 

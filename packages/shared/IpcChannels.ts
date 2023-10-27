@@ -82,6 +82,7 @@ export interface IpcChannelsParams {
   }
   [IpcChannels.SetTrayTooltip]: {
     text: string
+    coverImg: string
   }
   [IpcChannels.Play]: {
     trackID: number
@@ -153,6 +154,7 @@ export interface IpcChannelsReturns {
   [IpcChannels.CacheCoverColor]: void
   [IpcChannels.SetTrayTooltip]: {
     text: string
+    coverImg: string
   }
   [IpcChannels.Play]: {
     trackID: number

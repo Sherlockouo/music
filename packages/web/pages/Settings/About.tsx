@@ -68,7 +68,8 @@ const About = () => {
         <div className={cx('iterms-center mt-5 flex w-full justify-center gap-2')}>
           <div className='iterms-center flex text-center'>
             {' '}
-            Current Running Version {currentVersion}{' '}
+            Current Running Version {currentVersion}
+            {' '}
           </div>
           {window.env?.isElectron && (
             <div className='iterms-center flex '>

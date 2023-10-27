@@ -188,11 +188,6 @@ function FindTrackOnYouTube() {
         </OptionText>
         <Button
           onClick={() => {
-            // todo: check regex
-            if (proxy === '') {
-              toast.error('proxy is empty')
-              return
-            }
             settings.httpProxyForYouTube!.proxy = proxy
             toast.success('proxy is' + proxy)
           }}

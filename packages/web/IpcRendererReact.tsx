@@ -24,10 +24,11 @@ const IpcRendererReact = () => {
 
   useEffect(() => {
     trackIDRef.current = track?.id ?? 0
-
+    const coverImg = track?.al?.picUrl || ''
     const text = track?.name ? `${track.name} - ${appName}` : appName
     window.ipcRenderer?.send(IpcChannels.SetTrayTooltip, {
       text,
+      coverImg
     })
     document.title = text
   }, [track])
@@ -56,8 +57,7 @@ const IpcRendererReact = () => {
     const playing = [PlayerState.Playing, PlayerState.Loading].includes(state)
     if (isPlaying === playing) return
 
-    // window.ipcRenderer?.send(playing ? IpcChannels.Play : IpcChannels.Pause)
-    if (!isPlaying) window.ipcRenderer?.send(IpcChannels.Pause)
+    window.ipcRenderer?.send(playing ? IpcChannels.Play : IpcChannels.Pause)
 
     setIsPlaying(playing)
   }, [isPlaying, state])

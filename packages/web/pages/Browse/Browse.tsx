@@ -42,7 +42,7 @@ const Browse = () => {
 
   return (
     <PageTransition>
-      <div className={cx('relative', 'sm: mb-25  md:mb-20  xl:mb-20')}>
+      <div className={cx('relative', 'mb-0')}>
         <Tabs
           tabs={categories}
           value={active}

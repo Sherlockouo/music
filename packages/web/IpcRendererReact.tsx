@@ -28,7 +28,7 @@ const IpcRendererReact = () => {
     const text = track?.name ? `${track.name} - ${appName}` : appName
     window.ipcRenderer?.send(IpcChannels.SetTrayTooltip, {
       text,
-      coverImg
+      coverImg,
     })
     document.title = text
   }, [track])

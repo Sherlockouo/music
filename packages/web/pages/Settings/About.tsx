@@ -14,7 +14,7 @@ const About = () => {
   const [newVersion, setNewVersion] = useState<string>('')
 
   const checkUpdate = () => {
-    // toast.error('开发中 ｜ developing') 
+    // toast.error('开发中 ｜ developing')
     // return
     // checkAPPUpdate()
     setChecking(true)
@@ -28,11 +28,11 @@ const About = () => {
         const regex = /\/Sherlockouo\/music\/releases\/tag\/(.*?)"/
         const matches = html.match(regex)
         let latestVersion = matches[1]
-        
-        toast.success("latest version: "+latestVersion)
+
+        toast.success('latest version: ' + latestVersion)
         if (latestVersion > currentVersion) {
           setNewVersion(latestVersion)
-        }else{
+        } else {
           setNewVersion(currentVersion)
         }
       })
@@ -42,13 +42,12 @@ const About = () => {
       .finally(() => {
         setChecking(false)
       })
-      
+
     // if(newVersion != currentVersion) {
     //   toast.success("new version found "+newVersion)
     // }else {
     //   toast.success("you're running the latest version")
     // }
-    
   }
   return (
     <PageTransition>
@@ -68,8 +67,7 @@ const About = () => {
         <div className={cx('iterms-center mt-5 flex w-full justify-center gap-2')}>
           <div className='iterms-center flex text-center'>
             {' '}
-            Current Running Version {currentVersion}
-            {' '}
+            Current Running Version {currentVersion}{' '}
           </div>
           {window.env?.isElectron && (
             <div className='iterms-center flex '>

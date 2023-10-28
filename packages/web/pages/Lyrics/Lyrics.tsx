@@ -19,7 +19,7 @@ const Lyrics = () => {
   const lyricsResponse = lyricsRes.data
   const { lyric: lyrics, tlyric: tlyric } = lyricParser(lyricsResponse)
   const { state: playerState, progress, nowVolume } = useSnapshot(player)
-  const { showSongFrequency,lyricsBlur } = useSnapshot(uiStates)
+  const { showSongFrequency, lyricsBlur } = useSnapshot(uiStates)
   const { t } = useTranslation()
   const [isHovered, setIsHovered] = useState(false)
 
@@ -75,7 +75,6 @@ const Lyrics = () => {
           inline: 'center', // 水平方向上将元素居中对齐
         })
       }
-      
     }
 
     // 调用 scrollToCurrentLine 函数
@@ -100,7 +99,6 @@ const Lyrics = () => {
       index !== currentLineIndex && 'text-black/80 dark:text-white/60',
       index !== currentLineIndex && lyricsBlur && 'blur-sm',
       index !== currentLineIndex && isHovered && 'transition duration-500 blur-none'
-
     )
 
     return (
@@ -115,16 +113,19 @@ const Lyrics = () => {
           initial={{ opacity: 100 }}
           exit={{ opacity: 0 }}
           animate={currentLineIndex === index ? 'current' : 'notCurrent'}
-          transition={{ duration: 0.4, ease: "backOut", }}
-        >{lyric}</motion.span>
+          transition={{ duration: 0.4, ease: 'backOut' }}
+        >
+          {lyric}
+        </motion.span>
         <br />
         <motion.span
           initial={{ opacity: 100 }}
           exit={{ opacity: 0 }}
           animate={currentLineIndex === index ? 'current' : 'notCurrent'}
-          transition={{ duration: 0.4, ease: "backOut", }}
-        >{tLyric}</motion.span>
-
+          transition={{ duration: 0.4, ease: 'backOut' }}
+        >
+          {tLyric}
+        </motion.span>
       </div>
     )
   })
@@ -143,20 +144,18 @@ const Lyrics = () => {
         <motion.div
           className={cx(
             'lyrics-container no-scrollbar  mb-8 mt-8 h-full pb-lyricBottom pt-lyricTop ',
-            'inline-block',
+            'inline-block'
           )}
           ref={containerRef}
           transition={{ duration: 0.5 }}
         >
-          
-          {renderedLyrics.length == 0 ? <>
-             Enjoy the music
-            </> :renderedLyrics}
+          {renderedLyrics.length == 0 ? <>Enjoy the music</> : renderedLyrics}
         </motion.div>
-        {window.env !== undefined && <div className='sticky bottom-0 h-full w-full'>
-          {showSongFrequency && playerState == State.Playing && <AudioVisualization />}
-        </div>
-        }
+        {window.env !== undefined && (
+          <div className='sticky bottom-0 h-full w-full'>
+            {showSongFrequency && playerState == State.Playing && <AudioVisualization />}
+          </div>
+        )}
       </div>
     </PageTransition>
   )

@@ -14,7 +14,6 @@ const on = <T extends keyof IpcChannelsParams>(
 
 export function ipcRenderer() {
   on(IpcChannels.Play, (e, { trackID }) => {
-    
     if (!trackID) {
       player.play(true)
       return
@@ -37,13 +36,13 @@ export function ipcRenderer() {
   on(IpcChannels.SyncProgress, (e, { progress }) => {
     player.progress = progress
   })
-  
-  on(IpcChannels.SyncAccentColor, (e, {color}) => {
+
+  on(IpcChannels.SyncAccentColor, (e, { color }) => {
     changeAccentColor(color)
   })
-  
+
   on(IpcChannels.SyncTheme, (e, { theme }) => {
-    changeTheme(theme as "light" | "dark")
+    changeTheme(theme as 'light' | 'dark')
   })
 
   on(IpcChannels.Next, (e, { trackID }) => {

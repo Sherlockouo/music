@@ -33,5 +33,4 @@ const Lab = () => {
   )
 }
 
-
 export default Lab

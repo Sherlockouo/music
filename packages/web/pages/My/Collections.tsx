@@ -25,6 +25,7 @@ import Cloud from './Cloud'
 import Icon from '@/web/components/Icon'
 import FileUploader from '@/web/components/Tools/Upload'
 import CoverWall from '@/web/components/CoverWall'
+import { IconNames } from '@/web/components/Icon/iconNamesType'
 
 const collections = ['daily', 'playlists', 'albums', 'artists', 'videos', 'cloud'] as const
 type Collection = typeof collections[number]
@@ -52,7 +53,7 @@ const Playlists = () => {
     () => playlists?.playlist?.slice(1).filter(p => p.userId !== user?.data?.account?.id),
     [playlists, user]
   )
-  const buildPlaylists = (playlists:Playlist[] | undefined):DiscoverPlayList[] =>{
+  const buildPlaylists = (playlists: Playlist[] | undefined): DiscoverPlayList[] => {
     // 从歌单中抽出歌曲
     const pickedIds: number[] = []
     const playLists: DiscoverPlayList[] = []
@@ -112,30 +113,36 @@ const CollectionTabs = ({ showBg }: { showBg: boolean }) => {
   const { t } = useTranslation()
   const { displayPlaylistsFromNeteaseMusic } = useSnapshot(settings)
 
-  const tabs: { id: Collection; name: string }[] = [
+  const tabs: { id: Collection; name: string; iconName?: IconNames }[] = [
     {
       id: 'daily',
       name: t`common.daily`,
+      iconName: 'netease',
     },
     {
       id: 'albums',
       name: t`common.album_other`,
+      iconName: 'album',
     },
     {
       id: 'playlists',
       name: t`common.playlist_other`,
+      iconName: 'playlist',
     },
     {
       id: 'artists',
       name: t`common.artist_other`,
+      iconName: 'artist',
     },
     {
       id: 'videos',
       name: t`common.video_other`,
+      iconName: 'video',
     },
     {
       id: 'cloud',
       name: t`common.cloud`,
+      iconName: 'cloud',
     },
   ]
 
@@ -213,11 +220,6 @@ const Collections = () => {
       <div
         className={cx('no-scrollbar overflow-y-auto px-2.5 pt-10 pb-16 lg:px-0')}
         onScroll={onScroll}
-        style={
-          {
-            // height: `calc(100vh - ${topbarHeight}px)`,
-          }
-        }
       >
         {selectedTab === 'daily' && <Daily />}
         {selectedTab === 'albums' && <Albums />}

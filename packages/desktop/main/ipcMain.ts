@@ -121,18 +121,17 @@ function initWindowIpcMain(win: BrowserWindow | null) {
  * @param {YPMTray} tray
  */
 function initTrayIpcMain(tray: YPMTray | null) {
-  on(IpcChannels.SetTrayTooltip, (e, { text,coverImg }) => {
+  on(IpcChannels.SetTrayTooltip, (e, { text, coverImg }) => {
     tray?.setTooltip(text)
-    console.log('cover ',coverImg);
-    if(coverImg && coverImg !== '')
-      tray?.setCoverImg(coverImg)
+    console.log('cover ', coverImg)
+    if (coverImg && coverImg !== '') tray?.setCoverImg(coverImg)
   })
 
   on(IpcChannels.Like, (e, { isLiked }) => tray?.setLikeState(isLiked))
 
   on(IpcChannels.Play, (e, { trackID }) => {
     tray?.setPlayState(true)
-    lyricWin?.win?.webContents.send(IpcChannels.Play,{trackID})
+    lyricWin?.win?.webContents.send(IpcChannels.Play, { trackID })
   })
   on(IpcChannels.Pause, () => {
     tray?.setPlayState(false)
@@ -183,12 +182,11 @@ function initOtherIpcMain(win: BrowserWindow | null) {
     db.vacuum()
   })
 
-  handle(IpcChannels.CheckUpdate, (e) => {
+  handle(IpcChannels.CheckUpdate, e => {
     const updater = new AppUpdater()
-    const check = async()=>{
+    const check = async () => {
       e.returnValue = await updater.checkUpdate()
     }
-    
   })
 
   handle(IpcChannels.SetDesktopLyric, (event, args) => {
@@ -207,14 +205,14 @@ function initOtherIpcMain(win: BrowserWindow | null) {
     return true
   })
 
-  on(IpcChannels.SyncAccentColor,(e,{color})=>{
-    lyricWin?.win?.webContents.send(IpcChannels.SyncAccentColor,{color:color})
+  on(IpcChannels.SyncAccentColor, (e, { color }) => {
+    lyricWin?.win?.webContents.send(IpcChannels.SyncAccentColor, { color: color })
   })
 
-  on(IpcChannels.SyncTheme,(e,{theme})=>{
-    console.log('e theme',theme);
-    
-    lyricWin?.win?.webContents.send(IpcChannels.SyncTheme,{theme:theme})
+  on(IpcChannels.SyncTheme, (e, { theme }) => {
+    console.log('e theme', theme)
+
+    lyricWin?.win?.webContents.send(IpcChannels.SyncTheme, { theme: theme })
   })
 
   on(IpcChannels.Previous, (event, args) => {

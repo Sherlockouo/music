@@ -19,15 +19,16 @@ const LayoutMobile = () => {
   const location = useLocation()
 
   return (
-    <div id='layout' className={cx(
-      'select-none bg-white dark:bg-black',
-      location.pathname === '/desktoplyrics' && 'rounded-lg',
-      location.pathname !== '/desktoplyrics' && 'pb-28'
-      )}>
+    <div
+      id='layout'
+      className={cx(
+        'select-none bg-white dark:bg-black',
+        location.pathname === '/desktoplyrics' && 'rounded-lg',
+        location.pathname !== '/desktoplyrics' && 'pb-28'
+      )}
+    >
       {location.pathname == '/desktoplyrics' ? (
-        // <div className='rounded-lg'>
-          <Router />
-        // </div>
+        <Router />
       ) : (
         <>
           <main id='main' className='min-h-screen overflow-y-auto overflow-x-hidden pb-16 '>

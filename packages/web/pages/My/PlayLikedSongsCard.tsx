@@ -40,14 +40,7 @@ const Lyrics = ({ tracksIDs }: { tracksIDs: number[] }) => {
   }, [lyric])
 
   return (
-    <div
-      className={cx(
-        'line-clamp-4'
-        // css`
-        //   height: 86px;
-        // `
-      )}
-    >
+    <div className={cx('line-clamp-4')}>
       <div className='mb-3.5 text-18 font-medium'>
         {t('my.xxxs-liked-tracks', { nickname: user?.profile?.nickname })}
       </div>
@@ -69,10 +62,10 @@ const Covers = memo(({ tracks }: { tracks: Track[] }) => {
     <div className='mt-6 grid w-full flex-shrink-0 grid-cols-3 gap-2.5 lg:mt-0 lg:ml-8 lg:w-auto'>
       {tracks.map(track => (
         <Image
-          src={resizeImage(track.al.picUrl || '', 'md')}
+          src={resizeImage(track.al?.picUrl || '', 'md')}
           className={cx('aspect-square rounded-24 lg:h-32 lg:w-32')}
           key={track.id}
-          onClick={() => navigate(`/album/${track.al.id}`)}
+          onClick={() => navigate(`/album/${track.al?.id}`)}
         />
       ))}
     </div>

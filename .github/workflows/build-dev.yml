@@ -66,10 +66,11 @@ jobs:
           # If the commit is tagged with a version (e.g. "v1.0.0"),
           # release the app after building
           release: ${{ startsWith(github.ref, 'refs/tags/v') }}
-          args: --config .electron-builder.config.js
+          args: |
+            cd  music/packages/desktop
+            --config .electron-builder.config.js
           skip_package_manager_install: true
           package_manager: pnpm
-        run: pnpm package
 
       - name: Upload Artifact (macOS)
         uses: actions/upload-artifact@v3

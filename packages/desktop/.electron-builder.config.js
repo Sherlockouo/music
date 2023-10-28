@@ -89,7 +89,7 @@ module.exports = {
       },
       {
         target: 'AppImage',
-        arch: ['x64','arm'],
+        arch: ['x64','arm64'],
       },
       // {
       //   target: 'snap',
@@ -101,7 +101,7 @@ module.exports = {
       // },
       {
         target: 'rpm',
-        arch: ['x64','arm'],
+        arch: ['x64','arm64'],
       },
       // {
       //   target: 'tar.gz',

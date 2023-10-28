@@ -150,7 +150,7 @@ const Lyrics = () => {
         >
           
           {renderedLyrics.length == 0 ? <>
-              Enjoy the music
+             Enjoy the music
             </> :renderedLyrics}
         </motion.div>
         {window.env !== undefined && <div className='sticky bottom-0 h-full w-full'>

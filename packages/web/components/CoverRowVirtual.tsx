@@ -59,7 +59,7 @@ const CoverRow = ({
         totalCount={rows.length}
         components={{
           Header: () => <div className={cx('ease-in-out')}></div>,
-          Footer: () => <div className='h-16'></div>,
+          // Footer: () => <div className='h-16'></div>,
         }}
         itemContent={(index, row) => (
           <div key={index} className='grid w-full grid-cols-4 gap-4 lg:mb-6 lg:gap-6'>

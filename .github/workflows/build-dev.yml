@@ -30,7 +30,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile false
+        run: pnpm install
 
       # - name: Build sqlite3 binaries
       #   run: tsx ./scripts/build.sqlite3.ts
@@ -66,10 +66,8 @@ jobs:
           # If the commit is tagged with a version (e.g. "v1.0.0"),
           # release the app after building
           release: ${{ startsWith(github.ref, 'refs/tags/v') }}
-          args: |
-            cd  music/packages/desktop
-            --config .electron-builder.config.js
-          skip_package_manager_install: true
+          args: package
+          # skip_package_manager_install: true
           package_manager: pnpm
 
       - name: Upload Artifact (macOS)

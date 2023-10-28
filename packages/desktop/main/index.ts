@@ -90,6 +90,7 @@ class Main {
         preload: join(__dirname, 'rendererPreload.js'),
         // for lyrics effect
         webSecurity: false,
+        sandbox: false
       },
       width: store.get('window.width'),
       height: store.get('window.height'),

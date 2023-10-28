@@ -95,7 +95,7 @@ const Lyrics = () => {
     const lineClassName = cx(
       'lyrics-row leading-120 my-2 p-4 ease-in-out iterms-center text-center',
       'tracking-lyric leading-lyric text-2xl transition duration-400 dark:hover:bg-white/10 hover:bg-black/10  rounded-lg',
-      index === currentLineIndex && 'line-clamp-4 font-bold text-accent-color-500 text-3xl my-3',
+      index === currentLineIndex && 'font-bold text-accent-color-500 text-3xl my-3',
       index !== currentLineIndex && 'text-black/80 dark:text-white/60',
       index !== currentLineIndex && lyricsBlur && 'blur-sm',
       index !== currentLineIndex && isHovered && 'transition duration-500 blur-none'

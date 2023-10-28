@@ -75,14 +75,14 @@ const LyricsDesktop = () => {
 
     const lineClassName = cx(
       'lyrics-row leading-120 my-2 p-4 ease-in-out iterms-center text-center',
-      'tracking-lyric leading-lyric text-lg transition duration-400 dark:hover:bg-white/10 hover:bg-gray-500/10  rounded-lg',
+      'tracking-lyric leading-lyric text-md transition duration-400 dark:hover:bg-white/10 hover:bg-gray-500/10  rounded-lg',
       index === currentLineIndex &&
-        'transition duration-400 line-clamp-4 font-bold text-accent-color-500 text-2xl my-2',
+        'transition duration-400 font-bold text-accent-color-500 text-lg my-2',
       index !== currentLineIndex && 'transition duration-400 text-black/80 dark:text-white/60 '
     )
     // todo: lyrics animation or effects
     return (
-      <div className={cx(lineClassName, 'font-barlow')} key={index}>
+      <div className={cx(lineClassName, 'font-barlow ')} key={index}>
         <motion.span
           initial={{ opacity: 100 }}
           exit={{ opacity: 0 }}

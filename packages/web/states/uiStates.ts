@@ -6,7 +6,7 @@ interface UIStates {
   showDeskttopLyrics: boolean
   showLoginPanel: boolean
   showSongFrequency: boolean
-  showDevices:boolean
+  showDevices: boolean
   hideTopbarBackground: boolean
   mobileShowPlayingNext: boolean
   blurBackgroundImage: string | null
@@ -20,7 +20,7 @@ const initUIStates: UIStates = {
   showDeskttopLyrics: false,
   showLoginPanel: false,
   showSongFrequency: false,
-  showDevices:false,
+  showDevices: false,
   hideTopbarBackground: false,
   mobileShowPlayingNext: false,
   blurBackgroundImage: null,

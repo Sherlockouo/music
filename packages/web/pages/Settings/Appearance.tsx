@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next'
 import AccentColor from '@/web/components/Appearence/AccentColor'
 import uiStates from '@/web/states/uiStates'
 
-
 const Theme = () => {
   const { t, i18n } = useTranslation()
   return (
@@ -50,8 +49,6 @@ const LayoutBackground = () => {
   )
 }
 
-
-
 const ShowDesktopLyrics = () => {
   const { t, i18n } = useTranslation()
   const { showDeskttopLyrics } = useSnapshot(uiStates)
@@ -79,10 +76,7 @@ const ShowDevices = () => {
         <div className='flex flex-col'>
           <OptionText>{t`common.showDevices`}</OptionText>
         </div>
-        <Switch
-          enabled={showDevices}
-          onChange={value => (uiStates.showDevices = value)}
-        ></Switch>
+        <Switch enabled={showDevices} onChange={value => (uiStates.showDevices = value)}></Switch>
       </Option>
     </>
   )
@@ -96,15 +90,11 @@ const LyricsBlur = () => {
         <div className='flex flex-col'>
           <OptionText>{t`common.lyricsBlur`}</OptionText>
         </div>
-        <Switch
-          enabled={lyricsBlur}
-          onChange={value => (uiStates.lyricsBlur = value)}
-        ></Switch>
+        <Switch enabled={lyricsBlur} onChange={value => (uiStates.lyricsBlur = value)}></Switch>
       </Option>
     </>
   )
 }
-
 
 const Appearance = () => {
   return (

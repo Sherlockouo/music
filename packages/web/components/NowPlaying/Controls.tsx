@@ -46,7 +46,7 @@ const LikeButton = () => {
 const Controls = () => {
   const { state, track } = useSnapshot(player)
   const { minimizePlayer: mini } = useSnapshot(persistedUiStates)
-  const { showDeskttopLyrics,showDevices } = useSnapshot(uiStates)
+  const { showDeskttopLyrics, showDevices } = useSnapshot(uiStates)
 
   return (
     <MotionConfig transition={{ ease, duration: 0.5 }}>
@@ -71,7 +71,15 @@ const Controls = () => {
         )}
       >
         <div className={cx(mini ? 'flex flex-wrap gap-3' : 'flex-col gap-2')}>
-          <div className={cx(mini ? 'flex-col text-center' : (showDevices || showDeskttopLyrics ) ? 'my-3 flex  justify-between gap-5':'my-5 flex  justify-between gap-5')}>
+          <div
+            className={cx(
+              mini
+                ? 'flex-col text-center'
+                : showDevices || showDeskttopLyrics
+                ? 'my-3 flex  justify-between gap-5'
+                : 'my-5 flex  justify-between gap-5'
+            )}
+          >
             {/* Minimize */}
             <motion.button
               layout='position'
@@ -139,7 +147,7 @@ const Controls = () => {
             <div className='iterms-center flex flex-row justify-center gap-5 transition-colors duration-400'>
               {window.env?.isElectron && (
                 <>
-                  { showDevices && <AudioOutputDevices />}
+                  {showDevices && <AudioOutputDevices />}
                   {showDeskttopLyrics && <DesktopLyric />}
                 </>
               )}
@@ -226,10 +234,11 @@ function VolumeSlider() {
       </motion.div>
       <motion.button
         layout='position'
-        className={cx()
-        // just dont need this I guess
-        // ' transition-colors duration-400 ',
-        // ' text-black dark:text-white'
+        className={
+          cx()
+          // just dont need this I guess
+          // ' transition-colors duration-400 ',
+          // ' text-black dark:text-white'
         }
       >
         <Icon name='volume' className={cx('h-5 w-5')} />

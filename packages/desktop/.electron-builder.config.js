@@ -24,7 +24,7 @@ module.exports = {
   publish: [
     {
       provider: 'generic',
-      url: 'http://localhost:8100/'
+      url: 'http://localhost:8100/',
     },
     {
       provider: 'github',
@@ -60,10 +60,10 @@ module.exports = {
   },
   mac: {
     target: [
-      {
-        target: 'zip',
-        arch: ['x64', 'arm64', 'universal'],
-      },
+      // {
+      //   target: 'zip',
+      //   arch: ['x64', 'arm64', 'universal'],
+      // },
       {
         target: 'dmg',
         arch: ['x64', 'arm64', 'universal'],
@@ -79,17 +79,17 @@ module.exports = {
   },
   linux: {
     target: [
-      {
-        target: 'deb',
-        arch: [
-          'x64',
-          'arm64',
-          // 'armv7l'
-        ],
-      },
+      // {
+      //   target: 'deb',
+      //   arch: [
+      //     'x64',
+      //     'arm64',
+      //     // 'armv7l'
+      //   ],
+      // },
       {
         target: 'AppImage',
-        arch: ['x64','arm64'],
+        arch: ['x64'],
       },
       // {
       //   target: 'snap',
@@ -99,10 +99,10 @@ module.exports = {
       //   target: 'pacman',
       //   arch: ['x64'],
       // },
-      {
-        target: 'rpm',
-        arch: ['x64','arm64'],
-      },
+      // {
+      //   target: 'rpm',
+      //   arch: ['x64', 'arm64'],
+      // },
       // {
       //   target: 'tar.gz',
       //   arch: ['x64'],

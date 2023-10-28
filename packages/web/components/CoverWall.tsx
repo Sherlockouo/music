@@ -23,7 +23,13 @@ const sizes = {
   },
 } as const
 
-const CoverWall = ({ albums,playlists }: { albums?: { id: number; coverUrl: string; large: boolean }[],playlists?: { id: number; coverUrl: string; large: boolean }[] }) => {
+const CoverWall = ({
+  albums,
+  playlists,
+}: {
+  albums?: { id: number; coverUrl: string; large: boolean }[]
+  playlists?: { id: number; coverUrl: string; large: boolean }[]
+}) => {
   const navigate = useNavigate()
   const breakpoint = useBreakpoint()
 
@@ -50,17 +56,20 @@ const CoverWall = ({ albums,playlists }: { albums?: { id: number; coverUrl: stri
       ))}
       {playlists?.map(playlist => (
         <Image
-          src={resizeImage(playlist.coverUrl, sizes[playlist.large ? 'large' : 'small'][breakpoint])}
+          src={resizeImage(
+            playlist.coverUrl,
+            sizes[playlist.large ? 'large' : 'small'][breakpoint]
+          )}
           key={playlist.id}
           className={cx(
             'aspect-square h-full w-full rounded-20 lg:rounded-24',
             playlist.large && 'col-span-2 row-span-2'
           )}
           onClick={() => navigate(`/playlist/${playlist.id}`)}
-          onMouseOver={()=>{
+          onMouseOver={() => {
             prefetchPlaylist({ id: playlist.id })
           }}
-          />
+        />
       ))}
     </div>
   )

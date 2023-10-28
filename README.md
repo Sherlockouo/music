@@ -7,20 +7,20 @@
 - 除了许可条款中规定的事项外，您还知道将本代码库用于商业或其他竞争行为可能会产生法律风险。
 - 如果您认为本代码库侵犯了您的知识产权，请发布 PR, Issue 或 DMCA 请求，表达您删除相关引擎或代码的意图。
 
-  <h2 align="center" style="font-weight: 600">基于 YesPlayMusic-Alpha 版本二次开发</h2>
-  <h2 align="center"> 
-    <a  href="https://t.me/+MrhsgG741wQxNjg9">💻 加入TG群组，参与开发 👊</a>
-  </h2>
+    <h2 align="center" style="font-weight: 600">基于 YesPlayMusic-Alpha 版本二次开发</h2>
+    <h2 align="center"> 
+      <a  href="https://t.me/+MrhsgG741wQxNjg9">💻 加入TG群组，参与开发 👊</a>
+    </h2>
 
-  <p align="center">
-    高颜值的第三方音乐播放器
-    <br />
-    <a href="https://music.xtify.top/" target="blank"><strong>🌎 访问最新DEMO</strong></a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a href="https://r3play.app/" target="blank"><strong>🌎 访问原版DEMO</strong></a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a href="https://github.com/Sherlockouo/music/releases" target="blank"><strong>📦️ 下载安装包</strong></a>
-    <br />
+    <p align="center">
+      高颜值的第三方音乐播放器
+      <br />
+      <a href="https://music.xtify.top/" target="blank"><strong>🌎 访问最新DEMO</strong></a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a href="https://r3play.app/" target="blank"><strong>🌎 访问原版DEMO</strong></a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a href="https://github.com/Sherlockouo/music/releases" target="blank"><strong>📦️ 下载安装包</strong></a>
+      <br />
+    </p>
   </p>
-</p>
 
 ## 关于 Alpha 版本
 

@@ -49,7 +49,6 @@ export class LyricsWindow {
       backgroundColor: 'rgba(0, 0, 0, 0)',
     }
 
-
     if (store.get('lyricsWindow')) {
       options.x = store.get('lyricsWindow.x')
       options.y = store.get('lyricsWindow.y')
@@ -57,7 +56,7 @@ export class LyricsWindow {
 
     this.win = new BrowserWindow(options)
     this.win.webContents.setAudioMuted(true)
-    
+
     this.win.loadURL(`http://localhost:${process.env.ELECTRON_WEB_SERVER_PORT}/desktoplyrics`)
 
     this.win.once('ready-to-show', () => {
@@ -74,7 +73,7 @@ export class LyricsWindow {
     this.win.on('moved', saveBounds)
   }
 
-  registerIPCListeners(pWin:BrowserWindow) {
+  registerIPCListeners(pWin: BrowserWindow) {
     // 在窗口关闭时解除 'PinDesktopLyric' 事件的监听
     this.win?.on('closed', () => {
       ipcMain.removeHandler(IpcChannels.PinDesktopLyric)

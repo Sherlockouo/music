@@ -7,7 +7,6 @@ import { motion, useAnimation } from 'framer-motion'
 import player from '@/web/states/player'
 import LyricsWindowTitleBar from '@/web/components/LyricsWindow/LyricsWindowTitleBar'
 
-
 const LyricsDesktop = () => {
   const containerRef = useRef(null)
   const [currentLineIndex, setCurrentLineIndex] = useState(0)
@@ -30,8 +29,7 @@ const LyricsDesktop = () => {
           setCurrentLineIndex(i)
         }
       }
-      
-      
+
       if (!find) {
         setCurrentLineIndex(0)
       }
@@ -78,20 +76,18 @@ const LyricsDesktop = () => {
     const lineClassName = cx(
       'lyrics-row leading-120 my-2 p-4 ease-in-out iterms-center text-center',
       'tracking-lyric leading-lyric text-lg transition duration-400 dark:hover:bg-white/10 hover:bg-gray-500/10  rounded-lg',
-      index === currentLineIndex && 'line-clamp-4 font-bold text-accent-color-500 text-xl my-3',
-      index !== currentLineIndex && 'text-black/80 dark:text-white/60 '
+      index === currentLineIndex &&
+        'transition duration-400 line-clamp-4 font-bold text-accent-color-500 text-2xl my-2',
+      index !== currentLineIndex && 'transition duration-400 text-black/80 dark:text-white/60 '
     )
     // todo: lyrics animation or effects
     return (
-      <div
-        className={cx(lineClassName, 'font-barlow')}
-        key={index}
-      >
+      <div className={cx(lineClassName, 'font-barlow')} key={index}>
         <motion.span
           initial={{ opacity: 100 }}
           exit={{ opacity: 0 }}
           animate={lyricsAnimation}
-          transition={{ duration: 0.4, ease: "backOut", }}
+          transition={{ duration: 0.4, ease: 'backOut' }}
         >
           {lyric}
         </motion.span>
@@ -100,39 +96,32 @@ const LyricsDesktop = () => {
           initial={{ opacity: 100 }}
           exit={{ opacity: 0 }}
           animate={lyricsAnimation}
-          transition={{ duration: 0.4, ease: "backOut", }}
+          transition={{ duration: 0.4, ease: 'backOut' }}
         >
           {tLyric}
-          </motion.span>
-
+        </motion.span>
       </div>
     )
   })
-  
-  
 
   return (
     <>
-      <div className='dark:text-white/80  bg-transparent '>
-        <LyricsWindowTitleBar />
-        </div>
-        <div
-          className={cx(
-            'h-[640px] overflow-scroll   rounded-md',
-            'text-center no-scrollbar',
-            'font-Roboto font-bold py-80',
-          )}
+      <LyricsWindowTitleBar />
+      <motion.div
+        className={cx(
+          'h-[600px] overflow-scroll rounded-md',
+          'no-scrollbar text-center',
+          'font-Roboto font-bold'
+        )}
+      >
+        <motion.div
+          className={cx('inline-block py-80 text-center')}
+          ref={containerRef}
+          transition={{ duration: 0.5 }}
         >
-          <motion.div
-            className={cx('text-center inline-block')}
-            ref={containerRef}
-            transition={{ duration: 0.5 }}
-          >
-            {renderedLyrics.length == 0 ? <>
-              Enjoy the music
-            </> :renderedLyrics}
-          </motion.div>
-        </div>
+          {renderedLyrics.length == 0 ? <>Enjoy the music</> : renderedLyrics}
+        </motion.div>
+      </motion.div>
     </>
   )
 }

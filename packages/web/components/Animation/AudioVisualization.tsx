@@ -18,31 +18,30 @@ const AudioVisualization: React.FC<AudioVisualizationProps> = () => {
     canvas.height = canvas?.height * devicePixelRatio
     var bufferLength = 1024
 
-      const draw = () => {
-        requestAnimationFrame(draw)
+    const draw = () => {
+      requestAnimationFrame(draw)
 
-        ctx!.clearRect(0, 0, canvas.width, canvas.height)
+      ctx!.clearRect(0, 0, canvas.width, canvas.height)
 
-        const barWidth = (canvas.width * 3) / bufferLength
-        const maxHeight = canvas.height * 0.8
-        let x = 0
+      const barWidth = (canvas.width * 3) / bufferLength
+      const maxHeight = canvas.height * 0.8
+      let x = 0
 
-        for (let i = 0; i < bufferLength; i+=2) {
-          const barHeight = dataArray[i]
-          const height = (barHeight / 255) * maxHeight
-          const y = canvas.height - height
+      for (let i = 0; i < bufferLength; i += 2) {
+        const barHeight = dataArray[i]
+        const height = (barHeight / 255) * maxHeight
+        const y = canvas.height - height
 
-          const hue = (i / bufferLength) * 1500
+        const hue = (i / bufferLength) * 1500
 
-          ctx!.fillStyle = `hsl(${hue}, 120%, 50%)` // 使用固定颜色，避免模糊
+        ctx!.fillStyle = `hsl(${hue}, 120%, 50%)` // 使用固定颜色，避免模糊
 
-          ctx!.fillRect(x, y, barWidth, height)
+        ctx!.fillRect(x, y, barWidth, height)
 
-          x += barWidth + 1
-        }
+        x += barWidth + 1
       }
-      draw()
-    
+    }
+    draw()
   }, [state])
 
   return (

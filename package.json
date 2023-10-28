@@ -8,9 +8,6 @@
   "license": "MIT",
   "author": "wdf.coder@gmail.com ",
   "repository": "github:sherlockouo/music",
-  "permissions": [
-    "mediaDevices"
-  ],
   "engines": {
     "node": ">=16.0.0"
   },
@@ -19,7 +16,7 @@
     "install": "turbo run post-install --parallel --no-cache",
     "build": "cross-env-shell IS_ELECTRON=yes turbo run build",
     "build:web": "turbo run build:web",
-    "package": "turbo run build && turbo run pack:desktop",
+    "package": "turbo run build && pnpm run --filter desktop package",
     "pack:test": "turbo run build && turbo run pack:test",
     "dev": "cross-env-shell IS_ELECTRON=yes turbo run dev --parallel",
     "lint": "eslint .",

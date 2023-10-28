@@ -17,25 +17,27 @@ const Hot = ({ cat }: { cat: string }) => {
   const [hasMore, setHasMore] = useState(true)
 
   const getData = async (pageNo: number, pageSize: number): Promise<{ hasMore: boolean }> => {
-    console.log(pageNo, ' ', pageSize, 'cat ',cat, ' ',dataSource.length);
+    console.log(pageNo, ' ', pageSize, 'cat ', cat, ' ', dataSource.length)
 
     if (hasMore === false) return { hasMore: false }
 
-    const resp = await fetchHQPlaylist({ cat: cat, limit: pageSize || 50, before: (pageNo - 1) * pageSize || 0, })
+    const resp = await fetchHQPlaylist({
+      cat: cat,
+      limit: pageSize || 50,
+      before: (pageNo - 1) * pageSize || 0,
+    })
 
     setHasMore(resp.more)
-    
-    let arrSource = [...dataSource, ...(resp.playlists)]
+
+    let arrSource = [...dataSource, ...resp.playlists]
     setDatasource([...new Set(arrSource)])
     return { hasMore: hasMore }
   }
   useEffect(() => {
-    
     setDatasource([])
-    getData(1,50) 
-    return () => {
-    };
-  }, []);
+    getData(1, 50)
+    return () => {}
+  }, [])
   const renderItems = () => {
     return <CoverRowVirtual playlists={dataSource} />
   }
@@ -46,7 +48,6 @@ const Hot = ({ cat }: { cat: string }) => {
         <ScrollPagination getData={getData} renderItems={renderItems} />
       </div>
     </>
-
   )
 }
 

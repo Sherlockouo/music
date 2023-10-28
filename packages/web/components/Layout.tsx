@@ -103,7 +103,6 @@ const Layout = () => {
           window.localStorage.getItem('showWindowsTitleBar') === 'true') && <TitleBar />}
 
         <ContextMenus />
-
       </div>
     </div>
   )

@@ -102,7 +102,7 @@ class Main {
       fullscreenable: true,
       resizable: true,
       transparent: true,
-      backgroundColor: 'rgba(0, 0, 0, 80)',
+      backgroundColor: 'rgba(0, 0, 0, 0)',
       show: false,
     }
     if (store.get('window')) {

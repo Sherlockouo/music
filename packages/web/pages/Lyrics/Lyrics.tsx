@@ -81,6 +81,22 @@ const Lyrics = () => {
     scrollToCurrentLine()
   }, [currentLineIndex]) // 当 currentLineIndex 变化时，重新执行该钩子函数
 
+  const lineVariants = {
+    current: {
+      y: 0,
+      transition: {
+        duration: 0.4,
+        ease: 'easeOut',
+      },
+    },
+    notCurrent: {
+      y: -5,
+      transition: {
+        duration: 0.4,
+        ease: 'easeIn',
+      },
+    },
+  };
   const maxLength = Math.max(lyrics.length, tlyric.length)
   const renderedLyrics = Array.from({ length: maxLength }, (_, index) => {
     const lyric = lyrics[index]?.content
@@ -111,6 +127,7 @@ const Lyrics = () => {
       >
         <motion.span
           initial={{ opacity: 100 }}
+          variants={lineVariants}
           exit={{ opacity: 0 }}
           animate={currentLineIndex === index ? 'current' : 'notCurrent'}
           transition={{ duration: 0.4, ease: 'backOut' }}
@@ -121,6 +138,7 @@ const Lyrics = () => {
         <motion.span
           initial={{ opacity: 100 }}
           exit={{ opacity: 0 }}
+          variants={lineVariants}
           animate={currentLineIndex === index ? 'current' : 'notCurrent'}
           transition={{ duration: 0.4, ease: 'backOut' }}
         >

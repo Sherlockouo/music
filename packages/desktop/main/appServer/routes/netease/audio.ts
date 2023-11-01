@@ -211,7 +211,7 @@ ENABLE_LOCAL_VIP=true
       // 加载动态的环境变量
       dotenv.config({ path: envConfig })
       const isEnglish = /^[a-zA-Z\s]+$/
-      let source = ['qq', 'kuwo', 'migu', 'kugou', 'joox', 'youtube']
+      let source = ['migu','youtube']
       const enableFindTrackOnYouTube = store.get('settings.enableFindTrackOnYouTube')
       const httpProxyForYouTubeSettings = store.get('settings.httpProxyForYouTube')
       if (enableFindTrackOnYouTube && httpProxyForYouTubeSettings) {

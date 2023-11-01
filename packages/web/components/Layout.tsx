@@ -76,6 +76,7 @@ const Layout = () => {
       {/* mask */}
       <motion.div
         className={cx(
+          // mask will affect the borde radius
           window.env?.isElectron && !fullscreen && 'rounded-12',
           'absolute inset-0 z-0',
           theme === 'dark' ? 'bg-black/40' : 'bg-white/40'

@@ -38,7 +38,7 @@ const Sidebar = ({
     { name: t`settings.appearance`, id: 'appearance' },
     { name: t`settings.player`, id: 'player' },
     { name: t`settings.keyboard-shortcuts.title`, id: 'keyboard-shortcuts' },
-    { name: t`settings.lab`, id: 'lab' },
+    { name: t`settings.lab.title`, id: 'lab' },
     { name: t`settings.about`, id: 'about' },
   ]
 

@@ -1,6 +1,9 @@
 import player from '@/web/states/player'
 import { IpcChannels, IpcChannelsReturns, IpcChannelsParams } from '@/shared/IpcChannels'
 import uiStates from './states/uiStates'
+import settings from './states/settings'
+import toast from 'react-hot-toast'
+import { changeAccentColor, changeTheme } from './utils/theme'
 
 const on = <T extends keyof IpcChannelsParams>(
   channel: T,
@@ -10,8 +13,12 @@ const on = <T extends keyof IpcChannelsParams>(
 }
 
 export function ipcRenderer() {
-  on(IpcChannels.Play, () => {
-    player.play(true)
+  on(IpcChannels.Play, (e, { trackID }) => {
+    if (!trackID) {
+      player.play(true)
+      return
+    }
+    player.trackID = trackID
   })
 
   on(IpcChannels.Pause, () => {
@@ -22,11 +29,27 @@ export function ipcRenderer() {
     player.playOrPause()
   })
 
-  on(IpcChannels.Next, () => {
+  on(IpcChannels.SetDesktopLyric, () => {
+    settings.showDesktopLyrics = false
+  })
+
+  on(IpcChannels.SyncProgress, (e, { progress }) => {
+    player.progress = progress
+  })
+
+  on(IpcChannels.SyncAccentColor, (e, { color }) => {
+    changeAccentColor(color)
+  })
+
+  on(IpcChannels.SyncTheme, (e, { theme }) => {
+    changeTheme(theme as 'light' | 'dark')
+  })
+
+  on(IpcChannels.Next, (e, { trackID }) => {
     player.nextTrack()
   })
 
-  on(IpcChannels.Previous, () => {
+  on(IpcChannels.Previous, (e, { trackID }) => {
     player.prevTrack()
   })
 

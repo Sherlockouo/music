@@ -3,13 +3,13 @@ import { IpcChannels } from '@/shared/IpcChannels'
 import { isLinux, isMac, isProd, isWindows } from './env'
 const { contextBridge, ipcRenderer } = require('electron')
 
-// if (isProd) {
-//   const log = require('electron-log')
-//   log.transports.file.level = 'info'
-//   log.transports.ipc.level = false
-//   log.variables.process = 'renderer'
-//   contextBridge.exposeInMainWorld('log', log)
-// }
+if (isProd) {
+  const log = require('electron-log')
+  log.transports.file.level = 'info'
+  log.transports.ipc.level = false
+  log.variables.process = 'renderer'
+  contextBridge.exposeInMainWorld('log', log)
+}
 
 contextBridge.exposeInMainWorld('ipcRenderer', {
   invoke: ipcRenderer.invoke,

@@ -24,7 +24,7 @@ export const enum Tables {
   AppData = 'AppData',
   AppleMusicAlbum = 'AppleMusicAlbum',
   AppleMusicArtist = 'AppleMusicArtist',
-  Unblock = 'unblock'
+  Unblock = 'unblock',
 }
 interface CommonTableStructure {
   id: number

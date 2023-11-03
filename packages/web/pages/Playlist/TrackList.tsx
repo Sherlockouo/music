@@ -115,10 +115,6 @@ function TrackList({
   const { trackID, state } = useSnapshot(player)
   let playingTrack = tracks?.find(track => track.id === trackID)
 
-  // useEffect(() => {
-  //   playingTrack = tracks?.find(track => track.id === trackID)
-  //   console.log('playing track', trackID)
-  // }, [trackID])
   const handleClick = (e: React.MouseEvent<HTMLElement>, trackID: number) => {
     if (isLoading) return
     if (e.type === 'contextmenu') {

@@ -24,14 +24,14 @@ const ErrorBoundary = ({ children }: { children: ReactNode }) => {
           </div>
         </div>
       )}
-      onError={(error)=>{
-          if (
-            error.message.includes('Failed to fetch dynamically imported module') ||
-            error.message.includes('Importing a module script failed')
-          ) {
-            // on error reload
-              window.location.reload();
-          }
+      onError={error => {
+        if (
+          error.message.includes('Failed to fetch dynamically imported module') ||
+          error.message.includes('Importing a module script failed')
+        ) {
+          // on error reload
+          window.location.reload()
+        }
       }}
     >
       {children}

@@ -93,7 +93,7 @@ export interface FetchPersonalFMResponse {
 }
 export function fetchPersonalFM(): Promise<FetchPersonalFMResponse> {
   return request({
-    url:  '/personal/fm',
+    url: '/personal/fm',
     method: 'get',
     params: {
       timestamp: Date.now(),

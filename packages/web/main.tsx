@@ -24,7 +24,7 @@ import React from 'react'
 import './i18n/i18n'
 import { appName } from './utils/const'
 
-// google analytic 
+// google analytic
 ReactGA.initialize('G-QFPDJGN751')
 
 // 前端报错监控

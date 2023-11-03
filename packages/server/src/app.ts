@@ -7,8 +7,7 @@ const app: FastifyPluginAsync<AutoloadPluginOptions> = async (fastify, opts) => 
   fastify.register(AutoLoad, {
     dir: join(__dirname, 'plugins'),
     options: opts,
-  }
-)
+  })
 
   fastify.register(AutoLoad, {
     dir: join(__dirname, 'routes'),

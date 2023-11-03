@@ -2,15 +2,12 @@
   "name": "r3playx",
   "productName": "R3PLAYX",
   "private": true,
-  "version": "2.6.0",
+  "version": "2.7.0-Pre",
   "description": "A nifty third-party NetEase Music player",
   "homepage": "https://github.com/sherlockouo/music",
   "license": "MIT",
   "author": "wdf.coder@gmail.com ",
   "repository": "github:sherlockouo/music",
-  "permissions": [
-    "mediaDevices"
-  ],
   "engines": {
     "node": ">=16.0.0"
   },
@@ -19,7 +16,7 @@
     "install": "turbo run post-install --parallel --no-cache",
     "build": "cross-env-shell IS_ELECTRON=yes turbo run build",
     "build:web": "turbo run build:web",
-    "pack": "turbo run build && turbo run pack",
+    "package": "turbo run build && pnpm run --filter desktop package",
     "pack:test": "turbo run build && turbo run pack:test",
     "dev": "cross-env-shell IS_ELECTRON=yes turbo run dev --parallel",
     "lint": "eslint .",

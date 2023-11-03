@@ -4,52 +4,8 @@ import { useSnapshot } from 'valtio'
 import { cx, css } from '@emotion/css'
 import { BlockDescription, BlockTitle, Button, Option, OptionText, Switch } from './Controls'
 import { useTranslation } from 'react-i18next'
-
-const AccentColor = () => {
-  const { t, i18n } = useTranslation()
-  const colors = {
-    red: 'bg-red-500',
-    orange: 'bg-orange-500',
-    amber: 'bg-amber-500',
-    yellow: 'bg-yellow-500',
-    lime: 'bg-lime-500',
-    green: 'bg-green-500',
-    emerald: 'bg-emerald-500',
-    teal: 'bg-teal-500',
-    cyan: 'bg-cyan-500',
-    sky: 'bg-sky-500',
-    blue: 'bg-blue-500',
-    indigo: 'bg-indigo-500',
-    violet: 'bg-violet-500',
-    purple: 'bg-purple-500',
-    fuchsia: 'bg-fuchsia-500',
-    pink: 'bg-pink-500',
-    rose: 'bg-rose-500',
-  }
-
-  const changeColor = (color: string) => {
-    settings.accentColor = color
-    changeAccentColor(color)
-  }
-
-  const accentColor = useSnapshot(settings).accentColor
-  return (
-    <div className='mt-4 flex  flex-row items-center'>
-      <div className='w-full flex   min-w-[93px] items-center'>{t`settings.accent-color`}</div>
-      <div className=' w-full justify-center flex flex-wrap items-center'>
-        {Object.entries(colors).map(([color, bg]) => (
-          <div
-            key={color}
-            className={cx(bg, 'mr-2.5 mb-1 flex  h-5 w-5 items-center justify-center rounded-full bg-data-accent-color-500')}
-            onClick={() => changeColor(color)}
-          >
-            {color === accentColor && <div className='h-1.5 w-1.5 rounded-full bg-black dark:bg-white'></div>}
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
+import AccentColor from '@/web/components/Appearence/AccentColor'
+import uiStates from '@/web/states/uiStates'
 
 const Theme = () => {
   const { t, i18n } = useTranslation()
@@ -58,7 +14,6 @@ const Theme = () => {
       <div className='text-xl font-medium text-gray-800 dark:text-white/70'>{t`settings.theme`}</div>
       <div className='h-px w-full bg-black/5 dark:bg-white/10'></div>
       <AccentColor />
-      {/* <div className='h-px w-full bg-black/5 dark:bg-white/10'></div> */}
     </>
   )
 }
@@ -69,7 +24,6 @@ const ChangeLyricBackground = () => {
   return (
     <>
       <div>
-
         <Option>
           <OptionText>{t`settings.show-lyric-background-img`}</OptionText>
           <Switch
@@ -94,7 +48,54 @@ const LayoutBackground = () => {
     </>
   )
 }
-1
+
+const ShowDesktopLyrics = () => {
+  const { t, i18n } = useTranslation()
+  const { showDeskttopLyrics } = useSnapshot(uiStates)
+  return (
+    <>
+      <Option>
+        <div className='flex flex-col'>
+          <OptionText>{t`common.showDeskttopLyrics`}</OptionText>
+        </div>
+        <Switch
+          enabled={showDeskttopLyrics}
+          onChange={value => (uiStates.showDeskttopLyrics = value)}
+        ></Switch>
+      </Option>
+    </>
+  )
+}
+
+const ShowDevices = () => {
+  const { t, i18n } = useTranslation()
+  const { showDevices } = useSnapshot(uiStates)
+  return (
+    <>
+      <Option>
+        <div className='flex flex-col'>
+          <OptionText>{t`common.showDevices`}</OptionText>
+        </div>
+        <Switch enabled={showDevices} onChange={value => (uiStates.showDevices = value)}></Switch>
+      </Option>
+    </>
+  )
+}
+const LyricsBlur = () => {
+  const { t, i18n } = useTranslation()
+  const { lyricsBlur } = useSnapshot(uiStates)
+  return (
+    <>
+      <Option>
+        <div className='flex flex-col'>
+          <OptionText>{t`common.lyricsBlur`}</OptionText>
+        </div>
+        <Switch enabled={lyricsBlur} onChange={value => (uiStates.lyricsBlur = value)}></Switch>
+      </Option>
+    </>
+  )
+}
+
 const Appearance = () => {
   return (
     <div
@@ -105,6 +106,9 @@ const Appearance = () => {
     >
       <Theme />
       <LayoutBackground />
+      <ShowDesktopLyrics />
+      <ShowDevices />
+      <LyricsBlur />
     </div>
   )
 }

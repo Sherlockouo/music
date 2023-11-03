@@ -10,33 +10,33 @@ export enum PlaylistApiNames {
 
 // top playlist
 export interface FetchTopPlaylistParams {
-  cat?: string,
-  order?: string,
-  limit: number,
+  cat?: string
+  order?: string
+  limit: number
   offset: number
 }
 
 export interface FetchTopPlaylistResponse {
   playlists: Playlist[]
-  code: number,
-  more: boolean,
+  code: number
+  more: boolean
   // 分类
-  cat: string,
+  cat: string
   total: number
 }
 
 // hot playlist
 export interface FetchHQPlaylistParams {
-  cat: string,
-  limit: number,
+  cat: string
+  limit: number
   before: number
 }
 
 export interface FetchHQPlaylistResponse {
   playlists: Playlist[]
-  code: number,
-  more: boolean,
-  lasttime: number,
+  code: number
+  more: boolean
+  lasttime: number
   total: number
 }
 
@@ -95,7 +95,7 @@ export interface LikeAPlaylistResponse {
 export interface AddSongToPlayListParams {
   // operation add|del
   op: string
-  // playlist id 
+  // playlist id
   pid: Number
   // 添加到pid的song ids, split with ,
   tracks: string
@@ -105,7 +105,7 @@ export interface AddSongToPlayListParams {
 export interface AddSongToPlayListParams {
   // operation add|del
   op: string
-  // playlist id 
+  // playlist id
   pid: Number
   // 添加到pid的song ids, split with ,
   tracks: string

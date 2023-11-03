@@ -51,8 +51,8 @@ const MenuButton = ({ isLoading }: { isLoading?: boolean }) => {
           })
       }}
       className={cx(
-        'relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-full bg-black/10 dark:bg-white/10 transition duration-300 ease-linear',
-        isLoading ? 'text-transparent' : 'dark:text-white/40 text-black/40'
+        'relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-full bg-black/10 transition duration-300 ease-linear dark:bg-white/10',
+        isLoading ? 'text-transparent' : 'text-black/40 dark:text-white/40'
       )}
     >
       <Icon name='more' className='pointer-events-none h-7 w-7' />

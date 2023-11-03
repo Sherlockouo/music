@@ -77,7 +77,7 @@ const Login = () => {
       <AnimatePresence>
         {showLoginPanel && (
           <motion.div
-            className='fixed inset-0 z-30 bg-black/80 backdrop-blur-3xl lg:rounded-24'
+            className='fixed inset-0 z-30 bg-black/80 backdrop-blur-3xl lg:rounded-12'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

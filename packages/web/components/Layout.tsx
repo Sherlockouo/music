@@ -6,16 +6,12 @@ import { css, cx } from '@emotion/css'
 import player from '@/web/states/player'
 import { useSnapshot } from 'valtio'
 import Login from './Login'
-import TrafficLight from './TrafficLight'
-import BlurBackground from './BlurBackground'
 import TitleBar from './TitleBar'
 import uiStates from '@/web/states/uiStates'
 import ContextMenus from './ContextMenus/ContextMenus'
 import settings from '@/web/states/settings'
-import { useState } from 'react'
-import { MotionConfig, motion } from 'framer-motion'
 import { ease } from '../utils/const'
-import { getTheme } from '../utils/theme'
+import { motion } from 'framer-motion'
 
 const Layout = () => {
   const playerSnapshot = useSnapshot(player)
@@ -29,13 +25,13 @@ const Layout = () => {
       className={cx(
         'h-full',
         'bg-img ',
-        window.env?.isElectron && !fullscreen && 'rounded-24',
+        window.env?.isElectron && !fullscreen && 'rounded-12',
         css`
           position: relative;
         `
       )}
     >
-      {/* layout 元素的内容 */}
+      {/* layout */}
       <motion.div
         className={cx(
           window.env?.isElectron && !fullscreen && 'rounded-12',
@@ -56,7 +52,7 @@ const Layout = () => {
             `,
           theme === 'dark' ? 'bg-black/90' : 'bg-white/90'
         )}
-        style={{ backgroundImage: showBackgroundImage ? `url(${player.track?.al.picUrl})` : '' }}
+        style={{ backgroundImage: showBackgroundImage ? `url(${player.track?.al?.picUrl})` : '' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -77,12 +73,13 @@ const Layout = () => {
           )}
         ></div>
       </motion.div>
-      {/* 遮罩 */}
+      {/* mask */}
       <motion.div
         className={cx(
+          // mask will affect the borde radius
           window.env?.isElectron && !fullscreen && 'rounded-12',
           'absolute inset-0 z-0',
-          theme === 'dark' ? 'bg-black/40' : 'bg-white/40',
+          theme === 'dark' ? 'bg-black/40' : 'bg-white/40'
         )}
       />
       <div
@@ -94,15 +91,6 @@ const Layout = () => {
           'text-black transition-colors duration-400 dark:text-white'
         )}
       >
-        {/* <BlurBackground className={cx(
-          'fixed z-0 object-cover opacity-70',
-          css`
-              top: -400px;
-              left: -370px;
-              width: 1572px;
-              height: 528px;
-              filter: blur(256px) saturate(1.2);
-            `)} /> */}
         <MenuBar />
         <div className=''>
           <Topbar />
@@ -111,27 +99,11 @@ const Layout = () => {
         <Login />
         {showPlayer && <Player />}
 
-        {/* {window.env?.isMac && (
-          <div className=' fixed top-5 left-5 z-30 translate-y-0.5'>
-            <TrafficLight />
-          </div>
-        )} */}
-
         {(window.env?.isWindows ||
           window.env?.isLinux ||
           window.localStorage.getItem('showWindowsTitleBar') === 'true') && <TitleBar />}
 
         <ContextMenus />
-
-        {/* Border */}
-        {/* <div
-          className={cx(
-            'pointer-events-none fixed inset-0 z-50 rounded-24',
-            css`
-              box-shadow: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.06);
-            `
-          )}
-        ></div> */}
       </div>
     </div>
   )

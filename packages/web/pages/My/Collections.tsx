@@ -13,7 +13,7 @@ import topbarBackground from '@/web/assets/images/topbar-background.png'
 import useIntersectionObserver from '@/web/hooks/useIntersectionObserver'
 import { AnimatePresence, motion } from 'framer-motion'
 import { scrollToBottom } from '@/web/utils/common'
-import { throttle } from 'lodash-es'
+import { sampleSize, throttle } from 'lodash-es'
 import { useTranslation } from 'react-i18next'
 import VideoRow from '@/web/components/VideoRow'
 import useUserVideos from '@/web/api/hooks/useUserVideos'
@@ -24,9 +24,17 @@ import Daily from './Daily'
 import Cloud from './Cloud'
 import Icon from '@/web/components/Icon'
 import FileUploader from '@/web/components/Tools/Upload'
+import CoverWall from '@/web/components/CoverWall'
+import { IconNames } from '@/web/components/Icon/iconNamesType'
 
 const collections = ['daily', 'playlists', 'albums', 'artists', 'videos', 'cloud'] as const
 type Collection = typeof collections[number]
+
+interface DiscoverPlayList {
+  id: number
+  coverUrl: string
+  large: boolean
+}
 
 const Albums = () => {
   const { data: albums } = useUserAlbums()
@@ -45,6 +53,28 @@ const Playlists = () => {
     () => playlists?.playlist?.slice(1).filter(p => p.userId !== user?.data?.account?.id),
     [playlists, user]
   )
+  const buildPlaylists = (playlists: Playlist[] | undefined): DiscoverPlayList[] => {
+    // 从歌单中抽出歌曲
+    const pickedIds: number[] = []
+    const playLists: DiscoverPlayList[] = []
+    playlists?.forEach(p => {
+      if (pickedIds.includes(p.id)) return
+      pickedIds.push(p.id)
+      playLists.push({
+        id: p.id,
+        coverUrl: p.coverImgUrl as string,
+        large: false,
+      })
+    })
+
+    // 挑选出大图
+    const largeCover = sampleSize([...Array(playlists!.length).keys()], ~~(playlists!.length / 3))
+    playLists.map((album, index) => (album.large = largeCover.includes(index)))
+    return playLists
+  }
+  const myCoverplayLists = buildPlaylists(myPlaylists)
+  const othersCoverplayLists = buildPlaylists(otherPlaylists)
+
   return (
     <div>
       {/* My playlists */}
@@ -53,7 +83,7 @@ const Playlists = () => {
           <div className='mb-4 mt-2 text-14 font-medium uppercase text-neutral-400'>
             Created BY ME
           </div>
-          <CoverRow playlists={myPlaylists} />
+          <CoverWall playlists={myCoverplayLists || []} />
         </>
       )}
       {/* Other playlists */}
@@ -62,7 +92,7 @@ const Playlists = () => {
           <div className='mb-4 mt-8 text-14 font-medium uppercase text-neutral-400'>
             Created BY OTHERS
           </div>
-          <CoverRow playlists={otherPlaylists} />
+          <CoverWall playlists={othersCoverplayLists || []} />
         </>
       )}
     </div>
@@ -83,31 +113,37 @@ const CollectionTabs = ({ showBg }: { showBg: boolean }) => {
   const { t } = useTranslation()
   const { displayPlaylistsFromNeteaseMusic } = useSnapshot(settings)
 
-  const tabs: { id: Collection; name: string }[] = [
+  const tabs: { id: Collection; name: string; iconName?: IconNames }[] = [
     {
       id: 'daily',
       name: t`common.daily`,
+      iconName: 'netease',
     },
     {
       id: 'albums',
       name: t`common.album_other`,
+      iconName: 'album',
     },
     {
       id: 'playlists',
       name: t`common.playlist_other`,
+      iconName: 'playlist',
     },
     {
       id: 'artists',
       name: t`common.artist_other`,
+      iconName: 'artist',
     },
     {
       id: 'videos',
       name: t`common.video_other`,
+      iconName: 'video',
     },
     {
       id: 'cloud',
-      name: t`common.cloud`
-    }
+      name: t`common.cloud`,
+      iconName: 'cloud',
+    },
   ]
 
   const { librarySelectedTab: selectedTab } = useSnapshot(persistedUiStates)
@@ -140,8 +176,6 @@ const CollectionTabs = ({ showBg }: { showBg: boolean }) => {
         )}
       </AnimatePresence>
       <div className='flex flex-row justify-between'>
-
-
         <Tabs
           tabs={tabs.filter(tab => {
             if (!displayPlaylistsFromNeteaseMusic && tab.id === 'playlists') {
@@ -157,14 +191,13 @@ const CollectionTabs = ({ showBg }: { showBg: boolean }) => {
             'sticky',
             'z-10',
             // '-mb-10',
-            'px-2.5 lg:px-0')}
+            'px-2.5 lg:px-0'
+          )}
           style={{
             top: `${topbarHeight}px`,
           }}
         />
-        <div className='items-center '>
-          {/* {selectedTab == 'cloud' && <FileUploader/> } */}
-        </div>
+        <div className='items-center '>{/* {selectedTab == 'cloud' && <FileUploader/> } */}</div>
       </div>
     </div>
   )
@@ -187,9 +220,6 @@ const Collections = () => {
       <div
         className={cx('no-scrollbar overflow-y-auto px-2.5 pt-10 pb-16 lg:px-0')}
         onScroll={onScroll}
-        style={{
-          // height: `calc(100vh - ${topbarHeight}px)`,
-        }}
       >
         {selectedTab === 'daily' && <Daily />}
         {selectedTab === 'albums' && <Albums />}

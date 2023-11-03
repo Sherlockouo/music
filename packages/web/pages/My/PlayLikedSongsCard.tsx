@@ -40,19 +40,15 @@ const Lyrics = ({ tracksIDs }: { tracksIDs: number[] }) => {
   }, [lyric])
 
   return (
-    <div
-      className={cx(
-        'line-clamp-4'
-        // css`
-        //   height: 86px;
-        // `
-      )}
-    >
+    <div className={cx('line-clamp-4')}>
       <div className='mb-3.5 text-18 font-medium'>
         {t('my.xxxs-liked-tracks', { nickname: user?.profile?.nickname })}
       </div>
       {lyricLines.map((line, index) => (
-        <div key={`${index}-${line}`} className='text-18 font-medium whitespace-nowrap overflow-ellipsis overflow-hidden'>
+        <div
+          key={`${index}-${line}`}
+          className='overflow-hidden overflow-ellipsis whitespace-nowrap text-18 font-medium'
+        >
           {line}
         </div>
       ))}
@@ -66,10 +62,10 @@ const Covers = memo(({ tracks }: { tracks: Track[] }) => {
     <div className='mt-6 grid w-full flex-shrink-0 grid-cols-3 gap-2.5 lg:mt-0 lg:ml-8 lg:w-auto'>
       {tracks.map(track => (
         <Image
-          src={resizeImage(track.al.picUrl || '', 'md')}
+          src={resizeImage(track.al?.picUrl || '', 'md')}
           className={cx('aspect-square rounded-24 lg:h-32 lg:w-32')}
           key={track.id}
-          onClick={() => navigate(`/album/${track.al.id}`)}
+          onClick={() => navigate(`/album/${track.al?.id}`)}
         />
       ))}
     </div>
@@ -108,7 +104,7 @@ const PlayLikedSongsCard = () => {
     <motion.div
       layout
       className={cx(
-        'mx-2.5 flex flex-col justify-between rounded-24 p-8 bg-black/10 dark:bg-white/10 lg:mx-0'
+        'mx-2.5 flex flex-col justify-between rounded-24 bg-black/10 p-8 dark:bg-white/10 lg:mx-0'
       )}
     >
       {/* Lyrics and Covers */}
@@ -118,17 +114,17 @@ const PlayLikedSongsCard = () => {
       </div>
 
       {/* Buttons */}
-      <div className='flex justify-between mt-5'>
+      <div className='mt-5 flex justify-between'>
         <button
           onClick={handlePlay}
-          className='rounded-full bg-accent-color-400 py-5 px-6 text-16 font-medium text-neutral-700 dark:text-white'
+          className='bg-accent-color-400 rounded-full py-5 px-6 text-16 font-medium text-neutral-700 dark:text-white'
         >
           {t`my.playNow`}
         </button>
         <button
           onClick={() => navigate(`/playlist/${likedSongsPlaylist?.playlist.id}`)}
           className={cx(
-            'flex items-center justify-center rounded-full bg-white/10 text-neutral-700 dark:text-neutral-300 transition duration-400 hover:bg-white/20 hover:text-neutral-300',
+            'flex items-center justify-center rounded-full bg-white/10 text-neutral-700 transition duration-400 hover:bg-white/20 hover:text-neutral-300 dark:text-neutral-300',
             css`
               padding: 15.5px;
             `

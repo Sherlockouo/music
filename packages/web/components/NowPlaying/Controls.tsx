@@ -20,7 +20,10 @@ import { ceil } from 'lodash'
 import { ease } from '@/web/utils/const'
 import { useTranslation } from 'react-i18next'
 import AudioOutputDevices from '@/web/components/Tools/Devices'
-import Progress from './Progress'
+import { useState } from 'react'
+import { IpcChannels } from '@/shared/IpcChannels'
+import settings from '@/web/states/settings'
+import uiStates from '@/web/states/uiStates'
 const LikeButton = () => {
   const { track } = useSnapshot(player)
   const { data: likedIDs } = useUserLikedTracksIDs()
@@ -43,6 +46,7 @@ const LikeButton = () => {
 const Controls = () => {
   const { state, track } = useSnapshot(player)
   const { minimizePlayer: mini } = useSnapshot(persistedUiStates)
+  const { showDeskttopLyrics, showDevices } = useSnapshot(uiStates)
 
   return (
     <MotionConfig transition={{ ease, duration: 0.5 }}>
@@ -67,9 +71,15 @@ const Controls = () => {
         )}
       >
         <div className={cx(mini ? 'flex flex-wrap gap-3' : 'flex-col gap-2')}>
-          {/* Progress */}
-          <Progress />
-          <div className={cx(mini ? 'flex-col text-center' : 'my-2 flex  justify-between gap-5')}>
+          <div
+            className={cx(
+              mini
+                ? 'flex-col text-center'
+                : showDevices || showDeskttopLyrics
+                ? 'my-3 flex  justify-between gap-5'
+                : 'my-5 flex  justify-between gap-5'
+            )}
+          >
             {/* Minimize */}
             <motion.button
               layout='position'
@@ -90,7 +100,10 @@ const Controls = () => {
               <motion.button
                 layout='position'
                 animate={{ rotate: mini ? 90 : 0 }}
-                onClick={() => track && player.prevTrack()}
+                onClick={() => {
+                  if (!track) return
+                  player.prevTrack()
+                }}
                 disabled={!track}
                 className='rounded-full bg-black/10 p-2.5 transition-colors duration-400 dark:bg-white/10 hover:dark:bg-white/20'
               >
@@ -99,7 +112,10 @@ const Controls = () => {
               <motion.button
                 layout='position'
                 animate={{ rotate: mini ? 90 : 0 }}
-                onClick={() => track && player.playOrPause()}
+                onClick={() => {
+                  track && player.playOrPause()
+                  window.ipcRenderer?.send(IpcChannels.Pause)
+                }}
                 className='rounded-full bg-black/10 p-2.5 transition-colors duration-400 dark:bg-white/10 hover:dark:bg-white/20'
               >
                 <Icon
@@ -113,7 +129,8 @@ const Controls = () => {
                 layout='position'
                 animate={{ rotate: mini ? 90 : 0 }}
                 onClick={() => {
-                  track && player.nextTrack()
+                  if (!track) return
+                  player.nextTrack()
                 }}
                 disabled={!track}
                 className='rounded-full bg-black/10 p-2.5 transition-colors duration-400 dark:bg-white/10 hover:dark:bg-white/20'
@@ -126,13 +143,52 @@ const Controls = () => {
             <LikeButton />
           </div>
 
-          {!mini && (<div className='flex justify-center iterms-center transition-colors duration-400'>
-            <AudioOutputDevices />
-          </div>)}
+          {!mini && (
+            <div className='iterms-center flex flex-row justify-center gap-5 transition-colors duration-400'>
+              {window.env?.isElectron && (
+                <>
+                  {showDevices && <AudioOutputDevices />}
+                  {showDeskttopLyrics && <DesktopLyric />}
+                </>
+              )}
+            </div>
+          )}
           {!mini && <VolumeSlider />}
         </div>
       </motion.div>
     </MotionConfig>
+  )
+}
+
+function DesktopLyric() {
+  const { showDesktopLyrics } = useSnapshot(settings)
+  const toggleDesktopLyricShow = async () => {
+    settings.showDesktopLyrics = !showDesktopLyrics
+
+    const show = await window.ipcRenderer?.invoke(IpcChannels.SetDesktopLyric)
+
+    settings.showDesktopLyrics = show ? show : false
+  }
+  return (
+    <div
+      className={cx(
+        css`
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          align-items: center;
+          text-align: center;
+        `
+      )}
+    >
+      <motion.button
+        layout='position'
+        className={cx(showDesktopLyrics && 'text-brand-600')}
+        onClick={toggleDesktopLyricShow}
+      >
+        <Icon name='lyrics' className={cx('h-5 w-5')} />
+      </motion.button>
+    </div>
   )
 }
 
@@ -146,24 +202,16 @@ function VolumeSlider() {
     <div
       className={cx(
         css`
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
-        text-align: center;
-      `)}
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          align-items: center;
+          text-align: center;
+        `
+      )}
     >
-      <motion.button
-        layout='position'
-        className={cx(
-        )}
-      >
-        <Icon
-          name={player.volume == 0 ? 'volume-mute' : 'volume-half'}
-          className={cx(
-            'h-5 w-5'
-          )}
-        />
+      <motion.button layout='position' className={cx()}>
+        <Icon name={player.volume == 0 ? 'volume-mute' : 'volume-half'} className={cx('h-5 w-5')} />
       </motion.button>
 
       <motion.div
@@ -181,22 +229,20 @@ function VolumeSlider() {
           max={1}
           onChange={onChange}
           alwaysShowTrack
-          alwaysShowThumb
+          alwaysShowThumb={false}
         />
       </motion.div>
       <motion.button
         layout='position'
-        className={cx(
+        className={
+          cx()
           // just dont need this I guess
           // ' transition-colors duration-400 ',
           // ' text-black dark:text-white'
-        )}
+        }
       >
-        <Icon name='volume' className={cx(
-          'h-5 w-5',
-        )} />
+        <Icon name='volume' className={cx('h-5 w-5')} />
       </motion.button>
-
     </div>
   )
 }

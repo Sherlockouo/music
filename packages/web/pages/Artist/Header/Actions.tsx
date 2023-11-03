@@ -28,10 +28,10 @@ const Actions = ({ isLoading }: { isLoading: boolean }) => {
             })
           }}
           className={cx(
-            'mr-2.5 flex h-14 w-14 items-center justify-center rounded-full transition duration-400 dark:bg-white/10 bg-black/10',
+            'mr-2.5 flex h-14 w-14 items-center justify-center rounded-full bg-black/10 transition duration-400 dark:bg-white/10',
             isLoading
               ? 'text-neutral-700 dark:text-neutral-300'
-              : 'text-neutral-700 dark:text-neutral-300 hover:text-white/70  hover:dark:bg-white/30 '
+              : 'text-neutral-700 hover:text-white/70 dark:text-neutral-300  hover:dark:bg-white/30 '
           )}
         >
           <Icon name='more' className='pointer-events-none h-7 w-7' />
@@ -41,10 +41,10 @@ const Actions = ({ isLoading }: { isLoading: boolean }) => {
         <button
           onClick={() => likeArtist.mutateAsync(id)}
           className={cx(
-            'mr-2.5 flex h-14 w-14 items-center justify-center rounded-full transition duration-400 bg-black/10 dark:bg-white/10 ',
+            'mr-2.5 flex h-14 w-14 items-center justify-center rounded-full bg-black/10 transition duration-400 dark:bg-white/10 ',
             isLoading
               ? 'text-neutral-700 dark:text-neutral-300'
-              : 'text-neutral-700 dark:text-neutral-300 hover:text-neutral-500  hover:dark:text-neutral-500'
+              : 'text-neutral-700 hover:text-neutral-500 dark:text-neutral-300  hover:dark:text-neutral-500'
           )}
         >
           <Icon name={isLiked ? 'heart' : 'heart-outline'} className='h-7 w-7' />
@@ -56,7 +56,9 @@ const Actions = ({ isLoading }: { isLoading: boolean }) => {
         onClick={() => player.playArtistPopularTracks(id)}
         className={cx(
           'h-14 rounded-full px-10 text-18 font-medium',
-          isLoading ? 'bg-white/20 text-transparent' : 'bg-brand-700 text-neutral-700 dark:text-white/80'
+          isLoading
+            ? 'bg-white/20 text-transparent'
+            : 'bg-brand-700 text-neutral-700 dark:text-white/80'
         )}
       >
         {t`artist.listen`}

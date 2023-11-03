@@ -30,6 +30,9 @@ export interface FetchTracksResponse {
 export interface FetchAudioSourceParams {
   id: number
   level?: 'standard' | 'higher' | 'exhigh' | 'lossless' | 'hires' // 128kbps 192kbps 320kbps Lossless Hi-Res
+  qqCookie?: string
+  miguCookie?: string
+  jooxCookie?: string
 }
 export interface FetchAudioSourceResponse {
   code: number

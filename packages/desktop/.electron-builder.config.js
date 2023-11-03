@@ -23,8 +23,12 @@ module.exports = {
   afterPack: './scripts/copySQLite3.js',
   publish: [
     {
+      provider: 'generic',
+      url: 'http://localhost:8100/',
+    },
+    {
       provider: 'github',
-      owner: 'feng',
+      owner: 'sherlockouo',
       repo: 'music',
       vPrefixedTagName: true,
       releaseType: 'draft',
@@ -56,6 +60,10 @@ module.exports = {
   },
   mac: {
     target: [
+      // {
+      //   target: 'zip',
+      //   arch: ['x64', 'arm64', 'universal'],
+      // },
       {
         target: 'dmg',
         arch: ['x64', 'arm64', 'universal'],
@@ -75,7 +83,7 @@ module.exports = {
       //   target: 'deb',
       //   arch: [
       //     'x64',
-      //     // 'arm64',
+      //     'arm64',
       //     // 'armv7l'
       //   ],
       // },
@@ -93,7 +101,7 @@ module.exports = {
       // },
       // {
       //   target: 'rpm',
-      //   arch: ['x64'],
+      //   arch: ['x64', 'arm64'],
       // },
       // {
       //   target: 'tar.gz',

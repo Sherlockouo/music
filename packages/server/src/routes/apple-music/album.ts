@@ -3,7 +3,6 @@ import appleMusicRequest from '../../utils/appleMusicRequest'
 import { album as getAlbum } from 'NeteaseCloudMusicApi'
 // const match  = require('@unblockneteasemusic/server')
 
-
 type ResponseSchema = {
   id: number
   neteaseId: number
@@ -27,7 +26,9 @@ const album: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       lang?: 'zh-CN' | 'en-US'
       noCache?: boolean
     }
-  }>('/r3playx/apple-music/album', opts, async function (request, reply): Promise<ResponseSchema | undefined> {
+  }>('/r3playx/apple-music/album', opts, async function (request, reply): Promise<
+    ResponseSchema | undefined
+  > {
     const { neteaseId: neteaseIdString, lang = 'en-US', noCache = false } = request.query
 
     // validate neteaseAlbumID
@@ -110,8 +111,6 @@ const album: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       neteaseArtistName: artist,
     }
 
-
-    
     // save to database
     if (!noCache) {
       try {
@@ -126,9 +125,8 @@ const album: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
             },
           },
         })
-      }catch(e){
-        console.log(e);
-        
+      } catch (e) {
+        console.log(e)
       }
     }
 

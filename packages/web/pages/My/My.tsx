@@ -13,17 +13,17 @@ const My = () => {
   const isLoggedIn = useIsLoggedIn()
   return (
     <PageTransition>
-      {isLoggedIn ? (
-        <LayoutGroup>
-          <div className='grid grid-cols-1 gap-10 flex'>
-            <PlayLikedSongsCard />
-            <RecentlyListened />
-            <Collections />
-          </div>
-        </LayoutGroup>
-      ) : (
-        <PleaseLogin />
-      )}
+      {/* {isLoggedIn ? ( */}
+      <LayoutGroup>
+        <div className='flex grid grid-cols-1 gap-10'>
+          <PlayLikedSongsCard />
+          <RecentlyListened />
+          <Collections />
+        </div>
+      </LayoutGroup>
+      {/* ) : (
+        <PleaseLogin /> */}
+      {/* )} */}
     </PageTransition>
   )
 }

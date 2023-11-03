@@ -14,9 +14,8 @@ import {
   FetchUserVideosParams,
   DailyCheckInResponse,
   CloudDiskInfoParam,
-  CloudDiskInfoResponse
+  CloudDiskInfoResponse,
 } from '@/shared/api/User'
-import Cookies from 'js-cookie'
 
 // 获取用户详情
 export function userDetail(uid: number) {
@@ -152,7 +151,7 @@ export function fetchUserVideos(): Promise<FetchUserVideosResponse> {
  * 上传歌曲到云盘（需要登录）
  */
 export function uploadSong(file: any) {
-  console.log('uploadSong ',file);
+  console.log('uploadSong ', file)
   let formData = new FormData()
   formData.append('songFile', file)
   return request({

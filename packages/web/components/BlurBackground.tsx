@@ -8,7 +8,7 @@ import { ease } from '@/web/utils/const'
 import { useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
-const BlurBackground = ({className}:{className:string}) => {
+const BlurBackground = ({ className }: { className: string }) => {
   const isMobile = useIsMobile()
   const { hideTopbarBackground, blurBackgroundImage } = useSnapshot(uiStates)
   const location = useLocation()
@@ -42,7 +42,10 @@ const BlurBackground = ({className}:{className:string}) => {
         <img
           onLoad={() => setIsLoaded(true)}
           className={className}
-          src={resizeImage(blurBackgroundImage?.endsWith('gif') ? '' : blurBackgroundImage || '', 'sm')}
+          src={resizeImage(
+            blurBackgroundImage?.endsWith('gif') ? '' : blurBackgroundImage || '',
+            'sm'
+          )}
         />
       </motion.div>
     </AnimatePresence>

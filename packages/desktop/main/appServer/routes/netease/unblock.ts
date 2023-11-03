@@ -5,7 +5,6 @@ import cache from '../../../cache'
 import { CacheAPIs } from '@/shared/CacheAPIs'
 const match = require('@unblockneteasemusic/server')
 
-
 const unblock: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   fastify.get(
     '/netease/unblock',
@@ -18,7 +17,7 @@ const unblock: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
       const cacheData = await cache.get(CacheAPIs.Unblock, trackID)
       if (cacheData) {
-        log.info('hit cache trackID: ', trackID);
+        log.info('hit cache trackID: ', trackID)
         return cacheData
       }
       if (!trackID) {

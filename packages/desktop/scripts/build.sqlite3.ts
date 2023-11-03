@@ -39,14 +39,14 @@ if (!fs.existsSync(binDir)) {
 let electronModuleVersion = ''
 async function getElectronModuleVersion() {
   const releases = await axios({
-    method: "get",
-    url: "https://releases.electronjs.org/releases.json",
+    method: 'get',
+    url: 'https://releases.electronjs.org/releases.json',
     headers: {
-      Connection: "keep-alive",
+      Connection: 'keep-alive',
       Cookie:
-        "_ga=GA1.2.1440531065.1691594509; _ga_7GG8HKLCLE=GS1.2.1695203360.15.0.1695203360.0.0.0",
-      "User-Agent":
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+        '_ga=GA1.2.1440531065.1691594509; _ga_7GG8HKLCLE=GS1.2.1695203360.15.0.1695203360.0.0.0',
+      'User-Agent':
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36',
     },
     setTimeout: 120000,
   })

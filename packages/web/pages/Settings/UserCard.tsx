@@ -32,7 +32,7 @@ const UserCard = () => {
       <div>
         <button
           onClick={() => logout()}
-          className='flex items-center rounded-full px-4 py-3 font-semibold transition-all duration-300 hover:bg-white/5 hover:text-white/60'
+          className='font-semibol flex items-center rounded-full border px-4 py-3 font-bold hover:bg-black/5 hover:text-black/60 dark:border-white dark:hover:bg-white/5 dark:hover:text-white/60'
         >
           {t`auth.logout`}
         </button>

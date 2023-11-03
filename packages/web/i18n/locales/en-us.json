@@ -17,9 +17,13 @@
     "video_other": "Videos",
     "video-with-count_one": "{{count}} Video",
     "video-with-count_other": "{{count}} Videos",
-    "lyric-welcome": "Let's explore the most wonderful sounds of music!",
-    "cloud": "cloud",
-    "upload": "upload music",
+    "lyricsBlur":"Lyrics Blur Effect",
+    "cloud":"cloud",
+    "upload":"upload music",
+    "showSongFrequency":"Show song frequency",
+    "showSongFrequencyWarnning":"⚠️This is performance consuming",
+    "showDeskttopLyrics":"Show Deskttop Lyrics",
+    "showDevices":"Show Audio Devices",
     "hide-show-player": "Hide/Show Player"
   },
   "navigation": {
@@ -80,7 +84,9 @@
     "accent-color": "Accent color",
     "lyric-style": "Background Image",
     "show-lyric-background-img": "Show Backround Image",
-    "lab": "Lab",
+    "lab": {
+      "title":"Lab"
+    },
     "unlock": "Unlock More Music Source",
     "engine": "Engine",
     "player": "Player",
@@ -94,6 +100,12 @@
     "player-find-alternative-track-on-youtube-if-not-available-on-netease": "Find alternative track on YouTube if not available on NetEase.",
     "volume-control": "Volume Control",
     "about": "About",
+    "host":"Proxy",
+    "qqCookie":"QQ_COOKIE",
+    "cookieSettingRefrence":"Click here for the configuration instruction. ",
+    "cookieDesc":"Leave empty to pick up the default value",
+    "miguCookie":"MIGU_COOKIE",
+    "jooxCookie":"JOOX_COOKIE",
     "keyboard-shortcuts": {
       "title": "Keyboard Shortcuts",
       "enable-global": "Enable Global Keyboard Shortcuts",

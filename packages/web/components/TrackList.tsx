@@ -25,9 +25,10 @@ const Actions = ({ track }: { track: Track }) => {
   }, [menu.dataSourceID, menu.type])
 
   return (
-    <div className={cx('mr-5 flex',
-    'text-black/90 dark:text-white/90',
-    )} onClick={e => e.stopPropagation()}>
+    <div
+      className={cx('mr-5 flex', 'text-black/90 dark:text-white/90')}
+      onClick={e => e.stopPropagation()}
+    >
       {/* Context menu */}
       <div
         className={cx(
@@ -44,9 +45,10 @@ const Actions = ({ track }: { track: Track }) => {
               dataSourceID: track.id,
             })
           }}
-          className={cx('mr-3 flex h-10 w-10 items-center justify-center rounded-full  ',
-          'transition-colors duration-400 dark:hover:bg-white/30 dark:hover:text-white/70',
-          'hover:bg-black/30 hover:text-black/70'
+          className={cx(
+            'mr-3 flex h-10 w-10 items-center justify-center rounded-full  ',
+            'transition-colors duration-400 dark:hover:bg-white/30 dark:hover:text-white/70',
+            'hover:bg-black/30 hover:text-black/70'
           )}
         >
           <Icon name='more' className='h-4 w-5' />
@@ -66,9 +68,10 @@ const Actions = ({ track }: { track: Track }) => {
             // translate
             toast('已添加到播放列表')
           }}
-          className={cx('mr-3 flex h-10 w-10 items-center justify-center rounded-full ',
-          'transition-colors duration-400 dark:hover:bg-white/30 dark:hover:text-white/70',
-          'hover:bg-black/30 hover:text-black/70'
+          className={cx(
+            'mr-3 flex h-10 w-10 items-center justify-center rounded-full ',
+            'transition-colors duration-400 dark:hover:bg-white/30 dark:hover:text-white/70',
+            'hover:bg-black/30 hover:text-black/70'
           )}
         >
           <Icon name='plus' className='h-5 w-5' />
@@ -89,9 +92,10 @@ const Actions = ({ track }: { track: Track }) => {
       >
         <div
           onClick={() => likeATrack.mutateAsync(track.id)}
-          className={cx('flex h-10 w-10 items-center justify-center rounded-full ',
-          'transition-colors duration-400 dark:hover:bg-white/30 dark:hover:text-white/70',
-          'hover:bg-black/30 hover:text-black/70'
+          className={cx(
+            'flex h-10 w-10 items-center justify-center rounded-full ',
+            'transition-colors duration-400 dark:hover:bg-white/30 dark:hover:text-white/70',
+            'hover:bg-black/30 hover:text-black/70'
           )}
         >
           <Icon
@@ -118,8 +122,9 @@ function Track({
       key={track.id}
       onClick={e => handleClick(e, track.id)}
       onContextMenu={e => handleClick(e, track.id)}
-      className={cx('group relative flex h-14 items-center py-2 text-16 font-medium text-neutral-200 transition duration-300',
-      'text-black/90 dark:text-white/90',
+      className={cx(
+        'group relative flex h-14 items-center py-2 text-16 font-medium transition duration-300',
+        'text-black/90 dark:text-white/90'
       )}
     >
       {/* Track no */}
@@ -148,7 +153,7 @@ function Track({
               <span key={artist.id}>
                 <NavLink
                   to={`/artist/${artist.id}`}
-                  className='transition duration-300 hover:dark:text-white/40 hover:text-black/40'
+                  className='transition duration-300 hover:text-black/40 hover:dark:text-white/40'
                 >
                   {artist.name}
                 </NavLink>
@@ -160,9 +165,7 @@ function Track({
       </div>
 
       {/* Desktop menu  */}
-      <div className={cx(
-        'text-black/90 dark:text-white/90',
-      )}>
+      <div className={cx('text-black/90 dark:text-white/90')}>
         <Actions track={track} />
       </div>
 
@@ -215,7 +218,7 @@ const TrackList = ({
   }
 
   return (
-    <div className={cx(className,)}>
+    <div className={cx(className)}>
       {(isLoading ? [] : tracks)?.map(track => (
         <Track key={track.id} track={track} handleClick={handleClick} />
       ))}
@@ -224,7 +227,8 @@ const TrackList = ({
           key={index}
           className={cx(
             'group relative flex h-14 items-center py-2 text-16 font-medium  transition duration-300 ease-in-out',
-          'text-black dark:text-white',)}
+            'text-black dark:text-white'
+          )}
         >
           {/* Track no */}
           <div className='mr-3 rounded-full  lg:mr-6'>00</div>

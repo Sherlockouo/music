@@ -108,7 +108,7 @@ const SearchSuggestions = ({
               },
             }}
             className={cx(
-              'absolute mt-2 origin-top rounded-24 border border-dark/10 dark:border-white/10 p-2 backdrop-blur-xxl',
+              'border-dark/10 absolute mt-2 origin-top rounded-24 border p-2 backdrop-blur-xxl dark:border-white/10',
               'bg-white/95 dark:bg-black/95',
               css`
                 width: 286px;
@@ -146,11 +146,7 @@ const SearchBox = () => {
   const inputRef = useRef<HTMLInputElement>(null)
 
   return (
-    <div className={cx(
-      'relative',
-      'dark:bg-white/30 bg-black/30 ',
-      'rounded-full',
-      )}>
+    <div className={cx('relative', 'bg-black/30 dark:bg-white/30 ', 'rounded-full')}>
       {/* Input */}
       <div
         onClick={() => inputRef.current?.focus()}
@@ -169,7 +165,7 @@ const SearchBox = () => {
           ref={inputRef}
           placeholder={t`search.search`}
           className={cx(
-            'flex-shrink font-medium bg-transparent',
+            'flex-shrink bg-transparent font-medium',
             css`
               @media (max-width: 420px) {
                 width: 142px;

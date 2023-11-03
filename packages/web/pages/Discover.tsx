@@ -49,11 +49,11 @@ const getAlbumsFromAPI = async () => {
   const pickedIds: number[] = []
   const albums: DiscoverAlbum[] = []
   tracks.songs.forEach(t => {
-    if (pickedIds.includes(t.al.id)) return
-    pickedIds.push(t.al.id)
+    if (pickedIds.includes(t.al?.id as number)) return
+    pickedIds.push(t.al?.id as number)
     albums.push({
-      id: t.al.id,
-      coverUrl: t.al.picUrl,
+      id: t.al?.id as number,
+      coverUrl: t.al?.picUrl as string,
       large: false,
     })
   })

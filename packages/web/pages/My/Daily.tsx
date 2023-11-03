@@ -1,4 +1,8 @@
-import { fetchDailyRecommendPlaylists, fetchDailyRecommendSongs, fetchRecommendedPlaylists } from '@/web/api/playlist'
+import {
+  fetchDailyRecommendPlaylists,
+  fetchDailyRecommendSongs,
+  fetchRecommendedPlaylists,
+} from '@/web/api/playlist'
 import { PlaylistApiNames } from '@/shared/api/Playlists'
 import { useQuery } from '@tanstack/react-query'
 import TrackList from '../Playlist/TrackList'
@@ -11,26 +15,33 @@ const reactQueryOptions = {
   refetchOnMount: false,
 }
 
-
 const Daily = () => {
-
   const { data: dailyRecommendSongs, isLoading: isLoadingDaily } = useQuery(
     [PlaylistApiNames.FetchDailyRecommendSongs],
     () => fetchDailyRecommendSongs(),
     reactQueryOptions
   )
 
-  const songIDs = dailyRecommendSongs?.data?.dailySongs?.map(track => {
-    return track.id
-  }) ?? []
+  const songIDs =
+    dailyRecommendSongs?.data?.dailySongs?.map(track => {
+      return track.id
+    }) ?? []
 
   const onPlay = (trackID: number | null = null) => {
     player.playAList(songIDs, trackID)
   }
 
-  return <>
-    {isLoadingDaily ? <Loading /> : <TrackList tracks={dailyRecommendSongs?.data?.dailySongs || []} onPlay={onPlay}></TrackList>}
-  </>
+  return (
+    <>
+      {isLoadingDaily ? (
+        <div className='flex justify-center'>
+          <Loading />
+        </div>
+      ) : (
+        <TrackList tracks={dailyRecommendSongs?.data?.dailySongs || []} onPlay={onPlay}></TrackList>
+      )}
+    </>
+  )
 }
 
 export default Daily

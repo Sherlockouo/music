@@ -6,7 +6,7 @@ import useIsMobile from '@/web/hooks/useIsMobile'
 import LayoutMobile from '@/web/components/LayoutMobile'
 import ScrollRestoration from '@/web/components/ScrollRestoration'
 import Toaster from './components/Toaster'
-import { cx } from '@emotion/css'
+
 import useApplyKeyboardShortcuts from './hooks/useApplyKeyboardShortcuts'
 const App = () => {
   useApplyKeyboardShortcuts()

@@ -34,14 +34,14 @@ const Album = ({ album }: { album?: Album }) => {
         )}
       />
       <div className='flex-shrink-1 ml-2'>
-        <div className='line-clamp-1 text-16 font-medium text-neutral-700 dark:text-neutral-300 transition-colors duration-400 '>
+        <div className='line-clamp-1 text-16 font-medium text-neutral-700 transition-colors duration-400 dark:text-neutral-300 '>
           {album.name}
         </div>
-        <div className='mt-1 text-14 font-bold text-neutral-700 dark:text-neutral-300 transition-colors duration-400 '>
+        <div className='mt-1 text-14 font-bold text-neutral-700 transition-colors duration-400 dark:text-neutral-300 '>
           {album.type}
           {album.size > 1 ? `· ${album.size} Tracks` : ''}
         </div>
-        <div className='mt-1.5 text-12 font-medium text-neutral-700 dark:text-neutral-300 transition-colors duration-400'>
+        <div className='mt-1.5 text-12 font-medium text-neutral-700 transition-colors duration-400 dark:text-neutral-300'>
           {dayjs(album?.publishTime || 0).format('MMM DD, YYYY')}
         </div>
       </div>
@@ -68,13 +68,13 @@ const Video = ({ video }: { video?: any }) => {
             )}
           />
           <div className='flex-shrink-1 ml-2'>
-            <div className='line-clamp-1 text-16 font-medium text-neutral-700 dark:text-neutral-300 transition-colors duration-400'>
+            <div className='line-clamp-1 text-16 font-medium text-neutral-700 transition-colors duration-400 dark:text-neutral-300'>
               {video.name}
             </div>
-            <div className='mt-1 text-14 font-bold text-neutral-700 dark:text-neutral-300  transition-colors duration-400 '>
+            <div className='mt-1 text-14 font-bold text-neutral-700 transition-colors  duration-400 dark:text-neutral-300 '>
               MV
             </div>
-            <div className='mt-1.5 text-12 font-medium text-neutral-700 dark:text-neutral-300  transition-colors duration-400 '>
+            <div className='mt-1.5 text-12 font-medium text-neutral-700 transition-colors  duration-400 dark:text-neutral-300 '>
               {dayjs(video.publishTime).format('MMM DD, YYYY')}
             </div>
           </div>

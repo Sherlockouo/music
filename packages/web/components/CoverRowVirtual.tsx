@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { prefetchAlbum } from '@/web/api/hooks/useAlbum'
 import { prefetchPlaylist } from '@/web/api/hooks/usePlaylist'
 import { Virtuoso } from 'react-virtuoso'
-import { CSSProperties } from 'react'
+import { CSSProperties, FC, createRef, useRef } from 'react'
 
 const CoverRow = ({
   albums,
@@ -45,6 +45,33 @@ const CoverRow = ({
     return rows
   }, [])
 
+  const CoverItem: FC<{ item: Item }> = ({ item }) => {
+    return (
+      <div
+        className='group'
+        onClick={() => goTo(item.id)}
+        onMouseOver={() => prefetch(item.id)}
+        key={item.id}
+      >
+        <img
+          alt={item.name}
+          src={resizeImage(
+            item?.picUrl || (item as Playlist)?.coverImgUrl || item?.picUrl || '',
+            'md'
+          )}
+          className='aspect-square w-full rounded-24'
+        />
+        {showTrackListName && (
+          <h4 className='group-hover:whitespace-wrap relative mb-4 box-content h-7 overflow-hidden text-ellipsis whitespace-nowrap text-center group-hover:overflow-visible lg:mb-0'>
+            <span className='bottom-0 left-0 right-0 flex-col justify-end p-1 transition group-hover:absolute group-hover:flex group-hover:min-h-[3rem] group-hover:whitespace-normal group-hover:rounded-b-24 group-hover:bg-neutral-50/70 group-hover:backdrop-blur-xl'>
+              {item.name}
+            </span>
+          </h4>
+        )}
+      </div>
+    )
+  }
+
   return (
     <div className={className}>
       {/* Title */}
@@ -66,25 +93,7 @@ const CoverRow = ({
         itemContent={(index, row) => (
           <div key={index} className='grid w-full grid-cols-4 gap-4 lg:mb-6 lg:gap-6'>
             {row.map((item: Item) => (
-              <div
-                onClick={() => goTo(item.id)}
-                onMouseOver={() => prefetch(item.id)}
-                key={item.id}
-              >
-                <img
-                  alt={item.name}
-                  src={resizeImage(
-                    item?.picUrl || (item as Playlist)?.coverImgUrl || item?.picUrl || '',
-                    'md'
-                  )}
-                  className='aspect-square w-full rounded-24'
-                />
-                {showTrackListName && (
-                  <h4 className='overflow-hidden text-ellipsis whitespace-nowrap p-2 text-center'>
-                    {item.name}
-                  </h4>
-                )}
-              </div>
+              <CoverItem key={item.id} item={item} />
             ))}
           </div>
         )}

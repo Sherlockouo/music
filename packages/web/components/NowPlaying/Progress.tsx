@@ -1,5 +1,3 @@
-import persistedUiStates from '@/web/states/persistedUiStates'
-import { cx, css } from '@emotion/css'
 import player from '@/web/states/player'
 import { formatDuration } from '@/web/utils/common'
 import { useSnapshot } from 'valtio'
@@ -8,11 +6,9 @@ import { IpcChannels } from '@/shared/IpcChannels'
 
 const Progress = () => {
   const { track, progress } = useSnapshot(player)
-  const { minimizePlayer: mini } = useSnapshot(persistedUiStates)
 
   return (
-    
-    <div className={cx(mini ? 'hidden' : 'relative ml-3 mr-3 flex flex-col')}>
+    <div className='mt-9 mb-10 flex w-full flex-col'>
       <Slider
         min={0}
         max={(track?.dt ?? 100000) / 1000}

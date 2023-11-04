@@ -52,7 +52,7 @@ const Controls = () => {
     <MotionConfig transition={{ ease, duration: 0.5 }}>
       <motion.div
         className={cx(
-          '-mb-3 fixed bottom-0 right-0 flex z-10',
+          'fixed bottom-0 right-0 flex',
           mini ? 'flex-col items-center justify-between' : 'items-center justify-between',
           mini
             ? css`

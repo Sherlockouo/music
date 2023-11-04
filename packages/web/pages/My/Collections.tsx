@@ -68,8 +68,10 @@ const Playlists = () => {
     })
 
     // 挑选出大图
-    const largeCover = sampleSize([...Array(playlists!.length).keys()], ~~(playlists!.length / 3))
-    playLists.map((album, index) => (album.large = largeCover.includes(index)))
+    if (playlists) {
+      const largeCover = sampleSize([...Array(playlists.length).keys()], ~~(playlists.length / 3))
+      playLists.map((album, index) => (album.large = largeCover.includes(index)))
+    }
     return playLists
   }
   const myCoverplayLists = buildPlaylists(myPlaylists)

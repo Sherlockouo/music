@@ -5,7 +5,18 @@ import { useNavigate } from 'react-router-dom'
 import { prefetchAlbum } from '@/web/api/hooks/useAlbum'
 import { prefetchPlaylist } from '@/web/api/hooks/usePlaylist'
 import { Virtuoso } from 'react-virtuoso'
-import { CSSProperties, FC, createRef, useRef } from 'react'
+import {
+  CSSProperties,
+  FC,
+  ReactNode,
+  createRef,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
+import { createPortal } from 'react-dom'
+import * as humanNumber from 'human-number'
 
 const CoverRow = ({
   albums,
@@ -48,7 +59,7 @@ const CoverRow = ({
   const CoverItem: FC<{ item: Item }> = ({ item }) => {
     return (
       <div
-        className='group'
+        className='group relative'
         onClick={() => goTo(item.id)}
         onMouseOver={() => prefetch(item.id)}
         key={item.id}
@@ -62,14 +73,114 @@ const CoverRow = ({
           className='aspect-square w-full rounded-24'
         />
         {showTrackListName && (
-          <h4 className='group-hover:whitespace-wrap relative mb-4 box-content h-7 overflow-hidden text-ellipsis whitespace-nowrap text-center group-hover:overflow-visible lg:mb-0'>
-            <span className='bottom-0 left-0 right-0 flex-col justify-end p-1 transition group-hover:absolute group-hover:flex group-hover:min-h-[3rem] group-hover:whitespace-normal group-hover:rounded-b-24 group-hover:bg-neutral-50/70 group-hover:backdrop-blur-xl'>
-              {item.name}
-            </span>
+          <h4 className='relative mb-4 mt-1 box-content h-7 overflow-hidden text-ellipsis whitespace-nowrap text-center sm:text-sm lg:-mb-4 lg:text-base 2xl:mb-0 2xl:text-lg'>
+            <span className='bottom-0 left-0 right-0 flex-col justify-end p-1'>{item.name}</span>
           </h4>
+        )}
+        <CoverItemHoverCard item={item} />
+      </div>
+    )
+  }
+  const CoverItemHoverCard: FC<{ item: Item }> = ({ item }) => {
+    const hostRef = createRef<HTMLDivElement>()
+    const [visible, setVisible] = useState(false)
+    const [parentInfo, setParentInfo] = useState<{
+      width: number
+      height: number
+      x: number
+      y: number
+    }>({
+      width: 0,
+      height: 0,
+      x: 0,
+      y: 0,
+    })
+
+    const isAlbum = useMemo(() => 'type' in item && item.type !== 1, [item])
+    const playlist = useMemo(() => (!isAlbum ? (item as Playlist) : null), [item])
+
+    useEffect(() => {
+      const parent = hostRef.current?.parentElement
+      if (!parent) return
+
+      const onMouseEnter = () => {
+        setParentInfo(parent.getBoundingClientRect())
+
+        setVisible(true)
+      }
+
+      const onMouseLeave = () => {
+        setVisible(false)
+      }
+
+      parent.addEventListener('pointerenter', onMouseEnter)
+      parent.addEventListener('pointerover', onMouseEnter)
+      parent.addEventListener('pointerleave', onMouseLeave)
+      parent.addEventListener('pointerout', onMouseLeave)
+      return () => {
+        parent.removeEventListener('pointerenter', onMouseEnter)
+        parent.removeEventListener('pointerover', onMouseEnter)
+        parent.removeEventListener('pointerleave', onMouseLeave)
+        parent.removeEventListener('pointerout', onMouseLeave)
+      }
+    }, [])
+
+    return (
+      <div ref={hostRef}>
+        {visible && (
+          <Portal>
+            <div
+              className='pointer-events-none fixed z-10'
+              style={{
+                left: `${parentInfo.x - parentInfo.width / 2}px`,
+                top: `${parentInfo.y + parentInfo.height / 5}px`,
+                width: `${parentInfo.width * 2}px`,
+              }}
+            >
+              <img
+                alt={item.name}
+                src={resizeImage(
+                  item?.picUrl || (item as Playlist)?.coverImgUrl || item?.picUrl || '',
+                  'md'
+                )}
+                className='rounded-18 absolute top-0 left-0 h-full w-full object-cover blur-md'
+              />
+              <div className='absolute top-0 left-0 h-full w-full bg-white/60 blur-md'></div>
+              <div className='relative flex h-full w-full flex-col gap-4 px-2 py-4'>
+                <header className='flex gap-2'>
+                  <img
+                    alt={item.name}
+                    src={resizeImage(
+                      item?.picUrl || (item as Playlist)?.coverImgUrl || item?.picUrl || '',
+                      'md'
+                    )}
+                    className='rounded-18 aspect-square w-1/6 rounded'
+                  />
+                  <h4 className='flex-auto self-center text-center text-2xl font-bold'>
+                    {item.name}
+                  </h4>
+                </header>
+                {playlist && (
+                  <footer className='flex w-full justify-around gap-2 text-stone-700'>
+                    <p>{playlist.trackCount ?? '-'} songs</p>
+                    <p>
+                      {humanNumber(playlist.playCount ?? (playlist as any).playcount, n =>
+                        n.toFixed(0)
+                      )}{' '}
+                      plays
+                    </p>
+                  </footer>
+                )}
+              </div>
+            </div>
+          </Portal>
         )}
       </div>
     )
+  }
+
+  const Portal = ({ children }: { children?: ReactNode }) => {
+    return createPortal(<>{children}</>, document.body.querySelector('#cover-hover-card')!)
   }
 
   return (

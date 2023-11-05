@@ -127,10 +127,15 @@ const CoverRow = ({
 
     return (
       <div ref={hostRef}>
-        {visible && (
+        {
           <Portal>
             <div
-              className='pointer-events-none fixed z-10'
+              className={cx(
+                'delay-50 pointer-events-none fixed z-10 transition duration-300 ease-in',
+                visible
+                  ? 'opacity-100 duration-300'
+                  : 'scale-y-150 scale-x-50 opacity-0 duration-100'
+              )}
               style={{
                 left: `${parentInfo.x - parentInfo.width / 2}px`,
                 top: `${parentInfo.y + parentInfo.height / 5}px`,
@@ -143,10 +148,23 @@ const CoverRow = ({
                   item?.picUrl || (item as Playlist)?.coverImgUrl || item?.picUrl || '',
                   'md'
                 )}
-                className='rounded-18 absolute top-0 left-0 h-full w-full object-cover blur-md'
+                className={cx(
+                  'absolute top-0 left-0 h-full w-full rounded-24 object-cover transition delay-100 duration-400 ease-out',
+                  visible ? 'opacity-100 blur-md' : 'opacity-0 blur-sm'
+                )}
               />
-              <div className='absolute top-0 left-0 h-full w-full bg-white/60 blur-md'></div>
-              <div className='relative flex h-full w-full flex-col gap-4 px-2 py-4'>
+              <div
+                className={cx(
+                  'absolute top-0 left-0 h-full w-full rounded-24 bg-white/60 blur-md transition delay-200 ease-in-out',
+                  visible ? 'opacity-100 duration-400' : 'opacity-0 duration-100'
+                )}
+              ></div>
+              <div
+                className={cx(
+                  'relative flex flex-col gap-4 px-2 py-4 transition delay-300 ease-in-out',
+                  visible ? 'opacity-100 duration-200' : 'opacity-0 duration-75'
+                )}
+              >
                 <header className='flex gap-2'>
                   <img
                     alt={item.name}
@@ -174,7 +192,7 @@ const CoverRow = ({
               </div>
             </div>
           </Portal>
-        )}
+        }
       </div>
     )
   }

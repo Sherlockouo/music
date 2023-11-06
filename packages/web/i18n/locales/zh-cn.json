@@ -106,6 +106,7 @@
     "cookieSettingRefrence":"设置说明请参见此处",
     "cookieDesc":"，留空则不进行相关设置",
     "jooxCookie":"JOOX_COOKIE",
+    "show-track-list-name": "在 Browse 页面显示歌单名称",
     "keyboard-shortcuts": {
       "title": "快捷键",
       "enable-global": "启用全局快捷键",

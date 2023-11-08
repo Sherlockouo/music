@@ -18,7 +18,7 @@ const App = () => {
       {isMobile ? <LayoutMobile /> : <Layout />}
       <Toaster />
       {/* What's this for */}
-      {/* <ScrollRestoration /> */}
+      <ScrollRestoration />
       <IpcRendererReact />
       <Devtool />
     </ErrorBoundary>

@@ -45,11 +45,11 @@ export function ipcRenderer() {
     changeTheme(theme as 'light' | 'dark')
   })
 
-  on(IpcChannels.Next, (e, { trackID }) => {
+  on(IpcChannels.Next, (e) => {
     player.nextTrack()
   })
 
-  on(IpcChannels.Previous, (e, { trackID }) => {
+  on(IpcChannels.Previous, (e) => {
     player.prevTrack()
   })
 

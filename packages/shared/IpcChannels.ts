@@ -89,19 +89,8 @@ export interface IpcChannelsParams {
   }
   [IpcChannels.Pause]: void
   [IpcChannels.PlayOrPause]: void
-  [IpcChannels.Next]: {
-    trackID: number
-  }
-  [IpcChannels.Previous]: {
-    trackID: number
-  }
-  [IpcChannels.LPlay]: {
-    track: Track
-  }
-  [IpcChannels.LPause]: void
-  [IpcChannels.LPlayOrPause]: void
-  [IpcChannels.LNext]: void
-  [IpcChannels.LPrevious]: void
+  [IpcChannels.Next]: void
+  [IpcChannels.Previous]: void
   [IpcChannels.Like]: {
     isLiked: boolean
   }
@@ -146,9 +135,6 @@ export interface IpcChannelsReturns {
   [IpcChannels.SyncProgress]: {
     progress: number
   }
-  [IpcChannels.LSyncProgress]: {
-    progress: number
-  }
   [IpcChannels.GetApiCache]: any
   [IpcChannels.DevDbExportJson]: void
   [IpcChannels.CacheCoverColor]: void
@@ -161,12 +147,8 @@ export interface IpcChannelsReturns {
   }
   [IpcChannels.Pause]: void
   [IpcChannels.PlayOrPause]: void
-  [IpcChannels.Next]: {
-    trackID: number
-  }
-  [IpcChannels.Previous]: {
-    trackID: number
-  }
+  [IpcChannels.Next]: void
+  [IpcChannels.Previous]: void
 
   [IpcChannels.Like]: void
   [IpcChannels.Repeat]: RepeatMode

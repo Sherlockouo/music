@@ -61,6 +61,10 @@ API 源代码来自 [Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryif
 
 ## 截图
 
+- 主页
+  <img width="1548" alt="image" src="https://github.com/Sherlockouo/music/assets/34598208/a58b5c05-ce35-4f32-8b07-fb94df94fc62">
+- 发现
+  <img width="1548" alt="image" src="https://github.com/Sherlockouo/music/assets/34598208/4f8c3168-ac8a-476a-8db2-2aede6e85534">
 - 新增歌词展示功能
   ![lyrics-screenshot](https://github.com/Sherlockouo/music/assets/34598208/82123958-db58-4026-ab4d-19f7c8e26495)
 - 新增音源，全局背景
@@ -69,6 +73,10 @@ API 源代码来自 [Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryif
   ![lyric-effect](https://github.com/Sherlockouo/music/assets/34598208/cba01737-5522-4387-81c8-587c5c261ffe)
 - 完善右键功能 ing
   ![menu](https://github.com/Sherlockouo/music/assets/34598208/56543dbd-fa37-4642-8645-7bae856ee6d4)
+
+## 赞赏(这将被用于为开发者充能，进行更加激情的创造)
+![赞赏](https://github.com/Sherlockouo/music/assets/34598208/54d3d073-341b-4977-a3a8-a1afd85fe3d2)
+
 
 ## Credit
 

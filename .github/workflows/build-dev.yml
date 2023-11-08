@@ -30,22 +30,22 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile false
+        run: pnpm install
 
       # - name: Build sqlite3 binaries
       #   run: tsx ./scripts/build.sqlite3.ts
 
-      - name: Install RPM & Pacman (Linux)
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update &&
-          sudo apt-get install --no-install-recommends -y rpm &&
-          sudo apt-get install --no-install-recommends -y bsdtar &&
-          sudo apt-get install --no-install-recommends -y libopenjp2-tools
+      # - name: Install RPM & Pacman (Linux)
+      #   if: runner.os == 'Linux'
+      #   run: |
+      #     sudo apt-get update &&
+      #     sudo apt-get install --no-install-recommends -y rpm &&
+      #     sudo apt-get install --no-install-recommends -y bsdtar &&
+      #     sudo apt-get install --no-install-recommends -y libopenjp2-tools
 
-      - name: Install Snapcraft (Linux)
-        uses: samuelmeuli/action-snapcraft@v1
-        if: startsWith(matrix.os, 'ubuntu')
+      # - name: Install Snapcraft (Linux)
+      #   uses: samuelmeuli/action-snapcraft@v1
+      #   if: startsWith(matrix.os, 'ubuntu')
         # with:
         #   Disable since the Snapcraft token is currently not working
         #   snapcraft_token: ${{ secrets.snapcraft_token }}
@@ -66,10 +66,9 @@ jobs:
           # If the commit is tagged with a version (e.g. "v1.0.0"),
           # release the app after building
           release: ${{ startsWith(github.ref, 'refs/tags/v') }}
-          args: --config .electron-builder.config.js
-          skip_package_manager_install: true
+          args: package
+          # skip_package_manager_install: true
           package_manager: pnpm
-        run: pnpm package
 
       - name: Upload Artifact (macOS)
         uses: actions/upload-artifact@v3

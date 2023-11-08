@@ -46,7 +46,7 @@ const LikeButton = () => {
 const Controls = () => {
   const { state, track } = useSnapshot(player)
   const { minimizePlayer: mini } = useSnapshot(persistedUiStates)
-  const { showDeskttopLyrics, showDevices } = useSnapshot(uiStates)
+  const { showDeskttopLyrics, showDevices } = useSnapshot(persistedUiStates)
 
   return (
     <MotionConfig transition={{ ease, duration: 0.5 }}>

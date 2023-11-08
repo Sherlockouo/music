@@ -17,8 +17,6 @@ import toast from 'react-hot-toast'
 import { scrobble } from '@/web/api/user'
 import { fetchArtistWithReactQuery } from '../api/hooks/useArtist'
 import { appName } from './const'
-import useIsMobile from '@/web/hooks/useIsMobile'
-import uiStates from '../states/uiStates'
 
 type TrackID = number
 export enum TrackListSourceType {
@@ -47,10 +45,8 @@ const PLAY_PAUSE_FADE_DURATION = 200
 
 let _howler = new Howl({ src: [''], format: ['mp3', 'flac'] })
 let invoked = false
-let _analyser = Howler.ctx.createAnalyser()
 
 export class Player {
-  private _lyricWinTrackID: number = 0
   private _track: Track | null = null
   private _trackIndex: number = 0
   private _progress: number = 0
@@ -129,6 +125,9 @@ export class Player {
     }
   }
 
+  /*
+    @deprecated this will violate CORS rules
+  */
   private getSongFFT() {
     if (window.env === undefined) return
     const audioCtx = new window.AudioContext()
@@ -163,161 +162,6 @@ export class Player {
     setInterval(updateFrequencyData, 80)
   }
 
-  // private fetchMP3(url: string): Promise<Blob> {
-  //   const options = {
-  //     method: 'GET',
-  //     headers: {
-  //       'Access-Control-Allow-Origin': 'GET', // 设置允许跨域的域名
-  //       'Origin': 'music.126.net'
-  //     },
-  //   };
-  //   axios.get(url).then((response) => {
-  //     return response.data
-
-  //     // if (!response.ok) {
-  //     //   throw new Error(response.statusText);
-  //     // }
-  //     // return response.blob();
-  //   });
-  // }
-
-  // private getSongFFT() {
-  //   const audioCtx = new AudioContext();
-
-  //   const audioElement = this.howler._sounds[0]._node as HTMLMediaElement;
-  //   const data = this.fetchMP3(audioElement.src)
-
-  //   audioElement.src = URL.createObjectURL(new Blob([data], { type: 'audio/flac' }))
-  //   const source = audioCtx.createMediaElementSource(audioElement);
-
-  //   const analyser = audioCtx.createAnalyser();
-  //   analyser.fftSize = 2048;
-
-  //   source.connect(analyser);
-  //   analyser.connect(audioCtx.destination);
-
-  //   const bufferLength = analyser.frequencyBinCount;
-  //   const dataArray = new Uint8Array(bufferLength);
-
-  //   const smooth = 0.02;
-  //   const start = 16;
-  //   const end = 128;
-
-  //   setInterval(() => {
-  //     analyser.getByteFrequencyData(dataArray);
-  //     let sum = 0;
-  //     dataArray.forEach((val, idx) => {
-  //       if (start <= idx && idx < end) {
-  //         sum += val;
-  //       }
-  //     });
-  //     this._nowVolume = this._nowVolume * smooth + (sum / (end - start)) * (1 - smooth);
-  //   }, 16);
-  // }
-  // private async fetchMP3(url: string) {
-  //   console.log('[player][fetchMP3]', url)
-  //
-  //   const resp = await request({
-  //     url: '/buffer',
-  //     method: 'get',
-  //     params: {
-  //       url: url,
-  //     },
-  //   })
-  //
-  //   console.log('[player][fetchMP3]', resp)
-  //   return resp
-  // }
-  //
-  // private async createAudioElement(url: string): Promise<HTMLAudioElement> {
-  //   return new Promise<HTMLAudioElement>((resolve, reject) => {
-  //     const audioElement = new Audio()
-  //     audioElement.addEventListener('loadedmetadata', () => {
-  //       resolve(audioElement)
-  //     })
-  //     audioElement.addEventListener('error', error => {
-  //       reject(error)
-  //     })
-  //     audioElement.src = url
-  //   })
-  // }
-  //
-  // private async startAudioAnalysis(url: string) {
-  //   const data = await this.fetchMP3(url)
-  //
-  //   try {
-  //     const audioElement = await this.createAudioElement('data:audio/mpeg;base64,' + data)
-  //     // console.log('audio element', audioElement.src)
-  //
-  //     const audioCtx = new AudioContext()
-  //     const source = audioCtx.createMediaElementSource(audioElement)
-  //     console.log('source', source)
-  //
-  //     const analyser = audioCtx.createAnalyser()
-  //     analyser.fftSize = 2048
-  //     console.log('analyser', analyser)
-  //
-  //     source.connect(analyser)
-  //     analyser.connect(audioCtx.destination)
-  //
-  //     const bufferLength = analyser.frequencyBinCount
-  //     const dataArray = new Uint8Array(bufferLength)
-  //     audioElement.addEventListener('canplay', () => {
-  //       console.log('canplay')
-  //       // audioElement.volume = 0
-  //       audioElement.play()
-  //       //
-  //       // setInterval(() => {
-  //       //   this.updateVolume(analyser, dataArray)
-  //       // }, 16)
-  //     })
-  //     audioElement.addEventListener('play', () => {
-  //       setInterval(() => {
-  //         this.updateVolume(analyser, dataArray)
-  //       }, 16)
-  //     })
-  //     return new Promise((resolve, reject) => {
-  //       // Perform your audio analysis operations
-  //
-  //       // Once the analysis is complete, resolve the promise with the object
-  //       resolve({ analyser, dataArray })
-  //
-  //       // If there's an error during the analysis, reject the promise
-  //       // reject(new Error('Audio analysis failed'));
-  //     })
-  //   } catch (error) {
-  //     console.log('analysis error', error)
-  //   }
-  // }
-  //
-  // private updateVolume(analyser: AnalyserNode, dataArray: Uint8Array) {
-  //   const smooth = 0.02
-  //   const start = 16
-  //   const end = 128
-  //
-  //   analyser.getByteFrequencyData(dataArray)
-  //
-  //   console.log('dataArray', dataArray)
-  //   let sum = 0
-  //   dataArray.forEach((val, idx) => {
-  //     if (start <= idx && idx < end) {
-  //       sum += val
-  //     }
-  //   })
-  //   // console.log('update volume called,sum',sum);
-  //
-  //   this._nowVolume = this._nowVolume * smooth + (sum / (end - start)) * (1 - smooth)
-  // }
-  //
-  // private async getSongFFT() {
-  //   const audioElement = this.howler._sounds[0]._node as HTMLMediaElement
-  //   const { analyser, dataArray } = await this.startAudioAnalysis(audioElement.src)
-  //
-  //   // setInterval(() => {
-  //   //   this.updateVolume(analyser, dataArray)
-  //   // }, 16)
-  // }
-
   /**
    * Get current volume
    */
@@ -345,20 +189,6 @@ export class Player {
     trackList[_trackIndex] = value
     this.fmTrackList[0] = value
   }
-
-  /**
-   *  !!WARNING!! set lyricWinTrackID only for lyricWindow
-   */
-  // set lyricWinTrackID(value) {
-  //   this._lyricWinTrackID = value
-  // }
-
-  /**
-   * Get lyricWinTrackID
-   */
-  // get lyricWinTrackID():number {
-  //   return this._lyricWinTrackID ? this.lyricWinTrackID : 0
-  // }
 
   /**
    * Get current playing track
@@ -541,7 +371,7 @@ export class Player {
       },
     })
     _howler = howler
-    ;(window as any).howler = howler
+      ; (window as any).howler = howler
     if (autoplay) {
       this.play()
       this.state = State.Playing
@@ -554,7 +384,8 @@ export class Player {
       this._setupProgressInterval()
     }
 
-    this.getSongFFT()
+    /* @deprecated */
+    // this.getSongFFT()
   }
 
   private _howlerOnEndCallback() {
@@ -778,9 +609,7 @@ export class Player {
     this.originTrackList = Array.from(this.trackList)
     this.shuffle = !this.shuffle
 
-    let len = this.trackList.length,
-      tmp,
-      idx
+    let len = this.trackList.length, tmp, idx
     while (len) {
       idx = Math.floor(Math.min(random(), 0.99999) * len--)
       tmp = this.trackList[len]
@@ -905,5 +734,5 @@ export class Player {
 }
 
 if (import.meta.env.DEV) {
-  ;(window as any).howler = _howler
+  ; (window as any).howler = _howler
 }

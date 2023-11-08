@@ -85,7 +85,8 @@
     "lyric-style": "Background Image",
     "show-lyric-background-img": "Show Backround Image",
     "lab": {
-      "title":"Lab"
+      "title":"Lab",
+      "description":"There are some experimental functions"
     },
     "unlock": "Unlock More Music Source",
     "engine": "Engine",

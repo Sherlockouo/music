@@ -1,11 +1,10 @@
 import settings from '@/web/states/settings'
-import { changeAccentColor } from '@/web/utils/theme'
 import { useSnapshot } from 'valtio'
 import { cx, css } from '@emotion/css'
-import { BlockDescription, BlockTitle, Button, Option, OptionText, Switch } from './Controls'
+import { Option, OptionText, Switch } from './Controls'
 import { useTranslation } from 'react-i18next'
 import AccentColor from '@/web/components/Appearence/AccentColor'
-import uiStates from '@/web/states/uiStates'
+import persistedUiStates from '@/web/states/persistedUiStates'
 
 const Theme = () => {
   const { t, i18n } = useTranslation()
@@ -51,7 +50,7 @@ const LayoutBackground = () => {
 
 const ShowDesktopLyrics = () => {
   const { t, i18n } = useTranslation()
-  const { showDeskttopLyrics } = useSnapshot(uiStates)
+  const { showDeskttopLyrics } = useSnapshot(persistedUiStates)
   return (
     <>
       <Option>
@@ -60,7 +59,7 @@ const ShowDesktopLyrics = () => {
         </div>
         <Switch
           enabled={showDeskttopLyrics}
-          onChange={value => (uiStates.showDeskttopLyrics = value)}
+          onChange={value => (persistedUiStates.showDeskttopLyrics = value)}
         ></Switch>
       </Option>
     </>
@@ -69,28 +68,28 @@ const ShowDesktopLyrics = () => {
 
 const ShowDevices = () => {
   const { t, i18n } = useTranslation()
-  const { showDevices } = useSnapshot(uiStates)
+  const { showDevices } = useSnapshot(persistedUiStates)
   return (
     <>
       <Option>
         <div className='flex flex-col'>
           <OptionText>{t`common.showDevices`}</OptionText>
         </div>
-        <Switch enabled={showDevices} onChange={value => (uiStates.showDevices = value)}></Switch>
+        <Switch enabled={showDevices} onChange={value => (persistedUiStates.showDevices = value)}></Switch>
       </Option>
     </>
   )
 }
 const LyricsBlur = () => {
   const { t, i18n } = useTranslation()
-  const { lyricsBlur } = useSnapshot(uiStates)
+  const { lyricsBlur } = useSnapshot(persistedUiStates)
   return (
     <>
       <Option>
         <div className='flex flex-col'>
           <OptionText>{t`common.lyricsBlur`}</OptionText>
         </div>
-        <Switch enabled={lyricsBlur} onChange={value => (uiStates.lyricsBlur = value)}></Switch>
+        <Switch enabled={lyricsBlur} onChange={value => (persistedUiStates.lyricsBlur = value)}></Switch>
       </Option>
     </>
   )

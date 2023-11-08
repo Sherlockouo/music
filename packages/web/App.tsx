@@ -17,7 +17,8 @@ const App = () => {
     <ErrorBoundary>
       {isMobile ? <LayoutMobile /> : <Layout />}
       <Toaster />
-      <ScrollRestoration />
+      {/* What's this for */}
+      {/* <ScrollRestoration /> */}
       <IpcRendererReact />
       <Devtool />
     </ErrorBoundary>

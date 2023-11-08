@@ -2,6 +2,9 @@ import { merge } from 'lodash-es'
 import { proxy, subscribe } from 'valtio'
 
 interface PersistedUiStates {
+  lyricsBlur: boolean
+  showDeskttopLyrics: boolean
+  showDevices: boolean
   loginPhoneCountryCode: string
   loginType: 'phone' | 'email' | 'qrCode'
   minimizePlayer: boolean
@@ -9,6 +12,9 @@ interface PersistedUiStates {
 }
 
 const initPersistedUiStates: PersistedUiStates = {
+  lyricsBlur: false,
+  showDeskttopLyrics: false,
+  showDevices: false,
   loginPhoneCountryCode: '+86',
   loginType: 'qrCode',
   minimizePlayer: false,

@@ -3,6 +3,8 @@ import { join } from 'path'
 import store from './store'
 import { IpcChannels, IpcChannelsParams } from '@/shared/IpcChannels'
 import { handleLyricsWinClose } from './ipcMain'
+import { appName } from './env'
+
 const on = <T extends keyof IpcChannelsParams>(
   channel: T,
   listener: (event: Electron.IpcMainEvent, params: IpcChannelsParams[T]) => void
@@ -28,10 +30,10 @@ export class LyricsWindow {
 
   createWindow(pWin: BrowserWindow) {
     const options: BrowserWindowConstructorOptions = {
-      title: 'Lyrics',
+      title: appName + 'Lyrics',
       webPreferences: {
         preload: join(__dirname, 'rendererPreload.js'),
-        nodeIntegration: true,
+        sandbox: false
       },
       width: store.get('lyricsWindow.width'),
       height: store.get('lyricsWindow.height'),
@@ -56,8 +58,10 @@ export class LyricsWindow {
 
     this.win = new BrowserWindow(options)
     this.win.webContents.setAudioMuted(true)
-
-    this.win.loadURL(`http://localhost:${process.env.ELECTRON_WEB_SERVER_PORT}/desktoplyrics`)
+    // Web server, load the web server to the electron
+    // const url = `http://localhost:${process.env.ELECTRON_WEB_SERVER_PORT}`
+    const url = `http://localhost:${process.env.ELECTRON_WEB_SERVER_PORT}/#/desktoplyrics`
+    this.win.loadURL(url)
 
     this.win.once('ready-to-show', () => {
       this.win && this.win.show()

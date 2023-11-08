@@ -1,26 +1,30 @@
 import PageTransition from '../../components/PageTransition'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState,useMemo } from 'react'
 import { useSnapshot } from 'valtio'
 import { css, cx } from '@emotion/css'
 import useLyric from '@/web/api/hooks/useLyric'
 import player from '@/web/states/player'
 import { lyricParser } from '@/web/utils/lyric'
 import { useTranslation } from 'react-i18next'
-import { motion } from 'framer-motion'
-import AudioVisualization from '@/web/components/Animation/AudioVisualization'
+import { useScroll, useTransform, motion } from 'framer-motion';
+
 import uiStates from '@/web/states/uiStates'
-import { State } from '@/web/utils/player'
+import toast from 'react-hot-toast'
+import { gsap } from 'gsap';
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+gsap.registerPlugin(ScrollToPlugin);
 
 const Lyrics = () => {
+  console.log('lyrics load ');
+
   const containerRef = useRef(null)
+  const pContainerRef = useRef(null)
   const [currentLineIndex, setCurrentLineIndex] = useState(0)
-  const [currentVolumnValue, setCurrentVolumnValue] = useState(128)
   const lyricsRes = useLyric({ id: player.trackID })
   const lyricsResponse = lyricsRes.data
   const { lyric: lyrics, tlyric: tlyric } = lyricParser(lyricsResponse)
-  const { state: playerState, progress, nowVolume } = useSnapshot(player)
-  const { showSongFrequency, lyricsBlur } = useSnapshot(uiStates)
-  const { t } = useTranslation()
+  const { progress } = useSnapshot(player)
+  const { lyricsBlur } = useSnapshot(uiStates)
   const [isHovered, setIsHovered] = useState(false)
 
   const handleMouseEnter = () => {
@@ -31,11 +35,14 @@ const Lyrics = () => {
     setIsHovered(false)
   }
 
+  const { scrollYProgress } = useScroll({ container: containerRef });
+  const opacity = useTransform(scrollYProgress, [0, 1], [0, 1]); // 根据滚动进度控制透明度
+  // set current lyrics
   useEffect(() => {
     const updateCurrentLineIndex = () => {
       var find = false
       for (let i = currentLineIndex; i < lyrics.length; i++) {
-        if (progress + 0.2 >= lyrics[i]?.time && progress < lyrics[i + 1]?.time) {
+        if (progress < lyrics[i + 1]?.time && progress >= lyrics[i]?.time) {
           find = true
           setCurrentLineIndex(i)
           break
@@ -44,17 +51,14 @@ const Lyrics = () => {
           setCurrentLineIndex(i)
         }
       }
+
       if (!find) {
         setCurrentLineIndex(0)
       }
+
     }
     updateCurrentLineIndex()
   }, [progress])
-
-  useEffect(() => {
-    var light = (1 / (1 + Math.exp(-(nowVolume - 128) / 64))) * 20
-    setCurrentVolumnValue(light)
-  }, [nowVolume])
 
   useEffect(() => {
     // 添加一个钩子函数，在 currentLineIndex 发生变化时，调用一个函数来滚动歌词容器
@@ -72,35 +76,17 @@ const Lyrics = () => {
         currentLine.scrollIntoView({
           behavior: 'smooth', // 滚动的行为为平滑过渡
           block: 'center', // 垂直方向上将元素居中对齐
-          inline: 'center', // 水平方向上将元素居中对齐
+          inline: 'center',
         })
       }
     }
 
-    // 调用 scrollToCurrentLine 函数
     scrollToCurrentLine()
   }, [currentLineIndex]) // 当 currentLineIndex 变化时，重新执行该钩子函数
 
-  const lineVariants = {
-    current: {
-      y: 0,
-      transition: {
-        duration: 0.4,
-        ease: 'easeOut',
-      },
-    },
-    notCurrent: {
-      y: -5,
-      transition: {
-        duration: 0.4,
-        ease: 'easeIn',
-      },
-    },
-  };
   const maxLength = Math.max(lyrics.length, tlyric.length)
-  const renderedLyrics = Array.from({ length: maxLength }, (_, index) => {
+  const renderedLyrics = useMemo(() => Array.from({ length: maxLength }, (_, index) => {
     const lyric = lyrics[index]?.content
-    // const time = lyrics[index]?.time || tlyric[index]?.time
     const tLyric = tlyric[index]?.content
 
     const setSongToLyric = (index: number) => {
@@ -110,11 +96,11 @@ const Lyrics = () => {
 
     const lineClassName = cx(
       'lyrics-row leading-120 my-2 p-4 ease-in-out iterms-center text-center',
-      'tracking-lyric leading-lyric text-2xl transition duration-400 dark:hover:bg-white/10 hover:bg-black/10  rounded-lg',
-      index === currentLineIndex && 'font-bold text-accent-color-500 text-3xl my-3',
+      'tracking-lyric leading-lyric text-2xl transition duration-500 dark:hover:bg-white/10 hover:bg-black/10  rounded-lg',
+      index === currentLineIndex && 'current-lyrics-row font-bold text-accent-color-500 text-3xl my-3',
       index !== currentLineIndex && 'text-black/80 dark:text-white/60',
       index !== currentLineIndex && lyricsBlur && 'blur-sm',
-      index !== currentLineIndex && isHovered && 'transition duration-500 blur-none'
+      index !== currentLineIndex && isHovered && 'blur-none'
     )
 
     return (
@@ -126,27 +112,35 @@ const Lyrics = () => {
         }}
       >
         <motion.span
-          initial={{ opacity: 100 }}
-          variants={lineVariants}
-          exit={{ opacity: 0 }}
-          animate={currentLineIndex === index ? 'current' : 'notCurrent'}
-          transition={{ duration: 0.4, ease: 'backOut' }}
+          style={{
+            opacity,
+          }}
+          animate={{
+            transition: {
+              ease: "easeInOut",
+              duration: 1,
+            },
+          }}
         >
           {lyric}
         </motion.span>
         <br />
         <motion.span
-          initial={{ opacity: 100 }}
-          exit={{ opacity: 0 }}
-          variants={lineVariants}
-          animate={currentLineIndex === index ? 'current' : 'notCurrent'}
-          transition={{ duration: 0.4, ease: 'backOut' }}
+          style={{
+            opacity,
+          }}
+          animate={{
+            transition: {
+              ease: "easeInOut",
+              duration: 1,
+            },
+          }}
         >
           {tLyric}
         </motion.span>
       </div>
     )
-  })
+  }), [maxLength,currentLineIndex])
 
   return (
     <PageTransition>
@@ -156,6 +150,7 @@ const Lyrics = () => {
           'text-center',
           'font-Roboto font-bold backdrop-blur-xxl'
         )}
+        ref={pContainerRef}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
@@ -165,15 +160,9 @@ const Lyrics = () => {
             'inline-block'
           )}
           ref={containerRef}
-          transition={{ duration: 0.5 }}
         >
           {renderedLyrics.length == 0 ? <>Enjoy the music</> : renderedLyrics}
         </motion.div>
-        {window.env !== undefined && (
-          <div className='sticky bottom-0 h-full w-full'>
-            {showSongFrequency && playerState == State.Playing && <AudioVisualization />}
-          </div>
-        )}
       </div>
     </PageTransition>
   )

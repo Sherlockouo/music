@@ -23,10 +23,6 @@ module.exports = {
   afterPack: './scripts/copySQLite3.js',
   publish: [
     {
-      provider: 'generic',
-      url: 'http://localhost:8100/',
-    },
-    {
       provider: 'github',
       owner: 'sherlockouo',
       repo: 'music',

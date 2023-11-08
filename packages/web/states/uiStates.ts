@@ -2,11 +2,7 @@ import { IpcChannels } from '@/shared/IpcChannels'
 import { proxy } from 'valtio'
 
 interface UIStates {
-  lyricsBlur: boolean
-  showDeskttopLyrics: boolean
   showLoginPanel: boolean
-  showSongFrequency: boolean
-  showDevices: boolean
   hideTopbarBackground: boolean
   mobileShowPlayingNext: boolean
   blurBackgroundImage: string | null
@@ -16,11 +12,7 @@ interface UIStates {
 }
 
 const initUIStates: UIStates = {
-  lyricsBlur: false,
-  showDeskttopLyrics: false,
   showLoginPanel: false,
-  showSongFrequency: false,
-  showDevices: false,
   hideTopbarBackground: false,
   mobileShowPlayingNext: false,
   blurBackgroundImage: null,

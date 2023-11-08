@@ -85,7 +85,8 @@
     "show-lyric-background-img": "显示背景图片",
     "general": "通用",
     "lab": {
-      "title":"实验室"
+      "title":"实验室",
+      "description":"这里可能有一些测试功能"
     },
     "unlock": "解锁更多歌源",
     "engine": "引擎",

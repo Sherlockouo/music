@@ -3,11 +3,11 @@ import './utils/theme'
 import { StrictMode } from 'react'
 import * as ReactDOMClient from 'react-dom/client'
 import {
-  BrowserRouter,
   useLocation,
   useNavigationType,
   createRoutesFromChildren,
   matchRoutes,
+  HashRouter,
 } from 'react-router-dom'
 import * as Sentry from '@sentry/react'
 import { BrowserTracing } from '@sentry/tracing'
@@ -57,10 +57,10 @@ const root = ReactDOMClient.createRoot(container)
 
 root.render(
   <StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <QueryClientProvider client={reactQueryClient}>
         <App />
       </QueryClientProvider>
-    </BrowserRouter>
+    </HashRouter>
   </StrictMode>
 )

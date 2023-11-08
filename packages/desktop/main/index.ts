@@ -48,7 +48,7 @@ class Main {
       bindingKeyboardShortcuts(this.win!.webContents, undefined, this.win!)
       this.createThumbar()
       initIpcMain(this.win, this.tray, this.thumbar, store)
-      // this.initDevTools()
+      // this.initDevTools() 
     })
   }
 
@@ -88,8 +88,6 @@ class Main {
       title: appName,
       webPreferences: {
         preload: join(__dirname, 'rendererPreload.js'),
-        // for lyrics effect
-        webSecurity: false,
         sandbox: false
       },
       width: store.get('window.width'),

@@ -14,7 +14,6 @@ const LyricsDesktop = () => {
   const lyricsRes = useLyric({ id: trackID })
   const lyricsResponse = lyricsRes.data
   const { lyric: lyrics, tlyric: tlyric } = lyricParser(lyricsResponse)
-  const lyricsAnimation = useAnimation()
 
   useEffect(() => {
     const updateCurrentLineIndex = () => {
@@ -36,12 +35,6 @@ const LyricsDesktop = () => {
     }
     updateCurrentLineIndex()
   }, [progress])
-
-  // comment the lyrics effect
-  // useEffect(() => {
-  //   var light = (1 / (1 + Math.exp(-(nowVolume - 128) / 64))) * 20
-  //   setCurrentVolumnValue(light)
-  // }, [nowVolume])
 
   useEffect(() => {
     // 添加一个钩子函数，在 currentLineIndex 发生变化时，调用一个函数来滚动歌词容器
@@ -65,7 +58,8 @@ const LyricsDesktop = () => {
     }
 
     // 调用 scrollToCurrentLine 函数
-    scrollToCurrentLine()
+    // scrollToCurrentLine()
+    requestAnimationFrame(scrollToCurrentLine)
   }, [currentLineIndex]) // 当 currentLineIndex 变化时，重新执行该钩子函数
 
   const maxLength = Math.max(lyrics.length, tlyric.length)
@@ -80,14 +74,25 @@ const LyricsDesktop = () => {
         'transition duration-400 font-bold text-accent-color-500 text-lg my-2',
       index !== currentLineIndex && 'transition duration-400 text-black/80 dark:text-white/60 '
     )
+
+    const lineVariants = {
+      current: {
+        y: 0,
+        transition: { type: 'spring', duration: 0.6, bounce: 0.36 }
+      },
+      notCurrent: {
+        y: -5,
+        transition: { type: 'spring', duration: 0.6, bounce: 0.36 }
+      },
+    };
     // todo: lyrics animation or effects
     return (
       <div className={cx(lineClassName, 'font-barlow ')} key={index}>
         <motion.span
           initial={{ opacity: 100 }}
           exit={{ opacity: 0 }}
-          animate={lyricsAnimation}
-          transition={{ duration: 0.4, ease: 'backOut' }}
+          variants={lineVariants}
+          animate={currentLineIndex === index ? 'current' : 'notCurrent'}
         >
           {lyric}
         </motion.span>
@@ -95,8 +100,8 @@ const LyricsDesktop = () => {
         <motion.span
           initial={{ opacity: 100 }}
           exit={{ opacity: 0 }}
-          animate={lyricsAnimation}
-          transition={{ duration: 0.4, ease: 'backOut' }}
+          variants={lineVariants}
+          animate={currentLineIndex === index ? 'current' : 'notCurrent'}
         >
           {tLyric}
         </motion.span>

@@ -12,6 +12,7 @@ import ContextMenus from './ContextMenus/ContextMenus'
 import settings from '@/web/states/settings'
 import { ease } from '../utils/const'
 import { motion } from 'framer-motion'
+import Router from '@/web/components/Router'
 
 const Layout = () => {
   const playerSnapshot = useSnapshot(player)
@@ -20,7 +21,11 @@ const Layout = () => {
   const { showBackgroundImage, theme } = useSnapshot(settings)
 
   return (
-    <div
+    <div>
+      {location.pathname == '/desktoplyrics' ? (
+        <Router />
+      ) : (
+        <div
       id='layout'
       className={cx(
         'h-full',
@@ -106,6 +111,10 @@ const Layout = () => {
         <ContextMenus />
       </div>
     </div>
+      )
+      }
+    </div>
+    
   )
 }
 

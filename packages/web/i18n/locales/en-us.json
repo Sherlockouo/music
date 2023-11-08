@@ -107,6 +107,7 @@
     "cookieDesc":"Leave empty to pick up the default value",
     "miguCookie":"MIGU_COOKIE",
     "jooxCookie":"JOOX_COOKIE",
+    "show-track-list-name": "Show Track List Name in Browse",
     "keyboard-shortcuts": {
       "title": "Keyboard Shortcuts",
       "enable-global": "Enable Global Keyboard Shortcuts",

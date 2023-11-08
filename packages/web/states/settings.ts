@@ -29,6 +29,7 @@ interface Settings {
   theme: string
   showDesktopLyrics: boolean
   keyboardShortcuts: KeyboardShortcutSettings
+  showTrackListName: boolean
 }
 
 const initSettings: Settings = {
@@ -52,6 +53,7 @@ const initSettings: Settings = {
   theme: 'dark',
   showDesktopLyrics: false,
   keyboardShortcuts: getKeyboardShortcutDefaultSettings(),
+  showTrackListName: false,
 }
 
 const STORAGE_KEY = 'settings'

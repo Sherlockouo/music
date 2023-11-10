@@ -24,6 +24,7 @@ interface Settings {
   playAnimatedArtworkFromApple: boolean
   priorityDisplayOfAlbumArtistDescriptionFromAppleMusic: boolean
   displayPlaylistsFromNeteaseMusic: boolean
+  closeWindowInMinimize: boolean
   showBackgroundImage: boolean
   unlock: boolean
   theme: string
@@ -41,6 +42,7 @@ const initSettings: Settings = {
   playAnimatedArtworkFromApple: true,
   priorityDisplayOfAlbumArtistDescriptionFromAppleMusic: true,
   displayPlaylistsFromNeteaseMusic: true,
+  closeWindowInMinimize: false,
   showBackgroundImage: false,
   httpProxyForYouTube: {
     proxy: '',

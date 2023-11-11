@@ -97,6 +97,8 @@
     "play-animated-artwork-from-apple-music": "Play Animated Artwork from Apple Music",
     "priority-display-description-from-apple-music": "Priority Display of Album/Artist Description from Apple Music",
     "display-playlists-from-netease-music": "Display Playlists from Netease Music in Sidebar",
+    "minimize-window": "Close Window",
+    "minimize-window-to-tray-when-close": "Minimize the Window to Tray Instead of Close it",
     "player-youtube-unlock": "YouTube Unlock",
     "player-find-alternative-track-on-youtube-if-not-available-on-netease": "Find alternative track on YouTube if not available on NetEase.",
     "volume-control": "Volume Control",

@@ -105,6 +105,10 @@ function initWindowIpcMain(win: BrowserWindow | null) {
     app.exit()
   })
 
+  on(IpcChannels.Hide, () => {
+    win?.hide()
+  })
+
   on(IpcChannels.ResetWindowSize, () => {
     if (!win) return
     win?.setSize(1440, 1024, true)

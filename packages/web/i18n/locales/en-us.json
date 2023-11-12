@@ -151,5 +151,9 @@
     "popular": "Popular",
     "all-songs": "All Songs",
     "synthesis": "Synthesis"
+  },
+  "coverrow": {
+    "songs": "Songs",
+    "plays": "Plays"
   }
 }

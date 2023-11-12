@@ -151,5 +151,9 @@
     "popular": "热门歌曲",
     "all-songs": "所有歌曲",
     "synthesis": "综合信息"
+  },
+  "coverrow": {
+    "songs": "首歌曲",
+    "plays": "次播放"
   }
 }

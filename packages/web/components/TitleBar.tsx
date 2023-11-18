@@ -54,7 +54,7 @@ const Controls = () => {
         className={cx(
           classNames,
           css`
-            border-radius: 4px 22px 4px 4px;
+            // border-radius: 4px 22px 4px 4px;
             margin-right: 4px;
           `
         )}

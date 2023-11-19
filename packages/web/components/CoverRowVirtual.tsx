@@ -74,11 +74,13 @@ const CoverRow = ({
           className='aspect-square w-full rounded-24'
         />
         {showTrackListName && (
+          <>
           <h4 className='relative mb-4 mt-1 box-content h-7 overflow-hidden text-ellipsis whitespace-nowrap text-center sm:text-sm lg:-mb-4 lg:text-base 2xl:mb-0 2xl:text-lg'>
             <span className='bottom-0 left-0 right-0 flex-col justify-end p-1'>{item.name}</span>
           </h4>
-        )}
         <CoverItemHoverCard item={item} />
+        </>
+        )}
       </div>
     )
   }

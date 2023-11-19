@@ -164,6 +164,8 @@ function initStoreIpcMain(store: Store<TypedElectronStore>) {
    * 同步设置到Main
    */
   on(IpcChannels.SyncSettings, (event, settings) => {
+    console.log('settings ', settings);
+    
     store.set('settings', settings)
   })
 }

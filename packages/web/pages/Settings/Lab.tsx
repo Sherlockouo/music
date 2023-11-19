@@ -1,26 +1,5 @@
 import { BlockDescription, Input, Button, Option, OptionText, Switch } from './Controls'
 import { useTranslation } from 'react-i18next'
-import { useSnapshot } from 'valtio'
-import uiStates from '@/web/states/uiStates'
-
-const ShowSongFrequency = () => {
-  const { t, i18n } = useTranslation()
-  const { showSongFrequency } = useSnapshot(uiStates)
-  return (
-    <>
-      <Option>
-        <div className='flex flex-col'>
-          <OptionText>{t`common.showSongFrequency`}</OptionText>
-          <div>{t`common.showSongFrequencyWarnning`}</div>
-        </div>
-        <Switch
-          enabled={showSongFrequency}
-          onChange={value => (uiStates.showSongFrequency = value)}
-        ></Switch>
-      </Option>
-    </>
-  )
-}
 
 const Lab = () => {
   const { t, i18n } = useTranslation()

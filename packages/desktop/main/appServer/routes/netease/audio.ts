@@ -198,7 +198,7 @@ async function audio(fastify: FastifyInstance) {
       const qqCookie = store.get('settings.qqCookie')
       const miguCookie = store.get('settings.miguCookie')
       const jooxCookie = store.get('settings.jooxCookie')
-      console.log('Cookie ',' ', qqCookie, ' ', miguCookie, ' ', jooxCookie);
+      // console.log('Cookie ',' ', qqCookie, ' ', miguCookie, ' ', jooxCookie);
 
       process.env.QQ_COOKIE = qqCookie as string || "";
       process.env.MIGU_COOKIE = miguCookie as string || "";
@@ -229,7 +229,7 @@ async function audio(fastify: FastifyInstance) {
         const songName = info?.name === undefined ? '' : info?.name.replace(/[^a-zA-Z\s]/g, '')
 
         if (isEnglish.test(artistName) && isEnglish.test(songName)) {
-          source = ['youtube', 'migu']
+          source = ['youtube', 'qq','migu']
         }
       }
       try {

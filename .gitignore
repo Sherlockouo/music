@@ -6,6 +6,9 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-lock.yaml
 
+# ignore db
+packages\server\prisma\musicInfo.db
+
 # Runtime data
 pids
 *.pid

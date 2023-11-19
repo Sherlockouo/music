@@ -99,7 +99,7 @@ class Main {
       frame: false,
       fullscreenable: true,
       resizable: true,
-      // transparent: true,
+      transparent: true,
       backgroundColor: 'rgba(0, 0, 0, 0)',
       show: false,
     }

@@ -215,8 +215,8 @@ async function audio(fastify: FastifyInstance) {
       // // 加载动态的环境变量
       // dotenv.config({ path: envConfig })
       const isEnglish = /^[a-zA-Z\s]+$/
-      // let source = ['qq','migu','joox', 'youtube']
-      let source = ['qq']
+      let source = ['qq','migu','joox', 'youtube']
+      // let source = ['qq']
       const enableFindTrackOnYouTube = store.get('settings.enableFindTrackOnYouTube')
       const httpProxyForYouTubeSettings = store.get('settings.httpProxyForYouTube')
       if (enableFindTrackOnYouTube && httpProxyForYouTubeSettings) {

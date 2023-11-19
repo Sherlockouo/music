@@ -198,7 +198,6 @@ async function audio(fastify: FastifyInstance) {
       const qqCookie = store.get('settings.qqCookie')
       const miguCookie = store.get('settings.miguCookie')
       const jooxCookie = store.get('settings.jooxCookie')
-      // console.log('Cookie ',' ', qqCookie, ' ', miguCookie, ' ', jooxCookie);
 
       process.env.QQ_COOKIE = qqCookie as string || "";
       process.env.MIGU_COOKIE = miguCookie as string || "";

@@ -97,6 +97,8 @@
     "play-animated-artwork-from-apple-music": "播放来自 Apple Music 的动画作品",
     "priority-display-description-from-apple-music": "优先展示来自Apple Music的专辑/艺术家描述",
     "display-playlists-from-netease-music": "导航栏展示来自网易云音乐的歌单列表",
+    "minimize-window": "最小化窗口",
+    "minimize-window-to-tray-when-close": "点击关闭按钮时最小化窗口至托盘",
     "player-find-alternative-track-on-youtube-if-not-available-on-netease": "当播放的歌曲无版权或无法播放时，自动从 YouTube 寻找替代音频。",
     "player-youtube-unlock": "YouTube 解锁",
     "volume-control": "音量控制",
@@ -107,6 +109,7 @@
     "cookieSettingRefrence":"设置说明请参见此处",
     "cookieDesc":"，留空则不进行相关设置",
     "jooxCookie":"JOOX_COOKIE",
+    "show-track-list-name": "在 Browse 页面显示歌单名称",
     "keyboard-shortcuts": {
       "title": "快捷键",
       "enable-global": "启用全局快捷键",
@@ -148,5 +151,9 @@
     "popular": "热门歌曲",
     "all-songs": "所有歌曲",
     "synthesis": "综合信息"
+  },
+  "coverrow": {
+    "songs": "首歌曲",
+    "plays": "次播放"
   }
 }

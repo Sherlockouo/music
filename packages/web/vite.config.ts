@@ -86,12 +86,6 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       plugins: [
-        // visualizer({
-        //   filename: './bundle-stats.html',
-        //   gzipSize: true,
-        //   projectRoot: './',
-        //   template: 'treemap',
-        // }),
       ],
     },
   },

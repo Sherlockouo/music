@@ -9,6 +9,7 @@ export const enum IpcChannels {
   MaximizeOrUnmaximize = 'MaximizeOrUnmaximize',
   MinimizeOrUnminimize = 'MinimizeOrUnminimize',
   Close = 'Close',
+  Hide = 'Hide',
   LyricsWindowClose = 'LyricsWindowClose',
   IsMaximized = 'IsMaximized',
   FullscreenStateChange = 'FullscreenStateChange',
@@ -57,6 +58,7 @@ export interface IpcChannelsParams {
   [IpcChannels.MaximizeOrUnmaximize]: void
   [IpcChannels.MinimizeOrUnminimize]: void
   [IpcChannels.Close]: void
+  [IpcChannels.Hide]: void
   [IpcChannels.LyricsWindowClose]: void
   [IpcChannels.IsMaximized]: void
   [IpcChannels.FullscreenStateChange]: void
@@ -130,6 +132,7 @@ export interface IpcChannelsReturns {
   [IpcChannels.PinDesktopLyric]: boolean
   [IpcChannels.MinimizeOrUnminimize]: void
   [IpcChannels.Close]: void
+  [IpcChannels.Hide]: void
   [IpcChannels.IsMaximized]: boolean
   [IpcChannels.FullscreenStateChange]: boolean
   [IpcChannels.SyncProgress]: {

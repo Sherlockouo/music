@@ -146,12 +146,12 @@ const SearchBox = () => {
   const inputRef = useRef<HTMLInputElement>(null)
 
   return (
-    <div className={cx('relative', 'bg-black/30 dark:bg-white/30 ', 'rounded-full')}>
+    <div className={cx('relative', 'dark:bg-white/10 bg-black/10 dark:hover:bg-white/20 hover:bg-black/20', 'transition-all duration-100 ease-in', 'rounded-full')}>
       {/* Input */}
       <div
         onClick={() => inputRef.current?.focus()}
         className={cx(
-          'app-region-no-drag flex cursor-text items-center rounded-full p-2.5 backdrop-blur-3xl',
+          'app-region-no-drag flex cursor-text items-center rounded-full p-2.5',
           'text-black dark:text-white ',
           css`
             ${bp.lg} {
@@ -160,12 +160,12 @@ const SearchBox = () => {
           `
         )}
       >
-        <SearchIcon />
+        <SearchIcon isSearching={false} />
         <input
           ref={inputRef}
-          placeholder={t`search.search`}
+          placeholder={t`search.search`.toString()}
           className={cx(
-            'flex-shrink bg-transparent font-medium',
+            'flex-shrink bg-transparent font-medium placeholder-black/60 dark:placeholder-white/60 outline-none',
             css`
               @media (max-width: 420px) {
                 width: 142px;

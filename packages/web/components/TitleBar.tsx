@@ -3,10 +3,13 @@ import { IpcChannels } from '@/shared/IpcChannels'
 import useIpcRenderer from '@/web/hooks/useIpcRenderer'
 import { useState } from 'react'
 import { css, cx } from '@emotion/css'
+import { useSnapshot } from 'valtio'
 import uiStates from '../states/uiStates'
+import settings from '@/web/states/settings'
 
 const Controls = () => {
   const [isMaximized, setIsMaximized] = useState(false)
+  const { closeWindowInMinimize } = useSnapshot(settings)
 
   useIpcRenderer(IpcChannels.IsMaximized, (e, value) => {
     setIsMaximized(value)
@@ -23,6 +26,10 @@ const Controls = () => {
 
   const close = () => {
     window.ipcRenderer?.send(IpcChannels.Close)
+  }
+
+  const hide = () => {
+    window.ipcRenderer?.send(IpcChannels.Hide)
   }
 
   const classNames = cx(
@@ -43,11 +50,11 @@ const Controls = () => {
         <Icon className='h-3 w-3' name={isMaximized ? 'windows-un-maximize' : 'windows-maximize'} />
       </button>
       <button
-        onClick={close}
+        onClick={ closeWindowInMinimize ? hide : close }
         className={cx(
           classNames,
           css`
-            border-radius: 4px 22px 4px 4px;
+            // border-radius: 4px 22px 4px 4px;
             margin-right: 4px;
           `
         )}

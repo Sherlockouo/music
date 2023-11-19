@@ -24,11 +24,13 @@ interface Settings {
   playAnimatedArtworkFromApple: boolean
   priorityDisplayOfAlbumArtistDescriptionFromAppleMusic: boolean
   displayPlaylistsFromNeteaseMusic: boolean
+  closeWindowInMinimize: boolean
   showBackgroundImage: boolean
   unlock: boolean
   theme: string
   showDesktopLyrics: boolean
   keyboardShortcuts: KeyboardShortcutSettings
+  showTrackListName: boolean
 }
 
 const initSettings: Settings = {
@@ -41,6 +43,7 @@ const initSettings: Settings = {
   playAnimatedArtworkFromApple: true,
   priorityDisplayOfAlbumArtistDescriptionFromAppleMusic: true,
   displayPlaylistsFromNeteaseMusic: true,
+  closeWindowInMinimize: false,
   showBackgroundImage: false,
   httpProxyForYouTube: {
     proxy: '',
@@ -52,6 +55,7 @@ const initSettings: Settings = {
   theme: 'dark',
   showDesktopLyrics: false,
   keyboardShortcuts: getKeyboardShortcutDefaultSettings(),
+  showTrackListName: false,
 }
 
 const STORAGE_KEY = 'settings'

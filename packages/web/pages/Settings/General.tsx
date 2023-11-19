@@ -11,6 +11,7 @@ function General() {
       <Language />
       <AppleMusic />
       <NeteaseMusic />
+      <CloseWindow />
     </div>
   )
 }
@@ -81,6 +82,24 @@ function NeteaseMusic() {
               persistedUiStates.librarySelectedTab = 'albums'
             }
           }}
+        />
+      </Option>
+    </div>
+  )
+}
+
+function CloseWindow() {
+  const { t } = useTranslation()
+
+  const { closeWindowInMinimize } = useSnapshot(settings)
+  return (
+    <div className='mt-7'>
+      <BlockTitle>{t`settings.minimize-window`}</BlockTitle>
+      <Option>
+        <OptionText>{t`settings.minimize-window-to-tray-when-close`}</OptionText>
+        <Switch
+          enabled={closeWindowInMinimize}
+          onChange={v => (settings.closeWindowInMinimize = v) }
         />
       </Option>
     </div>

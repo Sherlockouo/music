@@ -5,7 +5,7 @@ import { ease } from '@/web/utils/const'
 import Icon from '../Icon'
 
 const buttonClassNames =
-  'app-region-no-drag rounded-full dark:bg-white/10 bg-black/10 p-2.5 backdrop-blur-3xl   dark:hover:bg-white/20 dark:hover:text-white/60 hover:bg-black/20 hover:text-black/60'
+  'app-region-no-drag rounded-full dark:bg-white/10 bg-black/10 p-2.5 backdrop-blur-3xl dark:hover:bg-white/20 dark:hover:text-white/60 hover:bg-black/20 hover:text-black/60 transition-all duration-100 ease-in'
 
 const NavigationButtons = () => {
   const navigate = useNavigate()

@@ -77,7 +77,7 @@ const ArtistRow = ({
 
       {/* Artists */}
       {artists && (
-        <div className='no-scrollbar grid w-auto grid-cols-4 gap-x-10 gap-y-8 grid-cols-5 @3xl:grid-cols-5 @7xl:grid-cols-7'>
+        <div className='no-scrollbar grid w-auto grid-cols-4 grid-cols-5 gap-x-10 gap-y-8 @3xl:grid-cols-5 @7xl:grid-cols-7'>
           {artists.map(artist => (
             <div className='snap-start px-2.5 lg:px-0' key={artist.id}>
               <Artist artist={artist} key={artist.id} />

@@ -146,7 +146,14 @@ const SearchBox = () => {
   const inputRef = useRef<HTMLInputElement>(null)
 
   return (
-    <div className={cx('relative', 'dark:bg-white/10 bg-black/10 dark:hover:bg-white/20 hover:bg-black/20', 'transition-all duration-100 ease-in', 'rounded-full')}>
+    <div
+      className={cx(
+        'relative',
+        'bg-black/10 hover:bg-black/20 dark:bg-white/10 dark:hover:bg-white/20',
+        'transition-all duration-100 ease-in',
+        'rounded-full'
+      )}
+    >
       {/* Input */}
       <div
         onClick={() => inputRef.current?.focus()}
@@ -165,7 +172,7 @@ const SearchBox = () => {
           ref={inputRef}
           placeholder={t`search.search`.toString()}
           className={cx(
-            'flex-shrink bg-transparent font-medium placeholder-black/60 dark:placeholder-white/60 outline-none',
+            'flex-shrink bg-transparent font-medium placeholder-black/60 outline-none dark:placeholder-white/60',
             css`
               @media (max-width: 420px) {
                 width: 142px;

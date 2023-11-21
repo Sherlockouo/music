@@ -33,7 +33,7 @@ export class LyricsWindow {
       title: appName + 'Lyrics',
       webPreferences: {
         preload: join(__dirname, 'rendererPreload.js'),
-        sandbox: false
+        sandbox: false,
       },
       width: store.get('lyricsWindow.width'),
       height: store.get('lyricsWindow.height'),

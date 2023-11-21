@@ -75,7 +75,10 @@ const ShowDevices = () => {
         <div className='flex flex-col'>
           <OptionText>{t`common.showDevices`}</OptionText>
         </div>
-        <Switch enabled={showDevices} onChange={value => (persistedUiStates.showDevices = value)}></Switch>
+        <Switch
+          enabled={showDevices}
+          onChange={value => (persistedUiStates.showDevices = value)}
+        ></Switch>
       </Option>
     </>
   )
@@ -89,14 +92,14 @@ const LyricsBlur = () => {
         <div className='flex flex-col'>
           <OptionText>{t`common.lyricsBlur`}</OptionText>
         </div>
-        <Switch enabled={lyricsBlur} onChange={value => (persistedUiStates.lyricsBlur = value)}></Switch>
+        <Switch
+          enabled={lyricsBlur}
+          onChange={value => (persistedUiStates.lyricsBlur = value)}
+        ></Switch>
       </Option>
     </>
   )
 }
-
-
-
 
 const Browse = () => {
   const { showTrackListName } = useSnapshot(settings)

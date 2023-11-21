@@ -85,8 +85,7 @@ export default defineConfig({
     outDir: './dist',
     emptyOutDir: true,
     rollupOptions: {
-      plugins: [
-      ],
+      plugins: [],
     },
   },
   server: {

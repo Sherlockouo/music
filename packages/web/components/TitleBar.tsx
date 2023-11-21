@@ -50,7 +50,7 @@ const Controls = () => {
         <Icon className='h-3 w-3' name={isMaximized ? 'windows-un-maximize' : 'windows-maximize'} />
       </button>
       <button
-        onClick={ closeWindowInMinimize ? hide : close }
+        onClick={closeWindowInMinimize ? hide : close}
         className={cx(
           classNames,
           css`

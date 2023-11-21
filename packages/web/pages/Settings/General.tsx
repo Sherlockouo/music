@@ -99,7 +99,7 @@ function CloseWindow() {
         <OptionText>{t`settings.minimize-window-to-tray-when-close`}</OptionText>
         <Switch
           enabled={closeWindowInMinimize}
-          onChange={v => (settings.closeWindowInMinimize = v) }
+          onChange={v => (settings.closeWindowInMinimize = v)}
         />
       </Option>
     </div>

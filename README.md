@@ -71,7 +71,6 @@ API 源代码来自 [Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryif
   ![menu](https://github.com/Sherlockouo/music/assets/34598208/56543dbd-fa37-4642-8645-7bae856ee6d4)
 
 ## 赞赏(这将被用于为开发者充能，进行更加激情的创造)
-![赞赏](https://github.com/Sherlockouo/music/assets/34598208/54d3d073-341b-4977-a3a8-a1afd85fe3d2)
 
 <p align="center">
    <h2> 免责声明 Disclaimer </h2>

@@ -32,8 +32,9 @@ const getAudioFromCache = async (id: number) => {
       {
         source: cache.source,
         id: cache.id,
-        url: `http://127.0.0.1:${process.env.ELECTRON_WEB_SERVER_PORT
-          }/${appName.toLowerCase()}/audio/${audioFileName}`,
+        url: `http://127.0.0.1:${
+          process.env.ELECTRON_WEB_SERVER_PORT
+        }/${appName.toLowerCase()}/audio/${audioFileName}`,
         br: cache.bitRate,
         size: 0,
         md5: '',
@@ -199,11 +200,11 @@ async function audio(fastify: FastifyInstance) {
       const miguCookie = store.get('settings.miguCookie')
       const jooxCookie = store.get('settings.jooxCookie')
 
-      process.env.QQ_COOKIE = qqCookie as string || "";
-      process.env.MIGU_COOKIE = miguCookie as string || "";
-      process.env.JOOX_COOKIE = jooxCookie as string || "";
-      process.env.ENABLE_FLAC = "true"
-      process.env.ENABLE_LOCAL_VIP = "true"
+      process.env.QQ_COOKIE = (qqCookie as string) || ''
+      process.env.MIGU_COOKIE = (miguCookie as string) || ''
+      process.env.JOOX_COOKIE = (jooxCookie as string) || ''
+      process.env.ENABLE_FLAC = 'true'
+      process.env.ENABLE_LOCAL_VIP = 'true'
       // // 动态生成 `.env` 文件的内容
       // const envConfig = `
       //   QQ_COOKIE=${qqCookie}
@@ -215,20 +216,20 @@ async function audio(fastify: FastifyInstance) {
       // // 加载动态的环境变量
       // dotenv.config({ path: envConfig })
       const isEnglish = /^[a-zA-Z\s]+$/
-      let source = ['qq','migu','joox', 'youtube']
+      let source = ['qq', 'migu', 'joox', 'youtube']
       // let source = ['qq']
       const enableFindTrackOnYouTube = store.get('settings.enableFindTrackOnYouTube')
       const httpProxyForYouTubeSettings = store.get('settings.httpProxyForYouTube')
       if (enableFindTrackOnYouTube && httpProxyForYouTubeSettings) {
         const youtubeProxy = (httpProxyForYouTubeSettings as any).proxy as string
-          ; (global as any).proxy = require('url').parse(youtubeProxy)
+        ;(global as any).proxy = require('url').parse(youtubeProxy)
         const info = await getTrackInfo(trackID)
         const artistName =
           info?.ar[0]?.name === undefined ? '' : info?.ar[0]?.name.replace(/[^a-zA-Z\s]/g, '')
         const songName = info?.name === undefined ? '' : info?.name.replace(/[^a-zA-Z\s]/g, '')
 
         if (isEnglish.test(artistName) && isEnglish.test(songName)) {
-          source = ['youtube', 'qq','migu']
+          source = ['youtube', 'qq', 'migu']
         }
       }
       try {

@@ -75,11 +75,11 @@ const CoverRow = ({
         />
         {showTrackListName && (
           <>
-          <h4 className='relative mb-4 mt-1 box-content h-7 overflow-hidden text-ellipsis whitespace-nowrap text-center sm:text-sm lg:-mb-4 lg:text-base 2xl:mb-0 2xl:text-lg'>
-            <span className='bottom-0 left-0 right-0 flex-col justify-end p-1'>{item.name}</span>
-          </h4>
-        <CoverItemHoverCard item={item} />
-        </>
+            <h4 className='relative mb-4 mt-1 box-content h-7 overflow-hidden text-ellipsis whitespace-nowrap text-center sm:text-sm lg:-mb-4 lg:text-base 2xl:mb-0 2xl:text-lg'>
+              <span className='bottom-0 left-0 right-0 flex-col justify-end p-1'>{item.name}</span>
+            </h4>
+            <CoverItemHoverCard item={item} />
+          </>
         )}
       </div>
     )
@@ -185,7 +185,9 @@ const CoverRow = ({
                 </header>
                 {playlist && (
                   <footer className='flex w-full justify-around gap-2 text-stone-700'>
-                    <p>{playlist.trackCount ?? '-'} {t`coverrow.songs`}</p>
+                    <p>
+                      {playlist.trackCount ?? '-'} {t`coverrow.songs`}
+                    </p>
                     <p>
                       {humanNumber(playlist.playCount ?? (playlist as any).playcount, n =>
                         n.toFixed(0)

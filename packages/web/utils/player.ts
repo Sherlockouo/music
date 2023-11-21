@@ -86,7 +86,7 @@ export class Player {
     this._initFM()
     this._initMediaSession()
 
-    window.ipcRenderer?.send(IpcChannels.Repeat, { mode: this._repeatMode })
+    // window.ipcRenderer?.send(IpcChannels.Repeat, { mode: this._repeatMode })
   }
 
   get howler() {
@@ -232,7 +232,7 @@ export class Player {
   }
   set repeatMode(value) {
     this._repeatMode = value
-    window.ipcRenderer?.send(IpcChannels.Repeat, { mode: this._repeatMode })
+    // window.ipcRenderer?.send(IpcChannels.Repeat, { mode: this._repeatMode })
   }
 
   private async _initFM() {
@@ -371,7 +371,7 @@ export class Player {
       },
     })
     _howler = howler
-      ; (window as any).howler = howler
+    ;(window as any).howler = howler
     if (autoplay) {
       this.play()
       this.state = State.Playing
@@ -609,7 +609,9 @@ export class Player {
     this.originTrackList = Array.from(this.trackList)
     this.shuffle = !this.shuffle
 
-    let len = this.trackList.length, tmp, idx
+    let len = this.trackList.length,
+      tmp,
+      idx
     while (len) {
       idx = Math.floor(Math.min(random(), 0.99999) * len--)
       tmp = this.trackList[len]
@@ -713,15 +715,15 @@ export class Player {
     const metadata = {
       title: track.name,
       artist: track.ar.map(a => a.name).join(', '),
-      album: track.al.name,
+      album: track.al?.name,
       artwork: [
         {
-          src: track.al.picUrl + '?param=256y256',
+          src: track.al?.picUrl + '?param=256y256',
           type: 'image/jpg',
           sizes: '256x256',
         },
         {
-          src: track.al.picUrl + '?param=512y512',
+          src: track.al?.picUrl + '?param=512y512',
           type: 'image/jpg',
           sizes: '512x512',
         },
@@ -734,5 +736,5 @@ export class Player {
 }
 
 if (import.meta.env.DEV) {
-  ; (window as any).howler = _howler
+  ;(window as any).howler = _howler
 }

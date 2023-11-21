@@ -57,7 +57,7 @@ const IpcRendererReact = () => {
     const playing = [PlayerState.Playing, PlayerState.Loading].includes(state)
     if (isPlaying === playing) return
 
-    window.ipcRenderer?.send(playing ? IpcChannels.Play : IpcChannels.Pause,{})
+    window.ipcRenderer?.send(playing ? IpcChannels.Play : IpcChannels.Pause, {})
 
     setIsPlaying(playing)
   }, [isPlaying, state])

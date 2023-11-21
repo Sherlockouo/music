@@ -22,31 +22,31 @@ const Router = () => {
   useGASend()
   return (
     // this keeps the UI updates responsive even on slow device and networ
-      <AnimatePresence mode='wait'>
-        <Suspense
-          fallback={
-            <div className='iterms-center flex h-full w-full justify-center'>
-              <Loading />
-            </div>
-          }
-        >
-          <VideoPlayer />
-          <Routes location={location} key={location.pathname}>
-            <Route path='/' element={<My />} />
-            <Route path='/discover' element={<Discover />} />
-            <Route path='/browse' element={<Browse />} />
-            <Route path='/album/:id' element={<Album />} />
-            <Route path='/playlist/:id' element={<Playlist />} />
-            <Route path='/artist/:id' element={<Artist />} />
-            <Route path='/settings' element={<Settings />} />
-            <Route path='/lyrics' element={<Lyrics />} />
-            <Route path='/desktoplyrics' element={<LyricsDesktop />} />
-            <Route path='/search/:keywords' element={<Search />}>
-              <Route path=':type' element={<Search />} />
-            </Route>
-          </Routes>
-        </Suspense>
-      </AnimatePresence>
+    <AnimatePresence mode='wait'>
+      <Suspense
+        fallback={
+          <div className='iterms-center flex h-full w-full justify-center'>
+            <Loading />
+          </div>
+        }
+      >
+        <VideoPlayer />
+        <Routes location={location} key={location.pathname}>
+          <Route path='/' element={<My />} />
+          <Route path='/discover' element={<Discover />} />
+          <Route path='/browse' element={<Browse />} />
+          <Route path='/album/:id' element={<Album />} />
+          <Route path='/playlist/:id' element={<Playlist />} />
+          <Route path='/artist/:id' element={<Artist />} />
+          <Route path='/settings' element={<Settings />} />
+          <Route path='/lyrics' element={<Lyrics />} />
+          <Route path='/desktoplyrics' element={<LyricsDesktop />} />
+          <Route path='/search/:keywords' element={<Search />}>
+            <Route path=':type' element={<Search />} />
+          </Route>
+        </Routes>
+      </Suspense>
+    </AnimatePresence>
   )
 }
 

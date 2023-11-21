@@ -32,8 +32,6 @@ function createNativeImage(filename: string) {
   return nativeImage.createFromPath(path.join(iconDirRoot, filename))
 }
 
-
-
 class YPMTrayImpl implements YPMTray {
   private _win: BrowserWindow
   private _tray: Tray
@@ -52,7 +50,7 @@ class YPMTrayImpl implements YPMTray {
     this._contextMenu = Menu.buildFromTemplate(this._template)
     this._updateContextMenu()
 
-    this.setTooltip(appName) 
+    this.setTooltip(appName)
 
     this._tray.on('click', () => {
       this._win.show()
@@ -62,26 +60,26 @@ class YPMTrayImpl implements YPMTray {
   private _updateContextMenu() {
     this._tray.setContextMenu(this._contextMenu)
   }
-  
+
   createMenuTemplate(win: BrowserWindow): MenuItemConstructorOptions[] {
     const template: MenuItemConstructorOptions[] =
       process.platform === 'linux'
         ? [
-          {
-            label: '显示主面板',
-            click: () => win.show(),
-          },
-          {
-            type: 'separator',
-          },
-        ]
+            {
+              label: '显示主面板',
+              click: () => win.show(),
+            },
+            {
+              type: 'separator',
+            },
+          ]
         : []
-  
+
     return template.concat([
       {
         label: '播放',
         click: () => {
-          win.webContents.send(IpcChannels.Play,{})
+          win.webContents.send(IpcChannels.Play, {})
           this.setPlayState(true)
         },
         icon: createNativeImage('play.png'),
@@ -129,6 +127,12 @@ class YPMTrayImpl implements YPMTray {
             label: '单曲循环',
             click: () => win.webContents.send(IpcChannels.Repeat, RepeatMode.One),
             id: RepeatMode.One,
+            type: 'radio',
+          },
+          {
+            label: '随机播放',
+            click: () => win.webContents.send(IpcChannels.Repeat, RepeatMode.Shuffle),
+            id: RepeatMode.Shuffle,
             type: 'radio',
           },
         ],

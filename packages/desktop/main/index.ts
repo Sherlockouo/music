@@ -1,6 +1,14 @@
 import './preload' // must be first
 import './sentry'
-import { app, BrowserWindow, BrowserWindowConstructorOptions, dialog, Menu, MenuItem, shell } from 'electron'
+import {
+  app,
+  BrowserWindow,
+  BrowserWindowConstructorOptions,
+  dialog,
+  Menu,
+  MenuItem,
+  shell,
+} from 'electron'
 import { release } from 'os'
 import { join } from 'path'
 import log from './log'
@@ -50,7 +58,7 @@ class Main {
       bindingKeyboardShortcuts(this.win!.webContents, undefined, this.win!)
       this.createThumbar()
       initIpcMain(this.win, this.tray, this.thumbar, store)
-      // this.initDevTools() 
+      // this.initDevTools()
       checkForUpdates()
     })
 
@@ -79,13 +87,12 @@ class Main {
 
   createTray() {
     // if (isWindows || isLinux || isDev) {
-      this.tray = createTray(this.win!)
+    this.tray = createTray(this.win!)
     // }
     if (isMac) {
       // create dock menu for macOS
-      const createdDockMenu = createDockMenu(this.win!);
-      if (createdDockMenu && app.dock) app.dock.setMenu(createdDockMenu);
-
+      const createdDockMenu = createDockMenu(this.win!)
+      if (createdDockMenu && app.dock) app.dock.setMenu(createdDockMenu)
     }
   }
 
@@ -98,13 +105,12 @@ class Main {
     }
   }
 
-
   createWindow() {
     const options: BrowserWindowConstructorOptions = {
       title: appName,
       webPreferences: {
         preload: join(__dirname, 'rendererPreload.js'),
-        sandbox: false
+        sandbox: false,
       },
       width: store.get('window.width'),
       height: store.get('window.height'),
@@ -223,11 +229,11 @@ class Main {
     this.win.on('resized', saveBounds)
     this.win.on('moved', saveBounds)
 
-    this.win.on('close', (e) => {
+    this.win.on('close', e => {
       if (isMac) {
         e.preventDefault() //阻止默认行为
         this.win?.hide() //调用 最小化实例方法
-        return;
+        return
       }
       let closeWindowInMinimize = store.get('settings.closeWindowInMinimize')
 
@@ -256,7 +262,6 @@ class Main {
     })
 
     app.on('activate', () => {
-      
       const allWindows = BrowserWindow.getAllWindows()
       if (allWindows.length) {
         this.win?.show()

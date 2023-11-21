@@ -15,7 +15,7 @@ import { openContextMenu } from '@/web/states/contextMenus'
 import { useTranslation } from 'react-i18next'
 import useHoverLightSpot from '../hooks/useHoverLightSpot'
 import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { RepeatMode } from '@/shared/playerDataTypes'
 
 const FMButton = () => {
@@ -48,6 +48,18 @@ const FMButton = () => {
 const RepeatButton = () => {
   const { buttonRef, buttonStyle } = useHoverLightSpot()
   const [repeat, setRepeat] = useState(0)
+  const { repeatMode } = useSnapshot(player)
+  useEffect(() => {
+    if (repeatMode == RepeatMode.Off) {
+      setRepeat(0)
+    }
+    if (repeatMode == RepeatMode.On) {
+      setRepeat(1)
+    }
+    if (repeatMode == RepeatMode.One) {
+      setRepeat(2)
+    }
+  }, [repeatMode])
   return (
     <motion.button
       ref={buttonRef}
@@ -75,7 +87,8 @@ const RepeatButton = () => {
 
 const ShuffleButton = () => {
   const { buttonRef, buttonStyle } = useHoverLightSpot()
-  const [shuffle, setShuffle] = useState(false)
+  const { repeatMode } = useSnapshot(player)
+  const [shuffle, setShuffle] = useState(repeatMode == RepeatMode.Shuffle)
   return (
     <motion.button
       ref={buttonRef}
@@ -86,7 +99,7 @@ const ShuffleButton = () => {
       className={cx(
         player.mode == Mode.FM ? 'hidden' : 'block',
         'group relative transition duration-300 ease-linear',
-        shuffle
+        repeatMode == RepeatMode.Shuffle
           ? 'text-brand-500 opacity-100 hover:opacity-90'
           : 'text-neutral-500 opacity-60 hover:opacity-100'
       )}

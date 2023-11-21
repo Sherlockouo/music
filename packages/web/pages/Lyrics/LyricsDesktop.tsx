@@ -78,13 +78,13 @@ const LyricsDesktop = () => {
     const lineVariants = {
       current: {
         y: 0,
-        transition: { type: 'spring', duration: 0.6, bounce: 0.36 }
+        transition: { type: 'spring', duration: 0.6, bounce: 0.36 },
       },
       notCurrent: {
         y: -5,
-        transition: { type: 'spring', duration: 0.6, bounce: 0.36 }
+        transition: { type: 'spring', duration: 0.6, bounce: 0.36 },
       },
-    };
+    }
     // todo: lyrics animation or effects
     return (
       <div className={cx(lineClassName, 'font-barlow ')} key={index}>

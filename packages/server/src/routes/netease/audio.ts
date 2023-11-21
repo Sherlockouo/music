@@ -199,7 +199,7 @@ async function audio(fastify: FastifyInstance) {
       process.env.ENABLE_LOCAL_VIP = 'true'
       try {
         // todo: 暂时写死的，是否开放给用户配置
-        await match(trackID, ['migu','youtube']).then((data: unknown) => {
+        await match(trackID, ['migu', 'youtube']).then((data: unknown) => {
           if (data === null || data === undefined || (data as any)?.url === '') {
             reply.code(500).send({
               code: 400,

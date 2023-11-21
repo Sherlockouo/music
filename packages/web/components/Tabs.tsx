@@ -20,7 +20,10 @@ function Tabs<T>({
   style?: React.CSSProperties
 }) {
   return (
-    <div className={cx('no-scrollbar flex gap-4 overflow-y-auto flex-wrap', className)} style={style}>
+    <div
+      className={cx('no-scrollbar flex flex-wrap gap-4 overflow-y-auto', className)}
+      style={style}
+    >
       {tabs.map(tab => (
         <div
           key={tab.id as string}

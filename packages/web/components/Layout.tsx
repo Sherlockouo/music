@@ -26,95 +26,95 @@ const Layout = () => {
         <Router />
       ) : (
         <div
-      id='layout'
-      className={cx(
-        'h-full',
-        'bg-img ',
-        window.env?.isElectron && !fullscreen && 'rounded-12',
-        css`
-          position: relative;
-        `
-      )}
-    >
-      {/* layout */}
-      <motion.div
-        className={cx(
-          window.env?.isElectron && !fullscreen && 'rounded-12',
-          'h-full',
-          css`
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-          `,
-          showBackgroundImage &&
-            css`
-              background-repeat: no-repeat;
-              background-size: cover;
-              background-position: center;
-              transform: translate3d(0, 0, 0);
-            `,
-          theme === 'dark' ? 'bg-black/90' : 'bg-white/90'
-        )}
-        style={{ backgroundImage: showBackgroundImage ? `url(${player.track?.al?.picUrl})` : '' }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3, ease }}
-      >
-        <div
+          id='layout'
           className={cx(
+            'h-full',
+            'bg-img ',
             window.env?.isElectron && !fullscreen && 'rounded-12',
             css`
-              position: absolute;
-              top: 0;
-              left: 0;
-              width: 100%;
-              height: 100%;
-              background-color: rgba(0, 0, 0, 0.05); /* 设置半透明背景颜色 */
-              z-index: 1; /* 设置层级为较高的值，确保遮罩在内容上方 */
+              position: relative;
             `
           )}
-        ></div>
-      </motion.div>
-      {/* mask */}
-      <motion.div
-        className={cx(
-          // mask will affect the borde radius
-          window.env?.isElectron && !fullscreen && 'rounded-12',
-          'absolute inset-0 z-0',
-          theme === 'dark' ? 'bg-black/40' : 'bg-white/40'
-        )}
-      />
-      <div
-        id='layout-foreground'
-        className={cx(
-          'rounded-12',
-          'backdrop-blur-md',
-          'relative grid h-screen select-none overflow-hidden',
-          'text-black transition-colors duration-400 dark:text-white'
-        )}
-      >
-        <MenuBar />
-        <div className=''>
-          <Topbar />
+        >
+          {/* layout */}
+          <motion.div
+            className={cx(
+              window.env?.isElectron && !fullscreen && 'rounded-12',
+              'h-full',
+              css`
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+              `,
+              showBackgroundImage &&
+                css`
+                  background-repeat: no-repeat;
+                  background-size: cover;
+                  background-position: center;
+                  transform: translate3d(0, 0, 0);
+                `,
+              theme === 'dark' ? 'bg-black/90' : 'bg-white/90'
+            )}
+            style={{
+              backgroundImage: showBackgroundImage ? `url(${player.track?.al?.picUrl})` : '',
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, ease }}
+          >
+            <div
+              className={cx(
+                window.env?.isElectron && !fullscreen && 'rounded-12',
+                css`
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  background-color: rgba(0, 0, 0, 0.05); /* 设置半透明背景颜色 */
+                  z-index: 1; /* 设置层级为较高的值，确保遮罩在内容上方 */
+                `
+              )}
+            ></div>
+          </motion.div>
+          {/* mask */}
+          <motion.div
+            className={cx(
+              // mask will affect the borde radius
+              window.env?.isElectron && !fullscreen && 'rounded-12',
+              'absolute inset-0 z-0',
+              theme === 'dark' ? 'bg-black/40' : 'bg-white/40'
+            )}
+          />
+          <div
+            id='layout-foreground'
+            className={cx(
+              'rounded-12',
+              'backdrop-blur-md',
+              'relative grid h-screen select-none overflow-hidden',
+              'text-black transition-colors duration-400 dark:text-white'
+            )}
+          >
+            <MenuBar />
+            <div className=''>
+              <Topbar />
+            </div>
+            <Main />
+            <Login />
+            {showPlayer && <Player />}
+
+            {(window.env?.isWindows ||
+              window.env?.isLinux ||
+              window.localStorage.getItem('showWindowsTitleBar') === 'true') && <TitleBar />}
+
+            <ContextMenus />
+          </div>
         </div>
-        <Main />
-        <Login />
-        {showPlayer && <Player />}
-
-        {(window.env?.isWindows ||
-          window.env?.isLinux ||
-          window.localStorage.getItem('showWindowsTitleBar') === 'true') && <TitleBar />}
-
-        <ContextMenus />
-      </div>
+      )}
     </div>
-      )
-      }
-    </div>
-    
   )
 }
 

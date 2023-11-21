@@ -1,13 +1,13 @@
 import { NsisUpdater, MacUpdater, AppImageUpdater, autoUpdater, UpdateInfo } from 'electron-updater'
 import { AllPublishOptions } from 'builder-util-runtime'
 import log from './log'
-import { shell,dialog } from 'electron';
-import { isDev } from './env';
+import { shell, dialog } from 'electron'
+import { isDev } from './env'
 
-export function checkForUpdates(){
-  if (isDev) return;
-  log.info('checkForUpdates');
-  autoUpdater.checkForUpdatesAndNotify();
+export function checkForUpdates() {
+  if (isDev) return
+  log.info('checkForUpdates')
+  autoUpdater.checkForUpdatesAndNotify()
 
   const showNewVersionMessage = (info: UpdateInfo) => {
     dialog
@@ -21,14 +21,12 @@ export function checkForUpdates(){
       })
       .then(result => {
         if (result.response === 0) {
-          shell.openExternal(
-            'https://github.com/sherlockouo/music/releases'
-          );
+          shell.openExternal('https://github.com/sherlockouo/music/releases')
         }
-      });
-  };
+      })
+  }
 
   autoUpdater.on('update-available', info => {
-    showNewVersionMessage(info);
-  });
+    showNewVersionMessage(info)
+  })
 }

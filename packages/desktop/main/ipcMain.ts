@@ -14,9 +14,9 @@ import path from 'path'
 import prettyBytes from 'pretty-bytes'
 import { db, Tables } from './db'
 import { LyricsWindow } from './lyricsWindow'
-import AppUpdater from './updateWindow'
 import { getPlatform } from './utils'
 import { bindingKeyboardShortcuts } from './keyboardShortcuts'
+import { checkForUpdates } from './updateWindow'
 
 log.info('[electron] ipcMain.ts')
 
@@ -187,10 +187,7 @@ function initOtherIpcMain(win: BrowserWindow | null) {
   })
 
   handle(IpcChannels.CheckUpdate, e => {
-    const updater = new AppUpdater()
-    const check = async () => {
-      e.returnValue = await updater.checkUpdate()
-    }
+    checkForUpdates()
   })
 
   handle(IpcChannels.SetDesktopLyric, (event, args) => {
@@ -214,8 +211,6 @@ function initOtherIpcMain(win: BrowserWindow | null) {
   })
 
   on(IpcChannels.SyncTheme, (e, { theme }) => {
-    console.log('e theme', theme)
-
     lyricWin?.win?.webContents.send(IpcChannels.SyncTheme, { theme: theme })
   })
 

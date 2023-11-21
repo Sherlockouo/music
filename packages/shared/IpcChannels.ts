@@ -87,7 +87,7 @@ export interface IpcChannelsParams {
     coverImg: string
   }
   [IpcChannels.Play]: {
-    trackID: number
+    trackID?: number
   }
   [IpcChannels.Pause]: void
   [IpcChannels.PlayOrPause]: void

@@ -1,6 +1,6 @@
 import './preload' // must be first
 import './sentry'
-import { app, BrowserWindow, BrowserWindowConstructorOptions, shell } from 'electron'
+import { app, BrowserWindow, BrowserWindowConstructorOptions, dialog, Menu, MenuItem, shell } from 'electron'
 import { release } from 'os'
 import { join } from 'path'
 import log from './log'
@@ -13,6 +13,8 @@ import { appName, isDev, isLinux, isMac, isWindows } from './env'
 import store from './store'
 import initAppServer from './appServer/appServer'
 import { bindingKeyboardShortcuts } from './keyboardShortcuts'
+import { createDockMenu } from './dockMenu'
+import { checkForUpdates } from './updateWindow'
 
 log.info('[electron] index.ts')
 
@@ -49,6 +51,13 @@ class Main {
       this.createThumbar()
       initIpcMain(this.win, this.tray, this.thumbar, store)
       // this.initDevTools() 
+      checkForUpdates()
+    })
+
+    app.on('before-quit', () => {
+      this.win?.close()
+      this.win = null
+      app.exit()
     })
   }
 
@@ -69,8 +78,14 @@ class Main {
   }
 
   createTray() {
-    if (isWindows || isLinux || isDev) {
+    // if (isWindows || isLinux || isDev) {
       this.tray = createTray(this.win!)
+    // }
+    if (isMac) {
+      // create dock menu for macOS
+      const createdDockMenu = createDockMenu(this.win!);
+      if (createdDockMenu && app.dock) app.dock.setMenu(createdDockMenu);
+
     }
   }
 
@@ -82,6 +97,7 @@ class Main {
     if (isDev) {
     }
   }
+
 
   createWindow() {
     const options: BrowserWindowConstructorOptions = {
@@ -206,6 +222,23 @@ class Main {
     }
     this.win.on('resized', saveBounds)
     this.win.on('moved', saveBounds)
+
+    this.win.on('close', (e) => {
+      if (isMac) {
+        e.preventDefault() //阻止默认行为
+        this.win?.hide() //调用 最小化实例方法
+        return;
+      }
+      let closeWindowInMinimize = store.get('settings.closeWindowInMinimize')
+
+      if (closeWindowInMinimize === 'true') {
+        // e.preventDefault()
+        this.win?.hide()
+        return
+      }
+      this.win?.close()
+      app.quit()
+    })
   }
 
   handleAppEvents() {
@@ -223,8 +256,10 @@ class Main {
     })
 
     app.on('activate', () => {
+      
       const allWindows = BrowserWindow.getAllWindows()
       if (allWindows.length) {
+        this.win?.show()
         allWindows[0].focus()
       } else {
         this.createWindow()

@@ -3,16 +3,13 @@ import { app, BrowserWindow, Menu, MenuItemConstructorOptions, nativeImage, Tray
 import { IpcChannels } from '@/shared/IpcChannels'
 import { RepeatMode } from '@/shared/playerDataTypes'
 import { appName } from './env'
-const fs = require('fs')
-const axios = require('axios')
-const https = require('https')
 import log from './log'
 
 log.info('[electron] tray.ts')
 
 const iconDirRoot =
   process.env.NODE_ENV === 'development'
-    ? path.join(process.cwd(), './src/main/assets/icons/tray')
+    ? path.join(process.cwd(), './assets/icons/tray')
     : path.join(__dirname, './assets/icons/tray')
 
 enum MenuItemIDs {
@@ -31,92 +28,11 @@ export interface YPMTray {
 }
 
 function createNativeImage(filename: string) {
+  // log.info("tray icon path "+path.join(iconDirRoot, filename))
   return nativeImage.createFromPath(path.join(iconDirRoot, filename))
 }
 
-function createMenuTemplate(win: BrowserWindow): MenuItemConstructorOptions[] {
-  const template: MenuItemConstructorOptions[] =
-    process.platform === 'linux'
-      ? [
-          {
-            label: '显示主面板',
-            click: () => win.show(),
-          },
-          {
-            type: 'separator',
-          },
-        ]
-      : []
 
-  return template.concat([
-    {
-      label: '播放',
-      click: () => win.webContents.send(IpcChannels.Play),
-      icon: createNativeImage('play.png'),
-      id: MenuItemIDs.Play,
-    },
-    {
-      label: '暂停',
-      click: () => win.webContents.send(IpcChannels.Pause),
-      icon: createNativeImage('pause.png'),
-      id: MenuItemIDs.Pause,
-      visible: false,
-    },
-    {
-      label: '上一首',
-      click: () => win.webContents.send(IpcChannels.Previous),
-      icon: createNativeImage('left.png'),
-    },
-    {
-      label: '下一首',
-      click: () => win.webContents.send(IpcChannels.Next),
-      icon: createNativeImage('right.png'),
-    },
-    {
-      label: '循环模式',
-      icon: createNativeImage('repeat.png'),
-      submenu: [
-        {
-          label: '关闭循环',
-          click: () => win.webContents.send(IpcChannels.Repeat, RepeatMode.Off),
-          id: RepeatMode.Off,
-          checked: true,
-          type: 'radio',
-        },
-        {
-          label: '列表循环',
-          click: () => win.webContents.send(IpcChannels.Repeat, RepeatMode.On),
-          id: RepeatMode.On,
-          type: 'radio',
-        },
-        {
-          label: '单曲循环',
-          click: () => win.webContents.send(IpcChannels.Repeat, RepeatMode.One),
-          id: RepeatMode.One,
-          type: 'radio',
-        },
-      ],
-    },
-    {
-      label: '加入喜欢',
-      click: () => win.webContents.send(IpcChannels.Like),
-      icon: createNativeImage('like.png'),
-      id: MenuItemIDs.Like,
-    },
-    {
-      label: '取消喜欢',
-      click: () => win.webContents.send(IpcChannels.Like),
-      icon: createNativeImage('unlike.png'),
-      id: MenuItemIDs.Unlike,
-      visible: false,
-    },
-    {
-      label: '退出',
-      click: () => app.exit(),
-      icon: createNativeImage('exit.png'),
-    },
-  ])
-}
 
 class YPMTrayImpl implements YPMTray {
   private _win: BrowserWindow
@@ -131,17 +47,111 @@ class YPMTrayImpl implements YPMTray {
       width: 20,
     })
     this._tray = new Tray(icon)
-    this._template = createMenuTemplate(this._win)
+    this._template = this.createMenuTemplate(this._win)
+
     this._contextMenu = Menu.buildFromTemplate(this._template)
-
     this._updateContextMenu()
-    this.setTooltip(appName)
 
-    this._tray.on('click', () => win.show())
+    this.setTooltip(appName) 
+
+    this._tray.on('click', () => {
+      this._win.show()
+    })
   }
 
   private _updateContextMenu() {
     this._tray.setContextMenu(this._contextMenu)
+  }
+  
+  createMenuTemplate(win: BrowserWindow): MenuItemConstructorOptions[] {
+    const template: MenuItemConstructorOptions[] =
+      process.platform === 'linux'
+        ? [
+          {
+            label: '显示主面板',
+            click: () => win.show(),
+          },
+          {
+            type: 'separator',
+          },
+        ]
+        : []
+  
+    return template.concat([
+      {
+        label: '播放',
+        click: () => {
+          win.webContents.send(IpcChannels.Play,{})
+          this.setPlayState(true)
+        },
+        icon: createNativeImage('play.png'),
+        visible: true,
+        id: MenuItemIDs.Play,
+      },
+      {
+        label: '暂停',
+        click: () => {
+          win.webContents.send(IpcChannels.Pause)
+          this.setPlayState(false)
+        },
+        icon: createNativeImage('pause.png'),
+        id: MenuItemIDs.Pause,
+        visible: false,
+      },
+      {
+        label: '上一首',
+        click: () => win.webContents.send(IpcChannels.Previous),
+        icon: createNativeImage('left.png'),
+      },
+      {
+        label: '下一首',
+        click: () => win.webContents.send(IpcChannels.Next),
+        icon: createNativeImage('right.png'),
+      },
+      {
+        label: '循环模式',
+        icon: createNativeImage('repeat.png'),
+        submenu: [
+          {
+            label: '关闭循环',
+            click: () => win.webContents.send(IpcChannels.Repeat, RepeatMode.Off),
+            id: RepeatMode.Off,
+            checked: true,
+            type: 'radio',
+          },
+          {
+            label: '列表循环',
+            click: () => win.webContents.send(IpcChannels.Repeat, RepeatMode.On),
+            id: RepeatMode.On,
+            type: 'radio',
+          },
+          {
+            label: '单曲循环',
+            click: () => win.webContents.send(IpcChannels.Repeat, RepeatMode.One),
+            id: RepeatMode.One,
+            type: 'radio',
+          },
+        ],
+      },
+      {
+        label: '加入喜欢',
+        click: () => win.webContents.send(IpcChannels.Like),
+        icon: createNativeImage('like.png'),
+        id: MenuItemIDs.Like,
+      },
+      {
+        label: '取消喜欢',
+        click: () => win.webContents.send(IpcChannels.Like),
+        icon: createNativeImage('unlike.png'),
+        id: MenuItemIDs.Unlike,
+        visible: false,
+      },
+      {
+        label: '退出',
+        click: () => app.exit(),
+        icon: createNativeImage('exit.png'),
+      },
+    ])
   }
 
   setTooltip(text: string) {

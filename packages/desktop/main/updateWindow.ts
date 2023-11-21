@@ -1,18 +1,34 @@
-import { NsisUpdater, MacUpdater, AppImageUpdater, autoUpdater } from 'electron-updater'
+import { NsisUpdater, MacUpdater, AppImageUpdater, autoUpdater, UpdateInfo } from 'electron-updater'
 import { AllPublishOptions } from 'builder-util-runtime'
 import log from './log'
+import { shell,dialog } from 'electron';
+import { isDev } from './env';
 
-// 写一个支持 win,mac,linux的更新器
+export function checkForUpdates(){
+  if (isDev) return;
+  log.info('checkForUpdates');
+  autoUpdater.checkForUpdatesAndNotify();
 
-export default class AppUpdater {
-  checkUpdate() {
-    const options: AllPublishOptions = {
-      provider: 'generic',
-      url: 'http://localhost:8100/',
-    }
+  const showNewVersionMessage = (info: UpdateInfo) => {
+    dialog
+      .showMessageBox({
+        title: '发现新版本 v' + info.version,
+        message: '发现新版本 v' + info.version,
+        detail: '是否前往 GitHub 下载新版本安装包？',
+        buttons: ['下载', '取消'],
+        type: 'question',
+        noLink: true,
+      })
+      .then(result => {
+        if (result.response === 0) {
+          shell.openExternal(
+            'https://github.com/sherlockouo/music/releases'
+          );
+        }
+      });
+  };
 
-    const autoUpdater = new MacUpdater(options)
-    autoUpdater.logger = log
-    return autoUpdater.checkForUpdatesAndNotify()
-  }
+  autoUpdater.on('update-available', info => {
+    showNewVersionMessage(info);
+  });
 }

@@ -52,6 +52,11 @@ jobs:
         # with:
         #   Disable since the Snapcraft token is currently not working
         #   snapcraft_token: ${{ secrets.snapcraft_token }}
+
+      - name: Set Token
+        with:
+          github_token: ${{ secrets.github_token }}
+        
       - name: Build-Pre-Release Electron app
         env:
           ELECTRON_WEB_SERVER_PORT: 42710

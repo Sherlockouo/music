@@ -38,13 +38,13 @@ jobs:
       # - name: Build sqlite3 binaries
       #   run: tsx ./scripts/build.sqlite3.ts
 
-      - name: Install RPM & Pacman (Linux)
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update &&
-          sudo apt-get install --no-install-recommends -y rpm &&
-          sudo apt-get install --no-install-recommends -y bsdtar &&
-          sudo apt-get install --no-install-recommends -y libopenjp2-tools
+      # - name: Install RPM & Pacman (Linux)
+      #   if: runner.os == 'Linux'
+      #   run: |
+      #     sudo apt-get update &&
+      #     sudo apt-get install --no-install-recommends -y rpm &&
+      #     sudo apt-get install --no-install-recommends -y bsdtar &&
+      #     sudo apt-get install --no-install-recommends -y libopenjp2-tools
 
       # - name: Install Snapcraft (Linux)
       #   uses: samuelmeuli/action-snapcraft@v1

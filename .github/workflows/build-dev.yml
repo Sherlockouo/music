@@ -52,10 +52,6 @@ jobs:
         # with:
         #   Disable since the Snapcraft token is currently not working
         #   snapcraft_token: ${{ secrets.snapcraft_token }}
-
-      - name: Set Token
-        with:
-          github_token: ${{ secrets.github_token }}
         
       - name: Build-Pre-Release Electron app
         env:
@@ -65,6 +61,7 @@ jobs:
           VITE_APP_NETEASE_API_URL: /netease
           ENABLE_FLAC: "true"
           ENABLE_LOCAL_VIP: "svip"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
         run: pnpm package
       # - name: Build-Release Electron app
       #   uses: njzydark/action-electron-builder-pnpm@v1.2.0-pnpm

@@ -83,11 +83,25 @@ jobs:
       #     # skip_package_manager_install: true
       #     package_manager: pnpm
 
-      - name: Upload Artifact (macOS)
+      - name: Upload Artifact (macOS universal)
         uses: actions/upload-artifact@v3
         with:
-          name: R3PLAYX-mac
+          name: R3PLAYX-mac-universal
           path: ./packages/desktop/release/*-universal.dmg
+          if-no-files-found: ignore
+          
+      - name: Upload Artifact (macOS x64)
+        uses: actions/upload-artifact@v3
+        with:
+          name: R3PLAYX-mac-x64
+          path: ./packages/desktop/release/*-x64.dmg
+          if-no-files-found: ignore
+          
+      - name: Upload Artifact (macOS arm64)
+        uses: actions/upload-artifact@v3
+        with:
+          name: R3PLAYX-mac-arm64
+          path: ./packages/desktop/release/*-arm64.dmg
           if-no-files-found: ignore
 
       - name: Upload Artifact (Windows)

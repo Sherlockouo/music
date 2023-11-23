@@ -110,7 +110,7 @@ const PlayButton = ({ onPlay, isLoading }: { onPlay: () => void; isLoading?: boo
       )}
     >
       {t`player.play`}
-      {LightSpot()}
+      {/* {LightSpot()} */}
     </motion.button>
   )
 }

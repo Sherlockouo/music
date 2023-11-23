@@ -8,6 +8,11 @@ import { css, cx } from '@emotion/css'
 import { Fragment, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useSnapshot } from 'valtio'
+import react from '@vitejs/plugin-react-swc'
+import React from 'react'
+import { Virtuoso } from 'react-virtuoso'
+
+
 
 const Track = ({
   track,
@@ -60,7 +65,7 @@ const Track = ({
           </div>
           <div className='line-clamp-1 mt-1 text-14 font-bold '>
             {track?.ar.map((a, index) => (
-              <Fragment key={a.id}>
+              <Fragment key={a.id + Math.random() * 3.14159}>
                 {index > 0 && ', '}
                 <NavLink
                   className='transition-all duration-300 hover:text-black/70 dark:hover:text-white/70'
@@ -84,7 +89,7 @@ const Track = ({
       {/* Album Name */}
       <div className='flex items-center'>
         <NavLink
-          to={`/album/${track?.al.id}`}
+          to={`/album/${track?.al?.id}`}
           className='line-clamp-1 text-14 font-bold transition-colors duration-300 hover:text-white/70'
         >
           {track?.al?.name}
@@ -104,7 +109,6 @@ function TrackList({
   onPlay,
   className,
   isLoading,
-  placeholderRows = 12,
 }: {
   tracks?: Track[]
   onPlay: (id: number) => void
@@ -135,18 +139,35 @@ function TrackList({
 
   return (
     <div className={className}>
-      {tracks?.map((track, index) => (
-        <Track
-          key={track.id}
-          track={track}
-          index={index}
-          playingTrackID={playingTrack?.id || 0}
-          state={state}
-          handleClick={handleClick}
-        />
-      ))}
+      <Virtuoso
+        className='no-scrollbar'
+        style={{
+          height: 'calc(100vh - 132px)',
+        }}
+        data={tracks}
+        overscan={5}
+        itemSize={el => el.getBoundingClientRect().height + 24}
+        totalCount={tracks?.length}
+        itemContent={(index, row) => (
+          <div key={index} className='grid h-full w-full grid-cols-1'>
+            {tracks?.map((track: Track) => (
+               <Track
+               key={track.id}
+               track={track}
+               index={index}
+               playingTrackID={playingTrack?.id || 0}
+               state={state}
+               handleClick={handleClick}
+             />
+            ))}
+          </div>
+        )}
+      />
     </div>
   )
 }
 
-export default TrackList
+const TrackListMemo = React.memo(TrackList)
+TrackListMemo.displayName = "TrackList"
+
+export default TrackListMemo

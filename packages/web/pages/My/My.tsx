@@ -4,6 +4,7 @@ import RecentlyListened from './RecentlyListened'
 import Collections from './Collections'
 import { useIsLoggedIn } from '@/web/api/hooks/useUser'
 import { LayoutGroup, motion } from 'framer-motion'
+import React from 'react'
 
 function PleaseLogin() {
   return <></>
@@ -15,7 +16,7 @@ const My = () => {
     <PageTransition>
       {/* {isLoggedIn ? ( */}
       <LayoutGroup>
-        <div className='flex grid grid-cols-1 gap-10'>
+        <div className='grid grid-cols-1 gap-10'>
           <PlayLikedSongsCard />
           <RecentlyListened />
           <Collections />
@@ -28,4 +29,7 @@ const My = () => {
   )
 }
 
-export default My
+const MyMemo = React.memo(My)
+MyMemo.displayName = "My"
+
+export default MyMemo

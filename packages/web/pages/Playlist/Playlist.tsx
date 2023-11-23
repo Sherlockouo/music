@@ -5,6 +5,7 @@ import player from '@/web/states/player'
 import usePlaylist from '@/web/api/hooks/usePlaylist'
 import Header from './Header'
 import useTracks from '@/web/api/hooks/useTracks'
+import React from 'react'
 
 const Playlist = () => {
   const params = useParams()
@@ -34,4 +35,6 @@ const Playlist = () => {
   )
 }
 
-export default Playlist
+const PlaylistMemo = React.memo(Playlist)
+PlaylistMemo.displayName = "Playlist"
+export default PlaylistMemo

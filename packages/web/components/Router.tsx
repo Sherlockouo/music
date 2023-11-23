@@ -22,7 +22,7 @@ const Router = () => {
   useGASend()
   return (
     // this keeps the UI updates responsive even on slow device and networ
-    <AnimatePresence mode='wait'>
+    <AnimatePresence>
       <Suspense
         fallback={
           <div className='iterms-center flex h-full w-full justify-center'>
@@ -50,4 +50,6 @@ const Router = () => {
   )
 }
 
+const RouterMemo = React.memo(Router)
+RouterMemo.displayName = "Router"
 export default Router

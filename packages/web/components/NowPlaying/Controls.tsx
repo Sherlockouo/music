@@ -55,19 +55,7 @@ const Controls = () => {
           'fixed bottom-0 right-0 flex',
           mini ? 'flex-col items-center justify-between' : 'items-center justify-between',
           mini
-            ? css`
-                right: 24px;
-                bottom: 18px;
-                width: 44px;
-                height: 254px;
-                text-align: center;
-              `
-            : css`
-                justify-content: space-around;
-                bottom: 56px;
-                right: 56px;
-                width: 254px;
-              `
+            ? 'right-24 bottom-18 w-[44px] h-[254px] text-center' : 'justify-space bottom-[56px] right-[56px] w-[254px]'
         )}
       >
         <div className={cx(mini ? 'flex flex-wrap gap-3' : 'flex-col gap-2')}>

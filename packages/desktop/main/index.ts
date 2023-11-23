@@ -44,6 +44,7 @@ class Main {
       app.quit()
       process.exit(0)
     }
+    
     // create IPFS Server
     app.whenReady().then(async () => {
       log.info('[index] App ready')

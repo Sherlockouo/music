@@ -8,9 +8,10 @@ import { ease } from '@/web/utils/const'
 import { useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
+/* @deprecated for perfermance */
 const BlurBackground = ({ className }: { className: string }) => {
   const isMobile = useIsMobile()
-  const { hideTopbarBackground, blurBackgroundImage } = useSnapshot(uiStates)
+  const {blurBackgroundImage } = useSnapshot(uiStates)
   const location = useLocation()
   const animate = useAnimation()
 

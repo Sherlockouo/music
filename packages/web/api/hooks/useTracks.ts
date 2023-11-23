@@ -26,17 +26,17 @@ export default function useTracks(params: FetchTracksParams) {
         },
       })
       if (cache) return cache
-      const len = Math.ceil(params.ids.length / 900)
+      const len = Math.ceil(params.ids.length / 500)
       const promiseArr = []
       let offset = 0
       const totalIds = params.ids
       for (let i = 0; i < len; i++) {
         const req = new Promise((resolve, reject) => {
-          params.ids = totalIds.slice(offset, offset + 900)
+          params.ids = totalIds.slice(offset, offset + 500)
           resolve(fetchTracks(params))
         })
         promiseArr.push(req)
-        offset += 900
+        offset += 500
       }
 
       const results = await Promise.all(promiseArr)
@@ -70,29 +70,6 @@ export default function useTracks(params: FetchTracksParams) {
       refetchInterval: false,
       refetchOnWindowFocus: false,
       staleTime: Infinity,
-    }
-  )
-}
-
-export function unblock(params: UnblockParam) {
-  return reactQueryClient.fetchQuery(
-    [TrackApiNames.Unblock, params],
-    async () => {
-      // const cache = await window.ipcRenderer?.invoke(IpcChannels.GetApiCache, {
-      //   api: CacheAPIs.Unblock,
-      //   query: {
-      //     track_id: params.track_id,
-      //   },
-      // })
-      // if (cache) return cache as UnblockResponse
-      return unblock(params)
-    },
-    {
-      retry: 4,
-      retryDelay: (retryCount: number) => {
-        return retryCount * 500
-      },
-      staleTime: 86400000,
     }
   )
 }

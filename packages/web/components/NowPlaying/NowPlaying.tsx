@@ -12,7 +12,6 @@ import Icon from '../Icon'
 import Info from './Info'
 
 const NowPlaying = () => {
-  const { track } = useSnapshot(player)
   const { minimizePlayer } = useSnapshot(persistedUiStates)
 
   return (

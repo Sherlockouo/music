@@ -9,22 +9,9 @@ import persistedUiStates from '@/web/states/persistedUiStates'
 import { motion, useAnimation } from 'framer-motion'
 import { sleep } from '@/web/utils/common'
 import player from '@/web/states/player'
-import { useLocation } from 'react-router-dom'
 
 const Main = () => {
   const playerSnapshot = useSnapshot(player)
-  const location = useLocation()
-  // Show/hide topbar background
-  const observePoint = useRef<HTMLDivElement | null>(null)
-  const { onScreen } = useIntersectionObserver(observePoint)
-  useEffect(() => {
-    uiStates.hideTopbarBackground = onScreen
-    return () => {
-      uiStates.hideTopbarBackground = false
-    }
-  }, [onScreen])
-
-  // Change width when player is minimized
 
   const { minimizePlayer } = useSnapshot(persistedUiStates)
   const [isMaxWidth, setIsMaxWidth] = useState(minimizePlayer)
@@ -32,7 +19,7 @@ const Main = () => {
   useEffect(() => {
     const animate = async () => {
       await controlsMain.start({ opacity: 0 })
-      await sleep(100)
+      await sleep(50)
       setIsMaxWidth(minimizePlayer)
       await controlsMain.start({ opacity: 1 })
     }
@@ -54,7 +41,6 @@ const Main = () => {
         `
       )}
     >
-      <div ref={observePoint}></div>
       <div
         className={css`
           margin-top: 132px;

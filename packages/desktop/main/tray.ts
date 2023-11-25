@@ -2,6 +2,10 @@ import path from 'path'
 import { app, BrowserWindow, Menu, MenuItemConstructorOptions, nativeImage, Tray } from 'electron'
 import { IpcChannels } from '@/shared/IpcChannels'
 import { RepeatMode } from '@/shared/playerDataTypes'
+import i18next from 'i18next'
+import { initReactI18next } from 'react-i18next'
+import zhCN from '../../web/i18n/locales/zh-cn.json'
+import enUS from '../../web/i18n/locales/en-us.json'
 import { appName } from './env'
 const fs = require('fs')
 const axios = require('axios')
@@ -9,6 +13,57 @@ const https = require('https')
 import log from './log'
 
 log.info('[electron] tray.ts')
+
+export const supportedLanguages = ['zh-CN', 'en-US'] as const
+export type SupportedLanguage = typeof supportedLanguages[number]
+
+export const getInitLanguage = async () => {
+  console.log('[ appConsoleLog ] getInitLanguage');
+  try {
+    const settings = JSON.parse(localStorage.getItem('settings') || '{}')
+    if (supportedLanguages.includes(settings.language)) {
+      console.log('[ appConsoleLog ] settings.language ', settings.language);
+      return settings.language
+    }
+    console.warn('[ appConsoleLog ] settings.language NOT FOUND!');
+  } catch (e) {
+  }
+
+  // 返回一个 Promise 对象，使调用方可以等待异步操作完成
+  return new Promise((resolve) => {
+    app.whenReady().then(() => {
+      if (app.isReady()) {
+        console.log('[ appConsoleLog ] app.isReady()');
+      }
+      // 判断navigator.language是否为空
+      if(typeof navigator === 'undefined') {
+        resolve('zh-CN');
+      }
+      else if ( navigator.language.startsWith('zh-')) {
+        resolve('zh-CN');
+      } else {
+        resolve('en-US');
+      }
+    });
+  });
+};
+
+async function initializeI18n() {
+  const language = await getInitLanguage();
+
+  i18next.use(initReactI18next).init({
+    lng: language, // 设置默认语言
+    fallbackLng: 'en-US', // 设置回退语言
+    resources: {
+      'en-US': { translation: enUS }, // 设置英文翻译资源
+      'zh-CN': { translation: zhCN }, // 设置中文翻译资源
+    },
+    interpolation: {
+      escapeValue: false, // 如果你的翻译中包含 HTML 标签等，可以设置为 false
+    },
+  });
+}
+initializeI18n();
 
 const iconDirRoot =
   process.env.NODE_ENV === 'development'
@@ -35,22 +90,23 @@ function createNativeImage(filename: string) {
 }
 
 function createMenuTemplate(win: BrowserWindow): MenuItemConstructorOptions[] {
+  const labelPlay = i18next.t('tray.play')
   const template: MenuItemConstructorOptions[] =
     process.platform === 'linux'
       ? [
-          {
-            label: '显示主面板',
-            click: () => win.show(),
-          },
-          {
-            type: 'separator',
-          },
-        ]
+        {
+          label: '显示主面板',
+          click: () => win.show(),
+        },
+        {
+          type: 'separator',
+        },
+      ]
       : []
 
   return template.concat([
     {
-      label: '播放',
+      label: labelPlay,
       click: () => win.webContents.send(IpcChannels.Play),
       icon: createNativeImage('play.png'),
       id: MenuItemIDs.Play,

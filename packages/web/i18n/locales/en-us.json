@@ -155,5 +155,8 @@
   "coverrow": {
     "songs": "Songs",
     "plays": "Plays"
+  },
+  "tray": {
+    "play": "Play"
   }
 }

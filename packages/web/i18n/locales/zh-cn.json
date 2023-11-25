@@ -155,5 +155,8 @@
   "coverrow": {
     "songs": "首歌曲",
     "plays": "次播放"
+  },
+  "tray": {
+    "play": "播放"
   }
 }

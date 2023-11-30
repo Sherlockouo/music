@@ -13,8 +13,9 @@
     </p>
 </p>
 <div align="center">
-  <img src="https://img.shields.io/badge/downloads-1.1k-deepgreen" />  
-  <img src="https://img.shields.io/badge/latest_version-2.7.0-deepgreen" />   
+  <img src="https://github.com/sherlockouo/music/actions/workflows/build-dev.yml/badge.svg" />  
+  <img src="https://img.shields.io/badge/downloads-1.3k-deepgreen" />  
+  <img src="https://img.shields.io/badge/latest_version-2.7.1-deepgreen" />   
 </div>
 
 

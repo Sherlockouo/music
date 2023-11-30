@@ -9,7 +9,7 @@ const ScrollPagination = ({
   getData: (pageNo: number, pageSize: number) => Promise<{ hasMore: boolean }>
   renderItems: () => ReactNode
 }) => {
-  const [current, setCurrent] = useState(0) // 当前页码
+  const [current, setCurrent] = useState(1) // 当前页码
   const [isFetching, setIsFetching] = useState(false) // 是否正在获取数据
   const [hasMore, setHasMore] = useState(true)
   const containerRef = useRef(null)
@@ -23,11 +23,8 @@ const ScrollPagination = ({
     const handleObserver = throttle(entries => {
       const isIntersecting = entries.some(entry => entry.isIntersecting===true)
 
-      if (isIntersecting && !isFetching && hasMore) {
+      if (isIntersecting && hasMore) {
         console.log('isInteresting ',isIntersecting,' ');
-        
-        // 最后一个元素进入视窗且未在获取数据
-        setIsFetching(true) // 设置为正在获取数据的状态
         setCurrent(prev => prev + 1) // 更新当前页码
         observerRef.current.unobserve(transparentContainer)
       }
@@ -51,22 +48,20 @@ const ScrollPagination = ({
   }, [isFetching])
 
   useEffect(() => {
-    if (isFetching) {
+      setIsFetching(true)
+      observerRef.current?.disconnect();
       // 获取数据
       getData(current, 50)
       .then(({ hasMore }) => {
-        if (hasMore) {
-          setIsFetching(false) // 设置为获取数据完成的状态
-        } else {
-          setIsFetching(false) // 设置为获取数据完成的状态
+        setIsFetching(false) // 设置为请求完毕
+        if(!hasMore) {
           setHasMore(false)
-          }
+        }
         })
         .catch(error => {
           setIsFetching(false) // 设置为获取数据完成的状态
           console.error('数据获取失败:', error)
         })
-    }
   }, [current,isFetching])
 
   return (

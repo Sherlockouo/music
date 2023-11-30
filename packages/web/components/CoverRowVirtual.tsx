@@ -18,6 +18,7 @@ import {
 } from 'react'
 import { createPortal } from 'react-dom'
 import humanNumber from 'human-number'
+import { useWhyDidYouUpdate } from 'ahooks'
 
 const CoverRow = ({
   albums,
@@ -34,7 +35,7 @@ const CoverRow = ({
 }) => {
   const navigate = useNavigate()
   const { showTrackListName } = useSettings()
-
+  
   const goTo = (id: number) => {
     if (albums) navigate(`/album/${id}`)
     if (playlists) navigate(`/playlist/${id}`)
@@ -207,7 +208,7 @@ const CoverRow = ({
   const Portal = ({ children }: { children?: ReactNode }) => {
     return createPortal(<>{children}</>, document.body.querySelector('#cover-hover-card')!)
   }
-
+  
   return (
     <div className={className}>
       {/* Title */}
@@ -219,7 +220,7 @@ const CoverRow = ({
           height: 'calc(100vh - 132px)',
         }}
         data={rows}
-        overscan={5}
+        overscan={15}
         itemSize={el => el.getBoundingClientRect().height + 24}
         totalCount={rows.length}
         components={{

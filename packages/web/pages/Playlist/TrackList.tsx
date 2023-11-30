@@ -145,21 +145,19 @@ function TrackList({
           height: 'calc(100vh - 132px)',
         }}
         data={tracks}
-        overscan={5}
+        overscan={20}
         itemSize={el => el.getBoundingClientRect().height + 24}
         totalCount={tracks?.length}
         itemContent={(index, row) => (
           <div key={index} className='grid h-full w-full grid-cols-1'>
-            {tracks?.map((track: Track) => (
                <Track
-               key={track.id}
-               track={track}
+               key={tracks![index]?.id || 0}
+               track={tracks![index] || undefined}
                index={index}
                playingTrackID={playingTrack?.id || 0}
                state={state}
                handleClick={handleClick}
              />
-            ))}
           </div>
         )}
       />

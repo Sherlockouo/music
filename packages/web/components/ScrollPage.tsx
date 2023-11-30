@@ -21,12 +21,15 @@ const ScrollPagination = ({
       threshold: 0.5, // 根据需要调整阈值
     }
     const handleObserver = throttle(entries => {
-      const isIntersecting = entries.some(entry => entry.isIntersecting)
+      const isIntersecting = entries.some(entry => entry.isIntersecting===true)
 
       if (isIntersecting && !isFetching && hasMore) {
+        console.log('isInteresting ',isIntersecting,' ');
+        
         // 最后一个元素进入视窗且未在获取数据
         setIsFetching(true) // 设置为正在获取数据的状态
         setCurrent(prev => prev + 1) // 更新当前页码
+        observerRef.current.unobserve(transparentContainer)
       }
     }, 1500)
 
@@ -50,16 +53,13 @@ const ScrollPagination = ({
   useEffect(() => {
     if (isFetching) {
       // 获取数据
-      getData(current, 100)
-        .then(({ items, hasMore }) => {
-          if (hasMore) {
-            setIsFetching(false) // 设置为获取数据完成的状态
-          } else {
-            setIsFetching(false) // 设置为获取数据完成的状态
-            setHasMore(false)
-            observerRef.current.disconnect() // 停止观察
-            // Todo: add i18n toast
-            // toast('no more')
+      getData(current, 50)
+      .then(({ hasMore }) => {
+        if (hasMore) {
+          setIsFetching(false) // 设置为获取数据完成的状态
+        } else {
+          setIsFetching(false) // 设置为获取数据完成的状态
+          setHasMore(false)
           }
         })
         .catch(error => {
@@ -67,10 +67,10 @@ const ScrollPagination = ({
           console.error('数据获取失败:', error)
         })
     }
-  }, [current, isFetching])
+  }, [current,isFetching])
 
   return (
-    <div ref={containerRef} className='infinite-scroll-component h-100 w-full '>
+    <div ref={containerRef} className='infinite-scroll-component h-full w-full '>
       {renderItems()}
       <div className='flex w-full items-center justify-center'>{isFetching && <Loading />}</div>
       <div className='transparent-container' style={{ height: '1px', marginBottom: '-1px' }}></div>

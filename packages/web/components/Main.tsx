@@ -19,11 +19,11 @@ const Main = () => {
   useEffect(() => {
     const animate = async () => {
       await controlsMain.start({ opacity: 0 })
-      await sleep(50)
+      await sleep(100)
       setIsMaxWidth(minimizePlayer)
       await controlsMain.start({ opacity: 1 })
     }
-    if (minimizePlayer !== isMaxWidth) animate()
+    if (minimizePlayer !== isMaxWidth) requestAnimationFrame(animate)
   }, [controlsMain, isMaxWidth, minimizePlayer])
 
   return (

@@ -231,7 +231,7 @@ const TrackList = ({ className }: { className?: string }) => {
           )}
           fixedItemHeight={76}
           data={tracks}
-          overscan={10}
+          overscan={tracks.length}
           components={{
             Header: () => <div className='h-8'></div>,
             Footer: () => <div className='h-8'></div>,

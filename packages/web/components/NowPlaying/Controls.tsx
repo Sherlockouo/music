@@ -6,15 +6,6 @@ import { useSnapshot } from 'valtio'
 import Icon from '../Icon'
 import { State as PlayerState } from '@/web/utils/player'
 import useUserLikedTracksIDs, { useMutationLikeATrack } from '@/web/api/hooks/useUserLikedTracksIDs'
-import { toast } from 'react-hot-toast'
-import {
-  BlockDescription,
-  BlockTitle,
-  Option,
-  OptionText,
-  Switch,
-  Input,
-} from '@/web/pages/Settings/Controls'
 import Slider from '@/web/components/Slider'
 import { ceil } from 'lodash'
 import { ease } from '@/web/utils/const'
@@ -23,7 +14,6 @@ import AudioOutputDevices from '@/web/components/Tools/Devices'
 import { useState } from 'react'
 import { IpcChannels } from '@/shared/IpcChannels'
 import settings from '@/web/states/settings'
-import uiStates from '@/web/states/uiStates'
 const LikeButton = () => {
   const { track } = useSnapshot(player)
   const { data: likedIDs } = useUserLikedTracksIDs()
@@ -44,6 +34,7 @@ const LikeButton = () => {
 }
 
 const Controls = () => {
+  
   const { state, track } = useSnapshot(player)
   const { minimizePlayer: mini } = useSnapshot(persistedUiStates)
   const { showDeskttopLyrics, showDevices } = useSnapshot(persistedUiStates)
@@ -55,7 +46,19 @@ const Controls = () => {
           'fixed bottom-0 right-0 flex',
           mini ? 'flex-col items-center justify-between' : 'items-center justify-between',
           mini
-            ? 'right-24 bottom-18 w-[44px] h-[254px] text-center' : 'justify-space bottom-[56px] right-[56px] w-[254px]'
+            ? css`
+                right: 24px;
+                bottom: 18px;
+                width: 44px;
+                height: 254px;
+                text-align: center;
+              `
+            : css`
+                justify-content: space-around;
+                bottom: 56px;
+                right: 56px;
+                width: 254px;
+              `
         )}
       >
         <div className={cx(mini ? 'flex flex-wrap gap-3' : 'flex-col gap-2')}>
@@ -84,7 +87,12 @@ const Controls = () => {
             </motion.button>
 
             {/* Media controls */}
-            <div className='flex flex-wrap gap-2 text-black/95 dark:text-white/80'>
+            <motion.div 
+            className={cx(
+              'flex flex-wrap gap-2 text-black/95 dark:text-white/80',
+              )}
+            transition={{duration:0.5,ease}}
+            >
               <motion.button
                 layout='position'
                 animate={{ rotate: mini ? 90 : 0 }}
@@ -125,7 +133,7 @@ const Controls = () => {
               >
                 <Icon name='next' className='h-6 w-6 ' />
               </motion.button>
-            </div>
+            </motion.div>
 
             {/* Like */}
             <LikeButton />
@@ -223,9 +231,10 @@ function VolumeSlider() {
       <motion.button
         layout='position'
         className={
-          cx()
+          cx(
+            ' transition-colors duration-400 ',
+          )
           // just dont need this I guess
-          // ' transition-colors duration-400 ',
           // ' text-black dark:text-white'
         }
       >

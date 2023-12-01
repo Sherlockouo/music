@@ -17,6 +17,7 @@ import { LyricsWindow } from './lyricsWindow'
 import { getPlatform } from './utils'
 import { bindingKeyboardShortcuts } from './keyboardShortcuts'
 import { checkForUpdates } from './updateWindow'
+import main from '.'
 
 log.info('[electron] ipcMain.ts')
 
@@ -43,7 +44,7 @@ export function initIpcMain(
   initWindowIpcMain(win)
   initTrayIpcMain(tray)
   initTaskbarIpcMain(thumbar)
-  initStoreIpcMain(store)
+  initStoreIpcMain(win,store)
   initOtherIpcMain(win)
 }
 
@@ -159,12 +160,17 @@ function initTaskbarIpcMain(thumbar: Thumbar | null) {
  * 处理需要electron-store的事件
  * @param {Store<TypedElectronStore>} store
  */
-function initStoreIpcMain(store: Store<TypedElectronStore>) {
+function initStoreIpcMain(win: BrowserWindow | null,store: Store<TypedElectronStore>) {
   /**
    * 同步设置到Main
    */
   on(IpcChannels.SyncSettings, (event, settings) => {
+    const lang = store.get('settigns.language')
     store.set('settings', settings)
+    if(settings.language !== lang )
+    {
+      main.tray?.updateTray()
+    }
   })
 }
 

@@ -4,6 +4,7 @@ import { IpcChannels } from '@/shared/IpcChannels'
 import { RepeatMode } from '@/shared/playerDataTypes'
 import { appName } from './env'
 import log from './log'
+import store from './store'
 
 log.info('[electron] tray.ts')
 
@@ -25,6 +26,7 @@ export interface YPMTray {
   setLikeState(isLiked: boolean): void
   setPlayState(isPlaying: boolean): void
   setRepeatMode(mode: RepeatMode): void
+  updateTray(): void
 }
 
 function createNativeImage(filename: string) {
@@ -57,16 +59,25 @@ class YPMTrayImpl implements YPMTray {
     })
   }
 
+  updateTray(){
+    this._template = this.createMenuTemplate(this._win)
+
+    this._contextMenu = Menu.buildFromTemplate(this._template)
+    this._updateContextMenu()
+  }
+
   private _updateContextMenu() {
     this._tray.setContextMenu(this._contextMenu)
   }
 
   createMenuTemplate(win: BrowserWindow): MenuItemConstructorOptions[] {
+    const lang =  store.get("settings.language")
+    
     const template: MenuItemConstructorOptions[] =
       process.platform === 'linux'
         ? [
             {
-              label: '显示主面板',
+              label: lang === 'en-US' ? 'Show main panel':'显示主面板',
               click: () => win.show(),
             },
             {
@@ -77,7 +88,7 @@ class YPMTrayImpl implements YPMTray {
 
     return template.concat([
       {
-        label: '播放',
+        label: lang === 'en-US' ? 'Play':'播放',
         click: () => {
           win.webContents.send(IpcChannels.Play, {})
           this.setPlayState(true)
@@ -87,7 +98,7 @@ class YPMTrayImpl implements YPMTray {
         id: MenuItemIDs.Play,
       },
       {
-        label: '暂停',
+        label: lang === 'en-US' ? 'Pause':'暂停',
         click: () => {
           win.webContents.send(IpcChannels.Pause)
           this.setPlayState(false)
@@ -97,40 +108,40 @@ class YPMTrayImpl implements YPMTray {
         visible: false,
       },
       {
-        label: '上一首',
+        label: lang === 'en-US' ? 'Prev':'上一首',
         click: () => win.webContents.send(IpcChannels.Previous),
         icon: createNativeImage('left.png'),
       },
       {
-        label: '下一首',
+        label: lang === 'en-US' ? 'Next':'下一首',
         click: () => win.webContents.send(IpcChannels.Next),
         icon: createNativeImage('right.png'),
       },
       {
-        label: '循环模式',
+        label: lang === 'en-US' ? 'Repeat Mode':'循环模式',
         icon: createNativeImage('repeat.png'),
         submenu: [
           {
-            label: '关闭循环',
+            label: lang === 'en-US' ? 'Repeat Off':'关闭循环',
             click: () => win.webContents.send(IpcChannels.Repeat, RepeatMode.Off),
             id: RepeatMode.Off,
             checked: true,
             type: 'radio',
           },
           {
-            label: '列表循环',
+            label: lang === 'en-US' ? 'Repeat On':'列表循环',
             click: () => win.webContents.send(IpcChannels.Repeat, RepeatMode.On),
             id: RepeatMode.On,
             type: 'radio',
           },
           {
-            label: '单曲循环',
+            label: lang === 'en-US' ? 'Repeat One':'单曲循环',
             click: () => win.webContents.send(IpcChannels.Repeat, RepeatMode.One),
             id: RepeatMode.One,
             type: 'radio',
           },
           {
-            label: '随机播放',
+            label: lang === 'en-US' ? 'Shuffle':'随机播放',
             click: () => win.webContents.send(IpcChannels.Repeat, RepeatMode.Shuffle),
             id: RepeatMode.Shuffle,
             type: 'radio',
@@ -138,20 +149,20 @@ class YPMTrayImpl implements YPMTray {
         ],
       },
       {
-        label: '加入喜欢',
+        label: lang === 'en-US' ? 'Like':'加入喜欢',
         click: () => win.webContents.send(IpcChannels.Like),
         icon: createNativeImage('like.png'),
         id: MenuItemIDs.Like,
       },
       {
-        label: '取消喜欢',
+        label: lang === 'en-US' ? 'Dislike':'取消喜欢',
         click: () => win.webContents.send(IpcChannels.Like),
         icon: createNativeImage('unlike.png'),
         id: MenuItemIDs.Unlike,
         visible: false,
       },
       {
-        label: '退出',
+        label: lang === 'en-US' ? 'Quit':'退出',
         click: () => app.exit(),
         icon: createNativeImage('exit.png'),
       },

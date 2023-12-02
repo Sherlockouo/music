@@ -149,7 +149,7 @@ function TrackList({
         itemSize={el => el.getBoundingClientRect().height + 24}
         totalCount={tracks?.length}
         itemContent={(index, row) => (
-          <div key={index} className='grid h-full w-full grid-cols-1'>
+          <div key={index} className='h-full mb-1'>
                <Track
                key={tracks![index]?.id || 0}
                track={tracks![index] || undefined}

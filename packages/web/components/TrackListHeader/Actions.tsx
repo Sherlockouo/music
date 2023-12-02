@@ -106,11 +106,11 @@ const PlayButton = ({ onPlay, isLoading }: { onPlay: () => void; isLoading?: boo
       onClick={() => onPlay()}
       className={cx(
         'relative h-14 overflow-hidden rounded-full px-10 text-18 font-medium transition-transform duration-300 ease-linear',
-        isLoading ? 'bg-white/10 text-transparent' : 'bg-brand-700 text-neutral-700'
+        isLoading ? 'bg-white/10 text-transparent' : 'bg-brand-700 text-white'
       )}
     >
       {t`player.play`}
-      {/* {LightSpot()} */}
+      {LightSpot()}
     </motion.button>
   )
 }

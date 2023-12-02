@@ -36,12 +36,7 @@ const AlbumContextMenu = () => {
               type: 'item',
               label: t`context-menu.add-to-queue`,
               onClick: () => {
-                toast('开发中')
-
-                // toast.success('Added to Queue', { duration: 100000000 })
-                // toast.error('Not implemented yet', { duration: 100000000 })
-                // toast.loading('Loading...')
-                // toast('ADADADAD', { duration: 100000000 })
+                player.playAlbum(Number(dataSourceID))
               },
             },
             {
@@ -61,13 +56,13 @@ const AlbumContextMenu = () => {
                 })
               },
             },
-            {
-              type: 'item',
-              label: t`context-menu.add-to-playlist`,
-              onClick: () => {
-                toast('开发中')
-              },
-            },
+            // {
+            //   type: 'item',
+            //   label: t`context-menu.add-to-playlist`,
+            //   onClick: () => {
+            //     toast('开发中')
+            //   },
+            // },
             {
               type: 'divider',
             },
@@ -80,18 +75,6 @@ const AlbumContextMenu = () => {
                   label: t`context-menu.copy-netease-link`,
                   onClick: () => {
                     copyToClipboard(`https://music.163.com/#/album?id=${dataSourceID}`)
-                    toast.success(t`toasts.copied`)
-                  },
-                },
-                {
-                  type: 'item',
-                  label: t`context-menu.copy-r3playx-link`,
-                  onClick: () => {
-                    // fix: 这还有点问题
-                    const baseUrl = window.env?.isElectron
-                      ? 'https://r3play.app'
-                      : window.location.origin
-                    copyToClipboard(`${baseUrl}/album/${dataSourceID}`)
                     toast.success(t`toasts.copied`)
                   },
                 },

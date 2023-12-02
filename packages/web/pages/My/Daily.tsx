@@ -34,7 +34,7 @@ const Daily = () => {
   return (
     <>
       {isLoadingDaily ? (
-        <div className='flex justify-center'>
+        <div className='w-full flex justify-center'>
           <Loading />
         </div>
       ) : (

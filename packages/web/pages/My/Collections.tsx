@@ -53,29 +53,6 @@ const Playlists = () => {
     () => playlists?.playlist?.slice(1).filter(p => p.userId !== user?.data?.account?.id),
     [playlists, user]
   )
-  const buildPlaylists = (playlists: Playlist[] | undefined): DiscoverPlayList[] => {
-    // 从歌单中抽出歌曲
-    const pickedIds: number[] = []
-    const playLists: DiscoverPlayList[] = []
-    playlists?.forEach(p => {
-      if (pickedIds.includes(p.id)) return
-      pickedIds.push(p.id)
-      playLists.push({
-        id: p.id,
-        coverUrl: p.coverImgUrl as string,
-        large: false,
-      })
-    })
-
-    // 挑选出大图
-    if (playlists) {
-      const largeCover = sampleSize([...Array(playlists.length).keys()], ~~(playlists.length / 3))
-      playLists.map((album, index) => (album.large = largeCover.includes(index)))
-    }
-    return playLists
-  }
-  const myCoverplayLists = buildPlaylists(myPlaylists)
-  const othersCoverplayLists = buildPlaylists(otherPlaylists)
 
   return (
     <div>
@@ -85,7 +62,7 @@ const Playlists = () => {
           <div className='mb-4 mt-2 text-14 font-medium uppercase text-neutral-400'>
             Created BY ME
           </div>
-          <CoverWall playlists={myCoverplayLists || []} />
+          <CoverRow playlists={myPlaylists || []} />
         </>
       )}
       {/* Other playlists */}
@@ -94,7 +71,7 @@ const Playlists = () => {
           <div className='mb-4 mt-8 text-14 font-medium uppercase text-neutral-400'>
             Created BY OTHERS
           </div>
-          <CoverWall playlists={othersCoverplayLists || []} />
+          <CoverRow playlists={otherPlaylists || []} />
         </>
       )}
     </div>
@@ -220,7 +197,7 @@ const Collections = () => {
     <motion.div>
       <CollectionTabs showBg={isScrollReachBottom} />
       <div
-        className={cx('no-scrollbar overflow-y-auto px-2.5 pt-10 pb-16 lg:px-0')}
+        className={cx('no-scrollbar overflow-y-auto px-2.5 pt-10 lg:px-0')}
         onScroll={onScroll}
       >
         {selectedTab === 'daily' && <Daily />}

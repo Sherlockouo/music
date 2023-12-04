@@ -2,7 +2,7 @@
   "name": "r3playx",
   "productName": "R3PLAYX",
   "private": true,
-  "version": "2.7.1",
+  "version": "2.7.2",
   "description": "A nifty third-party NetEase Music player",
   "homepage": "https://github.com/sherlockouo/music",
   "license": "MIT",

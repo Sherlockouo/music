@@ -354,8 +354,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1(react-dom@18.2.0)(react@18.2.0)
       react-virtuoso:
-        specifier: ^2.16.6
-        version: 2.16.6(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^4.6.2
+        version: 4.6.2(react-dom@18.2.0)(react@18.2.0)
       valtio:
         specifier: ^1.8.0
         version: 1.8.0(react@18.2.0)(vite@4.5.0)
@@ -3773,20 +3773,6 @@ packages:
       node-windows: 1.0.0-beta.8
       pino: 6.14.0
       pino-pretty: 7.6.1
-    dev: false
-
-  /@virtuoso.dev/react-urx@0.2.13(react@18.2.0):
-    resolution: {integrity: sha512-MY0ugBDjFb5Xt8v2HY7MKcRGqw/3gTpMlLXId2EwQvYJoC8sP7nnXjAxcBtTB50KTZhO0SbzsFimaZ7pSdApwA==}
-    engines: {node: '>=10'}
-    peerDependencies:
-      react: '>=16'
-    dependencies:
-      '@virtuoso.dev/urx': 0.2.13
-      react: 18.2.0
-    dev: false
-
-  /@virtuoso.dev/urx@0.2.13:
-    resolution: {integrity: sha512-iirJNv92A1ZWxoOHHDYW/1KPoi83939o83iUBQHIim0i3tMeSKEh+bxhJdTHQ86Mr4uXx9xGUTq69cp52ZP8Xw==}
     dev: false
 
   /@vitejs/plugin-react-swc@3.2.0(vite@4.5.0):
@@ -10192,15 +10178,13 @@ packages:
       tslib: 2.4.0
     dev: false
 
-  /react-virtuoso@2.16.6(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-xpm/edDfrX2auYjnTmzdzpyxppsIvkEWtBgy1In/qMmJHMuXwhTSszCX2zsUs5SbwNCiEAbXjV7Qg1iXVa/QsA==}
+  /react-virtuoso@4.6.2(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-vvlqvzPif+MvBrJ09+hJJrVY0xJK9yran+A+/1iwY78k0YCVKsyoNPqoLxOxzYPggspNBNXqUXEcvckN29OxyQ==}
     engines: {node: '>=10'}
     peerDependencies:
       react: '>=16 || >=17 || >= 18'
       react-dom: '>=16 || >=17 || >= 18'
     dependencies:
-      '@virtuoso.dev/react-urx': 0.2.13(react@18.2.0)
-      '@virtuoso.dev/urx': 0.2.13
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false

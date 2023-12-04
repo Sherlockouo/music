@@ -6,7 +6,7 @@ import { prefetchAlbum } from '@/web/api/hooks/useAlbum'
 import { prefetchPlaylist } from '@/web/api/hooks/usePlaylist'
 import { Virtuoso } from 'react-virtuoso'
 import { useTranslation } from 'react-i18next'
-import {
+import React, {
   CSSProperties,
   FC,
   ReactNode,
@@ -18,13 +18,13 @@ import {
 } from 'react'
 import { createPortal } from 'react-dom'
 import humanNumber from 'human-number'
-import { useWhyDidYouUpdate } from 'ahooks'
 
 const CoverRow = ({
   albums,
   playlists,
   title,
   className,
+  Footer,
 }: {
   title?: string
   className?: string
@@ -32,6 +32,7 @@ const CoverRow = ({
   playlists?: Playlist[]
   containerClassName?: string
   containerStyle?: CSSProperties
+  Footer?:React.FC
 }) => {
   const navigate = useNavigate()
   const { showTrackListName } = useSettings()
@@ -219,19 +220,20 @@ const CoverRow = ({
         style={{
           height: 'calc(100vh - 132px)',
         }}
+        components={{
+          Footer:Footer
+        }}
         data={rows}
-        overscan={15}
+        overscan={75}
         itemSize={el => el.getBoundingClientRect().height + 24}
         totalCount={rows.length}
-        components={{
-          Header: () => <div className={cx('ease-in-out')}></div>,
-          // Footer: () => <div className='h-16'></div>,
-        }}
         itemContent={(index, row) => (
           <div key={index} className='grid w-full grid-cols-4 gap-4 lg:mb-6 lg:gap-6'>
-            {row.map((item: Item) => (
+            {
+            row.map((item: Item) => (
               <CoverItem key={item.id} item={item} />
-            ))}
+            ))
+            }
           </div>
         )}
       />

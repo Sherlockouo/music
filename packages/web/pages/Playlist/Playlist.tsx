@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 import PageTransition from '@/web/components/PageTransition'
-import TrackList from './TrackList'
+import TrackList from '../../components/TrackList/TrackListVirtual'
 import player from '@/web/states/player'
 import usePlaylist from '@/web/api/hooks/usePlaylist'
 import Header from './Header'
@@ -23,9 +23,9 @@ const Playlist = () => {
 
   return (
     <PageTransition>
-      <Header />
-      <div className='pb-10'>
+      <div className='h-full'>
         <TrackList
+          Header={ Header }
           tracks={playlistTracks?.songs ?? playlist?.playlist?.tracks ?? []}
           onPlay={onPlay}
           className='z-10 mt-10'

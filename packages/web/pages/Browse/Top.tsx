@@ -2,8 +2,10 @@ import { fetchTopPlaylist } from '@/web/api/playlist'
 import { PlaylistApiNames } from '@/shared/api/Playlists'
 import { useQuery } from '@tanstack/react-query'
 import CoverRowVirtual from '@/web/components/CoverRowVirtual'
-import { memo, useCallback, useEffect, useState } from 'react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import ScrollPagination from '@/web/components/ScrollPage'
+import useIntersectionObserver from '@/web/hooks/useIntersectionObserver'
+import Loading from '@/web/components/Animation/Loading'
 
 const reactQueryOptions = {
   refetchOnWindowFocus: false,
@@ -13,20 +15,21 @@ const reactQueryOptions = {
 
 const Top = ({ cat }: { cat: string }) => {
   const [dataSource, setDatasource] = useState<Playlist[]>([])
-
   const [hasMore, setHasMore] = useState(true)
+  const [fetching, setFetching] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
 
-  const getData = async (pageNo: number, pageSize: number): Promise<{ hasMore: boolean }> => {
-    console.log('top ', cat, ' ', pageNo, ' ', pageSize);
-
-    if (hasMore === false) return { hasMore: false }
+  const getData = async (pageNo: number, pageSize: number) =>{
+    if (hasMore === false) return 
+    setFetching(true)
     const resp = await fetchTopPlaylist({
       cat: cat,
       limit: pageSize || 50,
       offset: (pageNo - 1) * pageSize || 0,
     })
-
+    setFetching(false)
     setHasMore(resp.more)
+    if(!resp.more) return
 
     let arrSource = [...dataSource, ...resp.playlists]
     setDatasource([...new Set(arrSource)])
@@ -37,13 +40,32 @@ const Top = ({ cat }: { cat: string }) => {
     setHasMore(true)
     getData(1, 50)
   }, [])
-  const renderItems = () => {
-    return <CoverRowVirtual key={"Top" + cat} playlists={dataSource} />
+
+  useEffect(()=>{
+    getData(currentPage,50)
+  },[currentPage])
+
+  const Footer = ()=>{
+    const observePoint = useRef<HTMLDivElement | null>(null)
+    const { onScreen: isScrollReachBottom } = useIntersectionObserver(observePoint)
+    const [prevState,setPrevState] = useState<boolean>(false)
+    const loadMore = ()=>{
+      setCurrentPage(currentPage+1)
+    }
+    useEffect(()=>{
+      if(prevState != isScrollReachBottom && isScrollReachBottom && hasMore && !fetching){
+        setPrevState(isScrollReachBottom)
+        loadMore()
+      }
+    },[isScrollReachBottom])
+
+    return <div ref={observePoint} className='flex justify-center pb-5'>{hasMore && <Loading />}</div>
   }
+  
   return (
     <>
-      <div className='calc(100vh - 132px)'>
-        <ScrollPagination key={"Top" + cat} getData={getData} renderItems={renderItems} />
+      <div className='h-full'>
+        <CoverRowVirtual key={"Top" + cat} playlists={dataSource} Footer={Footer} />
       </div>
     </>
   )

@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import useArtistSongs from '@/web/api/hooks/useArtistSongs'
 import useTracks from '@/web/api/hooks/useTracks'
 import { FetchArtistSongsParams } from '@/shared/api/Artist'
-import TrackList from '../Playlist/TrackList'
+import TrackList from '../../components/TrackList/TrackListVirtual'
 import player from '@/web/states/player'
 import { useParams } from 'react-router-dom'
 import ScrollPagination from '@/web/components/ScrollPage'
@@ -11,6 +11,16 @@ import { fetchTracks } from '@/web/api/track'
 import toast from 'react-hot-toast'
 import { CloudDiskInfoParam } from '@/shared/api/User'
 import { cloudDisk } from '@/web/api/user'
+import { motion } from 'framer-motion'
+import Track from '@/web/components/TrackList/Track'
+import { openContextMenu } from '@/web/states/contextMenus'
+import { useSnapshot } from 'valtio'
+import useIntersectionObserver from '@/web/hooks/useIntersectionObserver'
+import { useThrottle } from 'react-use'
+import { has, throttle } from 'lodash-es'
+import Loading from '@/web/components/Animation/Loading'
+import { cx } from '@emotion/css'
+
 const reactQueryOptions = {
   refetchOnWindowFocus: false,
   refetchInterval: 1000 * 60 * 60, // 1 hour
@@ -18,11 +28,13 @@ const reactQueryOptions = {
 }
 
 const Cloud = () => {
+  const {trackID, state} = useSnapshot(player)
   const [dataSource, setDatasource] = useState<Track[]>([])
   const [songIDs, setSongIDs] = useState<number[]>([])
-  const params = useParams()
   const [hasMore, setHasMore] = useState(true)
-
+  const [currentPage, setCurrentPage] = useState(1)
+  const observePoint = useRef<HTMLDivElement | null>(null)
+  const { onScreen: isScrollReachBottom } = useIntersectionObserver(observePoint)
   const getData = async (pageNo: number, pageSize: number) => {
     if (hasMore === false) return
     const cloudParams: CloudDiskInfoParam = {
@@ -30,7 +42,6 @@ const Cloud = () => {
       offset: (pageNo - 1) * pageSize || 0,
     }
     const resp = await cloudDisk(cloudParams)
-    console.log('params ', cloudParams, resp)
 
     setHasMore(resp.hasMore)
 
@@ -45,18 +56,50 @@ const Cloud = () => {
 
     return { hasMore: resp.hasMore }
   }
+  const getDataThrottle = throttle((pageNo: number, pageSize: number)=>{
+    getData(pageNo,pageSize)
+  },1000)
+
+  useEffect(()=>{
+    if(isScrollReachBottom && hasMore){
+      setCurrentPage(currentPage + 1)
+      getDataThrottle(currentPage,10)
+    }
+  },[isScrollReachBottom])
+  
   const onPlay = (trackID: number | null = null) => {
     player.playAList(songIDs, trackID)
   }
+  
+  const handleClick = (e: React.MouseEvent<HTMLElement>, trackID: number) => {
+    if (e.type === 'contextmenu') {
+      e.preventDefault()
+      openContextMenu({
+        event: e,
+        type: 'track',
+        dataSourceID: trackID,
+        options: {
+          useCursorPosition: true,
+        },
+      })
+      return
+    }
 
-  const renderItems = () => {
-    return <TrackList tracks={dataSource} onPlay={onPlay}></TrackList>
+    if (e.detail === 2) onPlay?.(trackID)
   }
-
   return (
-    <div className='h-800 z-10'>
-      <ScrollPagination getData={getData} renderItems={renderItems} />
-    </div>
+    <motion.div className={cx('min-h-screen')}>
+      {(dataSource)?.map((track,index)=>{
+              return <Track
+                track={track} 
+                index={index} 
+                playingTrackID={trackID || 0}
+                state={state}
+                handleClick={handleClick} />
+        })
+        }
+        <div ref={observePoint} className='flex justify-center'>{hasMore && <Loading />}</div>
+    </motion.div>
   )
 }
 

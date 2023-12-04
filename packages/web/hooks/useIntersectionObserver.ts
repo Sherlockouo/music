@@ -1,21 +1,29 @@
-import { useState, useEffect, RefObject } from 'react'
+import { useState, useEffect, RefObject } from 'react';
 
 const useIntersectionObserver = (element: RefObject<Element>): { onScreen: boolean } => {
-  const [onScreen, setOnScreen] = useState(false)
+  const [onScreen, setOnScreen] = useState(false);
 
   useEffect(() => {
-    if (element.current) {
-      const observer = new IntersectionObserver(([entry]) => setOnScreen(entry.isIntersecting))
-      observer.observe(element.current)
-      return () => {
-        observer.disconnect()
-      }
+    const supportsIntersectionObserver = 'IntersectionObserver' in window;
+
+    if (!supportsIntersectionObserver || !element?.current) {
+      console.warn('Intersection Observer is not supported in this browser or element is undefined.');
+      return;
     }
-  }, [element, setOnScreen])
+    
+    const observer = new IntersectionObserver(([entry]) => {
+    setOnScreen(entry.isIntersecting)
+  },{threshold:0});
+    observer.observe(element.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [element, setOnScreen]);
 
   return {
     onScreen,
-  }
-}
+  };
+};
 
-export default useIntersectionObserver
+export default useIntersectionObserver;

@@ -4,6 +4,7 @@ import useUserPlaylists, { useMutationLikeAPlaylist } from '@/web/api/hooks/useU
 import TrackListHeader from '@/web/components/TrackListHeader'
 import player from '@/web/states/player'
 import { formatDate } from '@/web/utils/common'
+import { useWhyDidYouUpdate } from 'ahooks'
 import { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 
@@ -50,9 +51,8 @@ const Header = () => {
   const onLike = async () => {
     likeAPlaylist.mutateAsync(playlist?.id || Number(params.id))
   }
-
   return (
-    <TrackListHeader
+    <TrackListHeader className='mb-5'
       {...{
         title,
         creatorName,

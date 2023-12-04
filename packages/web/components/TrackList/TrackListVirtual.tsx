@@ -8,7 +8,6 @@ import { css, cx } from '@emotion/css'
 import { Fragment, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useSnapshot } from 'valtio'
-import react from '@vitejs/plugin-react-swc'
 import React from 'react'
 import { Virtuoso } from 'react-virtuoso'
 
@@ -109,12 +108,14 @@ function TrackList({
   onPlay,
   className,
   isLoading,
+  Header,
 }: {
   tracks?: Track[]
   onPlay: (id: number) => void
   className?: string
   isLoading?: boolean
   placeholderRows?: number
+  Header?: React.FC
 }) {
   const { trackID, state } = useSnapshot(player)
   let playingTrack = tracks?.find(track => track.id === trackID)
@@ -136,20 +137,20 @@ function TrackList({
 
     if (e.detail === 2) onPlay?.(trackID)
   }
-
   return (
-    <div className={className}>
+    <div className={cx('@container',className)}>
       <Virtuoso
-        className='no-scrollbar'
+        className=' no-scrollbar'
         style={{
           height: 'calc(100vh - 132px)',
         }}
         data={tracks}
-        overscan={20}
+        components={{
+          Header
+        }}
         itemSize={el => el.getBoundingClientRect().height + 24}
         totalCount={tracks?.length}
-        itemContent={(index, row) => (
-          <div key={index} className='h-full mb-1'>
+        itemContent={(index) => (
                <Track
                key={tracks![index]?.id || 0}
                track={tracks![index] || undefined}
@@ -158,14 +159,13 @@ function TrackList({
                state={state}
                handleClick={handleClick}
              />
-          </div>
         )}
       />
     </div>
   )
 }
 
-const TrackListMemo = React.memo(TrackList)
-TrackListMemo.displayName = "TrackList"
+const TrackListVirtualMemo = React.memo(TrackList)
+TrackListVirtualMemo.displayName = "TrackListVirtual"
 
-export default TrackListMemo
+export default TrackListVirtualMemo

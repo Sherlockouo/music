@@ -1,19 +1,15 @@
 import { css, cx } from '@emotion/css'
 import useUserArtists from '@/web/api/hooks/useUserArtists'
 import Tabs from '@/web/components/Tabs'
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import CoverRow from '@/web/components/CoverRow'
 import useUserPlaylists from '@/web/api/hooks/useUserPlaylists'
 import useUserAlbums from '@/web/api/hooks/useUserAlbums'
 import { useSnapshot } from 'valtio'
 import uiStates from '@/web/states/uiStates'
 import ArtistRow from '@/web/components/ArtistRow'
-import { playerWidth, topbarHeight } from '@/web/utils/const'
-import topbarBackground from '@/web/assets/images/topbar-background.png'
-import useIntersectionObserver from '@/web/hooks/useIntersectionObserver'
+import { topbarHeight } from '@/web/utils/const'
 import { AnimatePresence, motion } from 'framer-motion'
-import { scrollToBottom } from '@/web/utils/common'
-import { sampleSize, throttle } from 'lodash-es'
 import { useTranslation } from 'react-i18next'
 import VideoRow from '@/web/components/VideoRow'
 import useUserVideos from '@/web/api/hooks/useUserVideos'
@@ -30,15 +26,8 @@ import { IconNames } from '@/web/components/Icon/iconNamesType'
 const collections = ['daily', 'playlists', 'albums', 'artists', 'videos', 'cloud'] as const
 type Collection = typeof collections[number]
 
-interface DiscoverPlayList {
-  id: number
-  coverUrl: string
-  large: boolean
-}
-
 const Albums = () => {
   const { data: albums } = useUserAlbums()
-
   return <CoverRow albums={albums?.data} itemTitle='name' itemSubtitle='artist' />
 }
 
@@ -88,7 +77,7 @@ const Videos = () => {
   return <VideoRow videos={videos?.data || []} />
 }
 
-const CollectionTabs = ({ showBg }: { showBg: boolean }) => {
+const CollectionTabs = ({ className }: { className:string }) => {
   const { t } = useTranslation()
   const { displayPlaylistsFromNeteaseMusic } = useSnapshot(settings)
 
@@ -96,65 +85,43 @@ const CollectionTabs = ({ showBg }: { showBg: boolean }) => {
     {
       id: 'daily',
       name: t`common.daily`,
-      iconName: 'netease',
+      // iconName: 'netease',
     },
     {
       id: 'albums',
       name: t`common.album_other`,
-      iconName: 'album',
+      // iconName: 'album',
     },
     {
       id: 'playlists',
       name: t`common.playlist_other`,
-      iconName: 'playlist',
+      // iconName: 'playlist',
     },
     {
       id: 'artists',
       name: t`common.artist_other`,
-      iconName: 'artist',
+      // iconName: 'artist',
     },
     {
       id: 'videos',
       name: t`common.video_other`,
-      iconName: 'video',
+      // iconName: 'video',
     },
     {
       id: 'cloud',
       name: t`common.cloud`,
-      iconName: 'cloud',
+      // iconName: 'cloud',
     },
   ]
 
   const { librarySelectedTab: selectedTab } = useSnapshot(persistedUiStates)
-  const { minimizePlayer } = useSnapshot(persistedUiStates)
   const setSelectedTab = (id: Collection) => {
     persistedUiStates.librarySelectedTab = id
   }
 
   return (
-    <div className='relative'>
-      {/* Topbar background */}
-      <AnimatePresence>
-        {showBg && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className={cx(
-              'pointer-events-none absolute right-0 left-0 z-10',
-              css`
-                height: 230px;
-                background-repeat: repeat;
-              `
-            )}
-            style={{
-              top: '-132px',
-              // backgroundImage: `url(${topbarBackground})`,
-            }}
-          ></motion.div>
-        )}
-      </AnimatePresence>
-      <div className='flex flex-row justify-between'>
+    <div className={className}>
+      <div className='flex flex-row justify-between z-10'>
         <Tabs
           tabs={tabs.filter(tab => {
             if (!displayPlaylistsFromNeteaseMusic && tab.id === 'playlists') {
@@ -169,12 +136,11 @@ const CollectionTabs = ({ showBg }: { showBg: boolean }) => {
           className={cx(
             'sticky',
             'z-10',
-            // '-mb-10',
             'px-2.5 lg:px-0'
           )}
-          style={{
-            top: `${topbarHeight}px`,
-          }}
+          // style={{
+          //   top: `${topbarHeight}px`,
+          // }}
         />
         <div className='items-center '>{/* {selectedTab == 'cloud' && <FileUploader/> } */}</div>
       </div>
@@ -184,30 +150,17 @@ const CollectionTabs = ({ showBg }: { showBg: boolean }) => {
 
 const Collections = () => {
   const { librarySelectedTab: selectedTab } = useSnapshot(persistedUiStates)
-
-  const observePoint = useRef<HTMLDivElement | null>(null)
-  const { onScreen: isScrollReachBottom } = useIntersectionObserver(observePoint)
-
-  const onScroll = throttle(() => {
-    if (isScrollReachBottom) return
-    scrollToBottom(true)
-  }, 500)
-
   return (
     <motion.div>
-      <CollectionTabs showBg={isScrollReachBottom} />
-      <div
-        className={cx('no-scrollbar overflow-y-auto px-2.5 pt-10 lg:px-0')}
-        onScroll={onScroll}
-      >
+      <CollectionTabs className='sticky top-[122px] z-10 w-full'/>
+      <div className={cx('px-2.5 pt-10 lg:px-0')}>
         {selectedTab === 'daily' && <Daily />}
         {selectedTab === 'albums' && <Albums />}
         {selectedTab === 'playlists' && <Playlists />}
         {selectedTab === 'artists' && <Artists />}
         {selectedTab === 'videos' && <Videos />}
-        {selectedTab === 'cloud' && <Cloud />}
+        {selectedTab === 'cloud' && <Cloud key={"cloud"}/>}
       </div>
-      <div ref={observePoint}></div>
     </motion.div>
   )
 }

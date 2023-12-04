@@ -1,40 +1,70 @@
 import { fetchHQPlaylist } from '@/web/api/playlist'
+import Loading from '@/web/components/Animation/Loading'
 import CoverRowVirtual from '@/web/components/CoverRowVirtual'
-import { memo, useEffect, useState } from 'react'
-import ScrollPagination from '@/web/components/ScrollPage'
+import useIntersectionObserver from '@/web/hooks/useIntersectionObserver'
+import { useWhyDidYouUpdate } from 'ahooks'
+import { throttle } from 'lodash-es'
+import { memo, useEffect, useRef, useState } from 'react'
 
 const Hot = ({ cat }: { cat: string }) => {
   const [dataSource, setDatasource] = useState<Playlist[]>([])
-  
   const [hasMore, setHasMore] = useState(true)
-  
-  const getData = async (pageNo: number, pageSize: number): Promise<{ hasMore: boolean }> => {
-    if (hasMore === false) return { hasMore: false }
+  const [fetching, setFetching] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const getData = async (pageSize: number)=> {
+    
+    if (hasMore === false) return
+    setFetching(true)
     const resp = await fetchHQPlaylist({
       cat: cat,
       limit: pageSize || 50,
-      before: (pageNo - 1) * pageSize || 0,
+      before: dataSource.length ? dataSource[dataSource.length-1].updateTime || 0 : 0,
     })
+    setFetching(false)
     
     setHasMore(resp.more)
-
+    if(!resp.more) return 
+    
+    if(dataSource === resp.playlists) return 
     let arrSource = [...dataSource, ...resp.playlists]
     setDatasource([...new Set(arrSource)])
-    return { hasMore: hasMore }
-  }
-  useEffect(() => {
-    setDatasource([])
-    setHasMore(true)
-    getData(1, 50)
-  }, [])
-  const renderItems = () => {
-    return <CoverRowVirtual key={"Hot" + cat} playlists={dataSource} />
   }
 
+  const getDataThrottle = throttle((pageSize: number)=>{
+    getData(pageSize)
+  },1000)
+
+  useEffect(()=>{
+    setHasMore(true)
+    getDataThrottle(50)
+  },[])
+
+  useEffect(()=>{
+    getDataThrottle(50)
+  },[currentPage])
+  
+
+  const Footer = ()=>{
+    const observePoint = useRef<HTMLDivElement | null>(null)
+    const { onScreen: isScrollReachBottom } = useIntersectionObserver(observePoint)
+    const [prevState,setPrevState] = useState<boolean>(false)
+    const loadMore = ()=>{
+      setCurrentPage(currentPage+1)
+    }
+    useEffect(()=>{
+      if(prevState != isScrollReachBottom && isScrollReachBottom && hasMore && !fetching){
+        setPrevState(isScrollReachBottom)
+        loadMore()
+      }
+    },[isScrollReachBottom])
+
+    return <div ref={observePoint} className='flex justify-center pb-5'>{hasMore && <Loading />}</div>
+  }
+  
   return (
     <>
-      <div className='calc(100vh - 132px)'>
-        <ScrollPagination key={"Hot"+cat} getData={getData} renderItems={renderItems} />
+      <div className='h-full'>
+        <CoverRowVirtual key={"Hot" + cat} playlists={dataSource} Footer={Footer} />
       </div>
     </>
   )

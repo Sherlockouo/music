@@ -1,5 +1,5 @@
 import PageTransition from '../../components/PageTransition'
-import { useEffect, useRef, useState, useMemo } from 'react'
+import { useEffect, useRef, useState, useMemo, memo } from 'react'
 import { useSnapshot } from 'valtio'
 import { css, cx } from '@emotion/css'
 import useLyric from '@/web/api/hooks/useLyric'
@@ -12,11 +12,10 @@ import uiStates from '@/web/states/uiStates'
 import toast from 'react-hot-toast'
 import { gsap } from 'gsap'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
+import persistedUiStates from '@/web/states/persistedUiStates'
 gsap.registerPlugin(ScrollToPlugin)
 
-const Lyrics = () => {
-  console.log('lyrics load ')
-
+const Lyrics = memo(() => {
   const containerRef = useRef(null)
   const pContainerRef = useRef(null)
   const [currentLineIndex, setCurrentLineIndex] = useState(0)
@@ -24,7 +23,7 @@ const Lyrics = () => {
   const lyricsResponse = lyricsRes.data
   const { lyric: lyrics, tlyric: tlyric } = lyricParser(lyricsResponse)
   const { progress } = useSnapshot(player)
-  const { lyricsBlur } = useSnapshot(uiStates)
+  const { lyricsBlur } = useSnapshot(persistedUiStates)
   const [isHovered, setIsHovered] = useState(false)
 
   const handleMouseEnter = () => {
@@ -170,6 +169,6 @@ const Lyrics = () => {
       </div>
     </PageTransition>
   )
-}
+})
 
 export default Lyrics

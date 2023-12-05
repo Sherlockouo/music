@@ -2,6 +2,7 @@ import { fetchDailyRecommendPlaylists, fetchRecommendedPlaylists } from '@/web/a
 import { PlaylistApiNames } from '@/shared/api/Playlists'
 import { useQuery } from '@tanstack/react-query'
 import CoverRowVirtual from '@/web/components/CoverRowVirtual'
+import { memo } from 'react'
 
 const reactQueryOptions = {
   refetchOnWindowFocus: false,
@@ -9,7 +10,7 @@ const reactQueryOptions = {
   refetchOnMount: false,
 }
 
-const Recommend = () => {
+const Recommend = memo(() => {
   const { data: dailyRecommendPlaylists, isLoading: isLoadingDaily } = useQuery(
     [PlaylistApiNames.FetchDailyRecommendPlaylists],
     () => fetchDailyRecommendPlaylists(),
@@ -26,6 +27,6 @@ const Recommend = () => {
       : [...(dailyRecommendPlaylists?.recommend || []), ...(recommendedPlaylists?.result || [])]
 
   return <CoverRowVirtual playlists={playlists} />
-}
+})
 
 export default Recommend

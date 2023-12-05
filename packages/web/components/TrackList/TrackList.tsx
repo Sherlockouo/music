@@ -108,13 +108,13 @@ const Actions = ({ track }: { track: Track }) => {
   )
 }
 
-function Track({
+const Track  = memo(({
   track,
   handleClick,
 }: {
   track: Track
   handleClick: (e: React.MouseEvent<HTMLElement>, trackID: number) => void
-}) {
+})=> {
   const { track: playingTrack, state } = useSnapshot(player)
 
   return (
@@ -178,7 +178,7 @@ function Track({
       <div className='text-right lg:block'>{formatDuration(track.dt, 'en-US', 'hh:mm:ss')}</div>
     </div>
   )
-}
+})
 
 const TrackList = ({
   tracks,

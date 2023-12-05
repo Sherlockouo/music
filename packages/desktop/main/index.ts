@@ -13,7 +13,7 @@ import { release } from 'os'
 import { join } from 'path'
 import log from './log'
 import { initIpcMain, lyricWin } from './ipcMain'
-import { createTray,destroy, YPMTray } from './tray'
+import { createTray, YPMTray } from './tray'
 import { IpcChannels } from '@/shared/IpcChannels'
 import { createTaskbar, Thumbar } from './windowsTaskbar'
 import { createMenu } from './menu'
@@ -23,6 +23,7 @@ import initAppServer from './appServer/appServer'
 import { bindingKeyboardShortcuts } from './keyboardShortcuts'
 import { createDockMenu } from './dockMenu'
 import { checkForUpdates } from './updateWindow'
+import { createTouchBar } from './touchBar'
 
 log.info('[electron] index.ts')
 
@@ -54,6 +55,7 @@ class Main {
       this.handleAppEvents()
       this.handleWindowEvents()
       this.createTray()
+      this.createTouchBar()
       this.disableCacheInDev()
       createMenu(this.win!.webContents)
       bindingKeyboardShortcuts(this.win!.webContents, undefined, this.win!)
@@ -84,6 +86,10 @@ class Main {
     )
 
     this.win.webContents.openDevTools()
+  }
+
+  createTouchBar(){
+    createTouchBar(this.win!)
   }
 
   createTray() {
@@ -239,7 +245,7 @@ class Main {
       let closeWindowInMinimize = store.get('settings.closeWindowInMinimize')
 
       if (closeWindowInMinimize === 'true') {
-        // e.preventDefault()
+        e.preventDefault()
         this.win?.hide()
         return
       }

@@ -22,9 +22,10 @@ const Top = ({ cat }: { cat: string }) => {
   const getData = async (pageNo: number, pageSize: number) =>{
     if (hasMore === false) return 
     setFetching(true)
+    useQuery([PlaylistApiNames.FetchTopPlaylistParams])
     const resp = await fetchTopPlaylist({
       cat: cat,
-      limit: pageSize || 50,
+      limit: pageSize || 40,
       offset: (pageNo - 1) * pageSize || 0,
     })
     setFetching(false)
@@ -38,11 +39,11 @@ const Top = ({ cat }: { cat: string }) => {
   useEffect(() => {
     setDatasource([])
     setHasMore(true)
-    getData(1, 50)
+    getData(1, 40)
   }, [])
 
   useEffect(()=>{
-    getData(currentPage,50)
+    getData(currentPage,40)
   },[currentPage])
 
   const Footer = ()=>{

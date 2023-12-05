@@ -3,11 +3,11 @@ import Wave from '@/web/components/Animation/Wave'
 import { formatDuration, resizeImage } from '@/web/utils/common'
 import { State as PlayerState } from '@/web/utils/player'
 import { css, cx } from '@emotion/css'
-import { Fragment, useEffect } from 'react'
+import { Fragment, memo, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import React from 'react'
 
-const Track = ({
+const Track = memo(({
     track,
     index,
     playingTrackID,
@@ -95,6 +95,6 @@ const Track = ({
         </div>
       </div>
     )
-  }
+  })
 
   export default Track

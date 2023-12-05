@@ -6,6 +6,12 @@ import { useWhyDidYouUpdate } from 'ahooks'
 import { throttle } from 'lodash-es'
 import { memo, useEffect, useRef, useState } from 'react'
 
+const reactQueryOptions = {
+  refetchOnWindowFocus: false,
+  refetchInterval: 1000 * 60 * 60, // 1 hour
+  refetchOnMount: false,
+}
+
 const Hot = ({ cat }: { cat: string }) => {
   const [dataSource, setDatasource] = useState<Playlist[]>([])
   const [hasMore, setHasMore] = useState(true)
@@ -36,11 +42,11 @@ const Hot = ({ cat }: { cat: string }) => {
 
   useEffect(()=>{
     setHasMore(true)
-    getDataThrottle(50)
+    getDataThrottle(40)
   },[])
 
   useEffect(()=>{
-    getDataThrottle(50)
+    getDataThrottle(40)
   },[currentPage])
   
 

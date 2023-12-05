@@ -8,6 +8,7 @@ export const enum IpcChannels {
   LyricsWindowMinimize = 'LyricsWindowMinimize',
   MaximizeOrUnmaximize = 'MaximizeOrUnmaximize',
   MinimizeOrUnminimize = 'MinimizeOrUnminimize',
+  MetaData = 'MetaData',
   Close = 'Close',
   Hide = 'Hide',
   LyricsWindowClose = 'LyricsWindowClose',
@@ -27,12 +28,6 @@ export const enum IpcChannels {
   SyncProgress = 'SyncProgress',
   Next = 'Next',
   Previous = 'Previous',
-  LPlay = 'LPlay',
-  LPause = 'LPause',
-  LPlayOrPause = 'LPlayOrPause',
-  LSyncProgress = 'LSyncProgress',
-  LNext = 'LNext',
-  LPrevious = 'LPrevious',
   Like = 'Like',
   Repeat = 'Repeat',
   VolumeUp = 'VolumeUp',
@@ -57,6 +52,9 @@ export interface IpcChannelsParams {
   [IpcChannels.LyricsWindowMinimize]: void
   [IpcChannels.MaximizeOrUnmaximize]: void
   [IpcChannels.MinimizeOrUnminimize]: void
+  [IpcChannels.MetaData]: {
+    track: string
+  }
   [IpcChannels.Close]: void
   [IpcChannels.Hide]: void
   [IpcChannels.LyricsWindowClose]: void
@@ -65,9 +63,6 @@ export interface IpcChannelsParams {
   [IpcChannels.CheckUpdate]: void
   [IpcChannels.PinDesktopLyric]: void
   [IpcChannels.SyncProgress]: {
-    progress: number
-  }
-  [IpcChannels.LSyncProgress]: {
     progress: number
   }
   [IpcChannels.SetDesktopLyric]: {
@@ -131,6 +126,7 @@ export interface IpcChannelsReturns {
   [IpcChannels.SetDesktopLyric]: boolean
   [IpcChannels.PinDesktopLyric]: boolean
   [IpcChannels.MinimizeOrUnminimize]: void
+  [IpcChannels.MetaData]: void
   [IpcChannels.Close]: void
   [IpcChannels.Hide]: void
   [IpcChannels.IsMaximized]: boolean

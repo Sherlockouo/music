@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import { useSnapshot } from 'valtio'
 import { cx } from '@emotion/css'
 import useLyric from '@/web/api/hooks/useLyric'
@@ -7,7 +7,7 @@ import { motion, useAnimation } from 'framer-motion'
 import player from '@/web/states/player'
 import LyricsWindowTitleBar from '@/web/components/LyricsWindow/LyricsWindowTitleBar'
 
-const LyricsDesktop = () => {
+const LyricsDesktop = memo(() => {
   const containerRef = useRef(null)
   const [currentLineIndex, setCurrentLineIndex] = useState(0)
   const { progress, trackID } = useSnapshot(player)
@@ -129,6 +129,6 @@ const LyricsDesktop = () => {
       </motion.div>
     </>
   )
-}
+})
 
 export default LyricsDesktop

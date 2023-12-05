@@ -30,6 +30,9 @@ const IpcRendererReact = () => {
       text,
       coverImg,
     })
+    window.ipcRenderer?.send(IpcChannels.MetaData, {
+      track: JSON.stringify(track)
+    })
     document.title = text
   }, [track])
 

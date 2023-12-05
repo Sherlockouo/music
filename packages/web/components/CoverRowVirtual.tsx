@@ -11,6 +11,7 @@ import React, {
   FC,
   ReactNode,
   createRef,
+  memo,
   useEffect,
   useMemo,
   useRef,
@@ -59,7 +60,7 @@ const CoverRow = ({
     return rows
   }, [])
 
-  const CoverItem: FC<{ item: Item }> = ({ item }) => {
+  const CoverItem: FC<{ item: Item }> = memo(({ item }) => {
     return (
       <div
         className='group relative'
@@ -85,8 +86,8 @@ const CoverRow = ({
         )}
       </div>
     )
-  }
-  const CoverItemHoverCard: FC<{ item: Item }> = ({ item }) => {
+  })
+  const CoverItemHoverCard: FC<{ item: Item }> = memo(({ item }) => {
     const hostRef = createRef<HTMLDivElement>()
     const [visible, setVisible] = useState(false)
     const [parentInfo, setParentInfo] = useState<{
@@ -204,11 +205,11 @@ const CoverRow = ({
         }
       </div>
     )
-  }
+  })
 
-  const Portal = ({ children }: { children?: ReactNode }) => {
+  const Portal = memo(({ children }: { children?: ReactNode }) => {
     return createPortal(<>{children}</>, document.body.querySelector('#cover-hover-card')!)
-  }
+  })
   
   return (
     <div className={className}>

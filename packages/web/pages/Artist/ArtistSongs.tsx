@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import useArtistSongs from '@/web/api/hooks/useArtistSongs'
 import useTracks from '@/web/api/hooks/useTracks'
 import { FetchArtistSongsParams } from '@/shared/api/Artist'
@@ -8,9 +8,8 @@ import { useParams } from 'react-router-dom'
 import ScrollPagination from '@/web/components/ScrollPage'
 import { fetchArtistSongs } from '@/web/api/artist'
 import { fetchTracks } from '@/web/api/track'
-import toast from 'react-hot-toast'
 
-const ArtistSongs = () => {
+const ArtistSongs = memo(() => {
   const [dataSource, setDatasource] = useState<Track[]>([])
   const [songIDs, setSongIDs] = useState<number[]>([])
   const params = useParams()
@@ -54,6 +53,6 @@ const ArtistSongs = () => {
       <ScrollPagination getData={getData} renderItems={renderItems} />
     </div>
   )
-}
+})
 
 export default ArtistSongs

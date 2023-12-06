@@ -2,8 +2,9 @@ import { useParams } from 'react-router-dom'
 import useArtistMV from '@/web/api/hooks/useArtistMV'
 import { useTranslation } from 'react-i18next'
 import uiStates from '@/web/states/uiStates'
+import { memo } from 'react'
 
-const ArtistVideos = () => {
+const ArtistVideos = memo(() => {
   const { t } = useTranslation()
   const params = useParams()
   const { data: videos } = useArtistMV({ id: Number(params.id) || 0 })
@@ -31,6 +32,6 @@ const ArtistVideos = () => {
       </div>
     </div>
   )
-}
+})
 
 export default ArtistVideos

@@ -22,7 +22,6 @@ const Top = ({ cat }: { cat: string }) => {
   const getData = async (pageNo: number, pageSize: number) =>{
     if (hasMore === false) return 
     setFetching(true)
-    useQuery([PlaylistApiNames.FetchTopPlaylistParams])
     const resp = await fetchTopPlaylist({
       cat: cat,
       limit: pageSize || 40,

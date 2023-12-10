@@ -225,7 +225,7 @@ const CoverRow = ({
           Footer:Footer
         }}
         data={rows}
-        overscan={75}
+        overscan={600}
         itemSize={el => el.getBoundingClientRect().height + 24}
         totalCount={rows.length}
         itemContent={(index, row) => (

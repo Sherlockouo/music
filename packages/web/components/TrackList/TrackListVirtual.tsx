@@ -118,8 +118,10 @@ function TrackList({
   Header?: React.FC
 }) {
   const { trackID, state } = useSnapshot(player)
-  let playingTrack = tracks?.find(track => track.id === trackID)
+  const tracksMap = new Map(tracks?.map(track => [track.id, track]))
 
+  let playingTrack = tracksMap.get(trackID)
+  
   const handleClick = (e: React.MouseEvent<HTMLElement>, trackID: number) => {
     if (isLoading) return
     if (e.type === 'contextmenu') {

@@ -4,9 +4,6 @@ import {
   app,
   BrowserWindow,
   BrowserWindowConstructorOptions,
-  dialog,
-  Menu,
-  MenuItem,
   shell,
 } from 'electron'
 import { release } from 'os'
@@ -17,7 +14,7 @@ import { createTray, YPMTray } from './tray'
 import { IpcChannels } from '@/shared/IpcChannels'
 import { createTaskbar, Thumbar } from './windowsTaskbar'
 import { createMenu } from './menu'
-import { appName, isDev, isLinux, isMac, isWindows } from './env'
+import { appName, isDev, isMac, isWindows } from './env'
 import store from './store'
 import initAppServer from './appServer/appServer'
 import { bindingKeyboardShortcuts } from './keyboardShortcuts'
@@ -79,7 +76,6 @@ class Main {
     const {
       default: installExtension,
       REACT_DEVELOPER_TOOLS,
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
     } = require('electron-devtools-installer')
     installExtension(REACT_DEVELOPER_TOOLS.id).catch((err: unknown) =>
       log.info('An error occurred: ', err)
@@ -93,9 +89,7 @@ class Main {
   }
 
   createTray() {
-    // if (isWindows || isLinux || isDev) {
     this.tray = createTray(this.win!)
-    // }
     if (isMac) {
       // create dock menu for macOS
       const createdDockMenu = createDockMenu(this.win!)

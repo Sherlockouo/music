@@ -90,3 +90,24 @@ jobs:
           name: R3PLAYX-linux
           path: release/*.AppImage
           if-no-files-found: ignore
+      
+      - name: Upload mac latest yml
+        uses: actions/upload-artifact@v3
+        with:
+          name: latest-mac
+          path: ./packages/desktop/release/latest-mac.yml
+          if-no-files-found: ignore
+      
+      - name: Upload windows latest yml
+        uses: actions/upload-artifact@v3
+        with:
+          name: latest
+          path: ./packages/desktop/release/latest.yml
+          if-no-files-found: ignore
+      
+      - name: Upload linux latest yml
+        uses: actions/upload-artifact@v3
+        with:
+          name: latest-linux
+          path: ./packages/desktop/release/latest-linux.yml
+          if-no-files-found: ignore

@@ -25,12 +25,12 @@ const BlurBackground = ({ className }: { className: string }) => {
   }, [blurBackgroundImage])
 
   useEffect(() => {
-    if (!isMobile && blurBackgroundImage && hideTopbarBackground && isLoaded) {
+    if (!isMobile && blurBackgroundImage && isLoaded) {
       animate.start({ opacity: 1 })
     } else {
       animate.start({ opacity: 0 })
     }
-  }, [animate, blurBackgroundImage, hideTopbarBackground, isLoaded, isMobile])
+  }, [animate, blurBackgroundImage, isLoaded, isMobile])
 
   return (
     <AnimatePresence>

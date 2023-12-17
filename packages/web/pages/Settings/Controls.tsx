@@ -13,7 +13,7 @@ export function Switch({
     <motion.div
       className={cx(
         'flex w-11 items-center justify-start rounded-full p-1 transition-colors duration-500',
-        enabled ? 'bg-brand-700' : 'bg-black/10 dark:bg-white/10'
+        enabled ? 'bg-brand-700' : 'bg-black/30 dark:bg-white/30'
       )}
       onClick={() => onChange(!enabled)}
     >

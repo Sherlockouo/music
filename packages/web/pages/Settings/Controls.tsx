@@ -19,7 +19,7 @@ export function Switch({
     >
       <motion.div
         animate={{ x: enabled ? 16 : 0 }}
-        className='h-5 w-5 rounded-full bg-black shadow-sm dark:bg-white'
+        className='h-5 w-5 rounded-full shadow-sm bg-white dark:bg-gray-800'
       ></motion.div>
     </motion.div>
   )
@@ -35,7 +35,7 @@ export function Select<T extends string>({
   onChange: (value: T) => void
 }) {
   return (
-    <div className='relative inline-block rounded-md bg-neutral-800 font-medium text-neutral-400'>
+    <div className='relative inline-block rounded-md bg-black/10 dark:bg-white/10 font-medium text-neutral-400'>
       <select
         onChange={e => onChange(e.target.value as T)}
         value={value}
@@ -50,7 +50,7 @@ export function Select<T extends string>({
 
       <Icon
         name='dropdown-triangle'
-        className='pointer-events-none absolute right-2.5 h-2.5 w-2.5 text-white/15'
+        className='pointer-events-none absolute right-2.5 h-2.5 w-2.5 text-white/1 dark:text-black/1'
         style={{ top: '11px' }}
       />
     </div>

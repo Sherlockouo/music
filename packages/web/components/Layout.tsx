@@ -67,8 +67,8 @@ const Layout = () => {
           >
             <div
               className={cx(
-                window.env?.isElectron && !fullscreen && 'rounded-12',
-                css`
+                window.env?.isElectron && !fullscreen && css`
+                  border-radius: 12px;
                   position: absolute;
                   top: 0;
                   left: 0;

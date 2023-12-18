@@ -75,7 +75,7 @@ const Layout = () => {
                   width: 100%;
                   height: 100%;
                   background-color: rgba(0, 0, 0, 0.05); /* 设置半透明背景颜色 */
-                  z-index: 1; /* 设置层级为较高的值，确保遮罩在内容上方 */
+                  // z-index: 1; /* 设置层级为较高的值，确保遮罩在内容上方 */
                 `
               )}
             ></div>

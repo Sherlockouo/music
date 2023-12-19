@@ -67,15 +67,15 @@ const Layout = () => {
           >
             <div
               className={cx(
-                window.env?.isElectron && !fullscreen && css`
-                  border-radius: 12px;
+                window.env?.isElectron && !fullscreen && 'rounded-12',
+                window.env?.isElectron && css`
                   position: absolute;
                   top: 0;
                   left: 0;
                   width: 100%;
                   height: 100%;
                   background-color: rgba(0, 0, 0, 0.05); /* 设置半透明背景颜色 */
-                  // z-index: 1; /* 设置层级为较高的值，确保遮罩在内容上方 */
+                  z-index: 1; /* 设置层级为较高的值，确保遮罩在内容上方 */
                 `
               )}
             ></div>

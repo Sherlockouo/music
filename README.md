@@ -1,8 +1,8 @@
 <p align="center">
     <h2 align="center" style="font-weight: 600">基于 YesPlayMusic-Alpha 版本</h2>
     <h2 align="center">
-        <a href="https://t.me/+MrhsgG741wQxNjg9">💻 加入TG群组，参与开发讨论 👊</a>
-        <a href="https://github.com/Sherlockouo/music/wiki/For-Developers">🧭 开发指南</a>
+        <a href="https://t.me/+MrhsgG741wQxNjg9">💻 加入TG群组，参与开发讨论 👊</a> <br><br>
+        <a href="https://github.com/Sherlockouo/music/wiki/For-Developers">🧭 开发指南 👆 点这里，查看wiki </a>
     </h2>
     <p align="center">
         高颜值的第三方音乐播放器

@@ -41,6 +41,8 @@
 访问本项目的 [Releases](https://github.com/qier222/YesPlayMusic/releases)
 页面下载安装包。
 
+对于 NixOS 上的安装，请参考 [EndCredits/R3PLAYX-nix](https://github.com/EndCredits/R3PLAYX-nix)
+
 ## 📜 开源许可
 
 API 源代码来自 [Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)

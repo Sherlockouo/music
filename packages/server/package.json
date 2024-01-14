@@ -1,6 +1,6 @@
 {
   "name": "server",
-  "version": "2.7.2",
+  "version": "2.7.3",
   "description": "This project was bootstrapped with Fastify-CLI.",
   "main": "app.ts",
   "scripts": {

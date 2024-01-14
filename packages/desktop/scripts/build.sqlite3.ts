@@ -36,31 +36,31 @@ if (!fs.existsSync(binDir)) {
 }
 
 // Get Electron Module Version
-let electronModuleVersion = ''
-async function getElectronModuleVersion() {
-  const releases = await axios({
-    method: 'get',
-    url: 'https://releases.electronjs.org/releases.json',
-    headers: {
-      Connection: 'keep-alive',
-      Cookie:
-        '_ga=GA1.2.1440531065.1691594509; _ga_7GG8HKLCLE=GS1.2.1695203360.15.0.1695203360.0.0.0',
-      'User-Agent':
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36',
-    },
-    setTimeout: 120000,
-  })
-  if (!releases.data) {
-    console.error(pc.red('Can not get electron releases'))
-    process.exit(1)
-  }
-  electronModuleVersion = releases.data.find(r => r.version.includes(electronVersion))?.modules
-  if (!electronModuleVersion) {
-    console.error(pc.red('Can not find electron module version in electron-releases'))
-    process.exit(1)
-  }
-  console.log(pc.cyan(`electronModuleVersion=${electronModuleVersion}`))
-}
+let electronModuleVersion = '118'
+// async function getElectronModuleVersion() {
+//   const releases = await axios({
+//     method: 'get',
+//     url: 'https://releases.electronjs.org/releases.json',
+//     headers: {
+//       Connection: 'keep-alive',
+//       Cookie:
+//         '_ga=GA1.2.1440531065.1691594509; _ga_7GG8HKLCLE=GS1.2.1695203360.15.0.1695203360.0.0.0',
+//       'User-Agent':
+//         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36',
+//     },
+//     setTimeout: 120000,
+//   })
+//   if (!releases.data) {
+//     console.error(pc.red('Can not get electron releases'))
+//     process.exit(1)
+//   }
+//   electronModuleVersion = releases.data.find(r => r.version.includes(electronVersion))?.modules
+//   if (!electronModuleVersion) {
+//     console.error(pc.red('Can not find electron module version in electron-releases'))
+//     process.exit(1)
+//   }
+//   console.log(pc.cyan(`electronModuleVersion=${electronModuleVersion}`))
+// }
 
 // Download better-sqlite library from GitHub Release
 async function download(arch: Arch) {
@@ -154,7 +154,7 @@ async function build(arch: Arch) {
 }
 
 async function main() {
-  await getElectronModuleVersion()
+  // await getElectronModuleVersion()
   if (argv.x64 || argv.arm64 || argv.arm) {
     if (argv.x64) await build('x64')
     if (argv.arm64) await build('arm64')

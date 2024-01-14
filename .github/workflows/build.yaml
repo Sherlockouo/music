@@ -129,11 +129,18 @@ jobs:
           path: ./packages/desktop/release/latest.yml
           if-no-files-found: ignore
 
-      - name: Upload Artifact (Linux)
+      - name: Upload Artifact (Linux Appimage)
         uses: actions/upload-artifact@v3
         with:
           name: R3PLAYX-linux
           path: ./packages/desktop/release/*.AppImage
+          if-no-files-found: ignore
+
+      - name: Upload Artifact (Linux deb)
+        uses: actions/upload-artifact@v3
+        with:
+          name: R3PLAYX-linux-deb
+          path: ./packages/desktop/release/*.deb
           if-no-files-found: ignore
 
       - name: Upload linux latest yml

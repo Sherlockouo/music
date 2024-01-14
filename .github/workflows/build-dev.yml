@@ -30,9 +30,7 @@ jobs:
           cache: 'pnpm'
           
       - name: Install global dependencies
-        run: ｜
-          npm i prisma fastify-cli turbo tsx electron-builder@23.6.0 node-gyp-install -g
-          node-gyp-install --python=python3
+        run: npm i prisma fastify-cli turbo tsx electron-builder@23.6.0 node-gyp-install -g && node-gyp-install --python=python3
         
       - name: Install dependencies
         run: pnpm install

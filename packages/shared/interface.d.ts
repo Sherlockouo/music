@@ -65,6 +65,15 @@ declare interface Playlist {
   videos?: null
 }
 
+declare interface RecentSongs {
+  resourceId: string  
+  playTime:number
+  resouceType:string
+  data:Track
+  banned: boolean
+  multiTerminalInfo:null
+}
+
 declare interface Track {
   id: number
   a: null

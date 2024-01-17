@@ -14,6 +14,8 @@ import {
   FetchDailyRecommendSongsResponse,
   AddSongToPlayListParams,
   AddSongToPlayListResponse,
+  FetchRecentSongsResponse,
+  FetchRecentSongsParams,
 } from '@/shared/api/Playlists'
 
 // hq 歌单
@@ -61,6 +63,17 @@ export function fetchRecommendedPlaylists(
 ): Promise<FetchRecommendedPlaylistsResponse> {
   return request({
     url: '/personalized',
+    method: 'get',
+    params,
+  })
+}
+
+// 听歌历史
+export function fetchFetchRecentSongs(
+  params: FetchRecentSongsParams
+): Promise<FetchRecentSongsResponse> {
+  return request({
+    url: '/record/recent/song',
     method: 'get',
     params,
   })

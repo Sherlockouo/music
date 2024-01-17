@@ -63,8 +63,8 @@ API 源代码来自 [Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryif
   ![lyrics-screenshot](https://github.com/Sherlockouo/music/assets/34598208/82123958-db58-4026-ab4d-19f7c8e26495)
 - 新增音源，全局背景
   ![background](https://github.com/Sherlockouo/music/assets/34598208/87bbca8f-705a-4925-9ac7-7444ab11f0c0)
-- 新增歌词特效
-  ![lyric-effect](https://github.com/Sherlockouo/music/assets/345很高兴看到你对 YesPlayMusic-Alpha 版本感兴趣！这是一个基于 React 和 Electron 开发的高颜值第三方音乐播放器。
+- ~~新增歌词特效~~ 由于性能问题被干掉了
+  
 
 如果你遇到了任何问题，我会尽力帮助你解决。以下是一些常见问题的解决方案：
 

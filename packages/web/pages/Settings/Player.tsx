@@ -80,7 +80,9 @@ function FindTrackOnYouTube() {
                         onChange={e => {
                           setProxy(e.target.value)
                         }}
-                        className='w-full flex-grow rounded-md px-1 placeholder:pl-1 placeholder:text-black/30 dark:bg-white/10 dark:placeholder:text-black/30'
+                        className='w-full flex-grow appearance-none rounded-md px-1 text-lg placeholder:pl-1
+                        placeholder:text-black/30 bg-black/10 placeholder:text-white/30
+                        dark:placeholder:text-white/30 dark:bg-white/10 dark:placeholder:text-black/30'
                         placeholder={'ext. https://192.168.10.1:8080'}
                         type='proxy'
                         value={proxy}
@@ -114,7 +116,9 @@ function FindTrackOnYouTube() {
                   setQQCookie(e.target.value)
                   settings.qqCookie = nqqCookie
                 }}
-                className='w-full flex-grow appearance-none rounded-md px-1 text-lg placeholder:pl-1 placeholder:text-black/30 dark:bg-white/10 dark:placeholder:text-black/30'
+                className='w-full flex-grow appearance-none rounded-md px-1 text-lg placeholder:pl-1
+                placeholder:text-black/30 bg-black/10 placeholder:text-white/30
+                dark:placeholder:text-white/30 dark:bg-white/10 dark:placeholder:text-black/30'
                 placeholder={'uin=..; qm_keyst=..;'}
                 value={nqqCookie}
               />
@@ -143,7 +147,9 @@ function FindTrackOnYouTube() {
                   setMIGUCookie(e.target.value)
                   settings.miguCookie = nmiguCookie
                 }}
-                className='w-full flex-grow appearance-none rounded-md px-1 text-lg placeholder:pl-1 placeholder:text-black/30 dark:bg-white/10 dark:placeholder:text-black/30'
+                className='w-full flex-grow appearance-none rounded-md px-1 text-lg placeholder:pl-1
+                placeholder:text-black/30 bg-black/10 placeholder:text-white/30
+                dark:placeholder:text-white/30 dark:bg-white/10 dark:placeholder:text-black/30'
                 placeholder={'uin=..; migu=..;'}
                 value={nmiguCookie}
               />
@@ -172,7 +178,9 @@ function FindTrackOnYouTube() {
                   setJOOXCookie(e.target.value)
                   settings.jooxCookie = njooxCookie
                 }}
-                className='w-full flex-grow appearance-none rounded-md px-1 text-lg placeholder:pl-1 placeholder:text-black/30 dark:bg-white/10 dark:placeholder:text-black/30'
+                className='w-full flex-grow appearance-none rounded-md px-1 text-lg placeholder:pl-1
+                placeholder:text-black/30 bg-black/10 placeholder:text-white/30
+                dark:placeholder:text-white/30 dark:bg-white/10 dark:placeholder:text-black/30'
                 placeholder={'wmid=..; session_key=..'}
                 value={njooxCookie}
               />
@@ -203,7 +211,9 @@ function FindTrackOnYouTube() {
               onChange={e => {
                 setProxy(e.target.value)
               }}
-              className='w-full flex-grow appearance-none rounded-md px-1 placeholder:pl-1 placeholder:text-black/30 dark:placeholder:text-black/30'
+              className='w-full flex-grow appearance-none rounded-md px-1 text-lg placeholder:pl-1
+              placeholder:text-black/30 bg-black/10 placeholder:text-white/30
+              dark:placeholder:text-white/30 dark:bg-white/10 dark:placeholder:text-black/30'
               placeholder={'ext. https://192.168.10.1:8080'}
               type='proxy'
               value={proxy}

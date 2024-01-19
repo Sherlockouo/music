@@ -115,7 +115,7 @@ class Main {
       },
       width: store.get('window.width'),
       height: store.get('window.height'),
-      minWidth: 1240,
+      minWidth: 1260,
       minHeight: 800,
       titleBarStyle: 'hidden',
       trafficLightPosition: { x: 18, y: 20 },

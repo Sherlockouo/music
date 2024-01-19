@@ -159,7 +159,7 @@ const Collections = () => {
   const { librarySelectedTab: selectedTab } = useSnapshot(persistedUiStates)
   return (
     <motion.div>
-      <CollectionTabs className='sticky top-[100px] z-10 w-full bg-[#F6F6F6] dark:bg-[#000] backdrop-blur-lg pb-5 pt-7 h-20 '/>
+      <CollectionTabs className='sticky top-[100px] p-1 rounded-bl-lg rounded-br-lg z-10 w-full backdrop-blur-lg pb-5 pt-7'/>
       <div className={cx('px-2.5 pt-10 lg:px-0')}>
         {selectedTab === 'daily' && <Daily />}
         {selectedTab === 'albums' && <Albums />}

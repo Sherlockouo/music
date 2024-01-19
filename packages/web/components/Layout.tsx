@@ -85,7 +85,7 @@ const Layout = () => {
             className={cx(
               // mask will affect the borde radius
               window.env?.isElectron && !fullscreen && 'rounded-12',
-              'absolute inset-0 z-0',
+              'absolute inset-0 z-0 backdrop-blur-xl',
               theme === 'dark' ? 'bg-black/40' : 'bg-white/40'
             )}
           />

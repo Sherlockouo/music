@@ -81,8 +81,8 @@ function FindTrackOnYouTube() {
                           setProxy(e.target.value)
                         }}
                         className='w-full flex-grow appearance-none rounded-md px-1 text-lg placeholder:pl-1
-                        placeholder:text-black/30 bg-black/10 placeholder:text-white/30
-                        dark:placeholder:text-white/30 dark:bg-white/10 dark:placeholder:text-black/30'
+                        placeholder:text-black/30 bg-black/10
+                        dark:placeholder:text-white/30 dark:bg-white/10'
                         placeholder={'ext. https://192.168.10.1:8080'}
                         type='proxy'
                         value={proxy}
@@ -117,8 +117,8 @@ function FindTrackOnYouTube() {
                   settings.qqCookie = nqqCookie
                 }}
                 className='w-full flex-grow appearance-none rounded-md px-1 text-lg placeholder:pl-1
-                placeholder:text-black/30 bg-black/10 placeholder:text-white/30
-                dark:placeholder:text-white/30 dark:bg-white/10 dark:placeholder:text-black/30'
+                placeholder:text-black/30 bg-black/10
+                dark:placeholder:text-white/30 dark:bg-white/10'
                 placeholder={'uin=..; qm_keyst=..;'}
                 value={nqqCookie}
               />
@@ -148,8 +148,8 @@ function FindTrackOnYouTube() {
                   settings.miguCookie = nmiguCookie
                 }}
                 className='w-full flex-grow appearance-none rounded-md px-1 text-lg placeholder:pl-1
-                placeholder:text-black/30 bg-black/10 placeholder:text-white/30
-                dark:placeholder:text-white/30 dark:bg-white/10 dark:placeholder:text-black/30'
+                placeholder:text-black/30 bg-black/10
+                dark:placeholder:text-white/30 dark:bg-white/10'
                 placeholder={'uin=..; migu=..;'}
                 value={nmiguCookie}
               />
@@ -179,8 +179,8 @@ function FindTrackOnYouTube() {
                   settings.jooxCookie = njooxCookie
                 }}
                 className='w-full flex-grow appearance-none rounded-md px-1 text-lg placeholder:pl-1
-                placeholder:text-black/30 bg-black/10 placeholder:text-white/30
-                dark:placeholder:text-white/30 dark:bg-white/10 dark:placeholder:text-black/30'
+                placeholder:text-black/30 bg-black/10
+                dark:placeholder:text-white/30 dark:bg-white/10'
                 placeholder={'wmid=..; session_key=..'}
                 value={njooxCookie}
               />
@@ -202,24 +202,6 @@ function FindTrackOnYouTube() {
         >
           Submit
         </Button>
-      </Option>
-      <Option>
-        <OptionText>{t`settings.proxy`}</OptionText>
-        <AnimatePresence>
-          <motion.div initial='hidden' animate='show' exit='hidden' className='w-1/2'>
-            <input
-              onChange={e => {
-                setProxy(e.target.value)
-              }}
-              className='w-full flex-grow appearance-none rounded-md px-1 text-lg placeholder:pl-1
-              placeholder:text-black/30 bg-black/10 placeholder:text-white/30
-              dark:placeholder:text-white/30 dark:bg-white/10 dark:placeholder:text-black/30'
-              placeholder={'ext. https://192.168.10.1:8080'}
-              type='proxy'
-              value={proxy}
-            />
-          </motion.div>
-        </AnimatePresence>
       </Option>
     </div>
   )

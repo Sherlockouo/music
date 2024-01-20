@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - wdf_dev
+      - yuzh_dev
 
 jobs:
   release:

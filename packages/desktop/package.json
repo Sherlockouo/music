@@ -2,7 +2,7 @@
   "name": "desktop",
   "productName": "R3PLAYX",
   "private": true,
-  "version": "2.7.3",
+  "version": "2.7.4",
   "main": "./main/index.js",
   "author": "qier222 <qier222@outlook.com> && feng <wdf.coder@gmail.com>",
   "homepage": "https://github.com/sherlockouo/music",

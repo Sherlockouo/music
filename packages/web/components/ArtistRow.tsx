@@ -26,7 +26,7 @@ const Artist = ({ artist }: { artist: Artist }) => {
       />
       <div
         onClick={to}
-        className='line-clamp-1 mt-2.5 text-12 font-medium text-neutral-700 dark:text-neutral-600 lg:text-14 lg:font-bold'
+        className='line-clamp-1 mt-2.5 text-12 font-medium text-black/90 dark:text-white/90 lg:text-14 lg:font-bold transition-colors duration-200 hover:text-black/70 dark:hover:text-white/70'
       >
         {artist.name}
       </div>

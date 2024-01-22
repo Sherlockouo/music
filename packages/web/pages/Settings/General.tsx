@@ -28,13 +28,13 @@ function Language() {
   }
 
   return (
-    <>
+    <div className='mb-12'>
       <BlockTitle>{t`settings.title-language`}</BlockTitle>
       <Option>
         <OptionText>{t`settings.general-choose-language`}</OptionText>
         <Select options={supportedLanguages} value={language} onChange={setLanguage} />
       </Option>
-    </>
+    </div>
   )
 }
 
@@ -45,7 +45,7 @@ function AppleMusic() {
     useSnapshot(settings)
 
   return (
-    <div className='mt-7'>
+    <div className='mt-7 mb-12'>
       <BlockTitle>Apple Music</BlockTitle>
       <Option>
         <OptionText>{t`settings.play-animated-artwork-from-apple-music`}</OptionText>
@@ -70,7 +70,7 @@ function NeteaseMusic() {
 
   const { displayPlaylistsFromNeteaseMusic } = useSnapshot(settings)
   return (
-    <div className='mt-7'>
+    <div className='mt-7 mb-12'>
       <BlockTitle>{t`settings.title-netease-music`}</BlockTitle>
       <Option>
         <OptionText>{t`settings.display-playlists-from-netease-music`}</OptionText>
@@ -93,7 +93,7 @@ function CloseWindow() {
 
   const { closeWindowInMinimize } = useSnapshot(settings)
   return (
-    <div className='mt-7'>
+    <div className='mt-7 mb-12'>
       <BlockTitle>{t`settings.minimize-window`}</BlockTitle>
       <Option>
         <OptionText>{t`settings.minimize-window-to-tray-when-close`}</OptionText>

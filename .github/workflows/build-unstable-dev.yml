@@ -1,4 +1,4 @@
-name: Build-Unstable-Dev-Product
+name: Build-Unstable-Dev
 
 on:
   push:

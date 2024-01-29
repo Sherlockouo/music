@@ -126,6 +126,9 @@ class Main {
       backgroundColor: 'rgba(0, 0, 0, 0)',
       show: false,
     }
+    if(isWindows) {
+      options.transparent = false
+    }
     if (store.get('window')) {
       options.x = store.get('window.x')
       options.y = store.get('window.y')
@@ -238,7 +241,7 @@ class Main {
       }
       let closeWindowInMinimize = store.get('settings.closeWindowInMinimize')
 
-      if (closeWindowInMinimize === 'true') {
+      if (closeWindowInMinimize == true) {
         e.preventDefault()
         this.win?.hide()
         return

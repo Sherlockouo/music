@@ -238,7 +238,7 @@ class Main {
       }
       let closeWindowInMinimize = store.get('settings.closeWindowInMinimize')
 
-      if (closeWindowInMinimize === 'true') {
+      if (closeWindowInMinimize == true) {
         e.preventDefault()
         this.win?.hide()
         return

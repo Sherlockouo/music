@@ -92,6 +92,16 @@ API 源代码来自 [Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryif
 - 如果您认为本代码库侵犯了您的知识产权，请发布 PR, Issue 或 DMCA 请求，表达您删除相关引擎或代码的意图。
 </p>
 
+## Star History
+
+<a href="https://star-history.com/#Sherlockouo/music&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Sherlockouo/music&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Sherlockouo/music&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Sherlockouo/music&type=Date" />
+  </picture>
+</a>
+
 ## Credit
 
 Designed by [JACKCRING](https://jackcring.com)

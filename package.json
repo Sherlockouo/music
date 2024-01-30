@@ -38,6 +38,7 @@
     "@prisma/client": "^5.1.1",
     "@unblockneteasemusic/server": "^0.27.3",
     "NeteaseCloudMusicApi": "^4.13.2",
+    "electron-window-state": "^5.0.3",
     "log4js": "^6.9.1",
     "sax": "^1.2.4"
   }

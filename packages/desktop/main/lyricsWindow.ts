@@ -4,6 +4,7 @@ import store from './store'
 import { IpcChannels, IpcChannelsParams } from '@/shared/IpcChannels'
 import { handleLyricsWinClose } from './ipcMain'
 import { appName } from './env'
+import windowStateKeeper from 'electron-window-state'
 
 const on = <T extends keyof IpcChannelsParams>(
   channel: T,
@@ -29,14 +30,22 @@ export class LyricsWindow {
   }
 
   createWindow(pWin: BrowserWindow) {
+    let lyricsWindowStateKeeper = windowStateKeeper({
+      defaultWidth: 300,
+      defaultHeight: 600,
+      path: `${app.getPath('userData')}/WindowsState`,
+      file: 'lyricsWindowStateKeeper.json',
+    })
     const options: BrowserWindowConstructorOptions = {
       title: appName + 'Lyrics',
       webPreferences: {
         preload: join(__dirname, 'rendererPreload.js'),
         sandbox: false,
       },
-      width: store.get('lyricsWindow.width'),
-      height: store.get('lyricsWindow.height'),
+      width: lyricsWindowStateKeeper.width || store.get('lyricsWindow.width'),
+      height: lyricsWindowStateKeeper.height || store.get('lyricsWindow.height'),
+      x: lyricsWindowStateKeeper.x || store.get('lyricsWindow.x'),
+      y: lyricsWindowStateKeeper.y || store.get('lyricsWindow.y'),
       minWidth: 300,
       maxWidth: 300,
       minHeight: 640,
@@ -50,13 +59,8 @@ export class LyricsWindow {
       transparent: true,
       backgroundColor: 'rgba(0, 0, 0, 0)',
     }
-
-    if (store.get('lyricsWindow')) {
-      options.x = store.get('lyricsWindow.x')
-      options.y = store.get('lyricsWindow.y')
-    }
-
     this.win = new BrowserWindow(options)
+    lyricsWindowStateKeeper.manage(this.win)
     this.win.webContents.setAudioMuted(true)
     // Web server, load the web server to the electron
     // const url = `http://localhost:${process.env.ELECTRON_WEB_SERVER_PORT}`

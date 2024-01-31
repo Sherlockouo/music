@@ -92,6 +92,13 @@ const TrackContextMenu = () => {
               },
             },
             {
+              type: 'item',
+              label: t`context-menu.delete-from-queue`,
+              onClick: () => {
+                player.deleteFromPlaylist(Number(dataSourceID))
+              }
+            },
+            {
               type: 'divider',
             },
             {

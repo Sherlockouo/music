@@ -560,6 +560,20 @@ export class Player {
   }
 
   /**
+   * deleteFromPlaylist() - function to remove a track from current play queue
+   * 
+   * @param trackID
+   */
+
+  deleteFromPlaylist(trackID: number) {
+    // Check if the song existed in the tracklist
+    if (!this.trackList.includes(trackID)) {
+      return
+    }
+    this.trackList = this.trackList.filter(item => item != trackID)
+  }
+
+  /**
    *
    * @param trackID
    */

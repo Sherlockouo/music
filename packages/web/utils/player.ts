@@ -575,8 +575,10 @@ export class Player {
       this.trackList = this.trackList.filter(item => item != trackID)
       return
     }
-    this.nextTrack() // If we are deleting current playing. Switch to the next first
+    // If we are deleting current playing. Switch to the next first
+    this.prevTrack()
     this.trackList = this.trackList.filter(item => item != trackID)
+    this.nextTrack()
   }
 
   /**

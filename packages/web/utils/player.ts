@@ -570,6 +570,12 @@ export class Player {
     if (!this.trackList.includes(trackID)) {
       return
     }
+    // Check whether we are deleting the content that we are playing
+    if (this.track?.id != undefined && this.track?.id != trackID){
+      this.trackList = this.trackList.filter(item => item != trackID)
+      return
+    }
+    this.nextTrack() // If we are deleting current playing. Switch to the next first
     this.trackList = this.trackList.filter(item => item != trackID)
   }
 

@@ -15,8 +15,8 @@
 </p>
 <div align="center">
     <img src="https://github.com/sherlockouo/music/actions/workflows/build-dev.yml/badge.svg" />
-    <img src="https://img.shields.io/badge/downloads-3.7k-deepgreen" />
-    <img src="https://img.shields.io/badge/latest_version-2.7.1-deepgreen" />
+    <img src="https://img.shields.io/badge/downloads-5.0k-deepgreen" />
+    <img src="https://img.shields.io/badge/latest_version-2.7.4-deepgreen" />
 </div>
 
 ## 关于 Alpha 版本

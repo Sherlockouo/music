@@ -560,6 +560,28 @@ export class Player {
   }
 
   /**
+   * deleteFromPlaylist() - function to remove a track from current play queue
+   * 
+   * @param trackID
+   */
+
+  deleteFromPlaylist(trackID: number) {
+    // Check if the song existed in the tracklist
+    if (!this.trackList.includes(trackID)) {
+      return
+    }
+    // Check whether we are deleting the content that we are playing
+    if (this.track?.id != undefined && this.track?.id != trackID){
+      this.trackList = this.trackList.filter(item => item != trackID)
+      return
+    }
+    // If we are deleting current playing. Switch to the next first
+    this.prevTrack()
+    this.trackList = this.trackList.filter(item => item != trackID)
+    this.nextTrack()
+  }
+
+  /**
    *
    * @param trackID
    */

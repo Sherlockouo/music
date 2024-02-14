@@ -46,6 +46,10 @@ const Recent = () => {
 
     setHasMore(dataSource.length < resp.data.total)
 
+    const songIDList = resp.data ? resp.data.list.map((song: RecentSongs) => song.data.id) : []
+    let arr = [...songIDs, ...songIDList]
+    setSongIDs([...new Set(arr)])
+
     const recentSongs = resp.data ? resp.data.list.map((song: RecentSongs) => song.data) : []
     
     setDatasource(recentSongs)

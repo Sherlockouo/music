@@ -81,19 +81,38 @@ const readSqlFile = (filename: string) => {
 
 class DB {
   sqlite!: SQLite3.Database
-  dbFilePath: string = path.resolve(dirname, './api_cache/db.sqlite')
+  // dbFilePath: string = path.resolve(dirname, './api_cache/musicInfo.db')
+  dbFilePath: string = path.resolve(dirname, '../../prisma/musicInfo.db')
 
   constructor() {
     log.info('[db] Initializing database...')
 
     try {
       createFileIfNotExist(this.dbFilePath)
+<<<<<<< Updated upstream
       // log.info('bin path',this.getBinPath(), ' ', this.sqlite)
 
       this.sqlite = new SQLite3(this.dbFilePath, 
       //   {
       //   nativeBinding: this.getBinPath(),
       // }
+||||||| Stash base
+      // log.info('bin path',this.getBinPath(), ' ', this.sqlite)
+      // todo docker 和 electron 版本需要区别
+      this.sqlite = new SQLite3(
+        this.dbFilePath
+        // {
+        //   nativeBinding: this.getBinPath(),
+        // }
+=======
+      // log.info('bin path ',this.getBinPath(), ' ', this.sqlite)
+      // todo docker 和 electron 版本需要区别
+      this.sqlite = new SQLite3(
+        this.dbFilePath
+        // {
+        //   nativeBinding: this.getBinPath(),
+        // }
+>>>>>>> Stashed changes
       )
       this.sqlite.pragma('auto_vacuum = FULL')
       this.initTables()

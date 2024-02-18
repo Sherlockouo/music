@@ -9,37 +9,98 @@ datasource db {
 }
 
 model Album {
-  id                Int                 @id @unique
-  neteaseId         Int                 @unique
-  name              String              
-  neteaseName       String              
-  artistName        String              
-  neteaseArtistName String              
-  copyright         String?             
-  editorialVideo    String?             
-  artwork           String?             
-  editorialNote     AlbumEditorialNote?
+  id                 Int                 @id
+  json               String
+  updatedAt          DateTime
+  AlbumEditorialNote AlbumEditorialNote?
 }
 
 model AlbumEditorialNote {
   id    Int     @id @unique
   album Album   @relation(fields: [id], references: [id])
-  en_US String? @map("en_US") 
-  zh_CN String? @map("zh_CN") 
+  en_US String? @map("en_US")
+  zh_CN String? @map("zh_CN")
 }
 
 model Artist {
-  id             Int        @id @unique
-  neteaseId      Int        @unique
-  name           String     
-  artwork        String?    
-  editorialVideo String?    
-  artistBio      ArtistBio?
+  id        Int        @id @unique
+  json      String
+  updatedAt DateTime
+  ArtistBio ArtistBio?
 }
 
 model ArtistBio {
   id     Int     @id @unique
   artist Artist  @relation(fields: [id], references: [id])
+<<<<<<< Updated upstream
   en_US  String? @map("en-US") 
   zh_CN  String? @map("zh-CN") 
+||||||| Stash base
+  en_US  String? @map("en_US") 
+  zh_CN  String? @map("zh_CN") 
+=======
+  en_US  String? @map("en_US")
+  zh_CN  String? @map("zh_CN")
+}
+
+model AccountData {
+  id        String   @id
+  json      String
+  updatedAt DateTime
+}
+
+model AppData {
+  id    String @id
+  value String
+}
+
+model Track {
+  id        Int      @id
+  json      String
+  updatedAt DateTime
+}
+
+model Unblock {
+  id        Int      @id
+  json      String
+  updatedAt DateTime
+}
+
+model ArtistAlbum {
+  id        Int      @id
+  hotAlbums String
+  updatedAt DateTime
+}
+
+model Playlist {
+  id        Int      @id
+  json      String
+  updatedAt DateTime
+}
+
+model Audio {
+  id        Int      @id
+  bitRate   Int
+  format    String
+  source    String
+  queriedAt DateTime
+}
+
+model Lyrics {
+  id        Int      @id
+  json      String
+  updatedAt DateTime
+}
+
+model AppleMusicAlbum {
+  id        Int      @id
+  json      String
+  updatedAt DateTime
+}
+
+model AppleMusicArtist {
+  id        Int      @id
+  json      String
+  updatedAt DateTime
+>>>>>>> Stashed changes
 }

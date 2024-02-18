@@ -7,11 +7,23 @@ ENV NODE_ENV=production \
   UNBLOCK_SERVER_PORT=30003 \
   VITE_APP_NETEASE_API_URL=/netease
 
+<<<<<<< Updated upstream
 # Set registry for npm
 # RUN npm config set registry https://registry.npmmirror.com/
 
+||||||| Stash base
+# Set registry for npm
+RUN npm config set registry https://registry.npmmirror.com/
+RUN pnpm config set registry https://registry.npmmirror.com/
+
+=======
+>>>>>>> Stashed changes
 # Install global dependencies
 RUN npm i -g pnpm prisma fastify-cli turbo tsx
+
+# Set registry for npm
+RUN npm config set registry https://registry.npmmirror.com/
+
 
 # Copy package.json and install dependencies for the main app
 COPY package.json /app/

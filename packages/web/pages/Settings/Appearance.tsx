@@ -10,8 +10,7 @@ const Theme = () => {
   const { t, i18n } = useTranslation()
   return (
     <>
-      <div className='text-xl font-medium text-gray-800 dark:text-white/70'>{t`settings.theme`}</div>
-      <div className='h-px w-full bg-black/5 dark:bg-white/10'></div>
+      <div className='text-xl font-medium text-gray-800 dark:text-white'>{t`settings.theme`}</div>
       <AccentColor />
     </>
   )
@@ -39,11 +38,9 @@ const LayoutBackground = () => {
   const { t, i18n } = useTranslation()
   return (
     <>
-      <div className='mt-3 h-px w-full bg-black/5 dark:bg-white/10'></div>
       <div className='mb-2 dark:text-white'>
         <ChangeLyricBackground />
       </div>
-      <div className='mt-3 h-px w-full bg-black/5 dark:bg-white/10'></div>
     </>
   )
 }

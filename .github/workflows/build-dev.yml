@@ -26,11 +26,11 @@ jobs:
       - name: Install Node.js 18
         uses: actions/setup-node@v2
         with:
-          node-version: 18.12.1
+          node-version: 18.18.2
           cache: 'pnpm'
           
       - name: Install global dependencies
-        run: npm i prisma fastify-cli turbo tsx electron-builder@23.6.0 -g 
+        run: npm i prisma fastify-cli turbo tsx electron-builder@23.6.0 node-gyp-install -g && node-gyp-install --python=python3
         
       - name: Install dependencies
         run: pnpm install
@@ -129,11 +129,18 @@ jobs:
           path: ./packages/desktop/release/latest.yml
           if-no-files-found: ignore
 
-      - name: Upload Artifact (Linux)
+      - name: Upload Artifact (Linux Appimage)
         uses: actions/upload-artifact@v3
         with:
           name: R3PLAYX-linux
           path: ./packages/desktop/release/*.AppImage
+          if-no-files-found: ignore
+
+      - name: Upload Artifact (Linux deb)
+        uses: actions/upload-artifact@v3
+        with:
+          name: R3PLAYX-linux-deb
+          path: ./packages/desktop/release/*.deb
           if-no-files-found: ignore
 
       - name: Upload linux latest yml

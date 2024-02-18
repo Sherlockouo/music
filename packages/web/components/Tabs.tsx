@@ -32,7 +32,7 @@ function Tabs<T>({
             'dark:bg-white/10 dark:text-white/80 hover:dark:bg-white/20 ',
             'bg-black/10 text-black/80 hover:bg-black/20',
             value === tab.id &&
-              'bg-accent-color-500 text-black/80 dark:bg-neutral-500 dark:text-white/80',
+              'bg-accent-color-400 text-black/80 dark:bg-neutral-500 dark:text-white/80',
             tab.iconName && 'iterms-center flex flex-row gap-1 '
           )}
           onClick={() => onChange(tab.id)}

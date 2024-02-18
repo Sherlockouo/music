@@ -68,14 +68,14 @@ const Layout = () => {
             <div
               className={cx(
                 window.env?.isElectron && !fullscreen && 'rounded-12',
-                css`
+                window.env?.isElectron && css`
                   position: absolute;
                   top: 0;
                   left: 0;
                   width: 100%;
                   height: 100%;
                   background-color: rgba(0, 0, 0, 0.05); /* 设置半透明背景颜色 */
-                  z-index: 1; /* 设置层级为较高的值，确保遮罩在内容上方 */
+                  // z-index: 1; /* 设置层级为较高的值，确保遮罩在内容上方 */
                 `
               )}
             ></div>
@@ -85,7 +85,7 @@ const Layout = () => {
             className={cx(
               // mask will affect the borde radius
               window.env?.isElectron && !fullscreen && 'rounded-12',
-              'absolute inset-0 z-0',
+              'absolute inset-0 z-0 backdrop-blur-xl',
               theme === 'dark' ? 'bg-black/40' : 'bg-white/40'
             )}
           />

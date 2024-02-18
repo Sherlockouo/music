@@ -88,7 +88,7 @@ const Playlist = ({ playlist }: { playlist: Playlist }) => {
         onMouseOver={prefetch}
       />
       {/* Hover mask layer */}
-      <div className='pointer-events-none absolute inset-0 w-full bg-gradient-to-b from-transparent to-black opacity-0 transition-all duration-400 group-hover:opacity-100 '></div>
+      <div className='pointer-events-none absolute inset-0 rounded-24 w-full bg-gradient-to-b from-transparent to-black opacity-0 transition-all duration-400 group-hover:opacity-100 '></div>
       {/* Name */}
       <div className='pointer-events-none absolute bottom-0 p-3 text-sm font-medium  text-neutral-300 opacity-0 transition-all duration-400 group-hover:opacity-100'>
         {playlist.name}

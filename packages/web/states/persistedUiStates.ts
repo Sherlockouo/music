@@ -8,7 +8,7 @@ interface PersistedUiStates {
   loginPhoneCountryCode: string
   loginType: 'phone' | 'email' | 'qrCode'
   minimizePlayer: boolean
-  librarySelectedTab: 'daily' | 'playlists' | 'albums' | 'artists' | 'videos' | 'cloud'
+  librarySelectedTab: 'daily' | 'playlists' | 'albums' | 'artists' | 'videos' | 'cloud' | 'recent'
 }
 
 const initPersistedUiStates: PersistedUiStates = {

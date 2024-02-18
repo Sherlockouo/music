@@ -1,9 +1,10 @@
-name: Build-Unstable-Dev-Product
+name: Build-Unstable-Dev
 
 on:
   push:
     branches:
       - wdf_dev
+      - yuzh_dev
 
 jobs:
   release:

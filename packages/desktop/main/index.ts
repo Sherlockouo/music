@@ -21,6 +21,7 @@ import { bindingKeyboardShortcuts } from './keyboardShortcuts'
 import { createDockMenu } from './dockMenu'
 import { checkForUpdates } from './updateWindow'
 import { createTouchBar } from './touchBar'
+import windowStateKeeper from 'electron-window-state'
 
 log.info('[electron] index.ts')
 
@@ -107,15 +108,23 @@ class Main {
   }
 
   createWindow() {
+    let mainWindowStateKeeper = windowStateKeeper({
+      defaultWidth: 1440,
+      defaultHeight: 1024,
+      path: `${app.getPath('userData')}/WindowsState`,
+      file: 'mainWindowStateKeeper.json',
+    })
     const options: BrowserWindowConstructorOptions = {
       title: appName,
       webPreferences: {
         preload: join(__dirname, 'rendererPreload.js'),
         sandbox: false,
       },
-      width: store.get('window.width'),
-      height: store.get('window.height'),
-      minWidth: 1240,
+      width: mainWindowStateKeeper.width || store.get('window.width'),
+      height: mainWindowStateKeeper.height || store.get('window.height'),
+      x: mainWindowStateKeeper.x || store.get('window.x'),
+      y: mainWindowStateKeeper.y || store.get('window.y'),
+      minWidth: 1260,
       minHeight: 800,
       titleBarStyle: 'hidden',
       trafficLightPosition: { x: 18, y: 20 },
@@ -126,11 +135,11 @@ class Main {
       backgroundColor: 'rgba(0, 0, 0, 0)',
       show: false,
     }
-    if (store.get('window')) {
-      options.x = store.get('window.x')
-      options.y = store.get('window.y')
+    if(isWindows) {
+      options.transparent = false
     }
     this.win = new BrowserWindow(options)
+    mainWindowStateKeeper.manage(this.win)
 
     // Web server, load the web server to the electron
     const url = `http://localhost:${process.env.ELECTRON_WEB_SERVER_PORT}`
@@ -238,7 +247,7 @@ class Main {
       }
       let closeWindowInMinimize = store.get('settings.closeWindowInMinimize')
 
-      if (closeWindowInMinimize === 'true') {
+      if (closeWindowInMinimize == true) {
         e.preventDefault()
         this.win?.hide()
         return

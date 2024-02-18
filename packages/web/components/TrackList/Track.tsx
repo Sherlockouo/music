@@ -23,7 +23,7 @@ const Track = memo(({
     return (
       <div
         className={cx(
-          'mb-5 grid',
+          'p-1 mb-3 grid duration-300 hover:bg-black/5 dark:hover:bg-white/5 rounded-12',
           css`
             grid-template-columns: 3fr 2fr 1fr;
           `
@@ -61,7 +61,7 @@ const Track = memo(({
                 <Fragment key={a.id + Math.random() * 3.14159}>
                   {index > 0 && ', '}
                   <NavLink
-                    className='transition-all duration-300 hover:text-black/70 dark:hover:text-white/70'
+                    className='transition-all duration-200 hover:text-black/70 dark:hover:text-white/70'
                     to={`/artist/${a.id}`}
                   >
                     {a.name}
@@ -83,7 +83,7 @@ const Track = memo(({
         <div className='flex items-center'>
           <NavLink
             to={`/album/${track?.al?.id}`}
-            className='line-clamp-1 text-14 font-bold transition-colors duration-300 hover:text-white/70'
+            className='line-clamp-1 text-14 font-bold transition-colors duration-200 hover:text-black/70 dark:hover:text-white/70'
           >
             {track?.al?.name}
           </NavLink>

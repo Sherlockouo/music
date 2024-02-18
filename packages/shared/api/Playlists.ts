@@ -6,6 +6,7 @@ export enum PlaylistApiNames {
   LikeAPlaylist = 'likeAPlaylist',
   FetchTopPlaylistParams = 'fetchTopPlaylist',
   FetchHQPlaylistParams = 'fetchHQPlaylist',
+  FetchFetchRecentSongs = 'fetchFetchRecentSongs'
 }
 
 // top playlist
@@ -64,6 +65,18 @@ export interface FetchRecommendedPlaylistsResponse {
   category: number
   hasTaste: boolean
   result: Playlist[]
+}
+
+export interface FetchRecentSongsParams {
+  limit?: number
+}
+
+export interface FetchRecentSongsResponse {
+  code: number
+  data: {
+    total:number
+    list:RecentSongs[]
+  }
 }
 
 // 每日推荐歌曲（需要登录）

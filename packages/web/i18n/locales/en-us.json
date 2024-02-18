@@ -1,5 +1,6 @@
 {
   "common": {
+    "recent":"Recent",
     "artist_one": "Artist",
     "daily": "Daily",
     "artist_other": "Artists",
@@ -136,6 +137,7 @@
     "go-to-album": "Go to album",
     "go-to-artist": "Go to artist",
     "add-to-queue": "Add to Queue",
+    "delete-from-queue": "Delete from Queue",
     "follow": "Follow",
     "unfollow": "Unfollow",
     "followed": "Followed",

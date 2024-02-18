@@ -154,7 +154,7 @@ async function build(arch: Arch) {
 }
 
 async function main() {
-  await getElectronModuleVersion()
+  // await getElectronModuleVersion()
   if (argv.x64 || argv.arm64 || argv.arm) {
     if (argv.x64) await build('x64')
     if (argv.arm64) await build('arm64')

@@ -22,8 +22,9 @@ import Icon from '@/web/components/Icon'
 import FileUploader from '@/web/components/Tools/Upload'
 import CoverWall from '@/web/components/CoverWall'
 import { IconNames } from '@/web/components/Icon/iconNamesType'
+import Recent from './Recent'
 
-const collections = ['daily', 'playlists', 'albums', 'artists', 'videos', 'cloud'] as const
+const collections = ['daily', 'playlists', 'albums', 'artists', 'videos', 'cloud','recent'] as const
 type Collection = typeof collections[number]
 
 const Albums = () => {
@@ -112,6 +113,12 @@ const CollectionTabs = ({ className }: { className:string }) => {
       name: t`common.cloud`,
       // iconName: 'cloud',
     },
+    {
+      id: 'recent',
+      name: t`common.recent`,
+      // iconName: 'cloud',
+    },
+
   ]
 
   const { librarySelectedTab: selectedTab } = useSnapshot(persistedUiStates)
@@ -152,7 +159,7 @@ const Collections = () => {
   const { librarySelectedTab: selectedTab } = useSnapshot(persistedUiStates)
   return (
     <motion.div>
-      <CollectionTabs className='sticky top-[122px] z-10 w-full'/>
+      <CollectionTabs className='sticky top-[100px] p-1 rounded-bl-lg rounded-br-lg z-10 w-full backdrop-blur-lg pb-5 pt-7'/>
       <div className={cx('px-2.5 pt-10 lg:px-0')}>
         {selectedTab === 'daily' && <Daily />}
         {selectedTab === 'albums' && <Albums />}
@@ -160,6 +167,7 @@ const Collections = () => {
         {selectedTab === 'artists' && <Artists />}
         {selectedTab === 'videos' && <Videos />}
         {selectedTab === 'cloud' && <Cloud key={"cloud"}/>}
+        {selectedTab === 'recent' && <Recent key={"recent"}/>}
       </div>
     </motion.div>
   )

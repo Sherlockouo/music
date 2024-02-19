@@ -1,6 +1,6 @@
 {
   "common": {
-    "recent":"Recent",
+    "recent": "Recent",
     "artist_one": "Artist",
     "daily": "Daily",
     "artist_other": "Artists",
@@ -18,14 +18,15 @@
     "video_other": "Videos",
     "video-with-count_one": "{{count}} Video",
     "video-with-count_other": "{{count}} Videos",
-    "lyricsBlur":"Lyrics Blur Effect",
-    "cloud":"cloud",
-    "upload":"upload music",
-    "showSongFrequency":"Show song frequency",
-    "showSongFrequencyWarnning":"⚠️This is performance consuming",
-    "showDeskttopLyrics":"Show Deskttop Lyrics",
-    "showDevices":"Show Audio Devices",
-    "hide-show-player": "Hide/Show Player"
+    "lyricsBlur": "Lyrics Blur Effect",
+    "cloud": "cloud",
+    "upload": "upload music",
+    "showSongFrequency": "Show song frequency",
+    "showSongFrequencyWarnning": "⚠️This is performance consuming",
+    "showDeskttopLyrics": "Show Deskttop Lyrics",
+    "showDevices": "Show Audio Devices",
+    "hide-show-player": "Hide/Show Player",
+    "close-window": "Close Window"
   },
   "navigation": {
     "goBack": "Go back",
@@ -86,8 +87,8 @@
     "lyric-style": "Background Image",
     "show-lyric-background-img": "Show Backround Image",
     "lab": {
-      "title":"Lab",
-      "description":"There are some experimental functions"
+      "title": "Lab",
+      "description": "There are some experimental functions"
     },
     "unlock": "Unlock More Music Source",
     "engine": "Engine",
@@ -104,12 +105,12 @@
     "player-find-alternative-track-on-youtube-if-not-available-on-netease": "Find alternative track on YouTube if not available on NetEase.",
     "volume-control": "Volume Control",
     "about": "About",
-    "host":"Proxy",
-    "qqCookie":"QQ_COOKIE",
-    "cookieSettingRefrence":"Click here for the configuration instruction. ",
-    "cookieDesc":"Leave empty to pick up the default value",
-    "miguCookie":"MIGU_COOKIE",
-    "jooxCookie":"JOOX_COOKIE",
+    "host": "Proxy",
+    "qqCookie": "QQ_COOKIE",
+    "cookieSettingRefrence": "Click here for the configuration instruction. ",
+    "cookieDesc": "Leave empty to pick up the default value",
+    "miguCookie": "MIGU_COOKIE",
+    "jooxCookie": "JOOX_COOKIE",
     "show-track-list-name": "Show Track List Name in Browse",
     "keyboard-shortcuts": {
       "title": "Keyboard Shortcuts",

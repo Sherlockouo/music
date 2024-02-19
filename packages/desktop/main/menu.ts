@@ -5,6 +5,7 @@ import { exec } from 'child_process'
 import log from './log'
 import { IpcChannels } from '@/shared/IpcChannels'
 import { formatForAccelerator, readKeyboardShortcuts } from './keyboardShortcuts'
+import { t } from 'i18next'
 
 log.info('[electron] menu.ts')
 
@@ -86,7 +87,17 @@ export const createMenu = (webContexts: WebContents, isBindingShortcuts: boolean
     { role: 'editMenu' },
     { role: 'viewMenu' },
     controlsMenuItem as any,
-    { role: 'windowMenu' },
+    {
+      role: 'windowMenu',
+      submenu: [
+        // close window shortcut for all platforms
+        {
+          label: t`common.close-window`,
+          accelerator: 'CmdOrCtrl+W',
+          role: 'close',
+        },
+      ],
+    },
     {
       label: '帮助',
       submenu: [

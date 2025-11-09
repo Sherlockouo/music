@@ -21,7 +21,7 @@
     "@fastify/static": "^6.6.1",
     "@fastify/swagger": "^8.8.0",
     "@unblockneteasemusic/server": "^0.27.3",
-    "NeteaseCloudMusicApi": "^4.13.2",
+    "@neteasecloudmusicapienhanced/api": "^4.29.14",
     "axios": "^0.27.2",
     "better-sqlite3": "9.2.2",
     "change-case": "^4.1.2",

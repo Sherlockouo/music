@@ -1,6 +1,6 @@
 import { FastifyPluginAsync } from 'fastify'
 import appleMusicRequest from '../../utils/appleMusicRequest'
-import { album as getAlbum } from 'NeteaseCloudMusicApi'
+import { album as getAlbum } from '@neteasecloudmusicapienhanced/api'
 // const match  = require('@unblockneteasemusic/server')
 
 type ResponseSchema = {

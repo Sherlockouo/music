@@ -1,6 +1,6 @@
 import { FastifyPluginAsync } from 'fastify'
 import appleMusicRequest from '../../utils/appleMusicRequest'
-import { artist_detail as getArtistDetail } from 'NeteaseCloudMusicApi'
+import { artist_detail as getArtistDetail } from '@neteasecloudmusicapienhanced/api'
 
 type ResponseSchema = {
   id: number

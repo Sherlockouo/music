@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
-import NeteaseCloudMusicApi, { SoundQualityType } from 'NeteaseCloudMusicApi'
+import NeteaseCloudMusicApi, { SoundQualityType } from '@neteasecloudmusicapienhanced/api'
 import { app } from 'electron'
 import log from '@/desktop/main/log'
 import { appName } from '@/desktop/main/env'
@@ -216,7 +216,7 @@ async function audio(fastify: FastifyInstance) {
       // // 加载动态的环境变量
       // dotenv.config({ path: envConfig })
       const isEnglish = /^[a-zA-Z\s]+$/
-      let source = ['qq', 'migu', 'joox', 'youtube']
+      let source = ['pyncmd', 'bodian', 'qq', 'migu', 'joox', 'youtube']
       // let source = ['qq']
       const enableFindTrackOnYouTube = store.get('settings.enableFindTrackOnYouTube')
       const httpProxyForYouTubeSettings = store.get('settings.httpProxyForYouTube')

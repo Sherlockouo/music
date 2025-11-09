@@ -1,6 +1,6 @@
 import { pathCase, snakeCase } from 'change-case'
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
-import NeteaseCloudMusicApi from 'NeteaseCloudMusicApi'
+import NeteaseCloudMusicApi from '@neteasecloudmusicapienhanced/api'
 import { CacheAPIs } from '@/shared/CacheAPIs'
 import cache from '../../../cache'
 

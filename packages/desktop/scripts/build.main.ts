@@ -34,7 +34,7 @@ const options = {
   external: [
     ...builtinModules.filter(x => !/^_|^(internal|v8|node-inspect)\/|\//.test(x)),
     'electron',
-    'NeteaseCloudMusicApi',
+    '@neteasecloudmusicapienhanced/api',
     'better-sqlite3',
   ],
 }

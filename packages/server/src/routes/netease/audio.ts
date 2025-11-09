@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyRequest } from 'fastify'
-import NeteaseCloudMusicApi, { SoundQualityType } from 'NeteaseCloudMusicApi'
+import NeteaseCloudMusicApi, { SoundQualityType } from '@neteasecloudmusicapienhanced/api'
 import log from '../../utils/log'
 import cache from '../../utils/cache'
 import { CacheAPIs } from '../../../../shared/CacheAPIs'
@@ -199,21 +199,23 @@ async function audio(fastify: FastifyInstance) {
       process.env.ENABLE_LOCAL_VIP = 'true'
       try {
         // todo: 暂时写死的，是否开放给用户配置
-        await match(trackID, ['migu', 'youtube']).then((data: unknown) => {
-          if (data === null || data === undefined || (data as any)?.url === '') {
-            reply.code(500).send({
-              code: 400,
-              msg: 'no track info',
-            })
-            return
-          }
+        await match(trackID, ['qq', 'pyncmd', 'bodian', 'migu', 'youtube']).then(
+          (data: unknown) => {
+            if (data === null || data === undefined || (data as any)?.url === '') {
+              reply.code(500).send({
+                code: 400,
+                msg: 'no track info',
+              })
+              return
+            }
 
-          cache.set(CacheAPIs.Unblock, { id: trackID, url: (data as any)?.url }, trackID)
-          reply.code(200).send({
-            code: 200,
-            data: [data],
-          })
-        })
+            cache.set(CacheAPIs.Unblock, { id: trackID, url: (data as any)?.url }, trackID)
+            reply.code(200).send({
+              code: 200,
+              data: [data],
+            })
+          }
+        )
       } catch (err) {
         reply.code(500).send(err)
       }

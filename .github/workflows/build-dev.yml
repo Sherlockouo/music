@@ -87,21 +87,21 @@ jobs:
       #     package_manager: pnpm
 
       - name: Upload Artifact (macOS universal)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: R3PLAYX-mac-universal
           path: ./packages/desktop/release/*-universal.dmg
           if-no-files-found: ignore
           
       - name: Upload Artifact (macOS x64)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: R3PLAYX-mac-x64
           path: ./packages/desktop/release/*-x64.dmg
           if-no-files-found: ignore
 
       - name: Upload mac latest yml
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: latest-mac
           path: ./packages/desktop/release/latest-mac.yml
@@ -109,42 +109,42 @@ jobs:
       
           
       - name: Upload Artifact (macOS arm64)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: R3PLAYX-mac-arm64
           path: ./packages/desktop/release/*-arm64.dmg
           if-no-files-found: ignore
 
       - name: Upload Artifact (Windows)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: R3PLAYX-win
           path: ./packages/desktop/release/*x64-Setup.exe
           if-no-files-found: ignore
           
       - name: Upload windows latest yml
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: latest
           path: ./packages/desktop/release/latest.yml
           if-no-files-found: ignore
 
       - name: Upload Artifact (Linux Appimage)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: R3PLAYX-linux
           path: ./packages/desktop/release/*.AppImage
           if-no-files-found: ignore
 
       - name: Upload Artifact (Linux deb)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: R3PLAYX-linux-deb
           path: ./packages/desktop/release/*.deb
           if-no-files-found: ignore
 
       - name: Upload linux latest yml
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: latest-linux
           path: ./packages/desktop/release/latest-linux.yml

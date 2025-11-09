@@ -29,13 +29,13 @@ jobs:
         with:
           node-version: 18.12.1
           cache: 'pnpm'
-          
+
       - name: Install global dependencies
-        run: npm i prisma fastify-cli turbo tsx electron-builder@23.6.0 -g 
-        
+        run: npm i prisma fastify-cli turbo tsx electron-builder@23.6.0 -g
+
       - name: Install dependencies
         run: pnpm install
-      
+
       - name: Copy Env
         run: cp .env.example .env
 
@@ -53,19 +53,19 @@ jobs:
       # - name: Install Snapcraft (Linux)
       #   uses: samuelmeuli/action-snapcraft@v1
       #   if: startsWith(matrix.os, 'ubuntu')
-        # with:
-        #   Disable since the Snapcraft token is currently not working
-        #   snapcraft_token: ${{ secrets.snapcraft_token }}
-        
+      # with:
+      #   Disable since the Snapcraft token is currently not working
+      #   snapcraft_token: ${{ secrets.snapcraft_token }}
+
       - name: Build-Unstable-Dev XtifyMusic app
         env:
           ELECTRON_WEB_SERVER_PORT: 42710
           ELECTRON_DEV_NETEASE_API_PORT: 30001
           UNBLOCK_SERVER_PORT: 30003
           VITE_APP_NETEASE_API_URL: /netease
-          ENABLE_FLAC: "true"
-          ENABLE_LOCAL_VIP: "svip"
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+          ENABLE_FLAC: 'true'
+          ENABLE_LOCAL_VIP: 'svip'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm package
       # - name: Build-Release Electron app
       #   uses: njzydark/action-electron-builder-pnpm@v1.2.0-pnpm
@@ -88,35 +88,35 @@ jobs:
       #     package_manager: pnpm
 
       - name: Upload Artifact (macOS universal)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: R3PLAYX-mac-universal
           path: ./packages/desktop/release/*-universal.dmg
           if-no-files-found: ignore
-          
+
       - name: Upload Artifact (macOS x64)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: R3PLAYX-mac-x64
           path: ./packages/desktop/release/*-x64.dmg
           if-no-files-found: ignore
-          
+
       - name: Upload Artifact (macOS arm64)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: R3PLAYX-mac-arm64
           path: ./packages/desktop/release/*-arm64.dmg
           if-no-files-found: ignore
 
       - name: Upload Artifact (Windows)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: R3PLAYX-win
           path: ./packages/desktop/release/*x64-Setup.exe
           if-no-files-found: ignore
 
       - name: Upload Artifact (Linux)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: R3PLAYX-linux
           path: ./packages/desktop/release/*.AppImage

@@ -1,170 +1,163 @@
 import PageTransition from '../../components/PageTransition'
 import { useEffect, useRef, useState, useMemo, memo } from 'react'
 import { useSnapshot } from 'valtio'
-import { css, cx } from '@emotion/css'
-import useLyric from '@/web/api/hooks/useLyric'
-import player from '@/web/states/player'
-import { lyricParser } from '@/web/utils/lyric'
+import { cx } from '@emotion/css'
 import { useTranslation } from 'react-i18next'
-import { useScroll, useTransform, motion } from 'framer-motion'
-
-import uiStates from '@/web/states/uiStates'
-import toast from 'react-hot-toast'
+import { motion, AnimatePresence } from 'framer-motion'
 import { gsap } from 'gsap'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
+
+import useLyric from '@/web/api/hooks/useLyric'
+import player from '@/web/states/player'
 import persistedUiStates from '@/web/states/persistedUiStates'
+import { lyricParser } from '@/web/utils/lyric'
+
 gsap.registerPlugin(ScrollToPlugin)
 
 const Lyrics = memo(() => {
-  const containerRef = useRef(null)
-  const pContainerRef = useRef(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const [currentLineIndex, setCurrentLineIndex] = useState(0)
   const lyricsRes = useLyric({ id: player.trackID })
   const lyricsResponse = lyricsRes.data
-  const { lyric: lyrics, tlyric: tlyric } = lyricParser(lyricsResponse)
+  const { lyric: lyrics, tlyric: tlyrics } = lyricParser(lyricsResponse)
   const { progress } = useSnapshot(player)
   const { lyricsBlur } = useSnapshot(persistedUiStates)
   const [isHovered, setIsHovered] = useState(false)
 
-  const handleMouseEnter = () => {
-    setIsHovered(true)
-  }
-
-  const handleMouseLeave = () => {
-    setIsHovered(false)
-  }
-
-  const { scrollYProgress } = useScroll({ container: containerRef })
-  const opacity = useTransform(scrollYProgress, [0, 1], [0, 1]) // 根据滚动进度控制透明度
-  // set current lyrics
+  // 更新当前歌词行索引
   useEffect(() => {
-    const updateCurrentLineIndex = () => {
-      var find = false
-      for (let i = currentLineIndex; i < lyrics.length; i++) {
-        if (progress < lyrics[i + 1]?.time && progress >= lyrics[i]?.time) {
-          find = true
-          setCurrentLineIndex(i)
-          break
-        } else if (i + 1 == lyrics.length && progress >= lyrics[i]?.time) {
-          find = true
-          setCurrentLineIndex(i)
-        }
-      }
-
-      if (!find) {
-        setCurrentLineIndex(0)
+    if (!lyrics.length) return
+    for (let i = 0; i < lyrics.length; i++) {
+      const current = lyrics[i]
+      const next = lyrics[i + 1]
+      if (progress >= current.time && (!next || progress < next.time)) {
+        setCurrentLineIndex(i)
+        break
       }
     }
-    updateCurrentLineIndex()
-  }, [progress])
+  }, [progress, lyrics])
 
+  // 平滑滚动至中间（GSAP 替代 scrollIntoView）
   useEffect(() => {
-    // 添加一个钩子函数，在 currentLineIndex 发生变化时，调用一个函数来滚动歌词容器
-    const scrollToCurrentLine = () => {
-      // 获取所有的歌词行元素
-      const lines = (containerRef.current as any).querySelectorAll('.lyrics-row')
-      if (lines == null || lines.length == 0) {
-        return
-      }
+    const container = containerRef.current
+    if (!container) return
 
-      // 获取当前的歌词行元素
-      const currentLine = lines[currentLineIndex]
-      if (currentLine) {
-        // 如果存在，就将其滚动到可视区域，并指定一些选项
-        currentLine.scrollIntoView({
-          behavior: 'smooth', // 滚动的行为为平滑过渡
-          block: 'center', // 垂直方向上将元素居中对齐
-          inline: 'center',
-        })
-      }
-    }
+    const lines = container.querySelectorAll('.lyrics-row')
+    const currentLine = lines[currentLineIndex] as HTMLElement
+    if (!currentLine) return
 
-    scrollToCurrentLine()
-  }, [currentLineIndex]) // 当 currentLineIndex 变化时，重新执行该钩子函数
+    const targetY =
+      currentLine.offsetTop - container.clientHeight / 2 + currentLine.clientHeight / 2
 
-  const maxLength = Math.max(lyrics.length, tlyric.length)
-  const renderedLyrics = useMemo(
-    () =>
-      Array.from({ length: maxLength }, (_, index) => {
-        const lyric = lyrics[index]?.content
-        const tLyric = tlyric[index]?.content
+    gsap.to(container, {
+      scrollTo: { y: targetY, autoKill: true },
+      duration: 0.8,
+      ease: 'power3.out',
+    })
+  }, [currentLineIndex])
 
-        const setSongToLyric = (index: number) => {
-          player.progress = lyrics[index].time
-          player.play(true)
-        }
-
-        const lineClassName = cx(
-          'lyrics-row leading-120 my-2 p-4 ease-in-out iterms-center text-center',
-          'tracking-lyric leading-lyric text-2xl transition duration-500 dark:hover:bg-white/10 hover:bg-black/10  rounded-lg',
-          index === currentLineIndex &&
-            'current-lyrics-row font-bold text-accent-color-500 text-3xl my-3',
-          index !== currentLineIndex && 'text-black/80 dark:text-white/60',
-          index !== currentLineIndex && lyricsBlur && 'blur-sm',
-          index !== currentLineIndex && isHovered && 'blur-none'
-        )
-
-        return (
-          <div
-            className={cx(lineClassName, 'font-barlow')}
-            key={index}
-            onDoubleClick={() => {
-              setSongToLyric(index)
-            }}
-          >
-            <motion.span
-              style={{
-                opacity,
-              }}
-              animate={{
-                transition: {
-                  ease: 'easeInOut',
-                  duration: 1,
-                },
-              }}
-            >
-              {lyric}
-            </motion.span>
-            <br />
-            <motion.span
-              style={{
-                opacity,
-              }}
-              animate={{
-                transition: {
-                  ease: 'easeInOut',
-                  duration: 1,
-                },
-              }}
-            >
-              {tLyric}
-            </motion.span>
-          </div>
-        )
-      }),
-    [maxLength, currentLineIndex]
-  )
+  // 虚拟化渲染：仅显示当前行上下若干行
+  const visibleLyrics = useMemo(() => {
+    const range = 8
+    const start = Math.max(0, currentLineIndex - range)
+    const end = Math.min(lyrics.length, currentLineIndex + range)
+    return lyrics.slice(start, end).map((l, i) => {
+      const actualIndex = start + i
+      return { ...l, t: tlyrics[actualIndex]?.content, index: actualIndex }
+    })
+  }, [currentLineIndex, lyrics, tlyrics])
 
   return (
     <PageTransition>
       <div
         className={cx(
-          'lyrics-player h-921 ',
-          'text-center',
-          'font-Roboto font-bold backdrop-blur-xxl'
+          'relative flex h-[90vh] items-center justify-center overflow-hidden',
+          'select-none font-barlow  text-2xl text-black dark:text-white'
         )}
-        ref={pContainerRef}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
         <motion.div
-          className={cx(
-            'lyrics-container no-scrollbar  mb-8 mt-8 h-full pb-lyricBottom pt-lyricTop ',
-            'inline-block'
-          )}
           ref={containerRef}
+          className='lyrics-container no-scrollbar h-full w-full overflow-y-scroll py-40 px-8 text-center'
         >
-          {renderedLyrics.length == 0 ? <>Enjoy the music</> : renderedLyrics}
+          {visibleLyrics.map(({ content, t, index }) => {
+            const isActive = index === currentLineIndex
+            return (
+              <motion.div
+                key={index}
+                className={cx(
+                  'lyrics-row my-3 transition-all duration-700 ease-out',
+                  isActive
+                    ? 'text-accent-color-500 scale-110 font-bold'
+                    : 'scale-100 text-black dark:text-white'
+                )}
+                animate={{
+                  opacity: isActive ? 1 : 0.6,
+                  filter:
+                    !isActive && lyricsBlur ? (isHovered ? 'blur(0px)' : 'blur(2px)') : 'blur(0px)',
+                }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
+                onDoubleClick={() => {
+                  player.progress = lyrics[index].time
+                  player.play(true)
+                }}
+              >
+                <AnimatePresence mode='wait'>
+                  <motion.div
+                    key={content}
+                    initial={{ opacity: 0, scale: 0.96 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 1.02 }}
+                    transition={{ duration: 0.6, ease: 'easeOut' }}
+                  >
+                    {/* 主歌词 */}
+                    <motion.span
+                      animate={
+                        isActive
+                          ? {
+                              scale: [1, 1.04, 1],
+                              opacity: [1, 0.9, 1],
+                            }
+                          : {}
+                      }
+                      transition={
+                        isActive
+                          ? {
+                              duration: 3,
+                              repeat: Infinity,
+                              ease: 'easeInOut',
+                            }
+                          : {}
+                      }
+                      className='block leading-relaxed'
+                    >
+                      {content}
+                    </motion.span>
+                    {/* 翻译歌词 */}
+                    {t && (
+                      <motion.span
+                        className={cx(
+                          ' block text-lg',
+                          isActive ? 'text-accent-color-500' : 'text-black dark:text-white'
+                        )}
+                        animate={{
+                          opacity: isActive ? 1 : 0.6,
+                        }}
+                        transition={{ duration: 0.8 }}
+                      >
+                        {t}
+                      </motion.span>
+                    )}
+                  </motion.div>
+                </AnimatePresence>
+              </motion.div>
+            )
+          })}
+
+          {lyrics.length === 0 && (
+            <div className='text-center text-xl opacity-60'>Enjoy the music 🎧</div>
+          )}
         </motion.div>
       </div>
     </PageTransition>

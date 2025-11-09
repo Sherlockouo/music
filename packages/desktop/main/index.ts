@@ -6,7 +6,7 @@ import {
   BrowserWindowConstructorOptions,
   shell,
 } from 'electron'
-import { release } from 'os'
+import { release, type } from 'os'
 import { join } from 'path'
 import log from './log'
 import { initIpcMain, lyricWin } from './ipcMain'
@@ -33,7 +33,7 @@ class Main {
   constructor() {
     log.info('[index] Main process start')
     // Disable GPU Acceleration for Windows 7
-    if (release().startsWith('6.1')) app.disableHardwareAcceleration()
+    if (release().startsWith('6.1') && type() == 'Windows_NT') app.disableHardwareAcceleration()
 
     // Set application name for Windows 10+ notifications
     if (process.platform === 'win32') app.setAppUserModelId(app.getName())

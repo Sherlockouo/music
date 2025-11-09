@@ -19,6 +19,7 @@ function Tabs<T>({
   className?: string
   style?: React.CSSProperties
 }) {
+
   return (
     <div
       className={cx('no-scrollbar flex flex-wrap gap-4 overflow-y-auto', className)}

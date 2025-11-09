@@ -1,12 +1,14 @@
 version: '3'
 services:
   frontend:
+    restart: always
     image: sherlockouo/xtify-music-web:latest
     ports:
       - 2222:80
     networks:
       - mynetwork
   backend:
+    restart: always
     image: sherlockouo/xtify-music-server:latest
     ports:
       - 35530:35530

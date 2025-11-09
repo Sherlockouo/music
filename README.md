@@ -1,5 +1,5 @@
 <p align="center">
-    <h2 align="center" style="font-weight: 600">基于 YesPlayMusic-Alpha 版本</h2>
+    <h2 align="center" style="font-weight: 800">R3PLAYX</h2>
     <h2 align="center">
         <a href="https://t.me/+MrhsgG741wQxNjg9">💻 加入TG群组，参与开发讨论 👊</a> <br><br>
         <a href="https://github.com/Sherlockouo/music/wiki/For-Developers">🧭 开发指南 👆 点这里，查看wiki </a>
@@ -19,9 +19,9 @@
     <img src="https://img.shields.io/badge/latest_version-2.7.4-deepgreen" />
 </div>
 
-## 关于 Alpha 版本
+## 关于 Beta 版本
 
-目前 R3PLAYX 处于 Alpha 阶段，仍在开发中，功能尚未完善。建议每次更新时，先卸载旧版本的 R3PLAY，再重新安装。如遇到问题，欢迎提 issue。
+目前 R3PLAYX 处于 Beta 阶段，仍在开发中，功能尚未完善。建议每次更新时，先卸载旧版本的 R3PLAY，再重新安装。如遇到问题，欢迎提 issue。
 
 ## ✨ 特性
 

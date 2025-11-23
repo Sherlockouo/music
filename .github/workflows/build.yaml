@@ -21,17 +21,18 @@ jobs:
         with:
           submodules: 'recursive'
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8.6.12
+          run_install: false # 由后续步骤显式安装
+
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18.18.2
           cache: 'pnpm' # 自动处理 pnpm 缓存，无需手动配置
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8.6.12
-          run_install: false # 由后续步骤显式安装
 
       # 合并了两个文件的依赖逻辑，并清理了不必要的全局安装
       # 建议：将 prisma, turbo 等放入 package.json 的 devDependencies 中，避免在此处全局安装

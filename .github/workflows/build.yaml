@@ -30,7 +30,7 @@ jobs:
       - name: Install Node.js 20
         uses: actions/setup-node@v2
         with:
-          node-version: 20.19
+          node-version: 20
           cache: 'pnpm'
 
 

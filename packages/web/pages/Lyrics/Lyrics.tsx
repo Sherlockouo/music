@@ -13,6 +13,7 @@ import { lyricParser } from '@/web/utils/lyric'
 
 gsap.registerPlugin(ScrollToPlugin)
 
+// eslint-disable-next-line react/display-name
 const Lyrics = memo(() => {
   const containerRef = useRef<HTMLDivElement>(null)
   const [currentLineIndex, setCurrentLineIndex] = useState(0)
@@ -73,7 +74,7 @@ const Lyrics = memo(() => {
         className={cx(
           // 布局改为 flex-col 和 justify-start，移除 items-center 以允许左对齐
           'relative flex h-[90vh] w-full flex-col justify-start overflow-hidden',
-          'select-none font-barlow text-accent-color-400 dark:text-accent-color-400'
+          'text-accent-color-400 dark:text-accent-color-400 select-none font-barlow'
         )}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}

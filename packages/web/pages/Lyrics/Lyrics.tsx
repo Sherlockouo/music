@@ -2,8 +2,7 @@ import PageTransition from '../../components/PageTransition'
 import { useEffect, useRef, useState, useMemo, memo } from 'react'
 import { useSnapshot } from 'valtio'
 import { cx } from '@emotion/css'
-import { useTranslation } from 'react-i18next'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion' // 移除了 AnimatePresence，对于纯样式切换通常不需要它，减少性能开销
 import { gsap } from 'gsap'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 
@@ -37,7 +36,7 @@ const Lyrics = memo(() => {
     }
   }, [progress, lyrics])
 
-  // 平滑滚动至中间（GSAP 替代 scrollIntoView）
+  // GSAP 平滑滚动：保持高亮行在视野偏上位置 (更符合阅读习惯)
   useEffect(() => {
     const container = containerRef.current
     if (!container) return
@@ -46,19 +45,20 @@ const Lyrics = memo(() => {
     const currentLine = lines[currentLineIndex] as HTMLElement
     if (!currentLine) return
 
+    // 计算滚动位置：将高亮行置于容器高度的 35% - 40% 处，而非绝对居中，视觉更舒适
     const targetY =
-      currentLine.offsetTop - container.clientHeight / 2 + currentLine.clientHeight / 2
+      currentLine.offsetTop - container.clientHeight * 0.35 + currentLine.clientHeight / 2
 
     gsap.to(container, {
       scrollTo: { y: targetY, autoKill: true },
-      duration: 0.8,
-      ease: 'power3.out',
+      duration: 1.2, // 稍微放慢滚动速度，更优雅
+      ease: 'power4.out', // 使用更平滑的缓动函数
     })
   }, [currentLineIndex])
 
-  // 虚拟化渲染：仅显示当前行上下若干行
+  // 虚拟化渲染范围
   const visibleLyrics = useMemo(() => {
-    const range = 8
+    const range = 10 // 稍微增加渲染范围以保证模糊背景的连续性
     const start = Math.max(0, currentLineIndex - range)
     const end = Math.min(lyrics.length, currentLineIndex + range)
     return lyrics.slice(start, end).map((l, i) => {
@@ -71,92 +71,82 @@ const Lyrics = memo(() => {
     <PageTransition>
       <div
         className={cx(
-          'relative flex h-[90vh] items-center justify-center overflow-hidden',
-          'select-none font-barlow  text-2xl text-black dark:text-white'
+          // 布局改为 flex-col 和 justify-start，移除 items-center 以允许左对齐
+          'relative flex h-[90vh] w-full flex-col justify-start overflow-hidden',
+          'select-none font-barlow text-accent-color-400 dark:text-accent-color-400'
         )}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         <motion.div
           ref={containerRef}
-          className='lyrics-container no-scrollbar h-full w-full overflow-y-scroll py-40 px-8 text-center'
+          // 增加左侧 padding (pl-12) 模拟图中的排版
+          // 移除 text-center, 改为 text-left
+          className='lyrics-container no-scrollbar h-full w-full overflow-y-scroll py-[40vh] pl-8 text-left md:pl-16'
         >
           {visibleLyrics.map(({ content, t, index }) => {
             const isActive = index === currentLineIndex
+
             return (
               <motion.div
                 key={index}
+                // transform-origin 设为 left，确保放大时向右扩展而不是向两边
                 className={cx(
-                  'lyrics-row my-3 transition-all duration-700 ease-out',
-                  isActive
-                    ? 'text-accent-color-500 scale-110 font-bold'
-                    : 'scale-100 text-black dark:text-white'
+                  'lyrics-row my-6 origin-left cursor-pointer transition-colors duration-500'
+                  // 增加上下 margin (my-6) 拉开行间距
                 )}
+                initial={false}
                 animate={{
-                  opacity: isActive ? 1 : 0.6,
-                  filter:
-                    !isActive && lyricsBlur ? (isHovered ? 'blur(0px)' : 'blur(2px)') : 'blur(0px)',
+                  scale: isActive ? 1.1 : 0.95, // 激活时放大，非激活微缩
+                  opacity: isActive ? 1 : 0.35, // 非激活行透明度大幅降低
+                  filter: !isActive && lyricsBlur && !isHovered ? 'blur(4px)' : 'blur(0px)', // 增加模糊半径
+                  y: 0,
                 }}
-                transition={{ duration: 0.6, ease: 'easeOut' }}
+                transition={{
+                  stiffness: 200,
+                  damping: 20,
+                  opacity: { duration: 0.6 },
+                }}
                 onDoubleClick={() => {
                   player.progress = lyrics[index].time
                   player.play(true)
                 }}
               >
-                <AnimatePresence mode='wait'>
+                {/* 主歌词 */}
+                <motion.div
+                  className={cx(
+                    'block leading-tight tracking-wide',
+                    // 激活时：加粗、大字号、纯白/纯黑
+                    // 非激活：普通字重
+                    isActive
+                      ? ' text-4xl font-extrabold drop-shadow-lg md:text-5xl'
+                      : 'text-3xl font-medium'
+                  )}
+                >
+                  {content}
+                </motion.div>
+
+                {/* 翻译歌词 */}
+                {t && (
                   <motion.div
-                    key={content}
-                    initial={{ opacity: 0, scale: 0.96 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 1.02 }}
-                    transition={{ duration: 0.6, ease: 'easeOut' }}
-                  >
-                    {/* 主歌词 */}
-                    <motion.span
-                      animate={
-                        isActive
-                          ? {
-                              scale: [1, 1.04, 1],
-                              opacity: [1, 0.9, 1],
-                            }
-                          : {}
-                      }
-                      transition={
-                        isActive
-                          ? {
-                              duration: 3,
-                              repeat: Infinity,
-                              ease: 'easeInOut',
-                            }
-                          : {}
-                      }
-                      className='block leading-relaxed'
-                    >
-                      {content}
-                    </motion.span>
-                    {/* 翻译歌词 */}
-                    {t && (
-                      <motion.span
-                        className={cx(
-                          ' block text-lg',
-                          isActive ? 'text-accent-color-500' : 'text-black dark:text-white'
-                        )}
-                        animate={{
-                          opacity: isActive ? 1 : 0.6,
-                        }}
-                        transition={{ duration: 0.8 }}
-                      >
-                        {t}
-                      </motion.span>
+                    className={cx(
+                      'mt-2 block font-sans text-lg font-normal tracking-normal md:text-xl'
                     )}
+                    animate={{
+                      opacity: isActive ? 0.8 : 0.5, // 翻译歌词始终比主歌词淡一点
+                    }}
+                  >
+                    {t}
                   </motion.div>
-                </AnimatePresence>
+                )}
               </motion.div>
             )
           })}
 
           {lyrics.length === 0 && (
-            <div className='text-center text-xl opacity-60'>Enjoy the music 🎧</div>
+            <div className='mt-20 pl-16 text-3xl font-bold opacity-50'>
+              Instrumental / No Lyrics
+            </div>
           )}
         </motion.div>
       </div>

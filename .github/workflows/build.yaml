@@ -27,11 +27,11 @@ jobs:
           version: 8.6.12
           run_install: false # 由后续步骤显式安装
 
-      - name: Install Node.js
-        uses: actions/setup-node@v4
+      - name: Install Node.js 20
+        uses: actions/setup-node@v2
         with:
-          node-version: 18.18.2
-          cache: 'pnpm' # 自动处理 pnpm 缓存，无需手动配置
+          node-version: 20.19
+          cache: 'pnpm'
 
 
       # 合并了两个文件的依赖逻辑，并清理了不必要的全局安装

@@ -87,3 +87,42 @@ jobs:
             ./packages/desktop/release/*.AppImage
             ./packages/desktop/release/*.deb
             ./packages/desktop/release/latest-linux.yml
+
+  # --------------------------------------------------------
+  # 新增 Job: 创建 GitHub Release
+  # --------------------------------------------------------
+  create_release:
+    name: Create GitHub Release and Upload Assets
+    # 仅当推送到 release 分支时才运行此 Job
+    if: github.ref == 'refs/heads/release'
+    # 必须等待所有构建任务完成后才开始
+    needs: build-and-release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository (for package.json)
+        uses: actions/checkout@v4
+
+      # 1. 下载所有构建 Job 上传的 Artifacts
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          # 将所有产物下载到一个名为 artifacts 的目录中
+          path: artifacts
+
+      # 2. 提取 package.json 中的版本号
+      - name: Get version from package.json
+        id: get_version
+        run: echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+
+      # 3. 创建 Release Tag 并上传 Assets
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          # 使用提取的版本号作为 Release Tag 名称，例如 v1.2.3
+          tag_name: v${{ env.VERSION }}
+          name: Release ${{ env.VERSION }}
+          # 设置为 false 表示正式版本 (与 pre-release 对应)
+          prerelease: false
+          # 自动上传 artifacts/ 目录下所有构建产物
+          files: artifacts/**/packages/desktop/release/*

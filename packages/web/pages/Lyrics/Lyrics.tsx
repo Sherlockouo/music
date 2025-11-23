@@ -2,7 +2,7 @@ import PageTransition from '../../components/PageTransition'
 import { useEffect, useRef, useState, useMemo, memo } from 'react'
 import { useSnapshot } from 'valtio'
 import { cx } from '@emotion/css'
-import { motion } from 'framer-motion' // 移除了 AnimatePresence，对于纯样式切换通常不需要它，减少性能开销
+import { motion } from 'framer-motion'
 import { gsap } from 'gsap'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 
@@ -24,9 +24,16 @@ const Lyrics = memo(() => {
   const { lyricsBlur } = useSnapshot(persistedUiStates)
   const [isHovered, setIsHovered] = useState(false)
 
-  // 更新当前歌词行索引
+  // --- 修复 1: 优化当前行索引计算逻辑 ---
   useEffect(() => {
     if (!lyrics.length) return
+
+    // 处理边界情况：如果进度小于第一句歌词的时间，应该选中第一句
+    if (progress < lyrics[0].time) {
+      setCurrentLineIndex(0)
+      return
+    }
+
     for (let i = 0; i < lyrics.length; i++) {
       const current = lyrics[i]
       const next = lyrics[i + 1]
@@ -37,29 +44,32 @@ const Lyrics = memo(() => {
     }
   }, [progress, lyrics])
 
-  // GSAP 平滑滚动：保持高亮行在视野偏上位置 (更符合阅读习惯)
+  // --- 修复 2: 修复滚动逻辑 ---
   useEffect(() => {
     const container = containerRef.current
     if (!container) return
 
-    const lines = container.querySelectorAll('.lyrics-row')
-    const currentLine = lines[currentLineIndex] as HTMLElement
+    // 核心修改：不要用 lines[index] 查找，因为虚拟列表导致 DOM 索引和歌词数组索引不一致。
+    // 直接查找带有 'active-lyric-line' 标记的 DOM 元素。
+    const currentLine = container.querySelector('.active-lyric-line') as HTMLElement
+
     if (!currentLine) return
 
-    // 计算滚动位置：将高亮行置于容器高度的 35% - 40% 处，而非绝对居中，视觉更舒适
+    // 计算滚动位置：将高亮行置于容器高度的 35% - 40% 处
     const targetY =
       currentLine.offsetTop - container.clientHeight * 0.35 + currentLine.clientHeight / 2
 
     gsap.to(container, {
       scrollTo: { y: targetY, autoKill: true },
-      duration: 1.2, // 稍微放慢滚动速度，更优雅
-      ease: 'power4.out', // 使用更平滑的缓动函数
+      duration: 1.2,
+      ease: 'power4.out',
+      overwrite: 'auto', // 确保快速切换时覆盖之前的动画
     })
-  }, [currentLineIndex])
+  }, [currentLineIndex]) // 依赖项保持不变
 
   // 虚拟化渲染范围
   const visibleLyrics = useMemo(() => {
-    const range = 10 // 稍微增加渲染范围以保证模糊背景的连续性
+    const range = 10
     const start = Math.max(0, currentLineIndex - range)
     const end = Math.min(lyrics.length, currentLineIndex + range)
     return lyrics.slice(start, end).map((l, i) => {
@@ -72,7 +82,6 @@ const Lyrics = memo(() => {
     <PageTransition>
       <div
         className={cx(
-          // 布局改为 flex-col 和 justify-start，移除 items-center 以允许左对齐
           'relative flex h-[90vh] w-full flex-col justify-start overflow-hidden',
           'text-accent-color-400 dark:text-accent-color-400 select-none font-barlow'
         )}
@@ -81,8 +90,6 @@ const Lyrics = memo(() => {
       >
         <motion.div
           ref={containerRef}
-          // 增加左侧 padding (pl-12) 模拟图中的排版
-          // 移除 text-center, 改为 text-left
           className='lyrics-container no-scrollbar h-full w-full overflow-y-scroll py-[40vh] pl-8 text-left md:pl-16'
         >
           {visibleLyrics.map(({ content, t, index }) => {
@@ -91,16 +98,16 @@ const Lyrics = memo(() => {
             return (
               <motion.div
                 key={index}
-                // transform-origin 设为 left，确保放大时向右扩展而不是向两边
+                // --- 核心修改：添加 active-lyric-line 类名以便 querySelector 查找 ---
                 className={cx(
-                  'lyrics-row my-6 origin-left cursor-pointer transition-colors duration-500'
-                  // 增加上下 margin (my-6) 拉开行间距
+                  'lyrics-row my-6 origin-left cursor-pointer transition-colors duration-500',
+                  isActive ? 'active-lyric-line' : ''
                 )}
                 initial={false}
                 animate={{
-                  scale: isActive ? 1.1 : 0.95, // 激活时放大，非激活微缩
-                  opacity: isActive ? 1 : 0.35, // 非激活行透明度大幅降低
-                  filter: !isActive && lyricsBlur && !isHovered ? 'blur(4px)' : 'blur(0px)', // 增加模糊半径
+                  scale: isActive ? 1.1 : 0.95,
+                  opacity: isActive ? 1 : 0.35,
+                  filter: !isActive && lyricsBlur && !isHovered ? 'blur(4px)' : 'blur(0px)',
                   y: 0,
                 }}
                 transition={{
@@ -117,8 +124,6 @@ const Lyrics = memo(() => {
                 <motion.div
                   className={cx(
                     'block leading-tight tracking-wide',
-                    // 激活时：加粗、大字号、纯白/纯黑
-                    // 非激活：普通字重
                     isActive
                       ? ' text-4xl font-extrabold drop-shadow-lg md:text-5xl'
                       : 'text-3xl font-medium'
@@ -134,7 +139,7 @@ const Lyrics = memo(() => {
                       'mt-2 block font-sans text-lg font-normal tracking-normal md:text-xl'
                     )}
                     animate={{
-                      opacity: isActive ? 0.8 : 0.5, // 翻译歌词始终比主歌词淡一点
+                      opacity: isActive ? 0.8 : 0.5,
                     }}
                   >
                     {t}

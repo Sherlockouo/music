@@ -24,10 +24,10 @@ jobs:
         with:
           version: 8.6.12
 
-      - name: Install Node.js 18
+      - name: Install Node.js 20
         uses: actions/setup-node@v2
         with:
-          node-version: 18.12.1
+          node-version: 20.19
           cache: 'pnpm'
 
       - name: Install global dependencies

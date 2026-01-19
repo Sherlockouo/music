@@ -72,7 +72,7 @@ const LyricsDesktop = memo(() => {
       'tracking-lyric leading-lyric text-md transition duration-400 dark:hover:bg-white/10 hover:bg-gray-500/10  rounded-lg',
       index === currentLineIndex &&
         'transition duration-400 font-bold text-accent-color-700 dark:text-accent-color-500 text-lg my-2', // 浅色模式使用700提高对比度，深色模式使用500
-      index !== currentLineIndex && 'transition duration-400 text-black/80 dark:text-white/60 '
+      index !== currentLineIndex && 'transition duration-400 text-black dark:text-white/90 ' // 提高非活跃行对比度
     )
 
     const lineVariants = {

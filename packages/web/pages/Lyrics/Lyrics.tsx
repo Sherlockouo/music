@@ -31,14 +31,24 @@ const Lyrics = memo(() => {
   // 更新当前歌词行索引
   useEffect(() => {
     if (!lyrics.length) return
+
+    // 查找当前进度对应的歌词行
+    let foundIndex = -1
     for (let i = 0; i < lyrics.length; i++) {
       const current = lyrics[i]
       const next = lyrics[i + 1]
       if (progress >= current.time && (!next || progress < next.time)) {
-        setCurrentLineIndex(i)
+        foundIndex = i
         break
       }
     }
+
+    // 如果还没到第一句歌词时间，或者没有找到匹配的行，高亮第一句
+    if (foundIndex === -1) {
+      foundIndex = 0
+    }
+
+    setCurrentLineIndex(foundIndex)
   }, [progress, lyrics])
 
   // GSAP 平滑滚动：保持高亮行在视野正中间
@@ -99,7 +109,7 @@ const Lyrics = memo(() => {
                 initial={false}
                 animate={{
                   scale: isActive ? 1.1 : 0.95,
-                  opacity: isActive ? 1 : 0.35,
+                  opacity: isActive ? 1 : 0.65, // 提高非活跃行透明度，增加对比度
                   filter: !isActive && lyricsBlur && !isHovered ? 'blur(4px)' : 'blur(0px)',
                   y: 0,
                 }}
@@ -132,7 +142,7 @@ const Lyrics = memo(() => {
                       'mt-2 block font-sans text-lg font-normal tracking-normal md:text-xl'
                     )}
                     animate={{
-                      opacity: isActive ? 0.8 : 0.5,
+                      opacity: isActive ? 0.9 : 0.7, // 提高翻译歌词透明度
                     }}
                   >
                     {t}

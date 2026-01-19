@@ -302,31 +302,48 @@ input[type='number']::-webkit-outer-spin-button {
   padding: 2px 8px;
   background: linear-gradient(
     90deg,
-    hsl(var(--brand-color-700) / 0.95) 0%,
-    hsl(var(--brand-color-700) / 0.95) var(--progress, 0%),
-    hsl(var(--brand-color-700) / 0.3) var(--progress, 0%)
+    hsl(var(--brand-color-700) / 1) 0%,
+    hsl(var(--brand-color-700) / 1) var(--progress, 0%),
+    hsl(var(--brand-color-700) / 0.5) var(--progress, 0%) /* 提高未播放部分的透明度 */
   );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent; /* shows gradient fill */
   transition: none; /* progress updates per frame via style var */
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.25);
+  filter: saturate(1.3); /* 增加卡拉OK效果的饱和度 */
 }
 
 /* 深色模式使用更亮的色阶以提高可见性 */
 .dark .lyric-inner {
   background: linear-gradient(
     90deg,
-    hsl(var(--brand-color-400) / 0.95) 0%,
-    hsl(var(--brand-color-400) / 0.95) var(--progress, 0%),
-    hsl(var(--brand-color-400) / 0.2) var(--progress, 0%)
+    hsl(var(--brand-color-400) / 1) 0%,
+    hsl(var(--brand-color-400) / 1) var(--progress, 0%),
+    hsl(var(--brand-color-400) / 0.4) var(--progress, 0%) /* 提高未播放部分的透明度 */
   );
+  filter: saturate(1.4); /* 深色模式下增加更多饱和度 */
 }
 
 /* Inactive lines slightly dim */
 .lyric-row:not(.active-row) .lyric-inner {
   font-size: 16px;
-  opacity: 0.5;
+  opacity: 0.7; /* 提高非活跃行透明度，从0.5提升到0.7 */
   transition: opacity 300ms, transform 300ms;
   transform: translateY(0) scale(1);
+}
+
+/* 增强accent color的饱和度，使颜色更艳丽 */
+.text-accent-color-400,
+.text-accent-color-500,
+.text-accent-color-600,
+.text-accent-color-700 {
+  filter: saturate(1.2); /* 增加20%饱和度 */
+}
+
+.dark .text-accent-color-400,
+.dark .text-accent-color-500,
+.dark .text-accent-color-600,
+.dark .text-accent-color-700 {
+  filter: saturate(1.3); /* 深色模式下增加30%饱和度 */
 }

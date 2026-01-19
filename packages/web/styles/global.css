@@ -52,6 +52,38 @@
     overflow: hidden;
     -webkit-line-clamp: 4;
   }
+
+  /* 性能优化：图片渲染优化 */
+  img {
+    /* 只保留必要的优化，移除会导致抖动的 transform */
+    image-rendering: -webkit-optimize-contrast;
+  }
+
+  /* 性能优化：虚拟滚动内容优化 */
+  .virtuoso-grid-item {
+    /* 关键优化：content-visibility 确保内容被渲染但不可见时也保持布局 */
+    content-visibility: auto;
+    /* 移除可能导致抖动的优化 */
+    will-change: auto;
+  }
+
+  /* Virtuoso 容器优化 */
+  [data-virtuoso-scroller] {
+    /* 确保滚动容器流畅 */
+    overflow-anchor: none;
+  }
+
+  /* 性能优化：减少重绘 */
+  .gpu-accelerated {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  /* 滚动性能优化 */
+  .smooth-scroll {
+    /* 移除 scroll-behavior: smooth，避免滚动时的动画感 */
+    /* 让浏览器使用原生滚动，更流畅 */
+  }
 }
 
 @keyframes pulsate-fwdj-big {
@@ -270,15 +302,25 @@ input[type='number']::-webkit-outer-spin-button {
   padding: 2px 8px;
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.95) 0%,
-    rgba(255, 255, 255, 0.95) var(--progress, 0%),
-    rgba(255, 255, 255, 0.15) var(--progress, 0%)
+    hsl(var(--brand-color-700) / 0.95) 0%,
+    hsl(var(--brand-color-700) / 0.95) var(--progress, 0%),
+    hsl(var(--brand-color-700) / 0.3) var(--progress, 0%)
   );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent; /* shows gradient fill */
   transition: none; /* progress updates per frame via style var */
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* 深色模式使用更亮的色阶以提高可见性 */
+.dark .lyric-inner {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--brand-color-400) / 0.95) 0%,
+    hsl(var(--brand-color-400) / 0.95) var(--progress, 0%),
+    hsl(var(--brand-color-400) / 0.2) var(--progress, 0%)
+  );
 }
 
 /* Inactive lines slightly dim */

@@ -190,6 +190,7 @@ class DB {
     data: TablesStructures[T][],
     skipWhenExist: boolean = true
   ) {
+    if (!data || data.length === 0) return
     const valuesQuery = Object.keys(data[0])
       .map(key => `:${key}`)
       .join(', ')
@@ -207,7 +208,14 @@ class DB {
     key: TablesStructures[T]['id'],
     data: Partial<TablesStructures[T]>
   ) {
-    // TODO:
+    const updates = Object.keys(data)
+      .filter(k => k !== 'id')
+      .map(k => `${k} = :${k}`)
+      .join(', ')
+    const params: any = { ...data, id: key }
+    return this.sqlite
+      .prepare(`UPDATE ${table} SET ${updates} WHERE id = :id`)
+      .run(params)
   }
 
   upsert<T extends TableNames>(table: T, data: TablesStructures[T]) {
@@ -218,6 +226,7 @@ class DB {
   }
 
   upsertMany<T extends TableNames>(table: T, data: TablesStructures[T][]) {
+    if (!data || data.length === 0) return
     const valuesQuery = Object.keys(data[0])
       .map(key => `:${key}`)
       .join(', ')

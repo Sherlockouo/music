@@ -70,7 +70,7 @@ const Browse = memo(() => {
         </div>
 
         {/* 内容区域 - 只渲染当前 tab，避免内存泄漏 */}
-        <div className='flex-1 overflow-y-auto'>
+        <div className='flex-1 overflow-y-auto smooth-scroll'>
           {categories.map(({ id, component }) => {
             const isActive = id === active
             return (

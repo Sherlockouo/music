@@ -1,5 +1,5 @@
 import PageTransition from '../../components/PageTransition'
-import { useEffect, useRef, useState, useMemo, memo } from 'react'
+import { useEffect, useRef, useState, memo } from 'react'
 import { useSnapshot } from 'valtio'
 import { cx } from '@emotion/css'
 import { motion } from 'framer-motion' // 移除了 AnimatePresence，对于纯样式切换通常不需要它，减少性能开销
@@ -20,8 +20,13 @@ const Lyrics = memo(() => {
   const lyricsResponse = lyricsRes.data
   const { lyric: lyrics, tlyric: tlyrics } = lyricParser(lyricsResponse)
   const { progress } = useSnapshot(player)
-  const { lyricsBlur } = useSnapshot(persistedUiStates)
+  const { lyricsBlur, minimizePlayer } = useSnapshot(persistedUiStates)
   const [isHovered, setIsHovered] = useState(false)
+
+  // 根据播放列表状态计算底部内边距
+  // 展开时：需要更多空间（播放列表高度约70vh+）
+  // 收缩时：只需要较小的空间（播放器高度约80px）
+  const bottomPadding = minimizePlayer ? 'pb-24' : 'pb-96'
 
   // 更新当前歌词行索引
   useEffect(() => {
@@ -36,36 +41,26 @@ const Lyrics = memo(() => {
     }
   }, [progress, lyrics])
 
-  // GSAP 平滑滚动：保持高亮行在视野偏上位置 (更符合阅读习惯)
+  // GSAP 平滑滚动：保持高亮行在视野正中间
   useEffect(() => {
     const container = containerRef.current
-    if (!container) return
+    if (!container || lyrics.length === 0) return
 
     const lines = container.querySelectorAll('.lyrics-row')
     const currentLine = lines[currentLineIndex] as HTMLElement
     if (!currentLine) return
 
-    // 计算滚动位置：将高亮行置于容器高度的 35% - 40% 处，而非绝对居中，视觉更舒适
-    const targetY =
-      currentLine.offsetTop - container.clientHeight * 0.35 + currentLine.clientHeight / 2
+    // 计算滚动位置：将高亮行置于容器高度的正中间 (50%)
+    const containerCenter = container.clientHeight / 2
+    const lineCenter = currentLine.offsetTop + currentLine.clientHeight / 2
+    const targetY = lineCenter - containerCenter
 
     gsap.to(container, {
-      scrollTo: { y: targetY, autoKill: true },
-      duration: 1.2, // 稍微放慢滚动速度，更优雅
-      ease: 'power4.out', // 使用更平滑的缓动函数
+      scrollTo: { y: targetY, autoKill: false }, // 关闭 autoKill，防止被用户交互打断
+      duration: 0.8, // 适中的滚动速度
+      ease: 'power2.out', // 平滑的缓动函数
     })
-  }, [currentLineIndex])
-
-  // 虚拟化渲染范围
-  const visibleLyrics = useMemo(() => {
-    const range = 10 // 稍微增加渲染范围以保证模糊背景的连续性
-    const start = Math.max(0, currentLineIndex - range)
-    const end = Math.min(lyrics.length, currentLineIndex + range)
-    return lyrics.slice(start, end).map((l, i) => {
-      const actualIndex = start + i
-      return { ...l, t: tlyrics[actualIndex]?.content, index: actualIndex }
-    })
-  }, [currentLineIndex, lyrics, tlyrics])
+  }, [currentLineIndex, lyrics.length])
 
   return (
     <PageTransition>
@@ -73,33 +68,39 @@ const Lyrics = memo(() => {
         className={cx(
           // 布局改为 flex-col 和 justify-start，移除 items-center 以允许左对齐
           'relative flex h-[90vh] w-full flex-col justify-start overflow-hidden',
-          'select-none font-barlow text-accent-color-400 dark:text-accent-color-400'
+          'select-none font-barlow text-accent-color-600 dark:text-accent-color-400' // 浅色模式使用600提高对比度，深色模式使用400
         )}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         <motion.div
           ref={containerRef}
-          // 增加左侧 padding (pl-12) 模拟图中的排版
-          // 移除 text-center, 改为 text-left
-          className='lyrics-container no-scrollbar h-full w-full overflow-y-scroll py-[40vh] pl-8 text-left md:pl-16'
+          // 动态底部内边距：根据播放列表展开/收缩状态调整
+          className={cx(
+            'lyrics-container no-scrollbar h-full w-full overflow-y-scroll text-left will-change-scroll',
+            'pl-8 md:pl-16', // 左侧内边距
+            'pt-[40vh]', // 顶部固定内边距
+            bottomPadding // 动态底部内边距
+          )}
         >
-          {visibleLyrics.map(({ content, t, index }) => {
+          {lyrics.map((lyric, index) => {
             const isActive = index === currentLineIndex
+            const t = tlyrics[index]?.content
 
             return (
               <motion.div
                 key={index}
-                // transform-origin 设为 left，确保放大时向右扩展而不是向两边
+                // 添加 content-visibility 优化非活跃行性能
                 className={cx(
-                  'lyrics-row my-6 origin-left cursor-pointer transition-colors duration-500'
-                  // 增加上下 margin (my-6) 拉开行间距
+                  'lyrics-row my-6 origin-left cursor-pointer transition-colors duration-500',
+                  // 非活跃行使用 content-visibility 优化渲染性能
+                  !isActive && 'content-visibility-auto'
                 )}
                 initial={false}
                 animate={{
-                  scale: isActive ? 1.1 : 0.95, // 激活时放大，非激活微缩
-                  opacity: isActive ? 1 : 0.35, // 非激活行透明度大幅降低
-                  filter: !isActive && lyricsBlur && !isHovered ? 'blur(4px)' : 'blur(0px)', // 增加模糊半径
+                  scale: isActive ? 1.1 : 0.95,
+                  opacity: isActive ? 1 : 0.35,
+                  filter: !isActive && lyricsBlur && !isHovered ? 'blur(4px)' : 'blur(0px)',
                   y: 0,
                 }}
                 transition={{
@@ -108,7 +109,7 @@ const Lyrics = memo(() => {
                   opacity: { duration: 0.6 },
                 }}
                 onDoubleClick={() => {
-                  player.progress = lyrics[index].time
+                  player.progress = lyric.time
                   player.play(true)
                 }}
               >
@@ -116,14 +117,12 @@ const Lyrics = memo(() => {
                 <motion.div
                   className={cx(
                     'block leading-tight tracking-wide',
-                    // 激活时：加粗、大字号、纯白/纯黑
-                    // 非激活：普通字重
                     isActive
                       ? ' text-4xl font-extrabold drop-shadow-lg md:text-5xl'
                       : 'text-3xl font-medium'
                   )}
                 >
-                  {content}
+                  {lyric.content}
                 </motion.div>
 
                 {/* 翻译歌词 */}
@@ -133,7 +132,7 @@ const Lyrics = memo(() => {
                       'mt-2 block font-sans text-lg font-normal tracking-normal md:text-xl'
                     )}
                     animate={{
-                      opacity: isActive ? 0.8 : 0.5, // 翻译歌词始终比主歌词淡一点
+                      opacity: isActive ? 0.8 : 0.5,
                     }}
                   >
                     {t}

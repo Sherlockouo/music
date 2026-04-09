@@ -34,9 +34,10 @@ const AudioOutputDevices = () => {
     }
     getAudioOutputDevices()
     // update devices every 5s
-    setInterval(() => {
+    const intervalId = setInterval(() => {
       getAudioOutputDevices()
     }, 1000 * 5)
+    return () => clearInterval(intervalId)
   }, [])
 
   const handleDeviceChange = (deviceId: MediaDeviceInfo['deviceId']) => {

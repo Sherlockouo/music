@@ -31,6 +31,7 @@ interface Settings {
   showDesktopLyrics: boolean
   keyboardShortcuts: KeyboardShortcutSettings
   showTrackListName: boolean
+  enableBreathingEffect: boolean
 }
 
 const initSettings: Settings = {
@@ -56,6 +57,7 @@ const initSettings: Settings = {
   showDesktopLyrics: false,
   keyboardShortcuts: getKeyboardShortcutDefaultSettings(),
   showTrackListName: false,
+  enableBreathingEffect: true,
 }
 
 const STORAGE_KEY = 'settings'

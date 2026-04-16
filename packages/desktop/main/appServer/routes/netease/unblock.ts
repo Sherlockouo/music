@@ -2,6 +2,7 @@
 import { FastifyReply, FastifyPluginAsync, FastifyRequest } from 'fastify'
 import log from '../../../log'
 import cache from '../../../cache'
+import store from '../../../store'
 import { CacheAPIs } from '@/shared/CacheAPIs'
 const match = require('@unblockneteasemusic/server')
 
@@ -25,19 +26,28 @@ const unblock: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         return
       }
 
-      try {
-        await match(trackID, ['qq', 'kuwo', 'migu', 'kugou', 'joox']).then((data: unknown) => {
-          if (data === null || data === undefined || (data as any)?.url === '') {
-            reply.code(500).send('no track info, something bad happens')
-            return
-          }
+      // 设置 cookie 环境变量
+      process.env.QQ_COOKIE = (store.get('settings.qqCookie') as string) || ''
+      process.env.MIGU_COOKIE = (store.get('settings.miguCookie') as string) || ''
+      process.env.JOOX_COOKIE = (store.get('settings.jooxCookie') as string) || ''
+      process.env.ENABLE_FLAC = 'true'
+      process.env.ENABLE_LOCAL_VIP = 'true'
 
-          cache.set(CacheAPIs.Unblock, { id: trackID, url: (data as any)?.url }, trackID)
-          log.info('[server] unblock track ', trackID, ' success')
-          reply.code(200).send(data)
+      try {
+        const data: any = await match(trackID, ['kugou', 'bodian', 'qq', 'kuwo', 'migu', 'joox', 'bilivideo'])
+        if (data === null || data === undefined || data?.url === '') {
+          return reply.code(500).send('no track info, something bad happens')
+        }
+
+        cache.set(CacheAPIs.Unblock, { id: trackID, url: data?.url }, trackID)
+        log.info('[server] unblock track ', trackID, ' success')
+        return reply.code(200).send(data)
+      } catch (err: any) {
+        log.error('[server] unblock track failed', trackID, err)
+        return reply.code(500).send({
+          code: 500,
+          msg: err?.message || 'unblock match failed',
         })
-      } catch (err) {
-        reply.code(500).send(err)
       }
     }
   )

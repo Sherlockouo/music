@@ -10,7 +10,6 @@ import {
   HashRouter,
 } from 'react-router-dom'
 import * as Sentry from '@sentry/react'
-import { BrowserTracing } from '@sentry/tracing'
 import 'virtual:svg-icons-register'
 import './styles/global.css'
 import './styles/accentColor.css'
@@ -31,7 +30,7 @@ ReactGA.initialize('G-QFPDJGN751')
 Sentry.init({
   dsn: 'https://7d8a408fb378f9b378be20cff43de801@o4505816875532288.ingest.sentry.io/4505816882151424',
   integrations: [
-    new BrowserTracing({
+    new Sentry.BrowserTracing({
       routingInstrumentation: Sentry.reactRouterV6Instrumentation(
         React.useEffect,
         useLocation,

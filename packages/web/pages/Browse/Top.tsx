@@ -5,6 +5,35 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import useIntersectionObserver from '@/web/hooks/useIntersectionObserver'
 import Loading from '@/web/components/Animation/Loading'
 
+const InfiniteScrollFooter = ({
+  hasMore,
+  fetching,
+  isFetchingNextPage,
+  loadMore,
+}: {
+  hasMore: boolean
+  fetching: boolean
+  isFetchingNextPage: boolean
+  loadMore: () => void
+}) => {
+  const observePoint = useRef<HTMLDivElement | null>(null)
+  const { onScreen: isScrollReachBottom } = useIntersectionObserver(observePoint)
+  const [prevState, setPrevState] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (prevState != isScrollReachBottom && isScrollReachBottom && hasMore && !fetching) {
+      setPrevState(isScrollReachBottom)
+      loadMore()
+    }
+  }, [isScrollReachBottom, hasMore, fetching, loadMore])
+
+  return (
+    <div ref={observePoint} className='flex justify-center pb-5'>
+      {isFetchingNextPage && <Loading />}
+    </div>
+  )
+}
+
 const Top = ({ cat }: { cat: string }) => {
   const {
     data,
@@ -37,7 +66,7 @@ const Top = ({ cat }: { cat: string }) => {
   )
 
   const dataSource = data?.pages.flatMap(page => page.playlists) || []
-  const hasMore = hasNextPage
+  const hasMore = hasNextPage ?? false
   const fetching = isFetchingNextPage
 
   const loadMore = useCallback(() => {
@@ -46,20 +75,14 @@ const Top = ({ cat }: { cat: string }) => {
     }
   }, [hasMore, isFetchingNextPage, fetchNextPage])
 
-  const Footer = ()=>{
-    const observePoint = useRef<HTMLDivElement | null>(null)
-    const { onScreen: isScrollReachBottom } = useIntersectionObserver(observePoint)
-    const [prevState,setPrevState] = useState<boolean>(false)
-
-    useEffect(()=>{
-      if(prevState != isScrollReachBottom && isScrollReachBottom && hasMore && !fetching){
-        setPrevState(isScrollReachBottom)
-        loadMore()
-      }
-    },[isScrollReachBottom, hasMore, fetching, loadMore])
-
-    return <div ref={observePoint} className='flex justify-center pb-5'>{isFetchingNextPage && <Loading />}</div>
-  }
+  const Footer = useCallback(() => (
+    <InfiniteScrollFooter
+      hasMore={hasMore}
+      fetching={fetching}
+      isFetchingNextPage={isFetchingNextPage}
+      loadMore={loadMore}
+    />
+  ), [hasMore, fetching, isFetchingNextPage, loadMore])
 
   if (isLoading && !dataSource.length) {
     return (
@@ -68,7 +91,7 @@ const Top = ({ cat }: { cat: string }) => {
       </div>
     )
   }
-  
+
   return (
     <div className='h-full flex flex-col'>
       <CoverRowVirtual

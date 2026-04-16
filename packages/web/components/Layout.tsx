@@ -13,6 +13,7 @@ import settings from '@/web/states/settings'
 import { ease } from '../utils/const'
 import { motion } from 'framer-motion'
 import Router from '@/web/components/Router'
+import BreathingBackground from '@/web/components/BreathingBackground'
 
 const Layout = () => {
   const playerSnapshot = useSnapshot(player)
@@ -98,6 +99,9 @@ const Layout = () => {
               'text-black transition-colors duration-400 dark:text-white'
             )}
           >
+            {/* 呼吸灯背景 — 在前景层内部最底层，覆盖含导航栏的整个区域 */}
+            <BreathingBackground />
+
             <MenuBar />
             <div className=''>
               <Topbar />

@@ -114,7 +114,7 @@ function FindTrackOnYouTube() {
               <textarea
                 onChange={e => {
                   setQQCookie(e.target.value)
-                  settings.qqCookie = nqqCookie
+                  settings.qqCookie = e.target.value
                 }}
                 className='w-full flex-grow appearance-none rounded-md px-1 text-lg placeholder:pl-1
                 placeholder:text-black/30 bg-black/10
@@ -145,7 +145,7 @@ function FindTrackOnYouTube() {
               <textarea
                 onChange={e => {
                   setMIGUCookie(e.target.value)
-                  settings.miguCookie = nmiguCookie
+                  settings.miguCookie = e.target.value
                 }}
                 className='w-full flex-grow appearance-none rounded-md px-1 text-lg placeholder:pl-1
                 placeholder:text-black/30 bg-black/10
@@ -176,7 +176,7 @@ function FindTrackOnYouTube() {
               <textarea
                 onChange={e => {
                   setJOOXCookie(e.target.value)
-                  settings.jooxCookie = njooxCookie
+                  settings.jooxCookie = e.target.value
                 }}
                 className='w-full flex-grow appearance-none rounded-md px-1 text-lg placeholder:pl-1
                 placeholder:text-black/30 bg-black/10

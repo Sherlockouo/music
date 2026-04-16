@@ -98,6 +98,24 @@ const LyricsBlur = () => {
   )
 }
 
+const BreathingEffect = () => {
+  const { t } = useTranslation()
+  const { enableBreathingEffect } = useSnapshot(settings)
+  return (
+    <>
+      <Option>
+        <div className='flex flex-col'>
+          <OptionText>{t`settings.breathing-effect`}</OptionText>
+        </div>
+        <Switch
+          enabled={enableBreathingEffect}
+          onChange={value => (settings.enableBreathingEffect = value)}
+        ></Switch>
+      </Option>
+    </>
+  )
+}
+
 const Browse = () => {
   const { showTrackListName } = useSnapshot(settings)
   const { t } = useTranslation()
@@ -129,6 +147,7 @@ const Appearance = () => {
       <ShowDesktopLyrics />
       <ShowDevices />
       <LyricsBlur />
+      <BreathingEffect />
       <Browse />
     </div>
   )

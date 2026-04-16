@@ -9,6 +9,7 @@ import { SearchApiNames } from '@/shared/api/Search'
 import { useClickAway, useDebounce } from 'react-use'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
+import player from '@/web/states/player'
 
 const bounce = keyframes`
   from { transform: rotate(0deg) translateX(1px) rotate(0deg) }
@@ -122,10 +123,10 @@ const SearchSuggestions = ({
                 onClick={() => {
                   setClickedSearchText(searchText)
                   if (['album', 'artist'].includes(suggestion.type)) {
-                    navigate(`${suggestion.type}/${suggestion.id}`)
+                    navigate(`/${suggestion.type}/${suggestion.id}`)
                   }
                   if (suggestion.type === 'track') {
-                    // TODO: play song
+                    player.playAList([suggestion.id], suggestion.id)
                   }
                 }}
               >

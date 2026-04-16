@@ -165,7 +165,7 @@ class DB {
     table: T,
     key: TablesStructures[T]['id']
   ): TablesStructures[T] | undefined {
-    return this.sqlite.prepare(`SELECT * FROM ${table} WHERE id = ? LIMIT 1`).get(key)
+    return this.sqlite.prepare(`SELECT * FROM ${table} WHERE id = ? LIMIT 1`).get(key) as TablesStructures[T] | undefined
   }
 
   findMany<T extends TableNames>(
@@ -173,11 +173,11 @@ class DB {
     keys: TablesStructures[T]['id'][]
   ): TablesStructures[T][] {
     const idsQuery = keys.map(key => `id = ${key}`).join(' OR ')
-    return this.sqlite.prepare(`SELECT * FROM ${table} WHERE ${idsQuery}`).all()
+    return this.sqlite.prepare(`SELECT * FROM ${table} WHERE ${idsQuery}`).all() as TablesStructures[T][]
   }
 
   findAll<T extends TableNames>(table: T): TablesStructures[T][] {
-    return this.sqlite.prepare(`SELECT * FROM ${table}`).all()
+    return this.sqlite.prepare(`SELECT * FROM ${table}`).all() as TablesStructures[T][]
   }
 
   create<T extends TableNames>(table: T, data: TablesStructures[T], skipWhenExist: boolean = true) {

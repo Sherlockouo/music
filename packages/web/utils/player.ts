@@ -11,7 +11,6 @@ import axios from 'axios'
 import { resizeImage } from './common'
 import { fetchPlaylistWithReactQuery } from '@/web/api/hooks/usePlaylist'
 import { fetchAlbumWithReactQuery } from '@/web/api/hooks/useAlbum'
-import { IpcChannels } from '@/shared/IpcChannels'
 import { RepeatMode } from '@/shared/playerDataTypes'
 import toast from 'react-hot-toast'
 import { scrobble } from '@/web/api/user'
@@ -44,15 +43,12 @@ export enum State {
 const PLAY_PAUSE_FADE_DURATION = 200
 
 let _howler = new Howl({ src: [''], format: ['mp3', 'flac'] })
-let invoked = false
-
 export class Player {
   private _track: Track | null = null
   private _trackIndex: number = 0
   private _progress: number = 0
   private _progressInterval: ReturnType<typeof setInterval> | undefined
   private _volume: number = 1 // 0 to 1
-  private _nowVolume: number = 128
   private _repeatMode: RepeatMode = RepeatMode.Off
 
   state: State = State.Initializing
@@ -63,7 +59,6 @@ export class Player {
   fmTrackList: TrackID[] = []
   shuffle: boolean = false
   fmTrack: Track | null = null
-  dataArray: Uint8Array = new Uint8Array()
 
   init(params: { [key: string]: any }) {
     if (params._track) this._track = params._track
@@ -123,50 +118,6 @@ export class Player {
         if (this._trackIndex + 1 >= this.trackList.length) return 0
         return this._trackIndex + 1
     }
-  }
-
-  /*
-    @deprecated this will violate CORS rules
-  */
-  private getSongFFT() {
-    if (window.env === undefined) return
-    const audioCtx = new window.AudioContext()
-    const analyser = audioCtx.createAnalyser()
-    const source = audioCtx.createMediaElementSource((_howler as any)._sounds[0]._node)
-
-    if (!invoked) {
-      source.connect(analyser)
-      analyser.connect(audioCtx.destination)
-      invoked = !invoked
-    }
-
-    analyser.fftSize = 2048
-    const bufferLength = analyser.frequencyBinCount
-    this.dataArray = new Uint8Array(bufferLength)
-
-    let start = 16,
-      end = 128,
-      smooth = 0.02
-
-    const updateFrequencyData = () => {
-      analyser.getByteFrequencyData(this.dataArray)
-
-      let sum = 0
-      for (let i = start; i < end; i++) {
-        sum += this.dataArray[i]
-      }
-      const average = sum / (end - start)
-      this._nowVolume = this._nowVolume * smooth + average * (1 - smooth)
-    }
-
-    setInterval(updateFrequencyData, 80)
-  }
-
-  /**
-   * Get current volume
-   */
-  get nowVolume(): number {
-    return this._nowVolume
   }
 
   /**
@@ -371,6 +322,15 @@ export class Player {
       },
     })
     _howler = howler
+
+    // 设置 crossOrigin 以支持 Web Audio API 分析（呼吸灯效果）
+    try {
+      const node = (howler as any)._sounds?.[0]?._node
+      if (node && node instanceof HTMLMediaElement) {
+        node.crossOrigin = 'anonymous'
+      }
+    } catch { /* ignore */ }
+
     ;(window as any).howler = howler
     if (autoplay) {
       this.play()
@@ -384,8 +344,6 @@ export class Player {
       this._setupProgressInterval()
     }
 
-    /* @deprecated */
-    // this.getSongFFT()
   }
 
   private _howlerOnEndCallback() {

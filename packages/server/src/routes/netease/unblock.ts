@@ -25,21 +25,21 @@ const unblock: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         return
       }
 
-      try {
-        await match(trackID, ['qq', 'kuwo', 'pyncmd', 'migu', 'kugou', 'joox']).then(
-          (data: unknown) => {
-            if (data === null || data === undefined || (data as any)?.url === '') {
-              reply.code(500).send('no track info, something bad happens')
-              return
-            }
+      process.env.ENABLE_FLAC = 'true'
+      process.env.ENABLE_LOCAL_VIP = 'true'
 
-            cache.set(CacheAPIs.Unblock, { id: trackID, url: (data as any)?.url }, trackID)
-            log.info('[server] unblock track ', trackID, ' success')
-            reply.code(200).send(data)
-          }
-        )
+      try {
+        const data: any = await match(trackID, ['kugou', 'bodian', 'qq', 'kuwo', 'migu', 'joox', 'bilivideo'])
+        if (data === null || data === undefined || data?.url === '') {
+          return reply.code(500).send('no track info, something bad happens')
+        }
+
+        cache.set(CacheAPIs.Unblock, { id: trackID, url: data?.url }, trackID)
+        log.info('[server] unblock track ', trackID, ' success')
+        return reply.code(200).send(data)
       } catch (err) {
-        reply.code(500).send(err)
+        log.error('[server] unblock track failed', trackID, err)
+        return reply.code(500).send(err)
       }
     }
   )

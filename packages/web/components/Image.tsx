@@ -17,7 +17,7 @@ const preloadImageGlobal = (src: string) => {
 
   // 创建加载 Promise
   const loadPromise = new Promise<void>((resolve, reject) => {
-    const img = new Image()
+    const img = document.createElement('img')
     img.onload = () => {
       globalImageCache.add(src)
       loadingImages.delete(src)
@@ -66,6 +66,7 @@ const ImageDesktop = ({
   const isMobile = useIsMobile()
   const isAnimate = animation && !isMobile
   const imgRef = useRef<HTMLImageElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   // Intersection Observer 懒加载
   useEffect(() => {
@@ -88,7 +89,7 @@ const ImageDesktop = ({
       }
     )
 
-    const currentRef = imgRef.current
+    const currentRef = containerRef.current
     if (currentRef) {
       observer.observe(currentRef)
     }
@@ -146,6 +147,7 @@ const ImageDesktop = ({
 
   return (
     <div
+      ref={containerRef}
       onClick={onClick}
       onMouseOver={onMouseOver}
       className={cx(

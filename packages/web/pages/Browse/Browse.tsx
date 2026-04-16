@@ -1,5 +1,5 @@
 import Tabs from '@/web/components/Tabs'
-import { useState, useEffect, useCallback, memo, useRef } from 'react'
+import { useState, useCallback, memo } from 'react'
 import PageTransition from '@/web/components/PageTransition'
 import Recommend from './Recommend'
 import Top from './Top'
@@ -26,24 +26,6 @@ type Key = typeof categoriesKeys[number]
 
 const Browse = memo(() => {
   const [active, setActive] = useState<Key>('recommend')
-  const [preloadedTabs, setPreloadedTabs] = useState<Set<Key>>(new Set(['recommend']))
-  const scrollContainerRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const preloadTabs = new Set<Key>()
-    const currentIndex = categoriesKeys.indexOf(active)
-
-    // 预加载当前和前两个、后两个tab
-    for (
-      let i = Math.max(0, currentIndex - 2);
-      i <= Math.min(categoriesKeys.length - 1, currentIndex + 2);
-      i++
-    ) {
-      preloadTabs.add(categoriesKeys[i])
-    }
-
-    setPreloadedTabs(preloadTabs)
-  }, [active])
 
   const handleTabChange = useCallback((category: Key) => {
     setActive(category)
@@ -69,8 +51,8 @@ const Browse = memo(() => {
           />
         </div>
 
-        {/* 内容区域 - 只渲染当前 tab，避免内存泄漏 */}
-        <div className='flex-1 overflow-y-auto smooth-scroll'>
+        {/* 内容区域 - 只渲染当前 tab */}
+        <div className='flex-1 min-h-0'>
           {categories.map(({ id, component }) => {
             const isActive = id === active
             return (

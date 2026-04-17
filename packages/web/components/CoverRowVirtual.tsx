@@ -344,6 +344,13 @@ const CoverRow = ({
     }
   }, [dynamicHeight, style])
 
+  // We deliberately do NOT use scrollSeekConfiguration. The user prefers
+  // real content rendered during fast scroll over skeleton placeholders.
+  // CoverItem is memoized + ImageManager batches loads, so render cost is
+  // cheap; we just need a generous overscan/viewport so rows are mounted
+  // before the user catches up to them.
+  const components = useMemo(() => ({ Footer }), [Footer])
+
   return (
     <div className={className}>
       {title && <h4 className='mb-6 text-14 font-bold uppercase dark:text-neutral-300'>{title}</h4>}
@@ -351,11 +358,9 @@ const CoverRow = ({
       <Virtuoso
         className='no-scrollbar smooth-scroll'
         style={virtuosoStyle}
-        components={{
-          Footer: Footer,
-        }}
+        components={components}
         data={rows}
-        overscan={4800}
+        overscan={2400}
         defaultItemHeight={320}
         totalCount={rows.length}
         itemContent={(index, row) => (
@@ -374,7 +379,7 @@ const CoverRow = ({
             ))}
           </div>
         )}
-        increaseViewportBy={{ top: 6400, bottom: 6400 }}
+        increaseViewportBy={{ top: 3200, bottom: 3200 }}
       />
     </div>
   )

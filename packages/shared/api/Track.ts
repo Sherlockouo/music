@@ -104,6 +104,42 @@ export interface FetchLyricResponse {
   }
 }
 
+// 新版歌词 - 包含逐字歌词
+export interface FetchLyricNewResponse {
+  code: number
+  sgc: boolean
+  sfy: boolean
+  qfy: boolean
+  lrc?: {
+    version: number
+    lyric: string
+  }
+  tlyric?: {
+    version: number
+    lyric: string
+  }
+  klyric?: {
+    version: number
+    lyric: string
+  }
+  yrc?: {
+    version: number
+    lyric: string
+  }
+  ytlrc?: {
+    version: number
+    lyric: string
+  }
+  yromalrc?: {
+    version: number
+    lyric: string
+  }
+  romalrc?: {
+    version: number
+    lyric: string
+  }
+}
+
 // 收藏歌曲
 export interface LikeATrackParams {
   id: number

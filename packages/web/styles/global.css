@@ -59,11 +59,8 @@
     image-rendering: -webkit-optimize-contrast;
   }
 
-  /* 性能优化：虚拟滚动内容优化 */
+  /* 虚拟滚动内容 — 不使用 content-visibility，避免滚动时空白 */
   .virtuoso-grid-item {
-    /* 关键优化：content-visibility 确保内容被渲染但不可见时也保持布局 */
-    content-visibility: auto;
-    /* 移除可能导致抖动的优化 */
     will-change: auto;
   }
 
@@ -346,4 +343,189 @@ input[type='number']::-webkit-outer-spin-button {
 .dark .text-accent-color-600,
 .dark .text-accent-color-700 {
   filter: saturate(1.3); /* 深色模式下增加30%饱和度 */
+}
+
+/* ---------------------------------------------------------------- */
+/* Apple-Music-style word-level karaoke fill                          */
+/*                                                                    */
+/* Each <span class="lyric-word"> writes its own --p (0..1) on its    */
+/* DOM node from a single RAF loop in <Lyrics>. We then paint a       */
+/* horizontal gradient that the text is clipped against:              */
+/*                                                                    */
+/*   bright | bright | <-- soft 14% transition --> | dim | dim        */
+/*       0%   p-7%                              p+7%             100% */
+/*                                                                    */
+/* Colors come straight from --brand-color-* (the same vars as the    */
+/* rest of the app) so the karaoke effect always tracks the active    */
+/* accent palette and we don't depend on color-mix(currentColor,...)  */
+/* support inside gradients.                                          */
+/* ---------------------------------------------------------------- */
+
+/* The line itself just sets accent text color (used by translation
+   sub-rows + as a base color for the spans). */
+.lyric-yrc-line {
+  color: hsl(var(--brand-color-700));
+  will-change: transform;
+}
+.dark .lyric-yrc-line {
+  color: hsl(var(--brand-color-400));
+}
+
+/* Inactive words: flat, dim, but always legible. No gradient — the
+   browser only paints background-image on the active line. */
+.lyric-word {
+  --p: 0;
+  position: relative;
+  display: inline-block;
+  color: hsl(var(--brand-color-700) / 0.45);
+  -webkit-text-fill-color: hsl(var(--brand-color-700) / 0.45);
+  background-image: none;
+  transition: color 0.4s ease, -webkit-text-fill-color 0.4s ease;
+}
+.dark .lyric-word {
+  color: hsl(var(--brand-color-400) / 0.4);
+  -webkit-text-fill-color: hsl(var(--brand-color-400) / 0.4);
+}
+
+/* Past lines: keep the words readable but distinct from "now playing". */
+.lyrics-row--past:not(.lyrics-row--active) .lyric-word {
+  color: hsl(var(--brand-color-700) / 0.7);
+  -webkit-text-fill-color: hsl(var(--brand-color-700) / 0.7);
+}
+.dark .lyrics-row--past:not(.lyrics-row--active) .lyric-word {
+  color: hsl(var(--brand-color-400) / 0.65);
+  -webkit-text-fill-color: hsl(var(--brand-color-400) / 0.65);
+}
+
+/* Active line: paint the karaoke sweep gradient and clip it to the
+   text. --p is updated every animation frame from JS. The 7% halo on
+   each side of the cursor creates a soft "scan" rather than a hard
+   wipe — this is what makes it read as a moving glow. */
+.lyrics-row--active .lyric-word {
+  /* Both bright stops are anchored to --p so that when --p=0 (not yet
+     played) they sit at -7% / -7% — completely off the visible range,
+     and the whole word renders in the dim color. The previous "0%"
+     anchor caused a permanent bright halo on the left edge before the
+     karaoke cursor reached the word. */
+  background-image: linear-gradient(
+    90deg,
+    hsl(var(--brand-color-700) / 1) calc(var(--p) * 100% - 7%),
+    hsl(var(--brand-color-700) / 1) calc(var(--p) * 100% - 7%),
+    hsl(var(--brand-color-700) / 0.4) calc(var(--p) * 100% + 7%),
+    hsl(var(--brand-color-700) / 0.4) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  transition: none;
+  filter: saturate(1.25);
+}
+
+.dark .lyrics-row--active .lyric-word {
+  background-image: linear-gradient(
+    90deg,
+    hsl(var(--brand-color-400) / 1) calc(var(--p) * 100% - 7%),
+    hsl(var(--brand-color-400) / 1) calc(var(--p) * 100% - 7%),
+    hsl(var(--brand-color-400) / 0.35) calc(var(--p) * 100% + 7%),
+    hsl(var(--brand-color-400) / 0.35) 100%
+  );
+  filter: saturate(1.35);
+}
+
+/* Row-level scale + opacity. No text-shadow on active row — that
+   was leaking a "ghost glow" through the transparent karaoke text. */
+.lyrics-row {
+  transform-origin: left center;
+  transform: scale(0.96);
+  opacity: 0.55;
+  filter: blur(0px);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.45s ease, filter 0.45s ease;
+  text-shadow: none;
+}
+.lyrics-row--active {
+  transform: scale(1.06);
+  opacity: 1;
+}
+.lyrics-row--past:not(.lyrics-row--active) {
+  opacity: 0.45;
+}
+
+/* Optional blur for non-active lines, applied via CSS so React
+   doesn't have to know whether the user is hovering. The active
+   line is excluded — currently-playing text never gets fuzzy. */
+.lyrics-container--blur:not(:hover) .lyrics-row:not(.lyrics-row--active) {
+  filter: blur(3px);
+}
+
+/* Off-screen lyric rows skip rendering entirely. The browser
+   reserves their intrinsic size so layout / scrollbar stay stable
+   but it doesn't paint or composite the blur/transform layers
+   for rows the user can't see. This is the single biggest win
+   for scrolling smoothness on long lyrics. */
+.lyrics-row {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 88px;
+  contain: layout style paint;
+}
+
+/* Translation / romaji sub-rows use classes instead of inline
+   style objects so React doesn't allocate per-render. */
+.lyric-trans,
+.lyric-roma {
+  opacity: 0.5;
+  transition: opacity 0.5s ease;
+}
+.lyrics-row--active .lyric-trans {
+  opacity: 0.8;
+}
+.lyrics-row--active .lyric-roma {
+  opacity: 0.7;
+}
+
+/* Scroll container: make wheel scrolling feel native, kill the
+   anchoring jumps Chromium does when inserting elements above
+   the viewport, and tell the compositor we're going to scroll. */
+.lyrics-container {
+  overflow-anchor: none;
+  overscroll-behavior: contain;
+  will-change: scroll-position;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+}
+
+/* Max-width is set on the container, not pushed to every row as
+   a className prop. Keeps LyricLine props stable for memo. */
+.lyrics-container--mini .lyrics-row {
+  max-width: calc(100vw - 280px);
+}
+.lyrics-container--full .lyrics-row {
+  max-width: calc(100vw - 530px);
+}
+
+/* ---------------------------------------------------------------- */
+/* Audio-reactive ambient background                                  */
+/*                                                                    */
+/* The wrapper writes --vol (0..1) once per animation frame from a    */
+/* shared analyser. All breathing here is pure CSS — no React state   */
+/* update fires per frame.                                            */
+/* ---------------------------------------------------------------- */
+.breathing-bg__cover {
+  /* Brightness comes from --cover-brightness (set by JS for theme)
+     and is gently boosted with loudness; saturation pulses harder
+     so colors visibly punch on a kick drum. */
+  filter: blur(40px)
+    saturate(calc(1.2 + var(--vol, 0) * 0.8))
+    brightness(calc(var(--cover-brightness, 0.75) + var(--vol, 0) * 0.18));
+  transform: scale(calc(1.5 + var(--vol, 0) * 0.06)) translateZ(0);
+  transition: filter 80ms linear, transform 80ms linear;
+  will-change: transform, filter;
+}
+
+.breathing-bg__overlay {
+  background-color: var(--overlay-color, rgba(0, 0, 0, 0.45));
+  /* Loud moments thin the overlay so the cover brightens through. */
+  opacity: calc(1 - var(--vol, 0) * 0.35);
+  transition: opacity 120ms linear;
 }

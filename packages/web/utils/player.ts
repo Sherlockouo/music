@@ -168,6 +168,22 @@ export class Player {
   }
 
   /**
+   * Read playback time directly from howler (no 80ms throttle).
+   * Used by RAF-driven consumers (lyrics karaoke, progress bar) that want
+   * frame-accurate sync without paying for valtio snapshot churn.
+   */
+  liveCurrentTime(): number {
+    if (this.state === State.Loading) return 0
+    try {
+      const t = _howler.seek()
+      if (typeof t === 'number' && !isNaN(t)) return t
+    } catch {
+      /* howler not ready */
+    }
+    return this._progress
+  }
+
+  /**
    * Get/Set current volume
    */
   get volume(): number {
@@ -205,7 +221,7 @@ export class Player {
   private async _setupProgressInterval() {
     this._progressInterval = setInterval(() => {
       if (this.state === State.Playing) this._progress = _howler.seek()
-    }, 1000)
+    }, 80)
   }
 
   private async _scrobble() {

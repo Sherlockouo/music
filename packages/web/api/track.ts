@@ -4,6 +4,7 @@ import {
   FetchAudioSourceResponse,
   FetchLyricParams,
   FetchLyricResponse,
+  FetchLyricNewResponse,
   FetchTracksParams,
   FetchTracksResponse,
   LikeATrackParams,
@@ -54,6 +55,15 @@ export function fetchAudioSource(
 export function fetchLyric(params: FetchLyricParams): Promise<FetchLyricResponse> {
   return request({
     url: '/lyric',
+    method: 'get',
+    params,
+  })
+}
+
+// 获取新版歌词（含逐字）
+export function fetchLyricNew(params: FetchLyricParams): Promise<FetchLyricNewResponse> {
+  return request({
+    url: '/lyric/new',
     method: 'get',
     params,
   })

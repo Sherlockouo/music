@@ -10,12 +10,11 @@ import { useWindowSize } from 'react-use'
 import { playerWidth, topbarHeight } from '@/web/utils/const'
 import useIsMobile from '@/web/hooks/useIsMobile'
 import { Virtuoso } from 'react-virtuoso'
-import toast from 'react-hot-toast'
 import { openContextMenu } from '@/web/states/contextMenus'
 import { useTranslation } from 'react-i18next'
 import useHoverLightSpot from '../hooks/useHoverLightSpot'
 import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useMemo, useState } from 'react'
 import { RepeatMode } from '@/shared/playerDataTypes'
 
 const FMButton = () => {
@@ -132,88 +131,104 @@ const Header = () => {
   )
 }
 
-const Track = ({
-  track,
-  index,
-  playingTrackIndex,
-  state,
-}: {
-  track?: Track
-  index: number
-  playingTrackIndex: number
-  state: PlayerState
-}) => {
-  return (
-    <div
-      className={cx(
-        'mb-5 flex items-center justify-between'
-        // player.mode == Mode.FM && 'pointer-events-none'
-      )}
-      onClick={e => {
-        if (e.detail === 2 && track?.id) player.playTrack(track.id)
-      }}
-      onContextMenu={event => {
-        track?.id &&
-          openContextMenu({
-            event,
-            type: 'track',
-            dataSourceID: track.id,
-            options: {
-              useCursorPosition: true,
-            },
-          })
-      }}
-    >
-      {/* Cover */}
-      <img
-        alt='Cover'
-        className='mr-4 aspect-square h-14 w-14 flex-shrink-0 rounded-12'
-        src={resizeImage(track?.al?.picUrl || '', 'sm')}
-      />
+const Track = memo(
+  ({
+    track,
+    index,
+    isPlaying,
+    state,
+  }: {
+    track?: Track
+    index: number
+    isPlaying: boolean
+    state: PlayerState
+  }) => {
+    return (
+      <div
+        className={cx('mb-5 flex items-center justify-between')}
+        onClick={e => {
+          if (e.detail === 2 && track?.id) player.playTrack(track.id)
+        }}
+        onContextMenu={event => {
+          track?.id &&
+            openContextMenu({
+              event,
+              type: 'track',
+              dataSourceID: track.id,
+              options: {
+                useCursorPosition: true,
+              },
+            })
+        }}
+      >
+        {/* Cover */}
+        <img
+          alt='Cover'
+          className='mr-4 aspect-square h-14 w-14 flex-shrink-0 rounded-12'
+          src={resizeImage(track?.al?.picUrl || '', 'sm')}
+          loading='lazy'
+          decoding='async'
+        />
 
-      {/* Track info */}
-      <div className='mr-3 flex-grow'>
-        <div
-          className={cx(
-            'line-clamp-1 text-16 font-medium transition-colors duration-500',
-            playingTrackIndex === index ? 'text-accent-color-500' : 'text-black dark:text-white'
-          )}
-        >
-          {track?.name}
+        {/* Track info */}
+        <div className='mr-3 flex-grow'>
+          <div
+            className={cx(
+              'line-clamp-1 text-16 font-medium transition-colors duration-500',
+              isPlaying ? 'text-accent-color-500' : 'text-black dark:text-white'
+            )}
+          >
+            {track?.name}
+          </div>
+          <div className='line-clamp-1 mt-1 text-14 font-bold text-black/80  dark:text-white/80'>
+            {track?.ar.map(a => a.name).join(', ')}
+          </div>
         </div>
-        <div className='line-clamp-1 mt-1 text-14 font-bold text-black/80  dark:text-white/80'>
-          {track?.ar.map(a => a.name).join(', ')}
-        </div>
+
+        {/* Wave icon */}
+        {isPlaying ? (
+          <Wave playing={state === 'playing'} />
+        ) : (
+          <div className='text-accent-color text-16 font-medium dark:text-neutral-200'>
+            {String(index + 1).padStart(2, '0')}
+          </div>
+        )}
       </div>
-
-      {/* Wave icon */}
-      {playingTrackIndex === index ? (
-        <Wave playing={state === 'playing'} />
-      ) : (
-        <div className='text-accent-color text-16 font-medium dark:text-neutral-200'>
-          {String(index + 1).padStart(2, '0')}
-        </div>
-      )}
-    </div>
-  )
-}
+    )
+  }
+)
+Track.displayName = 'PlayingNextTrack'
 
 const TrackList = ({ className }: { className?: string }) => {
-  const { trackList, trackIndex, state, fmTrackList, fmTrack } = useSnapshot(player)
-  // track mode true/false
-  const trackMode = player.mode == Mode.TrackList
+  // Subscribe only to the fields we actually render — never to player.progress,
+  // which ticks ~12×/s and would re-render the entire virtualized list.
+  const { trackList, trackIndex, state, fmTrackList, mode } = useSnapshot(player)
+  const trackMode = mode == Mode.TrackList
   const { data: tracksRaw } = useTracks({ ids: trackMode ? trackList : fmTrackList })
   const tracks = tracksRaw?.songs || []
   const { height } = useWindowSize()
   const isMobile = useIsMobile()
-  const listHeight = height - topbarHeight - playerWidth - 24 // 24是封面与底部间距
-  const listHeightMobile = height - 154 - 110 - (isIosPwa ? 34 : 0) // 154是列表距离底部的距离，110是顶部的距离
+  const listHeight = height - topbarHeight - playerWidth - 24
+  const listHeightMobile = height - 154 - 110 - (isIosPwa ? 34 : 0)
+
+  const playingIndex = trackMode ? trackIndex : 0
+
+  // No scrollSeekConfiguration: real <Track> components always render during
+  // scroll. Track is memoized + uses lazy <img>, so render cost is small;
+  // the generous overscan ensures rows are mounted before they enter view.
+  const components = useMemo(
+    () => ({
+      Header: () => <div className='h-8'></div>,
+      Footer: () => <div className='h-8'></div>,
+    }),
+    []
+  )
 
   return (
     <motion.div>
       <div
         className={cx(css`
-          mask-image: linear-gradient(to bottom, transparent 22px, black 42px); // 顶部渐变遮罩
+          mask-image: linear-gradient(to bottom, transparent 22px, black 42px);
         `)}
       >
         <Virtuoso
@@ -226,22 +241,20 @@ const TrackList = ({ className }: { className?: string }) => {
             'no-scrollbar relative z-10 w-full overflow-auto',
             className,
             css`
-              mask-image: linear-gradient(to top, transparent 8px, black 42px); // 底部渐变遮罩
+              mask-image: linear-gradient(to top, transparent 8px, black 42px);
             `
           )}
           fixedItemHeight={76}
           data={tracks}
-          overscan={tracks.length}
-          components={{
-            Header: () => <div className='h-8'></div>,
-            Footer: () => <div className='h-8'></div>,
-          }}
+          overscan={1200}
+          increaseViewportBy={{ top: 1200, bottom: 1200 }}
+          components={components}
           itemContent={(index, track) => (
             <Track
-              key={index}
+              key={track?.id ?? index}
               track={track}
               index={index}
-              playingTrackIndex={trackMode ? trackIndex : 0}
+              isPlaying={index === playingIndex}
               state={state}
             />
           )}

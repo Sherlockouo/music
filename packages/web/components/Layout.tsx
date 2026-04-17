@@ -56,7 +56,7 @@ const Layout = () => {
                   background-position: center;
                   transform: translate3d(0, 0, 0);
                 `,
-              theme === 'dark' ? 'bg-black/90' : 'bg-white/90'
+              theme === 'dark' ? 'bg-black/70' : 'bg-white/90'
             )}
             style={{
               backgroundImage: showBackgroundImage ? `url(${player.track?.al?.picUrl})` : '',

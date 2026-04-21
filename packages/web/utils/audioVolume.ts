@@ -32,6 +32,12 @@ let fallbackPhase = Math.random() * Math.PI * 2
 
 let smoothed = 0
 let rafId: number | null = null
+let lastTickAt = 0
+// Cap analyser+listener work at ~45Hz. The brightness pulse needs to
+// feel responsive to drum hits without wasting CPU on every vsync.
+// 22ms ≈ 45fps strikes a good perceptual balance: faster than 30Hz
+// (which feels laggy on transients) but ~25% cheaper than full 60Hz.
+const TICK_INTERVAL_MS = 22
 const listeners = new Set<Listener>()
 
 function getHowlerAudioElement(): HTMLMediaElement | null {
@@ -60,7 +66,10 @@ function tryConnect(audioEl: HTMLMediaElement) {
     if (!sharedAnalyser && sharedCtx) {
       sharedAnalyser = sharedCtx.createAnalyser()
       sharedAnalyser.fftSize = 256
-      sharedAnalyser.smoothingTimeConstant = 0.85
+      // Lower smoothing → more transient response. The CSS-side
+      // transition (80ms) already provides visual smoothing, so
+      // pre-smoothing the analyser would just add latency.
+      sharedAnalyser.smoothingTimeConstant = 0.6
       sharedAnalyser.connect(sharedCtx.destination)
     }
     if (sharedCtx && sharedAnalyser && !connectedElements.has(audioEl)) {
@@ -78,7 +87,13 @@ function tryConnect(audioEl: HTMLMediaElement) {
   }
 }
 
-const tick = () => {
+const tick = (now: number) => {
+  if (now - lastTickAt < TICK_INTERVAL_MS) {
+    rafId = requestAnimationFrame(tick)
+    return
+  }
+  lastTickAt = now
+
   let raw = 0
 
   if (useFallback || webAudioFailed) {
@@ -125,9 +140,11 @@ const tick = () => {
     }
   }
 
-  // Light one-pole low-pass so the value animates buttery instead
-  // of jittering on every drum hit.
-  smoothed = smoothed * 0.78 + raw * 0.22
+  // One-pole low-pass. Lower memory weight (0.55) makes the
+  // brightness actually track loudness changes instead of lagging
+  // half a second behind. The CSS transition still smooths the
+  // final pixel value so the result reads as fluid rather than jumpy.
+  smoothed = smoothed * 0.55 + raw * 0.45
 
   listeners.forEach(fn => {
     try {

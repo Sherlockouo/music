@@ -14,7 +14,7 @@ import { openContextMenu } from '@/web/states/contextMenus'
 import { useTranslation } from 'react-i18next'
 import useHoverLightSpot from '../hooks/useHoverLightSpot'
 import { motion } from 'framer-motion'
-import { memo, useEffect, useMemo, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { RepeatMode } from '@/shared/playerDataTypes'
 
 const FMButton = () => {
@@ -131,35 +131,47 @@ const Header = () => {
   )
 }
 
+// Module-level handlers — identity is stable across renders, so memo'd
+// <Track/> rows don't re-render just because their parent did. We read
+// the track id straight off the DOM via data-attr instead of capturing
+// it in a closure.
+const onTrackClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  if (e.detail !== 2) return
+  const id = Number(e.currentTarget.dataset.trackId)
+  if (id) player.playTrack(id)
+}
+const onTrackContextMenu = (event: React.MouseEvent<HTMLDivElement>) => {
+  const id = Number(event.currentTarget.dataset.trackId)
+  if (!id) return
+  openContextMenu({
+    event,
+    type: 'track',
+    dataSourceID: id,
+    options: { useCursorPosition: true },
+  })
+}
+
 const Track = memo(
   ({
     track,
     index,
     isPlaying,
-    state,
+    isPlayingState,
   }: {
     track?: Track
     index: number
     isPlaying: boolean
-    state: PlayerState
+    // Only the active row needs to know if audio is actively playing
+    // (controls the Wave animation). Other rows receive `false` and
+    // never re-render when global player state flips.
+    isPlayingState: boolean
   }) => {
     return (
       <div
         className={cx('mb-5 flex items-center justify-between')}
-        onClick={e => {
-          if (e.detail === 2 && track?.id) player.playTrack(track.id)
-        }}
-        onContextMenu={event => {
-          track?.id &&
-            openContextMenu({
-              event,
-              type: 'track',
-              dataSourceID: track.id,
-              options: {
-                useCursorPosition: true,
-              },
-            })
-        }}
+        data-track-id={track?.id ?? ''}
+        onClick={onTrackClick}
+        onContextMenu={onTrackContextMenu}
       >
         {/* Cover */}
         <img
@@ -187,7 +199,7 @@ const Track = memo(
 
         {/* Wave icon */}
         {isPlaying ? (
-          <Wave playing={state === 'playing'} />
+          <Wave playing={isPlayingState} />
         ) : (
           <div className='text-accent-color text-16 font-medium dark:text-neutral-200'>
             {String(index + 1).padStart(2, '0')}
@@ -205,13 +217,18 @@ const TrackList = ({ className }: { className?: string }) => {
   const { trackList, trackIndex, state, fmTrackList, mode } = useSnapshot(player)
   const trackMode = mode == Mode.TrackList
   const { data: tracksRaw } = useTracks({ ids: trackMode ? trackList : fmTrackList })
-  const tracks = tracksRaw?.songs || []
+  // Stable identity: useTracks returns a new wrapper every render, but the
+  // inner songs array only changes when ids do. Pin it so Virtuoso's data
+  // prop doesn't churn and remount rows on unrelated re-renders (e.g. when
+  // `state` flips between paused/playing).
+  const tracks = useMemo(() => tracksRaw?.songs ?? [], [tracksRaw?.songs])
   const { height } = useWindowSize()
   const isMobile = useIsMobile()
   const listHeight = height - topbarHeight - playerWidth - 24
   const listHeightMobile = height - 154 - 110 - (isIosPwa ? 34 : 0)
 
   const playingIndex = trackMode ? trackIndex : 0
+  const isPlayingState = state === 'playing'
 
   // No scrollSeekConfiguration: real <Track> components always render during
   // scroll. Track is memoized + uses lazy <img>, so render cost is small;
@@ -222,6 +239,22 @@ const TrackList = ({ className }: { className?: string }) => {
       Footer: () => <div className='h-8'></div>,
     }),
     []
+  )
+
+  // Stable itemContent — only re-creates when the *currently playing*
+  // row changes. Without useCallback, every parent render hands Virtuoso
+  // a new function, defeating row-level memoization.
+  const itemContent = useCallback(
+    (index: number, track: Track) => (
+      <Track
+        key={track?.id ?? index}
+        track={track}
+        index={index}
+        isPlaying={index === playingIndex}
+        isPlayingState={index === playingIndex && isPlayingState}
+      />
+    ),
+    [playingIndex, isPlayingState]
   )
 
   return (
@@ -246,18 +279,15 @@ const TrackList = ({ className }: { className?: string }) => {
           )}
           fixedItemHeight={76}
           data={tracks}
-          overscan={1200}
-          increaseViewportBy={{ top: 1200, bottom: 1200 }}
+          // Render ~1 viewport's worth of rows beyond the visible window
+          // in either direction. 1200px (≈16 rows) was overkill — every
+          // mounted row holds an <img>, and we already use lazy loading +
+          // memoization, so a smaller buffer is faster on slow scroll
+          // wheels and keeps mount cost low when the drawer first opens.
+          overscan={600}
+          increaseViewportBy={{ top: 600, bottom: 600 }}
           components={components}
-          itemContent={(index, track) => (
-            <Track
-              key={track?.id ?? index}
-              track={track}
-              index={index}
-              isPlaying={index === playingIndex}
-              state={state}
-            />
-          )}
+          itemContent={itemContent}
         ></Virtuoso>
       </div>
     </motion.div>

@@ -369,10 +369,12 @@ const Lyrics = memo(() => {
                   >
                     <div
                       className={cx(
-                        'lyric-yrc-line block leading-tight tracking-wide',
+                        'lyric-yrc-line block tracking-wide',
+                        // leading-snug (1.375) on the active line gives
+                        // descenders room without making the line look airy
                         isActive
-                          ? 'text-4xl font-extrabold md:text-5xl'
-                          : 'text-3xl font-medium'
+                          ? 'text-4xl font-extrabold leading-snug md:text-5xl'
+                          : 'text-3xl font-medium leading-tight'
                       )}
                     >
                       {line.words.map((word, wi) => (
@@ -414,10 +416,10 @@ const Lyrics = memo(() => {
                   >
                     <div
                       className={cx(
-                        'block leading-tight tracking-wide',
+                        'block tracking-wide',
                         isActive
-                          ? 'text-4xl font-extrabold md:text-5xl'
-                          : 'text-3xl font-medium'
+                          ? 'text-4xl font-extrabold leading-snug md:text-5xl'
+                          : 'text-3xl font-medium leading-tight'
                       )}
                     >
                       {lyric.content}

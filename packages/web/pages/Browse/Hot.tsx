@@ -3,7 +3,7 @@ import Loading from '@/web/components/Animation/Loading'
 import CoverRowVirtual from '@/web/components/CoverRowVirtual'
 import useIntersectionObserver from '@/web/hooks/useIntersectionObserver'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { memo, useCallback, useEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 const InfiniteScrollFooter = ({
   hasMore,
@@ -60,7 +60,14 @@ const Hot = ({ cat }: { cat: string }) => {
     }
   )
 
-  const dataSource = data?.pages.flatMap(page => page.playlists) || []
+  // Stable identity: flatMap allocates a fresh array on every render, which
+  // makes Virtuoso treat the list as new and re-key visible rows on every
+  // unrelated parent render (background refetch, observer state change…),
+  // briefly blanking tiles during fast scroll.
+  const dataSource = useMemo(
+    () => data?.pages.flatMap(page => page.playlists) || [],
+    [data?.pages]
+  )
   const hasMore = hasNextPage ?? false
   const fetching = isFetchingNextPage
 

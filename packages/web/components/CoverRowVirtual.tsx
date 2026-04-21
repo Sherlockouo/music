@@ -102,17 +102,17 @@ const HoverPortal = memo(({ children }: { children?: ReactNode }) => {
   return createPortal(<>{children}</>, document.body.querySelector('#cover-hover-card')!)
 })
 
-const CoverItemHoverCard: FC<{
+// Heavy portion of the hover card. Only mounts after the user actually
+// hovers a cover, so off-screen + on-screen-but-untouched cards pay zero
+// state/effect/portal cost.
+const CoverItemHoverCardContent: FC<{
   item: Item
   imageUrl: string
-}> = memo(({ item, imageUrl }) => {
-  const hostRef = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(false)
-  const [parentInfo, setParentInfo] = useState({ width: 0, height: 0, x: 0, y: 0 })
-  const rafRef = useRef<number>()
-
-  const isAlbum = useMemo(() => 'type' in item && item.type !== 1, [item])
-  const playlist = useMemo(() => (!isAlbum ? (item as Playlist) : null), [item, isAlbum])
+  rect: { width: number; height: number; x: number; y: number }
+}> = memo(({ item, imageUrl, rect }) => {
+  const isAlbum = 'type' in item && item.type !== 1
+  const playlist = !isAlbum ? (item as Playlist) : null
+  const { t } = useTranslation()
 
   const formattedPlayCount = useMemo(() => {
     if (!playlist) return null
@@ -120,87 +120,53 @@ const CoverItemHoverCard: FC<{
     return humanNumber(count, n => n.toFixed(0))
   }, [playlist])
 
-  useEffect(() => {
-    const parent = hostRef.current?.parentElement
-    if (!parent) return
-
-    const onMouseEnter = () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
-      rafRef.current = requestAnimationFrame(() => {
-        setParentInfo(parent.getBoundingClientRect())
-        setVisible(true)
-      })
-    }
-
-    const onMouseLeave = () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
-      setVisible(false)
-    }
-
-    parent.addEventListener('pointerenter', onMouseEnter, { passive: true })
-    parent.addEventListener('pointerleave', onMouseLeave, { passive: true })
-
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
-      parent.removeEventListener('pointerenter', onMouseEnter)
-      parent.removeEventListener('pointerleave', onMouseLeave)
-    }
-  }, [])
-
-  const { t } = useTranslation()
-
-  if (!visible) {
-    return <div ref={hostRef} />
-  }
-
   return (
-    <div ref={hostRef}>
-      <HoverPortal>
-        <div
-          className='pointer-events-none fixed z-10 transition-all duration-300 ease-in-out opacity-100'
-          style={{
-            left: `${parentInfo.x - parentInfo.width / 2}px`,
-            top: `${parentInfo.y + parentInfo.height / 5}px`,
-            width: `${parentInfo.width * 2}px`,
-          }}
-        >
-          <img
-            alt={item.name}
-            loading='eager'
-            decoding='async'
-            src={imageUrl}
-            className='absolute top-0 left-0 h-full w-full rounded-24 object-cover shadow-lg'
-          />
-          <div className='absolute top-0 left-0 h-full w-full rounded-24 bg-white/60 shadow-lg'></div>
-          <div className='relative flex flex-col gap-4 px-2 py-4'>
-            <header className='flex gap-2'>
-              <img
-                alt={item.name}
-                loading='eager'
-                decoding='async'
-                src={imageUrl}
-                className='rounded-18 aspect-square w-1/6 rounded'
-              />
-              <h4 className='flex-auto self-center text-center text-2xl font-bold'>
-                {item.name}
-              </h4>
-            </header>
-            {playlist && (
-              <footer className='flex w-full justify-around gap-2 text-stone-700'>
-                <p>
-                  {playlist.trackCount ?? '-'} {t`coverrow.songs`}
-                </p>
-                <p>
-                  {formattedPlayCount} {t`coverrow.plays`}
-                </p>
-              </footer>
-            )}
-          </div>
+    <HoverPortal>
+      <div
+        className='pointer-events-none fixed z-10 transition-all duration-300 ease-in-out opacity-100'
+        style={{
+          left: `${rect.x - rect.width / 2}px`,
+          top: `${rect.y + rect.height / 5}px`,
+          width: `${rect.width * 2}px`,
+        }}
+      >
+        <img
+          alt={item.name}
+          loading='eager'
+          decoding='async'
+          src={imageUrl}
+          className='absolute top-0 left-0 h-full w-full rounded-24 object-cover shadow-lg'
+        />
+        <div className='absolute top-0 left-0 h-full w-full rounded-24 bg-white/60 shadow-lg'></div>
+        <div className='relative flex flex-col gap-4 px-2 py-4'>
+          <header className='flex gap-2'>
+            <img
+              alt={item.name}
+              loading='eager'
+              decoding='async'
+              src={imageUrl}
+              className='rounded-18 aspect-square w-1/6 rounded'
+            />
+            <h4 className='flex-auto self-center text-center text-2xl font-bold'>
+              {item.name}
+            </h4>
+          </header>
+          {playlist && (
+            <footer className='flex w-full justify-around gap-2 text-stone-700'>
+              <p>
+                {playlist.trackCount ?? '-'} {t`coverrow.songs`}
+              </p>
+              <p>
+                {formattedPlayCount} {t`coverrow.plays`}
+              </p>
+            </footer>
+          )}
         </div>
-      </HoverPortal>
-    </div>
+      </div>
+    </HoverPortal>
   )
 })
+CoverItemHoverCardContent.displayName = 'CoverItemHoverCardContent'
 
 const CoverItem: FC<{
   item: Item
@@ -209,46 +175,68 @@ const CoverItem: FC<{
   showTrackListName: boolean
 }> = memo(({ item, goTo, prefetch, showTrackListName }) => {
   const imageUrl = useMemo(() => getImageUrl(item), [item])
-  const [imageLoaded, setImageLoaded] = useState(() => imageManager.has(imageUrl))
+  const [hoverRect, setHoverRect] = useState<{
+    width: number
+    height: number
+    x: number
+    y: number
+  } | null>(null)
+  const rootRef = useRef<HTMLDivElement>(null)
+  const rafRef = useRef<number>()
 
-  // 当 item 变化（Virtuoso 复用）时重置加载状态
+  // Warm the HTTP cache so hover-cards / detail navigations are instant.
+  // We deliberately do NOT gate the visible <img>'s opacity on this — the
+  // browser already paints from its own cache the moment the URL is
+  // attached, and a JS-side "imageLoaded" flag was producing perceptible
+  // blank tiles during fast Virtuoso scroll while React caught up.
   useEffect(() => {
-    setImageLoaded(imageManager.has(imageUrl))
+    if (!imageManager.has(imageUrl)) {
+      imageManager.load(imageUrl)
+    }
   }, [imageUrl])
 
-  useEffect(() => {
-    if (imageManager.has(imageUrl)) {
-      if (!imageLoaded) setImageLoaded(true)
-      return
-    }
+  useEffect(
+    () => () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+    },
+    []
+  )
 
-    const unsubscribe = imageManager.subscribe(imageUrl, () => {
-      setImageLoaded(true)
+  // Hover handlers live on the card root — no extra <div> + useEffect per
+  // card just to subscribe to pointer events. The expensive hover-card
+  // markup is only rendered while the cursor is actually over the card.
+  const handlePointerEnter = useCallback(() => {
+    prefetch(item.id)
+    if (!showTrackListName) return
+    if (rafRef.current) cancelAnimationFrame(rafRef.current)
+    rafRef.current = requestAnimationFrame(() => {
+      const el = rootRef.current
+      if (!el) return
+      setHoverRect(el.getBoundingClientRect())
     })
+  }, [item.id, prefetch, showTrackListName])
 
-    imageManager.load(imageUrl)
+  const handlePointerLeave = useCallback(() => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current)
+    setHoverRect(null)
+  }, [])
 
-    return () => {
-      unsubscribe()
-    }
-  }, [imageUrl])
+  const handleClick = useCallback(() => goTo(item.id), [goTo, item.id])
 
   return (
     <div
+      ref={rootRef}
       className='group relative'
-      onClick={() => goTo(item.id)}
-      onMouseOver={() => prefetch(item.id)}
+      onClick={handleClick}
+      onPointerEnter={handlePointerEnter}
+      onPointerLeave={handlePointerLeave}
     >
       <div className='relative aspect-square w-full rounded-24 overflow-hidden'>
         <img
           alt={item.name}
           src={imageUrl}
           decoding='async'
-          loading='lazy'
-          className={cx(
-            'absolute inset-0 w-full h-full object-cover transition-opacity duration-150 ease-out',
-            imageLoaded ? 'opacity-100' : 'opacity-0'
-          )}
+          className='absolute inset-0 w-full h-full object-cover'
         />
       </div>
       {showTrackListName && (
@@ -256,12 +244,19 @@ const CoverItem: FC<{
           <h4 className='relative mb-4 mt-1 box-border h-7 overflow-hidden text-ellipsis whitespace-nowrap text-center sm:text-sm lg:-mb-4 lg:text-base 2xl:mb-0 2xl:text-lg'>
             <span className='bottom-0 left-0 right-0 flex-col justify-end p-1'>{item.name}</span>
           </h4>
-          <CoverItemHoverCard item={item} imageUrl={imageUrl} />
+          {hoverRect && (
+            <CoverItemHoverCardContent
+              item={item}
+              imageUrl={imageUrl}
+              rect={hoverRect}
+            />
+          )}
         </>
       )}
     </div>
   )
 })
+CoverItem.displayName = 'CoverItem'
 
 interface CoverRowProps {
   title?: string
@@ -297,18 +292,23 @@ const CoverRow = ({
     if (playlists) prefetchPlaylist({ id })
   }, [albums, playlists])
 
-  const items: Item[] = albums || playlists || []
+  // Pin the source array's identity to either `albums` or `playlists`
+  // (only one is ever supplied). Doing `albums || playlists || []`
+  // inline allocates a fresh `[]` every render when both are undefined,
+  // invalidating every downstream useMemo.
+  const items: Item[] = useMemo(
+    () => albums || playlists || [],
+    [albums, playlists]
+  )
 
   const rows = useMemo(() => {
-    return items.reduce((rows: Item[][], item: Item, index: number) => {
-      const rowIndex = Math.floor(index / 4)
-      if (rows.length < rowIndex + 1) {
-        rows.push([item])
-      } else {
-        rows[rowIndex].push(item)
-      }
-      return rows
-    }, [])
+    const out: Item[][] = []
+    for (let i = 0; i < items.length; i++) {
+      const rowIndex = i >> 2
+      if (out.length <= rowIndex) out.push([items[i]])
+      else out[rowIndex].push(items[i])
+    }
+    return out
   }, [items])
 
   // 预加载前 48 项 (12 行)
@@ -347,9 +347,32 @@ const CoverRow = ({
   // We deliberately do NOT use scrollSeekConfiguration. The user prefers
   // real content rendered during fast scroll over skeleton placeholders.
   // CoverItem is memoized + ImageManager batches loads, so render cost is
-  // cheap; we just need a generous overscan/viewport so rows are mounted
+  // cheap; we just need enough overscan/viewport so rows are mounted
   // before the user catches up to them.
   const components = useMemo(() => ({ Footer }), [Footer])
+
+  // Stable itemContent so Virtuoso can reuse rows efficiently. The inline
+  // version was re-created every render and forced Virtuoso to consider
+  // every visible item dirty.
+  const itemContent = useCallback(
+    (index: number, row: Item[]) => (
+      <div
+        key={index}
+        className='virtuoso-grid-item grid w-full grid-cols-4 gap-4 lg:mb-6 lg:gap-6'
+      >
+        {row.map((item: Item) => (
+          <CoverItem
+            key={item.id}
+            item={item}
+            goTo={goTo}
+            prefetch={prefetch}
+            showTrackListName={showTrackListName}
+          />
+        ))}
+      </div>
+    ),
+    [goTo, prefetch, showTrackListName]
+  )
 
   return (
     <div className={className}>
@@ -360,26 +383,17 @@ const CoverRow = ({
         style={virtuosoStyle}
         components={components}
         data={rows}
-        overscan={2400}
+        // Item is one row of 4 cards (~320px tall). With 1200px buffer we
+        // pre-mount ≈4 rows = 16 cards beyond the viewport — enough to
+        // hide image-decode latency, small enough to keep initial mount
+        // and scroll-while-still-mounting cheap. The previous values
+        // (overscan 2400 + viewport 3200×2) mounted ~100 cards off-screen
+        // each direction, which is the visible Browse-page jank.
+        overscan={1200}
         defaultItemHeight={320}
         totalCount={rows.length}
-        itemContent={(index, row) => (
-          <div
-            key={index}
-            className='virtuoso-grid-item grid w-full grid-cols-4 gap-4 lg:mb-6 lg:gap-6'
-          >
-            {row.map((item: Item) => (
-              <CoverItem
-                key={item.id}
-                item={item}
-                goTo={goTo}
-                prefetch={prefetch}
-                showTrackListName={showTrackListName}
-              />
-            ))}
-          </div>
-        )}
-        increaseViewportBy={{ top: 3200, bottom: 3200 }}
+        itemContent={itemContent}
+        increaseViewportBy={{ top: 1200, bottom: 1200 }}
       />
     </div>
   )

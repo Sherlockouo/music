@@ -340,10 +340,20 @@ export class Player {
     _howler = howler
 
     // 设置 crossOrigin 以支持 Web Audio API 分析（呼吸灯效果）
+    // 必须在 src 触发实际网络请求前设置，否则音频会被标记为跨域污染，
+    // AnalyserNode.getByteFrequencyData 会持续返回全 0。
+    // 由于 Howler 在 new Howl() 内部已经赋值 src，这里需要重新 load() 一次
+    // 强制带上 Origin 请求头重新拉取（NetEase CDN 已配置 ACAO: *）。
     try {
       const node = (howler as any)._sounds?.[0]?._node
-      if (node && node instanceof HTMLMediaElement) {
+      if (node && node instanceof HTMLMediaElement && node.crossOrigin !== 'anonymous') {
         node.crossOrigin = 'anonymous'
+        // 重新触发带 CORS 的请求；不会打断 autoplay，因为 Howler 还会在 canplay 后调用 play()
+        try {
+          node.load()
+        } catch {
+          /* ignore */
+        }
       }
     } catch { /* ignore */ }
 

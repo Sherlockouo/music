@@ -1,7 +1,7 @@
 import { fetchTopPlaylist } from '@/web/api/playlist'
 import CoverRowVirtual from '@/web/components/CoverRowVirtual'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { memo, useCallback, useEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import useIntersectionObserver from '@/web/hooks/useIntersectionObserver'
 import Loading from '@/web/components/Animation/Loading'
 
@@ -65,7 +65,11 @@ const Top = ({ cat }: { cat: string }) => {
     }
   )
 
-  const dataSource = data?.pages.flatMap(page => page.playlists) || []
+  // Stable identity — see comment in Hot.tsx / Recommend.tsx.
+  const dataSource = useMemo(
+    () => data?.pages.flatMap(page => page.playlists) || [],
+    [data?.pages]
+  )
   const hasMore = hasNextPage ?? false
   const fetching = isFetchingNextPage
 

@@ -402,18 +402,26 @@ input[type='number']::-webkit-outer-spin-button {
    each side of the cursor creates a soft "scan" rather than a hard
    wipe — this is what makes it read as a moving glow. */
 .lyrics-row--active .lyric-word {
-  /* Both bright stops are anchored to --p so that when --p=0 (not yet
-     played) they sit at -7% / -7% — completely off the visible range,
-     and the whole word renders in the dim color. The previous "0%"
-     anchor caused a permanent bright halo on the left edge before the
-     karaoke cursor reached the word. */
+  /* Apple-Music-style karaoke fill: bright on the left of the cursor
+     (already sung), dim on the right (not yet sung), with a soft 14%
+     transition band centered on --p.
+     Cursor is offset into [-7% .. 107%] so that:
+       --p = 0 → cursor at -7%, transition band covers [-14% .. 0%],
+                  visible 0..100% paints fully DIM (no left-edge halo).
+       --p = 1 → cursor at 107%, transition band covers [100% .. 114%],
+                  visible 0..100% paints fully BRIGHT.
+     This is the right way to "hide" the cursor at the boundaries —
+     simply clamping with min/max collapses two stops to the same
+     position and leaks the bright color across that seam.
+     Stops are written in monotonically non-decreasing order. */
+  --cursor: calc(var(--p) * 114% - 7%);
   background-image: linear-gradient(
     90deg,
-    hsl(var(--brand-color-700) / 1) calc(var(--p) * 100% - 7%),
-    hsl(var(--brand-color-700) / 1) calc(var(--p) * 100% - 7%),
-    hsl(var(--brand-color-700) / 0.4) calc(var(--p) * 100% + 7%),
-    hsl(var(--brand-color-700) / 0.4) 100%
+    hsl(var(--brand-color-700) / 1) calc(var(--cursor) - 7%),
+    hsl(var(--brand-color-700) / 0.4) calc(var(--cursor) + 7%)
   );
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -423,26 +431,48 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .dark .lyrics-row--active .lyric-word {
+  --cursor: calc(var(--p) * 114% - 7%);
   background-image: linear-gradient(
     90deg,
-    hsl(var(--brand-color-400) / 1) calc(var(--p) * 100% - 7%),
-    hsl(var(--brand-color-400) / 1) calc(var(--p) * 100% - 7%),
-    hsl(var(--brand-color-400) / 0.35) calc(var(--p) * 100% + 7%),
-    hsl(var(--brand-color-400) / 0.35) 100%
+    hsl(var(--brand-color-400) / 1) calc(var(--cursor) - 7%),
+    hsl(var(--brand-color-400) / 0.35) calc(var(--cursor) + 7%)
   );
   filter: saturate(1.35);
 }
 
-/* Row-level scale + opacity. No text-shadow on active row — that
-   was leaking a "ghost glow" through the transparent karaoke text. */
+/* Row-level styling.
+ *
+ * Perf notes:
+ *  - No `transition: filter` on the base row. A filter transition on
+ *    every line change would schedule N expensive filter animations
+ *    on low-end GPUs (one per row in the document). Filter changes
+ *    apply instantly instead — the perceptual difference is zero
+ *    because rows already animate via opacity + transform.
+ *  - No `will-change` per row. Promoting hundreds of rows to their
+ *    own compositor layer is the #1 way to OOM mobile GPUs.
+ *  - `contain: layout paint` is kept (cheap, no flicker): it stops
+ *    layout / paint invalidations on one row from re-laying-out the
+ *    whole list. We do NOT use `content-visibility: auto` because
+ *    on fast scroll it leaves rows blank for a frame or two before
+ *    paint catches up.
+ *  - `text-shadow: none` prevents the legacy glow from leaking
+ *    through the karaoke-clipped active row.
+ */
 .lyrics-row {
   transform-origin: left center;
   transform: scale(0.96);
   opacity: 0.55;
-  filter: blur(0px);
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.45s ease, filter 0.45s ease;
+    opacity 0.45s ease;
   text-shadow: none;
+  contain: layout paint;
+  /* Pad each row so descenders ("y", "g", "p") on the active line are
+     not clipped when transform: scale(1.06) lifts the row above the
+     normal text-box. `leading-tight` on the inner text + a 1.06x
+     scale would otherwise push the bottom of glyphs into the next
+     row's top edge. */
+  padding-top: 4px;
+  padding-bottom: 8px;
 }
 .lyrics-row--active {
   transform: scale(1.06);
@@ -452,22 +482,17 @@ input[type='number']::-webkit-outer-spin-button {
   opacity: 0.45;
 }
 
-/* Optional blur for non-active lines, applied via CSS so React
-   doesn't have to know whether the user is hovering. The active
-   line is excluded — currently-playing text never gets fuzzy. */
-.lyrics-container--blur:not(:hover) .lyrics-row:not(.lyrics-row--active) {
-  filter: blur(3px);
-}
+/* Optional blur for non-active lines, applied only when the cursor
+   isn't over the lyric area. The active line is always excluded —
+   currently-playing text never gets fuzzy. Blur is intentionally
+   subtle (1.5px) — heavier blur forces the GPU to re-rasterize
+   every row each line change, which is the visible "lag" people
+   feel when scrolling.
 
-/* Off-screen lyric rows skip rendering entirely. The browser
-   reserves their intrinsic size so layout / scrollbar stay stable
-   but it doesn't paint or composite the blur/transform layers
-   for rows the user can't see. This is the single biggest win
-   for scrolling smoothness on long lyrics. */
-.lyrics-row {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 88px;
-  contain: layout style paint;
+   The blur applies to the wrapper of each line (transform + opacity
+   already promote it to its own paint), so layout cost is bounded. */
+.lyrics-container--blur:not(:hover) .lyrics-row:not(.lyrics-row--active) {
+  filter: blur(1.5px);
 }
 
 /* Translation / romaji sub-rows use classes instead of inline
@@ -513,19 +538,24 @@ input[type='number']::-webkit-outer-spin-button {
 /* ---------------------------------------------------------------- */
 .breathing-bg__cover {
   /* Brightness comes from --cover-brightness (set by JS for theme)
-     and is gently boosted with loudness; saturation pulses harder
-     so colors visibly punch on a kick drum. */
+     and is boosted noticeably with loudness; saturation pulses harder
+     so colors visibly punch on a kick drum.
+     The brightness/saturation deltas are tuned to be clearly visible
+     (≥ 35% brightness swing on loud peaks) without crushing detail. */
   filter: blur(40px)
-    saturate(calc(1.2 + var(--vol, 0) * 0.8))
-    brightness(calc(var(--cover-brightness, 0.75) + var(--vol, 0) * 0.18));
-  transform: scale(calc(1.5 + var(--vol, 0) * 0.06)) translateZ(0);
-  transition: filter 80ms linear, transform 80ms linear;
+    saturate(calc(1.1 + var(--vol, 0) * 1.1))
+    brightness(calc(var(--cover-brightness, 0.75) + var(--vol, 0) * 0.4));
+  transform: scale(calc(1.5 + var(--vol, 0) * 0.08)) translateZ(0);
+  /* Short linear transition smooths the per-frame --vol writes into
+     a fluid pulse without adding perceptible lag. */
+  transition: filter 60ms linear, transform 60ms linear;
   will-change: transform, filter;
 }
 
 .breathing-bg__overlay {
   background-color: var(--overlay-color, rgba(0, 0, 0, 0.45));
-  /* Loud moments thin the overlay so the cover brightens through. */
-  opacity: calc(1 - var(--vol, 0) * 0.35);
-  transition: opacity 120ms linear;
+  /* Loud moments thin the overlay so the cover brightens through.
+     Bigger range (0.6) so the dim/bright contrast is obvious. */
+  opacity: calc(1 - var(--vol, 0) * 0.6);
+  transition: opacity 80ms linear;
 }

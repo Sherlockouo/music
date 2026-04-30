@@ -219,6 +219,9 @@ export class Player {
   }
 
   private async _setupProgressInterval() {
+    if (this._progressInterval) {
+      clearInterval(this._progressInterval)
+    }
     this._progressInterval = setInterval(() => {
       if (this.state === State.Playing) this._progress = _howler.seek()
     }, 80)

@@ -219,9 +219,16 @@ export class Player {
   }
 
   private async _setupProgressInterval() {
+    // Persisted progress for resume / scrobble / IPC SyncProgress. The
+    // smooth UI progress bar is driven by `subscribeAudioTime`'s RAF
+    // loop (see utils/audioTime.ts) which reads `_howler.seek()` at
+    // paint time — so this interval only needs to be frequent enough
+    // for resume-after-reload accuracy and scrobble correctness.
+    // 500ms cuts valtio rerenders and IPC SyncProgress traffic by ~6x
+    // vs. the old 80ms without any user-visible regression.
     this._progressInterval = setInterval(() => {
       if (this.state === State.Playing) this._progress = _howler.seek()
-    }, 80)
+    }, 500)
   }
 
   private async _scrobble() {

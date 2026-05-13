@@ -88,6 +88,20 @@ function tryConnect(audioEl: HTMLMediaElement) {
 }
 
 const tick = (now: number) => {
+  // When the window/tab is hidden (minimized, background tab, system sleep)
+  // the user can't see the breathing light, so skip reading the analyser
+  // and firing listeners entirely. This keeps the RAF scheduled (RAF is
+  // already throttled by the browser to ~1Hz when hidden) but avoids the
+  // analyser read + full-screen blur repaint that made the laptop hot
+  // while playing music in the background.
+  if (typeof document !== 'undefined' && document.hidden) {
+    // Let smoothed decay toward 0 so the next visible frame doesn't
+    // start from a stale loud value.
+    smoothed = smoothed * 0.9
+    rafId = requestAnimationFrame(tick)
+    return
+  }
+
   if (now - lastTickAt < TICK_INTERVAL_MS) {
     rafId = requestAnimationFrame(tick)
     return

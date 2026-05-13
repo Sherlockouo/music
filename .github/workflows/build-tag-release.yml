@@ -1,0 +1,153 @@
+name: Build-Tag-Release
+
+# Triggered by pushing a tag like v2.7.7. Builds the Electron app on
+# macOS / Windows / Linux in parallel and attaches every installer
+# artifact (+ electron-updater's latest*.yml files) to the GitHub
+# Release for that tag. The release is created as a draft on the first
+# job that needs it; later jobs just append their assets to it.
+#
+# Why a separate workflow (vs. extending build.yaml):
+#   - build.yaml is triggered by pushes to the `release` branch and
+#     only uploads to Actions artifacts, not to a GitHub Release.
+#   - Tag pushes previously triggered nothing, so `git tag vX.Y.Z &&
+#     git push --tags` produced no downloadable binaries.
+#   - Keeping this in its own file avoids double-running on the
+#     `release` branch when the tag is created from that branch.
+
+on:
+  push:
+    tags:
+      - 'v*'
+  # Allow manual re-runs against an existing tag if a job failed.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing tag to (re)build, e.g. v2.7.7'
+        required: true
+
+permissions:
+  contents: write  # required to create/update a GitHub Release
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      # Don't abort sibling OS builds if one fails — partial releases
+      # are better than no release, and the user can re-run the failed
+      # job via workflow_dispatch.
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+          # When triggered by workflow_dispatch we check out the tag
+          # the user typed; otherwise github.ref already points at the
+          # pushed tag.
+          ref: ${{ github.event.inputs.tag || github.ref }}
+
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 8.6.12
+
+      - name: Install Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.18.2
+          cache: 'pnpm'
+
+      - name: Install global dependencies
+        run: npm i prisma fastify-cli turbo tsx electron-builder@23.6.0 -g
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Copy Env
+        run: cp .env.example .env
+
+      # Step 1: turbo-orchestrated build of web + server + shared + desktop/main.
+      # The root "package" script is `turbo run build && pnpm --filter desktop package`
+      # but that swallows extra args, so we do the two phases explicitly.
+      - name: Build workspaces
+        env:
+          ELECTRON_WEB_SERVER_PORT: 42710
+          ELECTRON_DEV_NETEASE_API_PORT: 30001
+          UNBLOCK_SERVER_PORT: 30003
+          VITE_APP_NETEASE_API_URL: /netease
+          ENABLE_FLAC: 'true'
+          ENABLE_LOCAL_VIP: 'svip'
+          IS_ELECTRON: 'yes'
+        run: turbo run build
+
+      # Step 2: package via electron-builder with --publish never.
+      # We upload assets ourselves via action-gh-release so we get a
+      # single consistent Release across all three OS runners. Letting
+      # electron-builder publish from three jobs race-creates draft
+      # releases and is harder to reason about.
+      - name: Package Electron app
+        env:
+          ELECTRON_WEB_SERVER_PORT: 42710
+          ELECTRON_DEV_NETEASE_API_PORT: 30001
+          UNBLOCK_SERVER_PORT: 30003
+          VITE_APP_NETEASE_API_URL: /netease
+          ENABLE_FLAC: 'true'
+          ENABLE_LOCAL_VIP: 'svip'
+          # electron-builder reads GH_TOKEN for its own publish path;
+          # we pass --publish never below, so it's effectively unused,
+          # but some code-signing / update metadata paths look for it.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm --filter desktop exec electron-builder build -c .electron-builder.config.js --publish never
+
+      - name: Collect release artifacts
+        shell: bash
+        run: |
+          set -eu
+          mkdir -p release-assets
+          # Copy only the user-facing installers and the electron-updater
+          # metadata files. Skip blockmap / unpacked dirs / builder-debug.yml.
+          shopt -s nullglob
+          for f in \
+            packages/desktop/release/*.dmg \
+            packages/desktop/release/*-Setup.exe \
+            packages/desktop/release/*.AppImage \
+            packages/desktop/release/*.deb \
+            packages/desktop/release/latest*.yml ; do
+            cp "$f" release-assets/
+          done
+          echo "--- assets to upload ---"
+          ls -lah release-assets/ || true
+
+      - name: Publish to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          # Use the tag that triggered the workflow, or the tag the
+          # user typed in the manual dispatch form.
+          tag_name: ${{ github.event.inputs.tag || github.ref_name }}
+          name: ${{ github.event.inputs.tag || github.ref_name }}
+          # Draft so the maintainer can review + write release notes
+          # before publishing. Matches the old electron-builder
+          # `releaseType: draft` behavior.
+          draft: true
+          prerelease: false
+          # generate_release_notes only runs on the first job that
+          # creates the release; subsequent jobs just append files.
+          generate_release_notes: true
+          fail_on_unmatched_files: false
+          files: release-assets/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Also keep Actions artifacts for easy download without going to
+      # the Release page — useful when the Release is still draft.
+      - name: Upload Actions artifact (backup)
+        uses: actions/upload-artifact@v4
+        with:
+          name: R3PLAYX-${{ runner.os }}
+          path: release-assets/*
+          if-no-files-found: warn
+          retention-days: 14

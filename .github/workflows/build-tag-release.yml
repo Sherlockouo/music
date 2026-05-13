@@ -50,9 +50,11 @@ jobs:
           # pushed tag.
           ref: ${{ github.event.inputs.tag || github.ref }}
 
-      - uses: pnpm/action-setup@v2.0.1
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
         with:
           version: 8.6.12
+          run_install: false
 
       - name: Install Node.js 18
         uses: actions/setup-node@v4
@@ -60,8 +62,17 @@ jobs:
           node-version: 18.18.2
           cache: 'pnpm'
 
+      # Do NOT install `prisma` globally — prisma@7 requires Node 20.19+
+      # and will hard-fail the step on Node 18 via its preinstall script.
+      # It's already in packages/server/devDependencies, so `pnpm install`
+      # brings in a compatible local version that `prisma generate`
+      # (server's postinstall) can use.
+      # node-gyp-install is kept even though we use prebuilt better-sqlite3
+      # binaries — some transitive electron-builder deps still invoke it.
       - name: Install global dependencies
-        run: npm i prisma fastify-cli turbo tsx electron-builder@23.6.0 -g
+        run: |
+          npm i fastify-cli turbo tsx electron-builder@23.6.0 node-gyp-install -g
+          node-gyp-install --python=python3
 
       - name: Install dependencies
         run: pnpm install

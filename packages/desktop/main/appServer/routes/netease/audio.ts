@@ -11,7 +11,6 @@ import { FetchTracksResponse } from '@/shared/api/Track'
 import store from '@/desktop/main/store'
 import { db, Tables } from '@/desktop/main/db'
 const match = require('@unblockneteasemusic/server')
-const dotenv = require('dotenv')
 
 log.info('[electron] appServer/routes/r3play/audio.ts')
 
@@ -205,61 +204,49 @@ async function audio(fastify: FastifyInstance) {
       process.env.JOOX_COOKIE = (jooxCookie as string) || ''
       process.env.ENABLE_FLAC = 'true'
       process.env.ENABLE_LOCAL_VIP = 'true'
-      // // 动态生成 `.env` 文件的内容
-      // const envConfig = `
-      //   QQ_COOKIE=${qqCookie}
-      //   MIGU_COOKIE=${miguCookie}
-      //   JOOX_COOKIE=${jooxCookie}
-      //   ENABLE_FLAC=true
-      //   ENABLE_LOCAL_VIP=true
-      // `
-      // // 加载动态的环境变量
-      // dotenv.config({ path: envConfig })
+      process.env.FOLLOW_SOURCE_ORDER = 'true'
+
       const isEnglish = /^[a-zA-Z\s]+$/
-      let source = ['pyncmd', 'bodian', 'qq', 'migu', 'joox', 'youtube']
-      // let source = ['qq']
+      let source = ['kugou', 'bodian', 'qq', 'migu', 'kuwo', 'joox', 'bilivideo']
       const enableFindTrackOnYouTube = store.get('settings.enableFindTrackOnYouTube')
       const httpProxyForYouTubeSettings = store.get('settings.httpProxyForYouTube')
       if (enableFindTrackOnYouTube && httpProxyForYouTubeSettings) {
         const youtubeProxy = (httpProxyForYouTubeSettings as any).proxy as string
-        ;(global as any).proxy = require('url').parse(youtubeProxy)
+        if (youtubeProxy) {
+          ;(global as any).proxy = require('url').parse(youtubeProxy)
+        }
         const info = await getTrackInfo(trackID)
         const artistName =
           info?.ar[0]?.name === undefined ? '' : info?.ar[0]?.name.replace(/[^a-zA-Z\s]/g, '')
         const songName = info?.name === undefined ? '' : info?.name.replace(/[^a-zA-Z\s]/g, '')
 
         if (isEnglish.test(artistName) && isEnglish.test(songName)) {
-          source = ['youtube', 'qq', 'migu']
+          source = ['ytdlp', 'kugou', 'qq', 'migu', 'bilivideo']
         }
       }
       try {
-        // todo: 暂时写死的，是否开放给用户配置
-        await match(trackID, source).then((data: unknown) => {
-          // await match(trackID, ['youtube']).then((data: unknown) => {
-          if (data === null || data === undefined || (data as any)?.url === '') {
-            reply.code(500).send({
-              code: 400,
-              msg: 'no track info',
-            })
-            return
+        const data: any = await match(trackID, source)
+        if (data === null || data === undefined || data?.url === '') {
+          // 是试听歌曲就把url删掉
+          if (fromNetease?.data?.[0]?.freeTrialInfo) {
+            fromNetease.data[0].url = ''
           }
+          return reply.status(fromNetease?.code ?? 500).send(fromNetease)
+        }
 
-          cache.set(CacheAPIs.Unblock, { id: trackID, url: (data as any)?.url }, trackID)
-          reply.code(200).send({
-            code: 200,
-            data: [data],
-          })
+        cache.set(CacheAPIs.Unblock, { id: trackID, url: data?.url }, trackID)
+        return reply.code(200).send({
+          code: 200,
+          data: [data],
         })
       } catch (err) {
-        reply.code(500).send(err)
+        log.error('[audio] unblock match failed', err)
+        // fallback: 返回网易云原始结果
+        if (fromNetease?.data?.[0]?.freeTrialInfo) {
+          fromNetease.data[0].url = ''
+        }
+        return reply.status(fromNetease?.code ?? 500).send(fromNetease)
       }
-
-      // 是试听歌曲就把url删掉
-      if (fromNetease?.data?.[0].freeTrialInfo) {
-        fromNetease.data[0].url = ''
-      }
-
-      reply.status(fromNetease?.code ?? 500).send(fromNetease)
     }
   )
 

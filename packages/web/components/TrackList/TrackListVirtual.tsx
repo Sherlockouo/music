@@ -5,7 +5,7 @@ import player from '@/web/states/player'
 import { formatDuration, resizeImage } from '@/web/utils/common'
 import { State as PlayerState } from '@/web/utils/player'
 import { css, cx } from '@emotion/css'
-import { Fragment, memo, useEffect } from 'react'
+import { Fragment, memo, useCallback, useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useSnapshot } from 'valtio'
 import React from 'react'
@@ -16,15 +16,15 @@ import { Virtuoso } from 'react-virtuoso'
 const Track = memo(({
   track,
   index,
-  playingTrackID,
+  isPlaying,
   state,
-  handleClick,
+  onClick,
 }: {
   track?: Track
   index: number
-  playingTrackID: number
+  isPlaying: boolean
   state: PlayerState
-  handleClick: (e: React.MouseEvent<HTMLElement>, trackID: number) => void
+  onClick: (e: React.MouseEvent<HTMLElement>, trackID: number) => void
 }) => {
   return (
     <div
@@ -34,8 +34,8 @@ const Track = memo(({
           grid-template-columns: 3fr 2fr 1fr;
         `
       )}
-      onClick={e => track && handleClick(e, track.id)}
-      onContextMenu={e => track && handleClick(e, track.id)}
+      onClick={e => track && onClick(e, track.id)}
+      onContextMenu={e => track && onClick(e, track.id)}
     >
       {/* Right part */}
       <div className='flex items-center'>
@@ -44,6 +44,8 @@ const Track = memo(({
           alt='Cover'
           className='mr-4 aspect-square h-14 w-14 flex-shrink-0 rounded-12'
           src={resizeImage(track?.al?.picUrl || '', 'sm')}
+          loading='lazy'
+          decoding='async'
         />
 
         {/* Track Name and Artists */}
@@ -51,9 +53,7 @@ const Track = memo(({
           <div
             className={cx(
               'line-clamp-1 flex items-center text-16 font-medium transition-colors duration-500',
-              playingTrackID === track?.id
-                ? 'text-brand-700'
-                : 'text-neutral-700 dark:text-neutral-200'
+              isPlaying ? 'text-brand-700' : 'text-neutral-700 dark:text-neutral-200'
             )}
           >
             {track?.name}
@@ -63,9 +63,9 @@ const Track = memo(({
             )}
           </div>
           <div className='line-clamp-1 mt-1 text-14 font-bold '>
-            {track?.ar.map((a, index) => (
-              <Fragment key={a.id + Math.random() * 3.14159}>
-                {index > 0 && ', '}
+            {track?.ar.map((a, idx) => (
+              <Fragment key={`${a.id}-${idx}`}>
+                {idx > 0 && ', '}
                 <NavLink
                   className='transition-all duration-200 hover:text-black/70 dark:hover:text-white/70'
                   to={`/artist/${a.id}`}
@@ -78,7 +78,7 @@ const Track = memo(({
         </div>
 
         {/* Wave icon */}
-        {playingTrackID === track?.id && (
+        {isPlaying && (
           <div className='ml-5'>
             <Wave playing={state === 'playing'} />
           </div>
@@ -102,6 +102,7 @@ const Track = memo(({
     </div>
   )
 })
+Track.displayName = 'TrackListVirtualTrack'
 
 function TrackList({
   tracks,
@@ -117,51 +118,61 @@ function TrackList({
   placeholderRows?: number
   Header?: React.FC
 }) {
+  // Only subscribe to the two fields we actually render. Skipping `progress`
+  // here is critical: without it, this list re-renders ~12×/s during playback.
   const { trackID, state } = useSnapshot(player)
-  const tracksMap = new Map(tracks?.map(track => [track.id, track]))
 
-  let playingTrack = tracksMap.get(trackID)
-  
-  const handleClick = (e: React.MouseEvent<HTMLElement>, trackID: number) => {
-    if (isLoading) return
-    if (e.type === 'contextmenu') {
-      e.preventDefault()
-      openContextMenu({
-        event: e,
-        type: 'track',
-        dataSourceID: trackID,
-        options: {
-          useCursorPosition: true,
-        },
-      })
-      return
-    }
+  const handleClick = useCallback(
+    (e: React.MouseEvent<HTMLElement>, id: number) => {
+      if (isLoading) return
+      if (e.type === 'contextmenu') {
+        e.preventDefault()
+        openContextMenu({
+          event: e,
+          type: 'track',
+          dataSourceID: id,
+          options: {
+            useCursorPosition: true,
+          },
+        })
+        return
+      }
+      if (e.detail === 2) onPlay?.(id)
+    },
+    [isLoading, onPlay]
+  )
 
-    if (e.detail === 2) onPlay?.(trackID)
-  }
+  // No scrollSeekConfiguration: we render real <Track> rows during fast
+  // scroll. Track is memoized + cover uses lazy <img>, so it's cheap; the
+  // generous overscan/viewport keeps content mounted ahead of the user.
+  const components = useMemo(() => ({ Header }), [Header])
+
   return (
-    <div className={cx('@container',className)}>
+    <div className={cx('@container', className)}>
       <Virtuoso
         className=' no-scrollbar'
         style={{
           height: 'calc(100vh - 132px)',
         }}
         data={tracks}
-        components={{
-          Header
-        }}
-        itemSize={el => el.getBoundingClientRect().height + 24}
+        components={components}
+        defaultItemHeight={80}
+        overscan={2000}
+        increaseViewportBy={{ top: 1600, bottom: 1600 }}
         totalCount={tracks?.length}
-        itemContent={(index) => (
-               <Track
-               key={tracks![index]?.id || 0}
-               track={tracks![index] || undefined}
-               index={index}
-               playingTrackID={playingTrack?.id || 0}
-               state={state}
-               handleClick={handleClick}
-             />
-        )}
+        itemContent={index => {
+          const track = tracks?.[index]
+          return (
+            <Track
+              key={track?.id ?? index}
+              track={track}
+              index={index}
+              isPlaying={!!track && track.id === trackID}
+              state={state}
+              onClick={handleClick}
+            />
+          )
+        }}
       />
     </div>
   )

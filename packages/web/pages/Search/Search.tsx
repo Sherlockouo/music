@@ -1,37 +1,40 @@
-import { multiMatchSearch, search, cloudSearch } from '@/web/api/search'
+import { multiMatchSearch, cloudSearch } from '@/web/api/search'
 import player from '@/web/states/player'
 import { resizeImage } from '@/web/utils/common'
 import { SearchTypes, SearchApiNames } from '@/shared/api/Search'
 import dayjs from 'dayjs'
-import { useMemo, useCallback, useEffect } from 'react'
+import { useMemo, useCallback } from 'react'
 import toast from 'react-hot-toast'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import Image from '@/web/components/Image'
 import { cx } from '@emotion/css'
 import CoverRowVirtual from '@/web/components/CoverRowVirtual'
+import { useTranslation } from 'react-i18next'
+import Loading from '@/web/components/Animation/Loading'
 
 const Artists = ({ artists }: { artists: Artist[] }) => {
   const navigate = useNavigate()
   return (
     <>
-      {artists.length > 0 &&
-        artists.map(artist => (
-          <div
-            onClick={() => navigate(`/artist/${artist.id}`)}
-            key={artist.id}
-            className='flex items-center py-2.5'
-          >
-            <img
-              src={resizeImage(artist.img1v1Url, 'xs')}
-              className='mr-4 h-14 w-14 rounded-full'
-            />
-            <div>
-              <div className='text-lg font-semibold'>{artist.name}</div>
-              <div className='mt-0.5 text-sm font-semibold'>艺人</div>
+      {artists.map(artist => (
+        <div
+          onClick={() => navigate(`/artist/${artist.id}`)}
+          key={artist.id}
+          className='flex cursor-pointer items-center py-2.5'
+        >
+          <img
+            src={resizeImage(artist.img1v1Url, 'xs')}
+            className='mr-4 h-14 w-14 rounded-full'
+          />
+          <div>
+            <div className='text-lg font-semibold'>{artist.name}</div>
+            <div className='mt-0.5 text-sm font-semibold opacity-60'>
+              {(artist as any).occupation || 'Artist'}
             </div>
           </div>
-        ))}
+        </div>
+      ))}
     </>
   )
 }
@@ -44,13 +47,13 @@ const Albums = ({ albums }: { albums: Album[] }) => {
         <div
           onClick={() => navigate(`/album/${album.id}`)}
           key={album.id}
-          className='flex items-center py-2.5'
+          className='flex cursor-pointer items-center py-2.5'
         >
           <img src={resizeImage(album.picUrl, 'xs')} className='mr-4 h-14 w-14 rounded-lg' />
           <div>
-            <div className='text-lg font-semibold '>{album.name}</div>
-            <div className='mt-0.5 text-sm font-semibold'>
-              专辑 · {album?.artist.name} · {dayjs(album.publishTime).year()}
+            <div className='text-lg font-semibold'>{album.name}</div>
+            <div className='mt-0.5 text-sm font-semibold opacity-60'>
+              {album?.artist?.name} · {dayjs(album.publishTime).year()}
             </div>
           </div>
         </div>
@@ -59,7 +62,7 @@ const Albums = ({ albums }: { albums: Album[] }) => {
   )
 }
 
-const Track = ({
+const TrackItem = ({
   track,
   isPlaying,
   onPlay,
@@ -70,31 +73,28 @@ const Track = ({
 }) => {
   return (
     <div
-      className='flex items-center justify-between'
+      className='flex cursor-pointer items-center justify-between'
       onClick={e => {
         if (e.detail === 2 && track?.id) onPlay(track.id)
       }}
     >
-      {/* Cover */}
       <Image
         className='mr-4 aspect-square h-14 w-14 flex-shrink-0 rounded-12'
         src={resizeImage(track?.al?.picUrl || '', 'sm')}
         animation={false}
         placeholder={false}
       />
-
-      {/* Track info */}
       <div className='mr-3 flex-grow'>
         <div
           className={cx(
-            'line-clamp-1 text-16 font-medium ',
+            'line-clamp-1 text-16 font-medium',
             isPlaying ? 'text-brand-700' : 'text-neutral-700 dark:text-neutral-200'
           )}
         >
           {track?.name}
         </div>
-        <div className='line-clamp-1 mt-1 text-14 font-bold text-neutral-200 '>
-          {track?.ar.map(a => a.name).join(', ')}
+        <div className='line-clamp-1 mt-1 text-14 font-bold text-neutral-200'>
+          {track?.ar?.map(a => a.name).join(', ')}
         </div>
       </div>
     </div>
@@ -102,59 +102,83 @@ const Track = ({
 }
 
 const Search = () => {
-  const { keywords = '', type = 'all' } = useParams()
-  const offset = 0
-  const limit = 100
-  const searchTrackList: keyof typeof SearchTypes = SearchTypes[
-    'Single'
-  ].toString() as keyof typeof SearchTypes
-  const searchPlayList: keyof typeof SearchTypes = SearchTypes[
-    'Playlist'
-  ].toString() as keyof typeof SearchTypes
+  const { keywords = '' } = useParams()
+  const { t } = useTranslation()
+  const navigate = useNavigate()
 
-  const searchType: keyof typeof SearchTypes =
-    type.toUpperCase() in SearchTypes ? (type.toUpperCase() as keyof typeof SearchTypes) : 'All'
-
-  const { data: bestMatchRaw, isLoading: isLoadingBestMatch } = useQuery(
+  // 最佳匹配
+  const { data: bestMatchRaw } = useQuery(
     [SearchApiNames.MultiMatchSearch, keywords],
-    () => multiMatchSearch({ keywords })
+    () => multiMatchSearch({ keywords }),
+    { enabled: !!keywords, refetchOnWindowFocus: false }
+  )
+
+  // 云搜索 - 歌曲
+  const { data: trackResult, isLoading: isLoadingTracks } = useQuery(
+    [SearchApiNames.CloudSearch, keywords, 'tracks'],
+    () =>
+      cloudSearch({
+        keywords,
+        limit: 100,
+        offset: 0,
+        type: 'Single' as keyof typeof SearchTypes,
+      }),
+    { enabled: !!keywords, refetchOnWindowFocus: false }
+  )
+
+  // 云搜索 - 歌单
+  const { data: playlistResult, isLoading: isLoadingPlaylists } = useQuery(
+    [SearchApiNames.CloudSearch, keywords, 'playlists'],
+    () =>
+      cloudSearch({
+        keywords,
+        limit: 50,
+        offset: 0,
+        type: 'Playlist' as keyof typeof SearchTypes,
+      }),
+    { enabled: !!keywords, refetchOnWindowFocus: false }
   )
 
   const bestMatch = useMemo(() => {
     if (!bestMatchRaw?.result) return []
     return bestMatchRaw.result.orders
-      .filter(order => ['album', 'artist'].includes(order)) // 暂时只支持专辑和艺人
-      .map(order => {
-        return bestMatchRaw.result[order][0]
-      })
+      .filter(order => ['album', 'artist'].includes(order))
+      .map(order => bestMatchRaw.result[order]?.[0])
+      .filter(Boolean)
       .slice(0, 2)
   }, [bestMatchRaw?.result])
 
-  const { data: searchResult, isLoading: isLoadingSearchResult } = useQuery(
-    [SearchApiNames.Search, keywords, searchType],
-    () => search({ keywords, offset: offset, limit: limit, type: searchType })
-  )
+  const tracks = trackResult?.result?.songs
+  const playlists = playlistResult?.result?.playlists
 
-  const { data: cloudTrackSearchResult, isLoading: isLoadingCloudTrackSearchResult } = useQuery(
-    [SearchApiNames.CloudSearch, keywords, searchTrackList],
-    () => cloudSearch({ keywords, offset: offset, limit: limit, type: searchTrackList })
-  )
+  // 提取搜索结果中的艺人和专辑（从歌曲结果中去重）
+  const { artists, albums } = useMemo(() => {
+    if (!tracks?.length) return { artists: [], albums: [] }
 
-  const { data: cloudPlaylistSearchResult, isLoading: isLoadingCloudPlaylistSearchResult } =
-    useQuery([SearchApiNames.CloudSearch, keywords, searchPlayList], () =>
-      cloudSearch({ keywords, offset: offset, limit: limit, type: searchPlayList })
-    )
-  // toast(`${cloudSearchResult}`)
-  console.log(cloudTrackSearchResult, '\n', cloudPlaylistSearchResult)
+    const artistMap = new Map<number, Artist>()
+    const albumMap = new Map<number, Album>()
+
+    tracks.forEach(track => {
+      track.ar?.forEach(ar => {
+        if (ar.id && !artistMap.has(ar.id)) {
+          artistMap.set(ar.id, ar as Artist)
+        }
+      })
+      if (track.al?.id && !albumMap.has(track.al.id)) {
+        albumMap.set(track.al.id, track.al as Album)
+      }
+    })
+
+    return {
+      artists: Array.from(artistMap.values()).slice(0, 5),
+      albums: Array.from(albumMap.values()).slice(0, 5),
+    }
+  }, [tracks])
 
   const handlePlayTracks = useCallback(
     (trackID: number | null = null) => {
-      let tracks = searchResult?.result?.song?.songs
-      // tracks.push(...onlySongSearchResult?.songs)
-      console.log(tracks)
-
       if (!tracks?.length) {
-        toast('无法播放歌单')
+        toast(t`common.no-playable-tracks` || '无法播放')
         return
       }
       player.playAList(
@@ -162,55 +186,60 @@ const Search = () => {
         trackID
       )
     },
-    [searchResult?.result?.song?.songs]
+    [tracks]
   )
 
-  const navigate = useNavigate()
-  const navigateBestMatch = (match: Artist | Album) => {
-    if ((match as Artist).albumSize !== undefined) {
-      navigate(`/artist/${match.id}`)
-      return
-    }
-    if ((match as Album).artist !== undefined) {
-      navigate(`/album/${match.id}`)
-      return
-    }
-  }
+  const navigateBestMatch = useCallback(
+    (match: Artist | Album) => {
+      if ((match as Artist).albumSize !== undefined) {
+        navigate(`/artist/${match.id}`)
+      } else if ((match as Album).artist !== undefined) {
+        navigate(`/album/${match.id}`)
+      }
+    },
+    [navigate]
+  )
+
+  const isLoading = isLoadingTracks && isLoadingPlaylists
 
   return (
     <div>
       <div className='mt-6 mb-8 text-4xl font-semibold'>
-        <span className=''>搜索</span> &quot;{keywords}&quot;
+        <span>{t`search.search` || '搜索'}</span> &quot;{keywords}&quot;
       </div>
 
-      {/* Best match */}
-      {bestMatch.length !== 0 && (
+      {isLoading && (
+        <div className='flex h-40 items-center justify-center'>
+          <Loading />
+        </div>
+      )}
+
+      {/* 最佳匹配 */}
+      {bestMatch.length > 0 && (
         <div className='mb-6'>
-          {/* mx-2.5 mb-6 text-12 font-medium uppercase dark:text-neutral-300 lg:mx-0 lg:text-14
-          lg:font-bold */}
-          <div className='mb-2 text-14 font-bold uppercase'>最佳匹配</div>
+          <div className='mb-2 text-14 font-bold uppercase'>
+            {t`search.best-match` || '最佳匹配'}
+          </div>
           <div className='grid grid-cols-2'>
-            {bestMatch.map(match => (
+            {bestMatch.map((match: any) => (
               <div
                 onClick={() => navigateBestMatch(match)}
                 key={`${match.id}${match.picUrl}`}
-                className='btn-hover-animation flex items-center py-3 after:rounded-xl after:bg-gray-100 dark:after:bg-white/10'
+                className='btn-hover-animation flex cursor-pointer items-center py-3 after:rounded-xl after:bg-gray-100 dark:after:bg-white/10'
               >
                 <img
                   src={resizeImage(match.picUrl, 'xs')}
                   className={cx(
                     'mr-6 h-20 w-20',
-                    (match as Artist).occupation === '歌手' ? 'rounded-full' : 'rounded-xl'
+                    match.occupation === '歌手' ? 'rounded-full' : 'rounded-xl'
                   )}
                 />
                 <div>
                   <div className='text-xl font-semibold'>{match.name}</div>
-                  <div className='mt-0.5 font-medium'>
-                    {(match as Artist).occupation === '歌手'
-                      ? '艺人'
-                      : `专辑 · ${(match as Album).artist.name} · ${dayjs(
-                          match.publishTime
-                        ).year()}`}
+                  <div className='mt-0.5 font-medium opacity-60'>
+                    {match.occupation === '歌手'
+                      ? t`search.artist` || '艺人'
+                      : `${match.artist?.name} · ${dayjs(match.publishTime).year()}`}
                   </div>
                 </div>
               </div>
@@ -219,39 +248,44 @@ const Search = () => {
         </div>
       )}
 
-      {/* Search result */}
+      {/* 搜索结果 */}
       <div className='grid grid-cols-2 gap-6'>
-        {searchResult?.result?.artist?.artists && (
+        {artists.length > 0 && (
           <div>
-            <div className='mb-2 text-14 font-bold uppercase '>艺人</div>
-            <Artists artists={searchResult.result.artist.artists} />
+            <div className='mb-2 text-14 font-bold uppercase'>
+              {t`search.artist` || '艺人'}
+            </div>
+            <Artists artists={artists} />
           </div>
         )}
-        {searchResult?.result?.album?.albums && (
+        {albums.length > 0 && (
           <div>
-            <div className='mb-2 text-14 font-bold uppercase '>专辑</div>
-            <Albums albums={searchResult.result.album.albums} />
+            <div className='mb-2 text-14 font-bold uppercase'>
+              {t`search.album` || '专辑'}
+            </div>
+            <Albums albums={albums} />
           </div>
         )}
 
-        {/* || onlySongSearchResult?.songs */}
-        {cloudTrackSearchResult?.result?.songs && (
+        {tracks && tracks.length > 0 && (
           <div className='col-span-2'>
-            <div className='mb-2 text-14 font-bold uppercase text-neutral-300'>歌曲</div>
-            {cloudTrackSearchResult?.result?.songs && (
-              <div className='grid-rows-8 mt-4 grid grid-cols-3 gap-5 gap-y-6 overflow-hidden pb-12'>
-                {cloudTrackSearchResult?.result?.songs.map(track => (
-                  <Track key={track.id} track={track} onPlay={handlePlayTracks} />
-                ))}
-              </div>
-            )}
+            <div className='mb-2 text-14 font-bold uppercase'>
+              {t`search.song` || '歌曲'}
+            </div>
+            <div className='mt-4 grid grid-cols-3 gap-5 gap-y-6 overflow-hidden pb-12'>
+              {tracks.map(track => (
+                <TrackItem key={track.id} track={track} onPlay={handlePlayTracks} />
+              ))}
+            </div>
           </div>
         )}
 
-        {cloudPlaylistSearchResult?.result?.playlists && (
+        {playlists && playlists.length > 0 && (
           <div className='col-span-2'>
-            <div className='mb-2 text-14 font-bold uppercase '>歌单</div>
-            <CoverRowVirtual playlists={cloudPlaylistSearchResult?.result?.playlists} />
+            <div className='mb-2 text-14 font-bold uppercase'>
+              {t`search.playlist` || '歌单'}
+            </div>
+            <CoverRowVirtual playlists={playlists} />
           </div>
         )}
       </div>

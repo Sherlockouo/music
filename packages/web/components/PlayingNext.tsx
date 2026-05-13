@@ -10,12 +10,11 @@ import { useWindowSize } from 'react-use'
 import { playerWidth, topbarHeight } from '@/web/utils/const'
 import useIsMobile from '@/web/hooks/useIsMobile'
 import { Virtuoso } from 'react-virtuoso'
-import toast from 'react-hot-toast'
 import { openContextMenu } from '@/web/states/contextMenus'
 import { useTranslation } from 'react-i18next'
 import useHoverLightSpot from '../hooks/useHoverLightSpot'
 import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { RepeatMode } from '@/shared/playerDataTypes'
 
 const FMButton = () => {
@@ -132,88 +131,137 @@ const Header = () => {
   )
 }
 
-const Track = ({
-  track,
-  index,
-  playingTrackIndex,
-  state,
-}: {
-  track?: Track
-  index: number
-  playingTrackIndex: number
-  state: PlayerState
-}) => {
-  return (
-    <div
-      className={cx(
-        'mb-5 flex items-center justify-between'
-        // player.mode == Mode.FM && 'pointer-events-none'
-      )}
-      onClick={e => {
-        if (e.detail === 2 && track?.id) player.playTrack(track.id)
-      }}
-      onContextMenu={event => {
-        track?.id &&
-          openContextMenu({
-            event,
-            type: 'track',
-            dataSourceID: track.id,
-            options: {
-              useCursorPosition: true,
-            },
-          })
-      }}
-    >
-      {/* Cover */}
-      <img
-        alt='Cover'
-        className='mr-4 aspect-square h-14 w-14 flex-shrink-0 rounded-12'
-        src={resizeImage(track?.al?.picUrl || '', 'sm')}
-      />
-
-      {/* Track info */}
-      <div className='mr-3 flex-grow'>
-        <div
-          className={cx(
-            'line-clamp-1 text-16 font-medium transition-colors duration-500',
-            playingTrackIndex === index ? 'text-accent-color-500' : 'text-black dark:text-white'
-          )}
-        >
-          {track?.name}
-        </div>
-        <div className='line-clamp-1 mt-1 text-14 font-bold text-black/80  dark:text-white/80'>
-          {track?.ar.map(a => a.name).join(', ')}
-        </div>
-      </div>
-
-      {/* Wave icon */}
-      {playingTrackIndex === index ? (
-        <Wave playing={state === 'playing'} />
-      ) : (
-        <div className='text-accent-color text-16 font-medium dark:text-neutral-200'>
-          {String(index + 1).padStart(2, '0')}
-        </div>
-      )}
-    </div>
-  )
+// Module-level handlers — identity is stable across renders, so memo'd
+// <Track/> rows don't re-render just because their parent did. We read
+// the track id straight off the DOM via data-attr instead of capturing
+// it in a closure.
+const onTrackClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  if (e.detail !== 2) return
+  const id = Number(e.currentTarget.dataset.trackId)
+  if (id) player.playTrack(id)
+}
+const onTrackContextMenu = (event: React.MouseEvent<HTMLDivElement>) => {
+  const id = Number(event.currentTarget.dataset.trackId)
+  if (!id) return
+  openContextMenu({
+    event,
+    type: 'track',
+    dataSourceID: id,
+    options: { useCursorPosition: true },
+  })
 }
 
+const Track = memo(
+  ({
+    track,
+    index,
+    isPlaying,
+    isPlayingState,
+  }: {
+    track?: Track
+    index: number
+    isPlaying: boolean
+    // Only the active row needs to know if audio is actively playing
+    // (controls the Wave animation). Other rows receive `false` and
+    // never re-render when global player state flips.
+    isPlayingState: boolean
+  }) => {
+    return (
+      <div
+        className={cx('mb-5 flex items-center justify-between')}
+        data-track-id={track?.id ?? ''}
+        onClick={onTrackClick}
+        onContextMenu={onTrackContextMenu}
+      >
+        {/* Cover */}
+        <img
+          alt='Cover'
+          className='mr-4 aspect-square h-14 w-14 flex-shrink-0 rounded-12'
+          src={resizeImage(track?.al?.picUrl || '', 'sm')}
+          loading='lazy'
+          decoding='async'
+        />
+
+        {/* Track info */}
+        <div className='mr-3 flex-grow'>
+          <div
+            className={cx(
+              'line-clamp-1 text-16 font-medium transition-colors duration-500',
+              isPlaying ? 'text-accent-color-500' : 'text-black dark:text-white'
+            )}
+          >
+            {track?.name}
+          </div>
+          <div className='line-clamp-1 mt-1 text-14 font-bold text-black/80  dark:text-white/80'>
+            {track?.ar.map(a => a.name).join(', ')}
+          </div>
+        </div>
+
+        {/* Wave icon */}
+        {isPlaying ? (
+          <Wave playing={isPlayingState} />
+        ) : (
+          <div className='text-accent-color text-16 font-medium dark:text-neutral-200'>
+            {String(index + 1).padStart(2, '0')}
+          </div>
+        )}
+      </div>
+    )
+  }
+)
+Track.displayName = 'PlayingNextTrack'
+
 const TrackList = ({ className }: { className?: string }) => {
-  const { trackList, trackIndex, state, fmTrackList, fmTrack } = useSnapshot(player)
-  // track mode true/false
-  const trackMode = player.mode == Mode.TrackList
+  // Subscribe only to the fields we actually render — never to player.progress,
+  // which ticks ~12×/s and would re-render the entire virtualized list.
+  const { trackList, trackIndex, state, fmTrackList, mode } = useSnapshot(player)
+  const trackMode = mode == Mode.TrackList
   const { data: tracksRaw } = useTracks({ ids: trackMode ? trackList : fmTrackList })
-  const tracks = tracksRaw?.songs || []
+  // Stable identity: useTracks returns a new wrapper every render, but the
+  // inner songs array only changes when ids do. Pin it so Virtuoso's data
+  // prop doesn't churn and remount rows on unrelated re-renders (e.g. when
+  // `state` flips between paused/playing).
+  const tracks = useMemo(() => tracksRaw?.songs ?? [], [tracksRaw?.songs])
   const { height } = useWindowSize()
   const isMobile = useIsMobile()
-  const listHeight = height - topbarHeight - playerWidth - 24 // 24是封面与底部间距
-  const listHeightMobile = height - 154 - 110 - (isIosPwa ? 34 : 0) // 154是列表距离底部的距离，110是顶部的距离
+  const listHeight = height - topbarHeight - playerWidth - 24
+  const listHeightMobile = height - 154 - 110 - (isIosPwa ? 34 : 0)
+
+  const playingIndex = trackMode ? trackIndex : 0
+  const isPlayingState = state === 'playing'
+
+  // No scrollSeekConfiguration: real <Track> components always render during
+  // scroll. Track is memoized + uses lazy <img>, so render cost is small;
+  // the generous overscan ensures rows are mounted before they enter view.
+  const components = useMemo(
+    () => ({
+      Header: () => <div className='h-8'></div>,
+      Footer: () => <div className='h-8'></div>,
+    }),
+    []
+  )
+
+  // Stable itemContent — only re-creates when the *currently playing*
+  // row changes. Without useCallback, every parent render hands Virtuoso
+  // a new function, defeating row-level memoization.
+  const itemContent = useCallback(
+    (index: number, track: Track) => (
+      <Track
+        key={track?.id ?? index}
+        track={track}
+        index={index}
+        isPlaying={index === playingIndex}
+        isPlayingState={index === playingIndex && isPlayingState}
+      />
+    ),
+    [playingIndex, isPlayingState]
+  )
 
   return (
     <motion.div>
       <div
         className={cx(css`
-          mask-image: linear-gradient(to bottom, transparent 22px, black 42px); // 顶部渐变遮罩
+          mask-image: linear-gradient(to bottom, transparent 22px, black 42px);
         `)}
       >
         <Virtuoso
@@ -226,25 +274,20 @@ const TrackList = ({ className }: { className?: string }) => {
             'no-scrollbar relative z-10 w-full overflow-auto',
             className,
             css`
-              mask-image: linear-gradient(to top, transparent 8px, black 42px); // 底部渐变遮罩
+              mask-image: linear-gradient(to top, transparent 8px, black 42px);
             `
           )}
           fixedItemHeight={76}
           data={tracks}
-          overscan={tracks.length}
-          components={{
-            Header: () => <div className='h-8'></div>,
-            Footer: () => <div className='h-8'></div>,
-          }}
-          itemContent={(index, track) => (
-            <Track
-              key={index}
-              track={track}
-              index={index}
-              playingTrackIndex={trackMode ? trackIndex : 0}
-              state={state}
-            />
-          )}
+          // Render ~1 viewport's worth of rows beyond the visible window
+          // in either direction. 1200px (≈16 rows) was overkill — every
+          // mounted row holds an <img>, and we already use lazy loading +
+          // memoization, so a smaller buffer is faster on slow scroll
+          // wheels and keeps mount cost low when the drawer first opens.
+          overscan={600}
+          increaseViewportBy={{ top: 600, bottom: 600 }}
+          components={components}
+          itemContent={itemContent}
         ></Virtuoso>
       </div>
     </motion.div>

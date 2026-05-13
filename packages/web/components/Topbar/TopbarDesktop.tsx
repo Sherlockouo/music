@@ -13,7 +13,7 @@ import player from '@/web/states/player'
 import settings from '@/web/states/settings'
 import Theme from '../Appearence/Theme'
 const Background = () => {
-  const { showBackgroundImage, theme } = useSnapshot(settings)
+  const { showBackgroundImage, theme, enableBreathingEffect } = useSnapshot(settings)
 
   // keep background
   const { hideTopbarBackground } = useSnapshot(uiStates)
@@ -29,6 +29,31 @@ const Background = () => {
   if (!showBackgroundImage) {
     bgURL = ''
   }
+
+  // 呼吸灯开启时：背景透明让光晕透出，仅用 backdrop-blur 模糊滚过的内容
+  // NOTE: blur radius kept modest (12px) — the breathing-light layer is
+  // already a full-screen blurred composite, stacking a second 40px
+  // backdrop-filter here doubled the GPU cost and was a major cause of
+  // sustained fan/heat when playing music. 12px is still enough to
+  // hide text scrolling under the topbar without re-blurring the whole
+  // viewport every frame.
+  if (enableBreathingEffect) {
+    return (
+      <div
+        className={cx(
+          'absolute inset-0 h-full w-full',
+          window.env?.isElectron && !fullscreen && 'rounded-tr-12 rounded-tl-12'
+        )}
+        style={{
+          backdropFilter: 'blur(12px) saturate(1.2)',
+          WebkitBackdropFilter: 'blur(12px) saturate(1.2)',
+          maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+        }}
+      />
+    )
+  }
+
   return (
     <>
       <AnimatePresence>
@@ -40,6 +65,10 @@ const Background = () => {
                 'absolute inset-0 h-full w-full',
                 !showBackgroundImage && (theme === 'dark' ? 'top-bar-dark' : 'top-bar-light')
               )}
+              style={{
+                maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+                WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+              }}
             >
               {bgURL ? (
                 <motion.div

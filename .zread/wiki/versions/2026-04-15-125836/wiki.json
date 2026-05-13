@@ -1,0 +1,227 @@
+{
+  "id": "2026-04-15-125836",
+  "generated_at": "2026-04-15T04:58:36.191828Z",
+  "language": "zh",
+  "pages": [
+    {
+      "slug": "1-xiang-mu-gai-shu-r3playx-di-san-fang-wang-yi-yun-yin-le-bo-fang-qi",
+      "title": "项目概述：R3PLAYX 第三方网易云音乐播放器",
+      "file": "1-xiang-mu-gai-shu-r3playx-di-san-fang-wang-yi-yun-yin-le-bo-fang-qi.md",
+      "section": "快速入门",
+      "level": "Beginner"
+    },
+    {
+      "slug": "2-kuai-su-qi-dong-kai-fa-huan-jing-da-jian-yu-yun-xing",
+      "title": "快速启动：开发环境搭建与运行",
+      "file": "2-kuai-su-qi-dong-kai-fa-huan-jing-da-jian-yu-yun-xing.md",
+      "section": "快速入门",
+      "level": "Beginner"
+    },
+    {
+      "slug": "3-monorepo-xiang-mu-jie-gou-zong-lan",
+      "title": "Monorepo 项目结构总览",
+      "file": "3-monorepo-xiang-mu-jie-gou-zong-lan.md",
+      "section": "快速入门",
+      "level": "Beginner"
+    },
+    {
+      "slug": "4-docker-rong-qi-hua-bu-shu",
+      "title": "Docker 容器化部署",
+      "file": "4-docker-rong-qi-hua-bu-shu.md",
+      "section": "快速入门",
+      "level": "Intermediate"
+    },
+    {
+      "slug": "5-turborepo-gou-jian-bian-pai-yu-pnpm-gong-zuo-qu",
+      "title": "Turborepo 构建编排与 PNPM 工作区",
+      "file": "5-turborepo-gou-jian-bian-pai-yu-pnpm-gong-zuo-qu.md",
+      "section": "深入理解",
+      "group": "架构设计",
+      "level": "Intermediate"
+    },
+    {
+      "slug": "6-ke-hu-duan-fu-wu-duan-tong-xin-jia-gou-zhuo-mian-duan-yu-web-duan-de-chai-yi",
+      "title": "客户端-服务端通信架构：桌面端与 Web 端的差异",
+      "file": "6-ke-hu-duan-fu-wu-duan-tong-xin-jia-gou-zhuo-mian-duan-yu-web-duan-de-chai-yi.md",
+      "section": "深入理解",
+      "group": "架构设计",
+      "level": "Advanced"
+    },
+    {
+      "slug": "7-electron-jin-cheng-jian-tong-xin-ipc-tong-dao-ding-yi-yu-lei-xing-an-quan",
+      "title": "Electron 进程间通信（IPC）：通道定义与类型安全",
+      "file": "7-electron-jin-cheng-jian-tong-xin-ipc-tong-dao-ding-yi-yu-lei-xing-an-quan.md",
+      "section": "深入理解",
+      "group": "架构设计",
+      "level": "Advanced"
+    },
+    {
+      "slug": "8-electron-zhu-jin-cheng-qi-dong-liu-cheng-yu-chuang-kou-sheng-ming-zhou-qi",
+      "title": "Electron 主进程启动流程与窗口生命周期",
+      "file": "8-electron-zhu-jin-cheng-qi-dong-liu-cheng-yu-chuang-kou-sheng-ming-zhou-qi.md",
+      "section": "深入理解",
+      "group": "桌面端核心",
+      "level": "Advanced"
+    },
+    {
+      "slug": "9-zhuo-mian-duan-ben-di-fastify-fu-wu-qi-yu-api-lu-you",
+      "title": "桌面端本地 Fastify 服务器与 API 路由",
+      "file": "9-zhuo-mian-duan-ben-di-fastify-fu-wu-qi-yu-api-lu-you.md",
+      "section": "深入理解",
+      "group": "桌面端核心",
+      "level": "Advanced"
+    },
+    {
+      "slug": "10-zhuo-mian-duan-sqlite-shu-ju-ku-better-sqlite3-huan-cun-yu-qian-yi",
+      "title": "桌面端 SQLite 数据库：better-sqlite3 缓存与迁移",
+      "file": "10-zhuo-mian-duan-sqlite-shu-ju-ku-better-sqlite3-huan-cun-yu-qian-yi.md",
+      "section": "深入理解",
+      "group": "桌面端核心",
+      "level": "Advanced"
+    },
+    {
+      "slug": "11-xi-tong-tuo-pan-ren-wu-lan-yu-touch-bar-ji-cheng",
+      "title": "系统托盘、任务栏与 Touch Bar 集成",
+      "file": "11-xi-tong-tuo-pan-ren-wu-lan-yu-touch-bar-ji-cheng.md",
+      "section": "深入理解",
+      "group": "桌面端核心",
+      "level": "Intermediate"
+    },
+    {
+      "slug": "12-lu-you-yu-ye-mian-jie-gou-hashrouter-lan-jia-zai-yu-ye-mian-qie-huan-dong-hua",
+      "title": "路由与页面结构：HashRouter、懒加载与页面切换动画",
+      "file": "12-lu-you-yu-ye-mian-jie-gou-hashrouter-lan-jia-zai-yu-ye-mian-qie-huan-dong-hua.md",
+      "section": "深入理解",
+      "group": "Web 前端",
+      "level": "Intermediate"
+    },
+    {
+      "slug": "13-zhuang-tai-guan-li-jia-gou-valtio-xiang-ying-shi-zhuang-tai-yu-chi-jiu-hua",
+      "title": "状态管理架构：Valtio 响应式状态与持久化",
+      "file": "13-zhuang-tai-guan-li-jia-gou-valtio-xiang-ying-shi-zhuang-tai-yu-chi-jiu-hua.md",
+      "section": "深入理解",
+      "group": "Web 前端",
+      "level": "Intermediate"
+    },
+    {
+      "slug": "14-bo-fang-qi-he-xin-howler-js-yin-pin-yin-qing-yu-bo-fang-kong-zhi",
+      "title": "播放器核心：Howler.js 音频引擎与播放控制",
+      "file": "14-bo-fang-qi-he-xin-howler-js-yin-pin-yin-qing-yu-bo-fang-kong-zhi.md",
+      "section": "深入理解",
+      "group": "Web 前端",
+      "level": "Advanced"
+    },
+    {
+      "slug": "15-api-shu-ju-ceng-tanstack-react-query-yu-qing-qiu-huan-cun",
+      "title": "API 数据层：TanStack React Query 与请求缓存",
+      "file": "15-api-shu-ju-ceng-tanstack-react-query-yu-qing-qiu-huan-cun.md",
+      "section": "深入理解",
+      "group": "Web 前端",
+      "level": "Intermediate"
+    },
+    {
+      "slug": "16-ui-zu-jian-ti-xi-bu-ju-bo-fang-qi-ge-ci-yu-shang-xia-wen-cai-dan",
+      "title": "UI 组件体系：布局、播放器、歌词与上下文菜单",
+      "file": "16-ui-zu-jian-ti-xi-bu-ju-bo-fang-qi-ge-ci-yu-shang-xia-wen-cai-dan.md",
+      "section": "深入理解",
+      "group": "Web 前端",
+      "level": "Intermediate"
+    },
+    {
+      "slug": "17-xu-ni-gun-dong-yu-tu-pian-yu-jia-zai-you-hua",
+      "title": "虚拟滚动与图片预加载优化",
+      "file": "17-xu-ni-gun-dong-yu-tu-pian-yu-jia-zai-you-hua.md",
+      "section": "深入理解",
+      "group": "Web 前端",
+      "level": "Intermediate"
+    },
+    {
+      "slug": "18-guo-ji-hua-i18n-shi-xian",
+      "title": "国际化（i18n）实现",
+      "file": "18-guo-ji-hua-i18n-shi-xian.md",
+      "section": "深入理解",
+      "group": "Web 前端",
+      "level": "Intermediate"
+    },
+    {
+      "slug": "19-zhu-ti-xi-tong-yu-dong-tai-bei-jing-xiao-guo",
+      "title": "主题系统与动态背景效果",
+      "file": "19-zhu-ti-xi-tong-yu-dong-tai-bei-jing-xiao-guo.md",
+      "section": "深入理解",
+      "group": "Web 前端",
+      "level": "Intermediate"
+    },
+    {
+      "slug": "20-fastify-fu-wu-duan-jia-gou-yu-zi-dong-jia-zai-ji-zhi",
+      "title": "Fastify 服务端架构与自动加载机制",
+      "file": "20-fastify-fu-wu-duan-jia-gou-yu-zi-dong-jia-zai-ji-zhi.md",
+      "section": "深入理解",
+      "group": "独立服务端",
+      "level": "Intermediate"
+    },
+    {
+      "slug": "21-prisma-orm-yu-sqlite-shu-ju-mo-xing",
+      "title": "Prisma ORM 与 SQLite 数据模型",
+      "file": "21-prisma-orm-yu-sqlite-shu-ju-mo-xing.md",
+      "section": "深入理解",
+      "group": "独立服务端",
+      "level": "Intermediate"
+    },
+    {
+      "slug": "22-wang-yi-yun-yin-le-api-dai-li-yu-unblock-yin-yuan-jie-suo",
+      "title": "网易云音乐 API 代理与 Unblock 音源解锁",
+      "file": "22-wang-yi-yun-yin-le-api-dai-li-yu-unblock-yin-yuan-jie-suo.md",
+      "section": "深入理解",
+      "group": "独立服务端",
+      "level": "Advanced"
+    },
+    {
+      "slug": "23-apple-music-api-ji-cheng",
+      "title": "Apple Music API 集成",
+      "file": "23-apple-music-api-ji-cheng.md",
+      "section": "深入理解",
+      "group": "独立服务端",
+      "level": "Intermediate"
+    },
+    {
+      "slug": "24-gong-xiang-lei-xing-ding-yi-track-album-artist-deng-he-xin-shu-ju-jie-gou",
+      "title": "共享类型定义：Track、Album、Artist 等核心数据结构",
+      "file": "24-gong-xiang-lei-xing-ding-yi-track-album-artist-deng-he-xin-shu-ju-jie-gou.md",
+      "section": "深入理解",
+      "group": "共享层与类型体系",
+      "level": "Intermediate"
+    },
+    {
+      "slug": "25-huan-cun-api-mei-ju-yu-lei-xing-ying-she",
+      "title": "缓存 API 枚举与类型映射",
+      "file": "25-huan-cun-api-mei-ju-yu-lei-xing-ying-she.md",
+      "section": "深入理解",
+      "group": "共享层与类型体系",
+      "level": "Intermediate"
+    },
+    {
+      "slug": "26-electron-da-bao-yu-fen-fa-electron-builder-pei-zhi",
+      "title": "Electron 打包与分发：electron-builder 配置",
+      "file": "26-electron-da-bao-yu-fen-fa-electron-builder-pei-zhi.md",
+      "section": "深入理解",
+      "group": "跨平台与工程化",
+      "level": "Intermediate"
+    },
+    {
+      "slug": "27-kua-ping-tai-jian-pan-kuai-jie-jian-xi-tong",
+      "title": "跨平台键盘快捷键系统",
+      "file": "27-kua-ping-tai-jian-pan-kuai-jie-jian-xi-tong.md",
+      "section": "深入理解",
+      "group": "跨平台与工程化",
+      "level": "Intermediate"
+    },
+    {
+      "slug": "28-dai-ma-zhi-liang-eslint-prettier-yu-typescript-yan-ge-mo-shi",
+      "title": "代码质量：ESLint、Prettier 与 TypeScript 严格模式",
+      "file": "28-dai-ma-zhi-liang-eslint-prettier-yu-typescript-yan-ge-mo-shi.md",
+      "section": "深入理解",
+      "group": "跨平台与工程化",
+      "level": "Intermediate"
+    }
+  ]
+}

@@ -1,10 +1,9 @@
-import { db, Tables } from './db'
+import { db, Tables, TablesStructures } from './db'
 import type { FetchTracksResponse } from '../../../shared/api/Track'
 import log from './log'
 import fs from 'fs'
 import { IAudioMetadata } from 'music-metadata'
 import { CacheAPIs, CacheAPIsParams } from '../../../shared/CacheAPIs'
-import { TablesStructures } from '../../../desktop/main/db'
 import { FastifyReply } from 'fastify'
 import { dirname } from './utils'
 
@@ -247,18 +246,6 @@ class Cache {
       case CacheAPIs.CoverColor: {
         if (isNaN(Number(params?.id))) return
         return db.find(Tables.CoverColor, params.id)?.color
-      }
-      case CacheAPIs.Artist: {
-        if (!params.ids?.length) return
-        const artists = db.findMany(Tables.Artist, params.ids)
-        if (artists.length !== params.ids.length) return
-        const result = artists.map(a => JSON.parse(a.json))
-        result.sort((a, b) => {
-          const indexA: number = params.ids.indexOf(a.artist.id)
-          const indexB: number = params.ids.indexOf(b.artist.id)
-          return indexA - indexB
-        })
-        return result
       }
       case CacheAPIs.AppleMusicAlbum: {
         if (isNaN(Number(params?.id))) return

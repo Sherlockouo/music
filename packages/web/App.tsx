@@ -8,7 +8,6 @@ import ScrollRestoration from '@/web/components/ScrollRestoration'
 import Toaster from './components/Toaster'
 import useApplyKeyboardShortcuts from './hooks/useApplyKeyboardShortcuts'
 const App = () => {
-  
   useApplyKeyboardShortcuts()
 
   const isMobile = useIsMobile()
@@ -18,7 +17,7 @@ const App = () => {
       {isMobile ? <LayoutMobile /> : <Layout />}
       <Toaster />
       {/* What's this for */}
-      {/* <ScrollRestoration /> */}
+      <ScrollRestoration />
       <IpcRendererReact />
       <Devtool />
     </ErrorBoundary>

@@ -29,7 +29,7 @@ export function cloudSearch(params: SearchParams): Promise<CloudSearchResponse> 
     method: 'get',
     params: {
       ...params,
-      type: params.type,
+      type: SearchTypes[params.type],
     },
   })
 }

@@ -53,7 +53,7 @@ if (argv.watch) {
   waitOn(
     {
       resources: [`http://127.0.0.1:${process.env.ELECTRON_WEB_SERVER_PORT}/index.html`],
-      timeout: 5000,
+      timeout: 30000,
     },
     err => {
       if (err) {

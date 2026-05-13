@@ -1,8 +1,37 @@
 import { css, cx } from '@emotion/css'
 import { AnimatePresence, motion, useAnimation } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ease } from '@/web/utils/const'
 import useIsMobile from '@/web/hooks/useIsMobile'
+
+// 全局图片预加载缓存
+const globalImageCache = new Set<string>()
+const loadingImages = new Map<string, Promise<void>>()
+const preloadImageGlobal = (src: string) => {
+  if (!src || globalImageCache.has(src)) return
+
+  // 如果正在加载，返回现有的 Promise
+  if (loadingImages.has(src)) {
+    return
+  }
+
+  // 创建加载 Promise
+  const loadPromise = new Promise<void>((resolve, reject) => {
+    const img = document.createElement('img')
+    img.onload = () => {
+      globalImageCache.add(src)
+      loadingImages.delete(src)
+      resolve()
+    }
+    img.onerror = () => {
+      loadingImages.delete(src)
+      reject()
+    }
+    img.src = src
+  })
+
+  loadingImages.set(src, loadPromise)
+}
 
 type Props = {
   src?: string
@@ -14,6 +43,7 @@ type Props = {
   onClick?: (e: React.MouseEvent<HTMLImageElement>) => void
   onMouseOver?: (e: React.MouseEvent<HTMLImageElement>) => void
   animation?: boolean
+  fetchPriority?: 'high' | 'auto' | 'low'
 }
 
 const ImageDesktop = ({
@@ -26,44 +56,98 @@ const ImageDesktop = ({
   onClick,
   onMouseOver,
   animation = true,
+  fetchPriority = 'auto',
 }: Props) => {
   const [error, setError] = useState(false)
+  const [loaded, setLoaded] = useState(false)
+  const [inView, setInView] = useState(!lazyLoad)
   const animate = useAnimation()
   const placeholderAnimate = useAnimation()
   const isMobile = useIsMobile()
   const isAnimate = animation && !isMobile
-  useEffect(() => setError(false), [src])
+  const imgRef = useRef<HTMLImageElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
 
-  const onLoad = async () => {
+  // Intersection Observer 懒加载
+  useEffect(() => {
+    if (!lazyLoad || !src) {
+      setInView(true)
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setInView(true)
+            observer.disconnect()
+          }
+        })
+      },
+      {
+        rootMargin: '50px', // 提前 50px 开始加载
+      }
+    )
+
+    const currentRef = containerRef.current
+    if (currentRef) {
+      observer.observe(currentRef)
+    }
+
+    return () => observer.disconnect()
+  }, [lazyLoad, src])
+
+  // 重置状态当 src 改变时
+  useEffect(() => {
+    setError(false)
+    setLoaded(false)
+  }, [src])
+
+  // 预加载图片
+  useEffect(() => {
+    if (src && inView) preloadImageGlobal(src)
+  }, [src, inView])
+
+  const onLoad = () => {
+    setLoaded(true)
+    // 快速显示图片，减少动画延迟
     if (isAnimate) {
       animate.start({ opacity: 1 })
       placeholderAnimate.start({ opacity: 0 })
     }
   }
+
   const onError = () => {
     setError(true)
+    setLoaded(true)
   }
 
-  const transition = { duration: 0.6, ease }
-  const motionProps = isAnimate
+  const transition = { duration: 0.3, ease } // 减少动画时间从 0.6 到 0.3 秒
+
+  const motionProps = isAnimate && !loaded
     ? {
         animate,
         initial: { opacity: 0 },
-        exit: { opacity: 0 },
         transition,
       }
+    : loaded
+    ? {
+        initial: { opacity: 1 },
+        animate: { opacity: 1 },
+      }
     : {}
+
   const placeholderMotionProps = isAnimate
     ? {
         animate: placeholderAnimate,
         initial: { opacity: 1 },
-        exit: { opacity: 0 },
         transition,
       }
     : {}
 
   return (
     <div
+      ref={containerRef}
       onClick={onClick}
       onMouseOver={onMouseOver}
       className={cx(
@@ -72,36 +156,33 @@ const ImageDesktop = ({
         className?.includes('absolute') === false && 'relative'
       )}
     >
-      {/* Image */}
-      <AnimatePresence>
+      {src && inView && (
         <motion.img
+          ref={imgRef}
           className='absolute inset-0 h-full w-full'
           src={src}
           srcSet={srcSet}
           sizes={sizes}
           decoding='async'
-          loading={lazyLoad ? 'lazy' : undefined}
+          fetchPriority={fetchPriority}
           onError={onError}
           onLoad={onLoad}
           {...motionProps}
         />
-      </AnimatePresence>
+      )}
 
-      {/* Placeholder / Error fallback */}
-      <AnimatePresence>
-        {placeholder && (
-          <motion.div
-            {...placeholderMotionProps}
-            className='absolute inset-0 h-full w-full bg-black/10 dark:bg-white/10'
-          ></motion.div>
-        )}
-      </AnimatePresence>
+      {placeholder && !loaded && (
+        <motion.div
+          {...placeholderMotionProps}
+          className='absolute inset-0 h-full w-full bg-black/10 dark:bg-white/10'
+        ></motion.div>
+      )}
     </div>
   )
 }
 
 const ImageMobile = (props: Props) => {
-  const { src, className, srcSet, sizes, lazyLoad, onClick, onMouseOver } = props
+  const { src, className, srcSet, sizes, lazyLoad, onClick, onMouseOver, fetchPriority = 'auto' } = props
   return (
     <div
       onClick={onClick}
@@ -120,6 +201,7 @@ const ImageMobile = (props: Props) => {
           sizes={sizes}
           decoding='async'
           loading={lazyLoad ? 'lazy' : undefined}
+          fetchPriority={fetchPriority}
         />
       )}
     </div>

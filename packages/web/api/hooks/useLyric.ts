@@ -1,4 +1,4 @@
-import { fetchLyric } from '@/web/api/track'
+import { fetchLyric, fetchLyricNew } from '@/web/api/track'
 import reactQueryClient from '@/web/utils/reactQueryClient'
 import { FetchLyricParams, TrackApiNames } from '@/shared/api/Track'
 import { CacheAPIs } from '@/shared/CacheAPIs'
@@ -20,6 +20,14 @@ export default function useLyric(params: FetchLyricParams) {
 
       if (cache) return cache
 
+      // 优先使用 lyric_new（含逐字歌词）
+      try {
+        const newLyric = await fetchLyricNew(params)
+        if (newLyric?.code === 200) return newLyric
+      } catch {
+        // fallback to old API
+      }
+
       return fetchLyric(params)
     },
     {
@@ -35,7 +43,7 @@ export function fetchLyricWithReactQuery(params: FetchLyricParams) {
   return reactQueryClient.fetchQuery(
     [TrackApiNames.FetchLyric, params],
     () => {
-      return fetchLyric(params)
+      return fetchLyricNew(params).catch(() => fetchLyric(params))
     },
     {
       retry: 4,

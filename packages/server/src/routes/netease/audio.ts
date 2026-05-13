@@ -12,10 +12,10 @@ log.info('[server] appServer/routes/netease/audio.ts')
 
 export const getAudioFromCache = async (id: number) => {
   // get from cache
-  const cache = await db.find(Tables.Audio, id)
-  if (!cache) return
+  const audioCache = await db.find(Tables.Audio, id)
+  if (!audioCache) return
 
-  const audioFileName = `${cache.id}-${cache.bitRate}.${cache.format}`
+  const audioFileName = `${audioCache.id}-${audioCache.bitRate}.${audioCache.format}`
 
   const isAudioFileExists = fs.existsSync(`${pkg.name}/audio_cache/${audioFileName}`)
   if (!isAudioFileExists) return
@@ -25,17 +25,17 @@ export const getAudioFromCache = async (id: number) => {
   return {
     data: [
       {
-        source: cache.source,
-        id: cache.id,
+        source: audioCache.source,
+        id: audioCache.id,
         url: `http://127.0.0.1:${
           process.env.ELECTRON_WEB_SERVER_PORT
         }/${pkg.name.toLowerCase()}/audio/${audioFileName}`,
-        br: cache.bitRate,
+        br: audioCache.bitRate,
         size: 0,
         md5: '',
         code: 200,
         expi: 0,
-        type: cache.format,
+        type: audioCache.format,
         gain: 0,
         fee: 8,
         uf: null,
@@ -44,7 +44,7 @@ export const getAudioFromCache = async (id: number) => {
         canExtend: false,
         freeTrialInfo: null,
         level: 'standard',
-        encodeType: cache.format,
+        encodeType: audioCache.format,
         freeTrialPrivilege: {
           resConsumable: false,
           userConsumable: false,

@@ -165,7 +165,7 @@ class DB {
     table: T,
     key: TablesStructures[T]['id']
   ): TablesStructures[T] | undefined {
-    return this.sqlite.prepare(`SELECT * FROM ${table} WHERE id = ? LIMIT 1`).get(key)
+    return this.sqlite.prepare(`SELECT * FROM ${table} WHERE id = ? LIMIT 1`).get(key) as TablesStructures[T] | undefined
   }
 
   findMany<T extends TableNames>(
@@ -173,11 +173,11 @@ class DB {
     keys: TablesStructures[T]['id'][]
   ): TablesStructures[T][] {
     const idsQuery = keys.map(key => `id = ${key}`).join(' OR ')
-    return this.sqlite.prepare(`SELECT * FROM ${table} WHERE ${idsQuery}`).all()
+    return this.sqlite.prepare(`SELECT * FROM ${table} WHERE ${idsQuery}`).all() as TablesStructures[T][]
   }
 
   findAll<T extends TableNames>(table: T): TablesStructures[T][] {
-    return this.sqlite.prepare(`SELECT * FROM ${table}`).all()
+    return this.sqlite.prepare(`SELECT * FROM ${table}`).all() as TablesStructures[T][]
   }
 
   create<T extends TableNames>(table: T, data: TablesStructures[T], skipWhenExist: boolean = true) {
@@ -190,6 +190,7 @@ class DB {
     data: TablesStructures[T][],
     skipWhenExist: boolean = true
   ) {
+    if (!data || data.length === 0) return
     const valuesQuery = Object.keys(data[0])
       .map(key => `:${key}`)
       .join(', ')
@@ -207,7 +208,14 @@ class DB {
     key: TablesStructures[T]['id'],
     data: Partial<TablesStructures[T]>
   ) {
-    // TODO:
+    const updates = Object.keys(data)
+      .filter(k => k !== 'id')
+      .map(k => `${k} = :${k}`)
+      .join(', ')
+    const params: any = { ...data, id: key }
+    return this.sqlite
+      .prepare(`UPDATE ${table} SET ${updates} WHERE id = :id`)
+      .run(params)
   }
 
   upsert<T extends TableNames>(table: T, data: TablesStructures[T]) {
@@ -218,6 +226,7 @@ class DB {
   }
 
   upsertMany<T extends TableNames>(table: T, data: TablesStructures[T][]) {
+    if (!data || data.length === 0) return
     const valuesQuery = Object.keys(data[0])
       .map(key => `:${key}`)
       .join(', ')

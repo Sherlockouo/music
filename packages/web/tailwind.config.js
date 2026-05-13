@@ -143,6 +143,11 @@ module.exports = {
         mxl: '128px',
         xxl: '256px',
       },
+      contentVisibility: {
+        auto: 'auto',
+        hidden: 'hidden',
+        visible: 'visible',
+      },
     },
     // screens: {
     // xs: '240px',

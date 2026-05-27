@@ -1,5 +1,6 @@
 import { resizeImage } from '@/web/utils/common'
 import { cx } from '@emotion/css'
+import Loading from '@/web/components/Animation/Loading'
 import useSettings from '@/web/hooks/useSettings'
 import { useNavigate } from 'react-router-dom'
 import { prefetchAlbum } from '@/web/api/hooks/useAlbum'
@@ -25,7 +26,9 @@ class ImageManager {
   private cache = new Set<string>()
   private listeners = new Map<string, Set<() => void>>()
   private loading = new Set<string>()
+  private queue: string[] = []
   private readonly MAX_CACHE_SIZE = 500
+  private readonly MAX_CONCURRENT = 6
 
   has(src: string): boolean {
     return this.cache.has(src)
@@ -33,7 +36,18 @@ class ImageManager {
 
   load(src: string): void {
     if (!src || this.cache.has(src) || this.loading.has(src)) return
+    // Avoid duplicate queue entries
+    if (this.queue.includes(src)) return
 
+    if (this.loading.size >= this.MAX_CONCURRENT) {
+      this.queue.push(src)
+      return
+    }
+
+    this.startLoad(src)
+  }
+
+  private startLoad(src: string): void {
     if (this.cache.size >= this.MAX_CACHE_SIZE) {
       const entriesToDelete = Math.floor(this.MAX_CACHE_SIZE * 0.1)
       let deleted = 0
@@ -47,19 +61,25 @@ class ImageManager {
     this.loading.add(src)
 
     const img = document.createElement('img')
-    img.onload = () => {
+    const done = () => {
       this.cache.add(src)
       this.loading.delete(src)
       this.notify(src)
       this.listeners.delete(src)
+      this.dequeue()
     }
-    img.onerror = () => {
-      this.cache.add(src)
-      this.loading.delete(src)
-      this.notify(src)
-      this.listeners.delete(src)
-    }
+    img.onload = done
+    img.onerror = done
     img.src = src
+  }
+
+  private dequeue(): void {
+    while (this.queue.length > 0 && this.loading.size < this.MAX_CONCURRENT) {
+      const next = this.queue.shift()!
+      if (!this.cache.has(next) && !this.loading.has(next)) {
+        this.startLoad(next)
+      }
+    }
   }
 
   subscribe(src: string, callback: () => void): () => void {
@@ -265,19 +285,34 @@ interface CoverRowProps {
   playlists?: Playlist[]
   containerClassName?: string
   containerStyle?: CSSProperties
-  Footer?: React.FC
+  isLoadingMore?: boolean
   dynamicHeight?: boolean
   style?: CSSProperties
+  onEndReached?: () => void
 }
+
+// Stable Footer — receives loading state via Virtuoso's `context` prop
+// so its component identity never changes (prevents Virtuoso remount).
+const StableFooter: React.ComponentType<{ context?: { isLoadingMore: boolean } }> = ({ context }) => (
+  <div className='flex h-16 items-center justify-center'>
+    {context?.isLoadingMore && <Loading />}
+  </div>
+)
+
+// Stable components objects — created once at module level so Virtuoso
+// never sees a new reference and never remounts.
+const virtuosoComponents = { Footer: StableFooter }
+const emptyComponents = {}
 
 const CoverRow = ({
   albums,
   playlists,
   title,
   className,
-  Footer,
+  isLoadingMore = false,
   dynamicHeight = false,
   style,
+  onEndReached,
 }: CoverRowProps) => {
   const navigate = useNavigate()
   const { showTrackListName } = useSettings()
@@ -344,21 +379,36 @@ const CoverRow = ({
     }
   }, [dynamicHeight, style])
 
-  // We deliberately do NOT use scrollSeekConfiguration. The user prefers
-  // real content rendered during fast scroll over skeleton placeholders.
-  // CoverItem is memoized + ImageManager batches loads, so render cost is
-  // cheap; we just need enough overscan/viewport so rows are mounted
-  // before the user catches up to them.
-  const components = useMemo(() => ({ Footer }), [Footer])
+  // Virtuoso context — passes dynamic state to stable Footer component
+  // without changing component identity (which would cause full remount).
+  const virtuosoContext = useMemo(
+    () => ({ isLoadingMore }),
+    [isLoadingMore]
+  )
 
-  // Stable itemContent so Virtuoso can reuse rows efficiently. The inline
-  // version was re-created every render and forced Virtuoso to consider
-  // every visible item dirty.
+  // Track whether the initial mount animation has played. After the first
+  // render, we stop adding the animation class so recycled/appended rows
+  // don't flash opacity 0→1.
+  const initialAnimDone = useRef(false)
+  useEffect(() => {
+    // After the first paint with data, mark initial animation as done.
+    if (rows.length > 0) {
+      const id = requestAnimationFrame(() => {
+        initialAnimDone.current = true
+      })
+      return () => cancelAnimationFrame(id)
+    }
+  }, [rows.length > 0])
+
   const itemContent = useCallback(
     (index: number, row: Item[]) => (
       <div
         key={index}
-        className='virtuoso-grid-item grid w-full grid-cols-4 gap-4 lg:mb-6 lg:gap-6'
+        className={cx(
+          'virtuoso-grid-item grid w-full grid-cols-4 gap-4 lg:mb-6 lg:gap-6',
+          !initialAnimDone.current && index < 5 && 'cover-row-enter'
+        )}
+        style={!initialAnimDone.current && index < 5 ? { animationDelay: `${index * 0.04}s` } : undefined}
       >
         {row.map((item: Item) => (
           <CoverItem
@@ -375,25 +425,20 @@ const CoverRow = ({
   )
 
   return (
-    <div className={className}>
+    <div className={cx('min-h-0', className)}>
       {title && <h4 className='mb-6 text-14 font-bold uppercase dark:text-neutral-300'>{title}</h4>}
 
       <Virtuoso
-        className='no-scrollbar smooth-scroll'
+        className='no-scrollbar'
         style={virtuosoStyle}
-        components={components}
+        components={onEndReached ? virtuosoComponents : emptyComponents}
+        context={virtuosoContext}
         data={rows}
-        // Item is one row of 4 cards (~320px tall). With 1200px buffer we
-        // pre-mount ≈4 rows = 16 cards beyond the viewport — enough to
-        // hide image-decode latency, small enough to keep initial mount
-        // and scroll-while-still-mounting cheap. The previous values
-        // (overscan 2400 + viewport 3200×2) mounted ~100 cards off-screen
-        // each direction, which is the visible Browse-page jank.
-        overscan={1200}
+        overscan={800}
         defaultItemHeight={320}
-        totalCount={rows.length}
         itemContent={itemContent}
-        increaseViewportBy={{ top: 1200, bottom: 1200 }}
+        endReached={onEndReached}
+        increaseViewportBy={{ top: 800, bottom: 400 }}
       />
     </div>
   )

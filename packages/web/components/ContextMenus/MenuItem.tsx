@@ -32,6 +32,7 @@ const MenuItem = ({
   return (
     <div
       ref={itemRef}
+      data-menu-item
       onClick={e => {
         if (!item.onClick) {
           return

@@ -1,6 +1,8 @@
 import { css, cx } from '@emotion/css'
 import { ForwardedRef, forwardRef, useLayoutEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
+import { gsap } from '@/web/utils/gsapSetup'
+import { useGSAP } from '@gsap/react'
 import MenuItem from './MenuItem'
 import { ContextMenuItem, ContextMenuPosition } from './types'
 
@@ -24,6 +26,46 @@ const MenuPanel = forwardRef(
     ref: ForwardedRef<HTMLDivElement>
   ) => {
     const [submenuProps, setSubmenuProps] = useState<SubmenuProps | null>(null)
+    const panelRef = useRef<HTMLDivElement>(null)
+
+    // GSAP elastic enter animation — back.out creates a bouncy feel
+    useGSAP(
+      () => {
+        if (forMeasure || !panelRef.current) return
+        const panel = panelRef.current
+
+        // Panel entrance: scale + opacity with back easing
+        gsap.fromTo(
+          panel,
+          { opacity: 0, scale: 0.92, y: -4 },
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: 0.25,
+            ease: 'back.out(2)',
+          }
+        )
+
+        // Menu items stagger entrance
+        const menuItems = panel.querySelectorAll('[data-menu-item]')
+        if (menuItems.length > 0) {
+          gsap.fromTo(
+            menuItems,
+            { opacity: 0, x: -6 },
+            {
+              opacity: 1,
+              x: 0,
+              duration: 0.2,
+              stagger: 0.025,
+              ease: 'power2.out',
+              delay: 0.06,
+            }
+          )
+        }
+      },
+      { scope: panelRef, dependencies: [forMeasure] }
+    )
 
     return (
       // Container (to add padding for submenus)
@@ -35,21 +77,14 @@ const MenuPanel = forwardRef(
         )}
         style={{ left: position.x, top: position.y }}
       >
-        {/* The real panel */}
+        {/* The real panel — GSAP handles enter, framer-motion handles exit */}
         <motion.div
-          initial={{ opacity: 0, scale: forMeasure ? 1 : 0.96 }}
-          animate={{
-            opacity: 1,
-            scale: 1,
-            transition: {
-              duration: 0.1,
-            },
-          }}
+          ref={panelRef}
+          initial={false} // GSAP handles enter
           exit={{ opacity: 0, scale: 0.96 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.15 }}
           className={cx(
             'bg-white/90 dark:bg-black/90',
-            // 'bg-gray-900/95',
             'rounded-12 border border-black/[.06] p-px  py-2.5 shadow-xl outline outline-1 outline-white backdrop-blur-3xl dark:border-white/[.06] dark:outline-black',
             css`
               min-width: 200px;
@@ -57,6 +92,7 @@ const MenuPanel = forwardRef(
             classNames,
             position.transformOrigin || 'origin-top-left'
           )}
+          style={{ opacity: forMeasure ? 1 : 0 }} // start invisible for GSAP
         >
           {items.map((item, index) => (
             <MenuItem

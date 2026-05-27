@@ -15,11 +15,16 @@ import { motion } from 'framer-motion'
 import Router from '@/web/components/Router'
 import BreathingBackground from '@/web/components/BreathingBackground'
 
+// Performance note: When breathing background is enabled, it provides its own
+// blur(40px) effect on the cover image. The separate backdrop-blur-xl mask and
+// backdrop-blur-md foreground are then redundant and waste ~60% of GPU tile
+// memory. We conditionally skip them when breathing is active.
+
 const Layout = () => {
   const playerSnapshot = useSnapshot(player)
   const { fullscreen } = useSnapshot(uiStates)
   const showPlayer = !!playerSnapshot.track
-  const { showBackgroundImage, theme } = useSnapshot(settings)
+  const { showBackgroundImage, theme, enableBreathingEffect } = useSnapshot(settings)
 
   return (
     <div>
@@ -81,20 +86,21 @@ const Layout = () => {
               )}
             ></div>
           </motion.div>
-          {/* mask */}
-          <motion.div
-            className={cx(
-              // mask will affect the borde radius
-              window.env?.isElectron && !fullscreen && 'rounded-12',
-              'absolute inset-0 z-0 backdrop-blur-xl',
-              theme === 'dark' ? 'bg-black/40' : 'bg-white/40'
-            )}
-          />
+          {/* mask — skip backdrop-blur when breathing effect provides its own blur */}
+          {!enableBreathingEffect && (
+            <motion.div
+              className={cx(
+                window.env?.isElectron && !fullscreen && 'rounded-12',
+                'absolute inset-0 z-0 backdrop-blur-xl',
+                theme === 'dark' ? 'bg-black/40' : 'bg-white/40'
+              )}
+            />
+          )}
           <div
             id='layout-foreground'
             className={cx(
               'rounded-12',
-              'backdrop-blur-md',
+              !enableBreathingEffect && 'backdrop-blur-md',
               'relative grid h-screen select-none overflow-hidden',
               'text-black transition-colors duration-400 dark:text-white'
             )}

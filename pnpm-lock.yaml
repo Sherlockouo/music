@@ -287,6 +287,9 @@ importers:
       '@emotion/css':
         specifier: ^11.13.5
         version: 11.13.5
+      '@gsap/react':
+        specifier: ^2.1.0
+        version: 2.1.2(gsap@3.15.0)(react@18.3.1)
       '@sentry/react':
         specifier: ^7.120.4
         version: 7.120.4(react@18.3.1)
@@ -2553,6 +2556,16 @@ packages:
 
   /@gar/promisify@1.1.3:
     resolution: {integrity: sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==}
+
+  /@gsap/react@2.1.2(gsap@3.15.0)(react@18.3.1):
+    resolution: {integrity: sha512-JqliybO1837UcgH2hVOM4VO+38APk3ECNrsuSM4MuXp+rbf+/2IG2K1YJiqfTcXQHH7XlA0m3ykniFYstfq0Iw==}
+    peerDependencies:
+      gsap: ^3.12.5
+      react: '>=17'
+    dependencies:
+      gsap: 3.15.0
+      react: 18.3.1
+    dev: false
 
   /@hapi/hoek@9.3.0:
     resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}

@@ -2,8 +2,7 @@ import PageTransition from '../../components/PageTransition'
 import { useEffect, useLayoutEffect, useRef, useState, useMemo, memo, useCallback } from 'react'
 import { useSnapshot } from 'valtio'
 import { cx } from '@emotion/css'
-import { gsap } from 'gsap'
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
+import { gsap } from '@/web/utils/gsapSetup'
 
 import useLyric from '@/web/api/hooks/useLyric'
 import player from '@/web/states/player'
@@ -11,8 +10,6 @@ import settings from '@/web/states/settings'
 import persistedUiStates from '@/web/states/persistedUiStates'
 import { lyricParser, YrcLine, YrcWord } from '@/web/utils/lyric'
 import { subscribeAudioTime } from '@/web/utils/audioTime'
-
-gsap.registerPlugin(ScrollToPlugin)
 
 /**
  * Word span — Apple-Music-style karaoke fill.
@@ -288,12 +285,13 @@ const Lyrics = memo(() => {
     return unsubscribe
   }, [mainLines, hasYrc])
 
-  // ---------- Auto-scroll on line change ----------
+  // ---------- Auto-scroll + line transition animation ----------
   // Look up the row by attribute (fast — single descendant hit) instead
   // of materializing a full NodeList of every lyric row.
-  useEffect(() => {
-    if (userScrollingRef.current) return
+  const prevLineIndexRef = useRef(-1)
+  const lineTimelineRef = useRef<gsap.core.Timeline | null>(null)
 
+  useEffect(() => {
     const container = containerRef.current
     if (!container || mainLines.length === 0) return
 
@@ -302,16 +300,75 @@ const Lyrics = memo(() => {
     ) as HTMLElement | null
     if (!currentLine) return
 
-    const containerCenter = container.clientHeight / 2
-    const lineCenter = currentLine.offsetTop + currentLine.clientHeight / 2
-    const targetY = lineCenter - containerCenter
+    // --- GSAP line transition animation ---
+    const prevIndex = prevLineIndexRef.current
+    prevLineIndexRef.current = currentLineIndex
 
-    gsap.to(container, {
-      scrollTo: { y: targetY, autoKill: true },
-      duration: 0.7,
-      ease: 'power3.out',
-      overwrite: true,
+    // Kill previous timeline to prevent stacking
+    if (lineTimelineRef.current) {
+      lineTimelineRef.current.kill()
+    }
+
+    const tl = gsap.timeline({ overwrite: true })
+    lineTimelineRef.current = tl
+
+    // Active line: elastic scale up + full opacity
+    tl.to(currentLine, {
+      scale: 1.06,
+      opacity: 1,
+      duration: 0.55,
+      ease: 'back.out(1.4)',
+    }, 0)
+
+    // Previous line: scale down + dim
+    if (prevIndex >= 0 && prevIndex !== currentLineIndex) {
+      const prevLine = container.querySelector(
+        `.lyrics-row[data-line-time="${mainLines[prevIndex]?.time}"]`
+      ) as HTMLElement | null
+      if (prevLine) {
+        tl.to(prevLine, {
+          scale: 0.96,
+          opacity: prevIndex < currentLineIndex ? 0.45 : 0.55,
+          duration: 0.5,
+          ease: 'power3.out',
+        }, 0)
+      }
+    }
+
+    // Neighbor stagger: ±2 lines get subtle scale/opacity gradients
+    const neighbors = [-2, -1, 1, 2]
+    neighbors.forEach((offset, i) => {
+      const neighborIndex = currentLineIndex + offset
+      if (neighborIndex < 0 || neighborIndex >= mainLines.length) return
+      if (neighborIndex === prevIndex) return // already animated above
+
+      const neighborLine = container.querySelector(
+        `.lyrics-row[data-line-time="${mainLines[neighborIndex]?.time}"]`
+      ) as HTMLElement | null
+      if (!neighborLine) return
+
+      const isPast = neighborIndex < currentLineIndex
+      tl.to(neighborLine, {
+        scale: 0.96 + (2 - Math.abs(offset)) * 0.005,
+        opacity: isPast ? 0.45 : 0.55 - Math.abs(offset) * 0.03,
+        duration: 0.4,
+        ease: 'power2.out',
+      }, 0.04 * i)
     })
+
+    // --- Auto-scroll (skip if user is scrolling) ---
+    if (!userScrollingRef.current) {
+      const containerCenter = container.clientHeight / 2
+      const lineCenter = currentLine.offsetTop + currentLine.clientHeight / 2
+      const targetY = lineCenter - containerCenter
+
+      gsap.to(container, {
+        scrollTo: { y: targetY, autoKill: true },
+        duration: 0.6,
+        ease: 'expo.out',
+        overwrite: true,
+      })
+    }
   }, [currentLineIndex, mainLines])
 
   // ---------- Translation/romaji match (memoized for current track) ----------

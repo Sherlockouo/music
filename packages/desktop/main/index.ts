@@ -141,6 +141,11 @@ class Main {
     this.win = new BrowserWindow(options)
     mainWindowStateKeeper.manage(this.win)
 
+    // Disable macOS rubber-band overscroll bounce on the entire window.
+    this.win.webContents.on('did-finish-load', () => {
+      this.win?.webContents.insertCSS('html, body { overscroll-behavior: none !important; }')
+    })
+
     // Web server, load the web server to the electron
     const url = `http://localhost:${process.env.ELECTRON_WEB_SERVER_PORT}`
     this.win.loadURL(url)

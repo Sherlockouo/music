@@ -1,38 +1,8 @@
 import { fetchHQPlaylist } from '@/web/api/playlist'
 import Loading from '@/web/components/Animation/Loading'
 import CoverRowVirtual from '@/web/components/CoverRowVirtual'
-import useIntersectionObserver from '@/web/hooks/useIntersectionObserver'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-
-const InfiniteScrollFooter = ({
-  hasMore,
-  fetching,
-  isFetchingNextPage,
-  loadMore,
-}: {
-  hasMore: boolean
-  fetching: boolean
-  isFetchingNextPage: boolean
-  loadMore: () => void
-}) => {
-  const observePoint = useRef<HTMLDivElement | null>(null)
-  const { onScreen: isScrollReachBottom } = useIntersectionObserver(observePoint)
-  const [prevState, setPrevState] = useState<boolean>(false)
-
-  useEffect(() => {
-    if (prevState != isScrollReachBottom && isScrollReachBottom && hasMore && !fetching) {
-      setPrevState(isScrollReachBottom)
-      loadMore()
-    }
-  }, [isScrollReachBottom, hasMore, fetching, loadMore])
-
-  return (
-    <div ref={observePoint} className='flex justify-center pb-10'>
-      {isFetchingNextPage && <Loading />}
-    </div>
-  )
-}
+import { memo, useCallback, useMemo } from 'react'
 
 const Hot = ({ cat }: { cat: string }) => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery(
@@ -68,23 +38,15 @@ const Hot = ({ cat }: { cat: string }) => {
     () => data?.pages.flatMap(page => page.playlists) || [],
     [data?.pages]
   )
-  const hasMore = hasNextPage ?? false
-  const fetching = isFetchingNextPage
 
-  const loadMore = useCallback(() => {
-    if (hasMore && !isFetchingNextPage) {
+  // Use Virtuoso's native endReached instead of IntersectionObserver.
+  // The old IntersectionObserver-in-Footer approach caused a feedback loop:
+  // new data → layout shift → observer re-fires → fetch again → bounce.
+  const handleEndReached = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage()
     }
-  }, [hasMore, isFetchingNextPage, fetchNextPage])
-
-  const Footer = useCallback(() => (
-    <InfiniteScrollFooter
-      hasMore={hasMore}
-      fetching={fetching}
-      isFetchingNextPage={isFetchingNextPage}
-      loadMore={loadMore}
-    />
-  ), [hasMore, fetching, isFetchingNextPage, loadMore])
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
   if (isLoading && !dataSource.length) {
     return (
@@ -99,7 +61,8 @@ const Hot = ({ cat }: { cat: string }) => {
       <CoverRowVirtual
         key={'Hot' + cat}
         playlists={dataSource}
-        Footer={Footer}
+        isLoadingMore={isFetchingNextPage}
+        onEndReached={handleEndReached}
         dynamicHeight={true}
         className='flex-1'
       />

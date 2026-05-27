@@ -32,7 +32,7 @@ const Main = () => {
       animate={controlsMain}
       transition={{ ease, duration: 0.4 }}
       className={cx(
-        'no-scrollbar z-10 h-screen overflow-y-auto',
+        'no-scrollbar z-10 h-screen overflow-y-auto overscroll-none',
         css`
           ${bp.lg} {
             margin-left: 144px;

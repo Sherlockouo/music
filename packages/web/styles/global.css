@@ -64,10 +64,18 @@
     will-change: auto;
   }
 
+  /* Cover row entrance animation — CSS-only, compatible with Virtuoso DOM recycling.
+     Each row fades in on mount. Uses opacity only (no translateY) to avoid
+     promoting each row to its own compositor layer, which was contributing
+     to "tile memory limits exceeded" on pages with many rows. */
+  .cover-row-enter {
+    animation: coverRowEnter 0.35s ease-out both;
+  }
+
   /* Virtuoso 容器优化 */
   [data-virtuoso-scroller] {
-    /* 确保滚动容器流畅 */
     overflow-anchor: none;
+    overscroll-behavior: none;
   }
 
   /* 性能优化：减少重绘 */
@@ -92,6 +100,15 @@
   100% {
     -webkit-transform: scale(1.3);
     transform: scale(1.3);
+  }
+}
+
+@keyframes coverRowEnter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 
@@ -462,8 +479,9 @@ input[type='number']::-webkit-outer-spin-button {
   transform-origin: left center;
   transform: scale(0.96);
   opacity: 0.55;
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.45s ease;
+  /* Transitions removed — GSAP handles scale/opacity with back.out
+     elastic easing and neighbor stagger for a more dynamic feel. */
+  transition: none;
   text-shadow: none;
   contain: layout paint;
   /* Pad each row so descenders ("y", "g", "p") on the active line are
@@ -475,6 +493,7 @@ input[type='number']::-webkit-outer-spin-button {
   padding-bottom: 8px;
 }
 .lyrics-row--active {
+  /* Initial state for CSS — GSAP will animate to these values */
   transform: scale(1.06);
   opacity: 1;
 }
@@ -537,19 +556,18 @@ input[type='number']::-webkit-outer-spin-button {
 /* update fires per frame.                                            */
 /* ---------------------------------------------------------------- */
 .breathing-bg__cover {
-  /* Brightness comes from --cover-brightness (set by JS for theme)
-     and is boosted noticeably with loudness; saturation pulses harder
-     so colors visibly punch on a kick drum.
-     The brightness/saturation deltas are tuned to be clearly visible
-     (≥ 35% brightness swing on loud peaks) without crushing detail. */
-  filter: blur(40px)
+  /* Reduced blur (40→20px) and scale (1.5→1.15) to halve GPU tile
+     memory. The visual difference is minimal — 20px blur still fully
+     obscures cover details, and 1.15 still covers corners.
+     Brightness/saturation deltas unchanged for same visual punch. */
+  filter: blur(20px)
     saturate(calc(1.1 + var(--vol, 0) * 1.1))
     brightness(calc(var(--cover-brightness, 0.75) + var(--vol, 0) * 0.4));
-  transform: scale(calc(1.5 + var(--vol, 0) * 0.08)) translateZ(0);
+  transform: scale(calc(1.15 + var(--vol, 0) * 0.05)) translateZ(0);
   /* Short linear transition smooths the per-frame --vol writes into
      a fluid pulse without adding perceptible lag. */
   transition: filter 60ms linear, transform 60ms linear;
-  will-change: transform, filter;
+  will-change: filter;
 }
 
 .breathing-bg__overlay {

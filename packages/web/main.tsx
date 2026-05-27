@@ -1,3 +1,4 @@
+import './utils/gsapSetup'
 import './utils/initLog'
 import './utils/theme'
 import { StrictMode } from 'react'

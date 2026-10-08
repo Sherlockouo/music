@@ -63,15 +63,14 @@ function initWindowIpcMain(win: BrowserWindow | null) {
     win?.minimize()
   })
 
-  let isMaximized = false
   let unMaximizeSize: { width: number; height: number } | null = null
   let windowPosition: { x: number; y: number } | null = null
   on(IpcChannels.MaximizeOrUnmaximize, () => {
     if (!win) return false
 
-    if (isMaximized) {
+    if (win.isMaximized()) {
       if (unMaximizeSize) {
-        win.setSize(unMaximizeSize.width, unMaximizeSize.width, true)
+        win.setSize(unMaximizeSize.width, unMaximizeSize.height, true)
       }
       if (windowPosition) {
         win.setPosition(windowPosition.x, windowPosition.y, true)
@@ -79,14 +78,13 @@ function initWindowIpcMain(win: BrowserWindow | null) {
       win.unmaximize()
     } else {
       const size = win.getSize()
-      unMaximizeSize = { width: size[1], height: size[0] }
+      unMaximizeSize = { width: size[0], height: size[1] }
       const position = win.getPosition()
       windowPosition = { x: position[0], y: position[1] }
       win.maximize()
     }
 
-    isMaximized = !isMaximized
-    win.webContents.send(IpcChannels.IsMaximized, isMaximized)
+    win.webContents.send(IpcChannels.IsMaximized, win.isMaximized())
   })
 
   on(IpcChannels.MinimizeOrUnminimize, () => {
@@ -94,12 +92,10 @@ function initWindowIpcMain(win: BrowserWindow | null) {
 
     if (win.isMinimized() || !win.isFocused()) {
       win.show()
+      win.focus()
     } else {
       win.minimize()
     }
-
-    isMaximized = !isMaximized
-    win.webContents.send(IpcChannels.IsMaximized, isMaximized)
   })
 
   on(IpcChannels.Close, () => {
@@ -116,8 +112,8 @@ function initWindowIpcMain(win: BrowserWindow | null) {
   })
 
   handle(IpcChannels.IsMaximized, () => {
-    if (!win) return
-    return isMaximized
+    if (!win) return false
+    return win.isMaximized()
   })
 }
 

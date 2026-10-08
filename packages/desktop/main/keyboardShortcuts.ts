@@ -51,8 +51,8 @@ export const bindingKeyboardShortcuts = (
       win.addListener('blur', handleBlur)
 
       win.once('close', () => {
-        webContexts.removeListener('focus', handleFocus)
-        webContexts.removeListener('blur', handleBlur)
+        win.removeListener('focus', handleFocus)
+        win.removeListener('blur', handleBlur)
         mainWindowFocused = false
         createMenu(webContexts, !mainWindowFocused)
       })
@@ -81,47 +81,43 @@ const bindingGlobalKeyboardShortcuts = (
   const platform = getPlatform()
   const platformShortcuts = shortcuts[platform] as KeyboardShortcuts
 
-  if (platformShortcuts.playPause[1]) {
-    globalShortcut.register(formatForAccelerator(platformShortcuts.playPause[1])!, () => {
-      webContexts.send(IpcChannels.PlayOrPause)
-    })
+  const safeRegister = (shortcut: string[] | null, callback: () => void) => {
+    const accelerator = formatForAccelerator(shortcut)
+    if (!accelerator) return
+    try {
+      globalShortcut.register(accelerator, callback)
+    } catch (err) {
+      console.error('Failed to register global shortcut:', accelerator, err)
+    }
   }
 
-  if (platformShortcuts.next[1]) {
-    globalShortcut.register(formatForAccelerator(platformShortcuts.next[1])!, () => {
-      webContexts.send(IpcChannels.Next)
-    })
-  }
+  safeRegister(platformShortcuts.playPause[1], () => {
+    webContexts.send(IpcChannels.PlayOrPause)
+  })
 
-  if (platformShortcuts.previous[1]) {
-    globalShortcut.register(formatForAccelerator(platformShortcuts.previous[1])!, () => {
-      webContexts.send(IpcChannels.Previous)
-    })
-  }
+  safeRegister(platformShortcuts.next[1], () => {
+    webContexts.send(IpcChannels.Next)
+  })
 
-  if (platformShortcuts.favorite[1]) {
-    globalShortcut.register(formatForAccelerator(platformShortcuts.favorite[1])!, () => {
-      webContexts.send(IpcChannels.Like)
-    })
-  }
+  safeRegister(platformShortcuts.previous[1], () => {
+    webContexts.send(IpcChannels.Previous)
+  })
 
-  if (platformShortcuts.volumeUp[1]) {
-    globalShortcut.register(formatForAccelerator(platformShortcuts.volumeUp[1])!, () => {
-      webContexts.send(IpcChannels.VolumeUp)
-    })
-  }
+  safeRegister(platformShortcuts.favorite[1], () => {
+    webContexts.send(IpcChannels.Like)
+  })
 
-  if (platformShortcuts.volumeDown[1]) {
-    globalShortcut.register(formatForAccelerator(platformShortcuts.volumeDown[1])!, () => {
-      webContexts.send(IpcChannels.VolumeDown)
-    })
-  }
+  safeRegister(platformShortcuts.volumeUp[1], () => {
+    webContexts.send(IpcChannels.VolumeUp)
+  })
 
-  if (platformShortcuts.switchVisibility[1]) {
-    globalShortcut.register(formatForAccelerator(platformShortcuts.switchVisibility[1])!, () => {
-      ipcMain.emit(IpcChannels.MinimizeOrUnminimize)
-    })
-  }
+  safeRegister(platformShortcuts.volumeDown[1], () => {
+    webContexts.send(IpcChannels.VolumeDown)
+  })
+
+  safeRegister(platformShortcuts.switchVisibility[1], () => {
+    ipcMain.emit(IpcChannels.MinimizeOrUnminimize)
+  })
 }
 
 export const formatForAccelerator = (storeText: string[] | null) => {

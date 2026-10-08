@@ -92,7 +92,7 @@ const TopbarDesktop = () => {
       {/* Background */}
       <Background />
       {/* Left Part */}
-      <div className='z-10 flex items-center'>
+      <div className='z-10 flex items-center' onDoubleClick={(e) => e.stopPropagation()}>
         <NavigationButtons />
         {/* Dividing line */}
         <div className='mx-6 h-4 w-px'></div>
@@ -101,7 +101,7 @@ const TopbarDesktop = () => {
       </div>
 
       {/* Right Part */}
-      <div className='z-10 flex gap-2'>
+      <div className='z-10 flex gap-2' onDoubleClick={(e) => e.stopPropagation()}>
         <Theme />
         <SettingsButton />
         <Avatar className='ml-3 h-12 w-12' />

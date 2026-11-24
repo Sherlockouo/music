@@ -1,0 +1,58 @@
+version: 1
+
+repowiki:
+  template: architecture
+
+  notes:
+    - text: 目标读者是维护本项目的中高级工程师；每个模块页面必须讲清职责边界、上下游依赖、请求链路与数据流向，不复述代码细节、不罗列函数与参数签名。
+      author: maintainer
+    - text: 仓库根目录 CLAUDE.md 中标注的 Electron 28 / Fastify 4 / Prisma 旧版 / React 18 等版本信息已过时，技术栈事实一律以各 packages/*/package.json 为准（Electron 43、Fastify 5、Prisma 6、React 19、Vite 7、better-sqlite3 12）。
+      author: maintainer
+    - text: 页面使用简体中文撰写；仅一页嵌套层级，父页面负责总览与跨模块链路，子页面负责单模块深挖。
+      author: maintainer
+    - text: 仓库内 .zread/wiki 目录是旧工具生成的历史快照，仅可作目录参考，其中事实（版本、端口、架构）以当前代码为准，不要照抄。
+      author: maintainer
+    - text: 所有页面统一强调"数据从哪里来到哪里去"：IPC 通道、HTTP 代理、React Query 缓存、SQLite/Prisma 持久化各成一条链路，禁止只描述文件结构。
+      author: maintainer
+
+  documents:
+    - title: 项目总览与 Monorepo 结构
+      goal: 用一页建立全局心智模型：packages/desktop、packages/server、packages/web、packages/shared 各自的定位与协作关系，Turborepo + pnpm 的构建编排与依赖顺序。说明桌面端、Web 端、独立服务端三种运行形态共用同一份前端代码。
+      hints: 解释为什么 shared 必须最先构建；desktop 同时内嵌 web 产物与本地 Fastify 服务；web 既可独立部署也可被 desktop 打包。
+
+    - title: 模块职责地图
+      goal: 以职责而非目录为单位划分模块（播放器、本地服务、外部 API 代理、数据持久化、UI 状态、共享类型），给出每个模块的职责边界与上下游依赖，说明哪些职责被刻意留在模块内、哪些被委托出去。
+      hints: 模块边界以 packages/shared 中的类型契约为锚点；指出 desktop 的 appServer 与 packages/server 的路由高度同构但持久化方式不同（better-sqlite3 vs Prisma）。
+
+    - title: 桌面端请求链路：渲染进程、IPC 与本地 Fastify
+      goal: 完整描述桌面端一次请求的旅程：React 渲染进程 → preload 桥 → IPC（packages/shared/IpcChannels.ts 定义的三元组）→ 主进程；以及渲染进程 → localhost Fastify（端口 42710）→ 外部 NetEase/Apple Music API 的 HTTP 链路。解释两条通道各自承载什么类型的操作。
+      hints: 窗口控制、播放控制、设置同步走 IPC；业务数据与音频缓存走本地 HTTP。说明 IPC 类型安全的约定（新增通道必须同步更新 enum、Params、Returns）。
+
+    - title: Web 端请求链路与数据缓存
+      goal: 描述 Web 端（同时服务于独立部署和桌面内嵌形态）的请求链路：页面组件 → React Query → 后端 API（独立 server 35530 或桌面本地服务）→ 外部音乐 API 代理。解释服务端状态与客户端状态的划分原则，以及缓存键、失效策略的设计意图。
+      hints: 强调 React Query 管服务端状态、Valtio 管客户端状态这条铁律；指出 web 端通过环境变量切换后端地址以适配两种形态。
+
+    - title: 数据流向与持久化
+      goal: 梳理四类数据的流向与落地位置：用户设置与播放状态（localStorage/electron-store）、缓存数据（API 缓存与音频缓存）、业务数据（SQLite：桌面端 better-sqlite3 直连、服务端 Prisma ORM）。说明各存储介质的读写方与生命周期。
+      hints: 重点讲清 audio-cache 本地路由的收敛与隔离（近期安全修复涉及此链路）；桌面端与服务端的 SQLite schema 同源但访问层不同。
+
+    - title: 播放器架构与音频链路
+      goal: 解释播放核心（Howler）如何与 Valtio 播放状态、播放队列、音质选择、歌词页联动；描述从"点击播放"到"音频流出"的完整链路，以及播放状态跨页面恢复的设计。
+      hints: 不复述 Howler API；聚焦状态机、队列推进策略、音质回退、与系统托盘/Touch Bar 的反向控制。
+
+    - title: 构建、打包与发布流水线
+      goal: 说明从源码到可分发产物的链路：turbo 任务编排与缓存策略、desktop 主进程 esbuild 构建、web Vite 构建、electron-builder 打包与自动更新、GitHub Actions 工作流分工。
+      hints: 区分 build / build:web / package / pack:test 的适用场景；说明 post-install 阶段的两项原生构建（better-sqlite3、Prisma client）为何必须在 install 时完成。
+
+    - title: 历史包袱与禁区
+      goal: 单列一页盘点维护者必须知道的债务与红线：文档与代码脱节处（CLAUDE.md 版本信息过时）、旧工具生成的 .zread/wiki 快照、双份路由实现（desktop appServer 与 server）需要同步修改的坑、 AGPL 衍生作品的合规要求、第三方 API 依赖的脆弱点、本地缓存路由的安全边界（description HTML 净化与 audio-cache 收敛）。为每条给出"为什么不要碰/怎么安全地碰"的建议。
+      hints: 这是给维护者的避坑页而非架构页；每条包袱须说明成因、影响半径与安全处理方式；列明近期安全修复确立的两条红线（sanitize description HTML、contain local audio-cache route）。
+
+knowledgecard:
+  notes:
+    - text: 知识卡按模块划分，以 packages/shared 中的共享类型契约为模块边界锚点；desktop 的 appServer 与 packages/server 视为同构双实现，归属同一模块域。
+      author: maintainer
+    - text: 卡片内容面向维护项目的中高级工程师，聚焦职责、请求链路与数据流向，不复述代码细节。
+      author: maintainer
+    - text: 技术栈事实以各 packages/*/package.json 为准（Electron 43、Fastify 5、Prisma 6、React 19），CLAUDE.md 中的版本信息已过时。
+      author: maintainer
